@@ -1,0 +1,125 @@
+.footer {
+  background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
+  padding-top: clamp(3rem, 6vw, 4.5rem);
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.footer__logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.footer__logo span {
+  color: var(--color-gold);
+}
+
+.footer__brand p {
+  margin-top: 0.8rem;
+  color: var(--color-text-faint);
+  font-size: 0.9rem;
+  max-width: 26ch;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.footer__links a {
+  color: var(--color-text-dim);
+  font-size: 0.92rem;
+  width: fit-content;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.footer__links a:hover {
+  color: var(--color-gold);
+}
+
+.footer__newsletter-label {
+  display: block;
+  color: var(--color-text-dim);
+  font-size: 0.88rem;
+  margin-bottom: 0.9rem;
+  max-width: 30ch;
+}
+
+.footer__newsletter-row {
+  display: flex;
+  border-bottom: 1px solid var(--color-border-strong);
+  padding-bottom: 0.6rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.footer__newsletter-row input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.92rem;
+}
+
+.footer__newsletter-row input::placeholder {
+  color: var(--color-text-faint);
+}
+
+.footer__newsletter-row input:focus {
+  outline: none;
+}
+
+.footer__newsletter-thanks {
+  color: var(--color-gold);
+  font-size: 0.9rem;
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-block: 1.6rem;
+}
+
+.footer__bottom p {
+  color: var(--color-text-faint);
+  font-size: 0.8rem;
+}
+
+.footer__socials {
+  display: flex;
+  gap: 1.4rem;
+}
+
+.footer__socials a {
+  color: var(--color-text-faint);
+  font-size: 0.8rem;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.footer__socials a:hover {
+  color: var(--color-gold);
+}
+
+@media (max-width: 760px) {
+  .footer__top {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

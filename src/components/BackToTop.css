@@ -1,0 +1,22 @@
+.back-to-top {
+  position: fixed;
+  right: clamp(1.2rem, 3vw, 2rem);
+  bottom: clamp(1.2rem, 3vw, 2rem);
+  z-index: 90;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-gold);
+  font-size: 1.1rem;
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-gold);
+}
