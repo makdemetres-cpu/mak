@@ -48,8 +48,8 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 1.15 }}
         >
           PYRA is a modern Athenian steakhouse &mdash; 28-day dry-aged cuts, live-fire
-          charcoal cooking, and a wine list built for the occasion. Nestled in
-          Kolonaki, open every evening.
+          charcoal cooking, and a wine list built for the occasion. Just 2 minutes
+          from the metro station, open every evening.
         </motion.p>
 
         <motion.div
