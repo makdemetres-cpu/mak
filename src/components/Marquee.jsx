@@ -3,7 +3,6 @@ import './Marquee.css';
 const ITEMS = [
   'USDA Prime',
   'Dry-Aged 28 Days',
-  'Charcoal Fired',
   'Athens, Greece',
   'Estate Wine List',
   'Nose-to-Tail Cuts',

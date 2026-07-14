@@ -28,7 +28,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
         >
-          Est. Athens &mdash; Charcoal &amp; Dry-Aged Beef
+          Est. 1986 &mdash; Live Music Every Saturday Night
         </motion.p>
 
         <motion.h1 className="hero__title" initial="hidden" animate="show" variants={container}>
@@ -75,7 +75,6 @@ export function Hero() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.8 }}
       >
-        <span className="hero__scroll-line" />
         <span>Scroll</span>
       </motion.a>
     </section>

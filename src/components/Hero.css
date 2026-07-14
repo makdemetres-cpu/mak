@@ -102,24 +102,6 @@
   color: var(--color-text-faint);
 }
 
-.hero__scroll-line {
-  width: 1px;
-  height: 34px;
-  background: linear-gradient(to bottom, var(--color-gold), transparent);
-  animation: scroll-pulse 2.2s ease-in-out infinite;
-}
-
-@keyframes scroll-pulse {
-  0%, 100% { transform: scaleY(0.6); opacity: 0.5; }
-  50% { transform: scaleY(1); opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__scroll-line {
-    animation: none;
-  }
-}
-
 @media (max-width: 560px) {
   .hero__cta-row {
     flex-direction: column;
