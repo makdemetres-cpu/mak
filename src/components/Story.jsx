@@ -23,17 +23,22 @@ export function Story() {
           </Reveal>
           <Reveal type="up" delay={0.16}>
             <p className="section-lede">
-              PYRA began with a simple obsession: fire, done properly. We dry-age our
-              beef in-house, char it over Greek holm-oak charcoal, and finish every
-              plate the way it's been done in this city for generations &mdash; unhurried,
-              generous, and shared.
+              Since 1986, our doors have opened onto a quiet corner of Kolonaki,
+              where the scent of dry-aged beef has drifted through the neighborhood
+              for nearly four decades. What began as a small family kitchen grew,
+              steak by steak, into a local institution &mdash; a place where regulars
+              became friends, and friends became family around the same worn
+              wooden tables.
             </p>
           </Reveal>
           <Reveal type="up" delay={0.24}>
             <p className="section-lede">
-              Our dining room sits in a restored neoclassical building near
-              Syntagma Square, where marble floors and warm brass light meet the
-              glow of the open charcoal grill.
+              Today, our aging room still holds the same patience and craft that
+              started it all, each cut resting for weeks until it reaches its peak.
+              In the heart of Athens' most elegant district, we remain devoted to
+              one simple promise: the finest steak in Kolonaki, served the way it
+              always has been &mdash; with care, precision, and a little bit of
+              history on every plate.
             </p>
           </Reveal>
           <Reveal type="up" delay={0.32}>
