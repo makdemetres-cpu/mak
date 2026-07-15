@@ -2,10 +2,10 @@ import { Reveal, RevealGroup, RevealItem } from './Reveal';
 import './Story.css';
 
 const STATS = [
-  { value: '28', unit: 'Days', label: 'Dry-Aged in House' },
-  { value: '100', unit: '%', label: 'Charcoal Fired' },
+  { value: '28', unit: 'Days', label: 'Dry-Aged Beef' },
+  { value: '100', unit: '%', label: 'Greek Meat' },
   { value: '12', unit: 'Cuts', label: 'On the Menu' },
-  { value: '450', unit: 'Labels', label: 'In the Cellar' },
+  { value: '55+', unit: '', label: 'Wine Varieties' },
 ];
 
 export function Story() {
