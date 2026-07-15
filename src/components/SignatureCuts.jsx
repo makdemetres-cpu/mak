@@ -38,7 +38,7 @@ export function SignatureCuts() {
       <div className="container">
         <div className="section-head">
           <Reveal type="up">
-            <p className="eyebrow">Signature Cuts</p>
+            <p className="eyebrow">Signature Dishes</p>
           </Reveal>
           <Reveal type="up" delay={0.08}>
             <h2 className="section-title">
