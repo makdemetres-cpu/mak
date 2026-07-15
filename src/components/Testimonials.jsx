@@ -21,6 +21,16 @@ const QUOTES = [
     author: 'Sophia P.',
     rating: 4,
   },
+  {
+    text: 'Booked a table for my parents\' anniversary and the whole night felt effortless. The porterhouse was extraordinary.',
+    author: 'Dimitris A.',
+    rating: 5,
+  },
+  {
+    text: 'Came in expecting good steak, left thinking about the wine pairing for a week. Ask for the Xinomavro.',
+    author: 'Rachel T.',
+    rating: 4.5,
+  },
 ];
 
 function Stars({ rating, name }) {
@@ -87,17 +97,6 @@ export function Testimonials() {
               <p className="testimonials__attr">{active.author}</p>
             </motion.div>
           </AnimatePresence>
-        </div>
-
-        <div className="testimonials__dots">
-          {QUOTES.map((q, i) => (
-            <button
-              key={q.author}
-              className={`testimonials__dot ${i === index ? 'is-active' : ''}`}
-              aria-label={`Show testimonial from ${q.author}`}
-              onClick={() => setIndex(i)}
-            />
-          ))}
         </div>
 
         <a
