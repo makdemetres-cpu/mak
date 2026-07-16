@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { EmberCanvas } from './EmberCanvas';
 import './Hero.css';
 
@@ -58,9 +59,9 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.35 }}
         >
-          <a href="#reserve" className="btn btn-primary">
+          <Link to="/reserve" className="btn btn-primary">
             Reserve a Table
-          </a>
+          </Link>
           <a href="#menu" className="btn btn-ghost">
             Explore the Menu
           </a>

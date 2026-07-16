@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import './Navbar.css';
 
@@ -47,9 +48,9 @@ export function Navbar() {
             ))}
           </nav>
 
-          <a href="#reserve" className="btn btn-ghost navbar__cta">
+          <Link to="/reserve" className="btn btn-ghost navbar__cta">
             Reserve a Table
-          </a>
+          </Link>
 
           <button
             className={`navbar__toggle ${open ? 'is-open' : ''}`}
@@ -91,15 +92,14 @@ export function Navbar() {
                   {link.label}
                 </motion.a>
               ))}
-              <motion.a
-                href="#reserve"
-                onClick={handleNavClick}
-                className="mobile-menu__cta"
+              <motion.div
                 variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
-                Reserve a Table
-              </motion.a>
+                <Link to="/reserve" onClick={handleNavClick} className="mobile-menu__cta">
+                  Reserve a Table
+                </Link>
+              </motion.div>
             </motion.nav>
           </motion.div>
         )}

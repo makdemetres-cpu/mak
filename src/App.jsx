@@ -1,19 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Preloader } from './components/Preloader';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { Marquee } from './components/Marquee';
-import { Story } from './components/Story';
-import { SignatureCuts } from './components/SignatureCuts';
-import { Menu } from './components/Menu';
-import { Gallery } from './components/Gallery';
-import { Testimonials } from './components/Testimonials';
-import { Reservation } from './components/Reservation';
-import { Location } from './components/Location';
-import { Footer } from './components/Footer';
 import { ScrollProgress } from './components/ScrollProgress';
 import { BackToTop } from './components/BackToTop';
 import { CursorDot } from './components/CursorDot';
+import { ScrollToTop } from './components/ScrollToTop';
+import { Home } from './pages/Home';
+import { ReservationPage } from './pages/ReservationPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -35,19 +28,12 @@ function App() {
       <Preloader visible={loading} />
       <ScrollProgress />
       <CursorDot />
-      <Navbar />
-      <main>
-        <Hero />
-        <Marquee />
-        <Story />
-        <SignatureCuts />
-        <Menu />
-        <Gallery />
-        <Testimonials />
-        <Reservation />
-        <Location />
-      </main>
-      <Footer />
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/reserve" element={<ReservationPage />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
       <BackToTop />
     </>
   );

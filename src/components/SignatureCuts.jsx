@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { RevealGroup, RevealItem, Reveal } from './Reveal';
 import './SignatureCuts.css';
 
@@ -67,9 +68,9 @@ export function SignatureCuts() {
               <p className="cut-card__desc">{cut.desc}</p>
               <div className="cut-card__footer">
                 <span className="cut-card__price">{cut.price}</span>
-                <a href="#reserve" className="btn-text">
+                <Link to="/reserve" className="btn-text">
                   Reserve &rarr;
-                </a>
+                </Link>
               </div>
             </RevealItem>
           ))}

@@ -1,0 +1,262 @@
+.reserve-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+.reserve-page__header {
+  border-bottom: 1px solid var(--color-border);
+  padding-block: 1.4rem;
+}
+
+.reserve-page__header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.reserve-page__logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+}
+
+.reserve-page__logo span {
+  color: var(--color-gold);
+}
+
+.reserve-page__back {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-dim);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.reserve-page__back:hover {
+  color: var(--color-gold);
+}
+
+.reserve-page__main {
+  flex: 1;
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.reserve-page__intro {
+  max-width: 640px;
+}
+
+.reserve-page__intro > * + * {
+  margin-top: 1.1rem;
+}
+
+.reserve-page__phone {
+  color: var(--color-gold);
+  border-bottom: 1px solid currentColor;
+}
+
+.reserve-page__grid {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(2rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.reserve-page__card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: clamp(1.6rem, 3vw, 2.6rem);
+}
+
+.reserve-page__sidebar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: clamp(1.6rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.reserve-page__sidebar-block h3 {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  font-family: var(--font-body);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.reserve-page__sidebar-block p,
+.reserve-page__sidebar-block a {
+  color: var(--color-text-dim);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.reserve-page__sidebar-block a:hover {
+  color: var(--color-text);
+}
+
+.reserve-page__hours {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reserve-page__hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.88rem;
+  color: var(--color-text-dim);
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 0.4rem;
+}
+
+.reserve-page__map {
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  aspect-ratio: 4 / 3;
+  background: var(--color-bg-alt);
+  filter: grayscale(0.5) contrast(1.05) brightness(0.9);
+}
+
+.reserve-page__map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.reserve-page__footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: 1.4rem;
+}
+
+.reserve-page__footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: var(--color-text-faint);
+}
+
+.reserve-page__footer-inner a {
+  color: var(--color-text-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.reserve-page__footer-inner a:hover {
+  color: var(--color-gold);
+}
+
+/* Reservation form (shared field styling) */
+.reservation__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem 1.2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.field__label {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+.field input,
+.field select,
+.field textarea {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  padding: 0.75em 0.9em;
+  font-size: 0.94rem;
+  color: var(--color-text);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  color-scheme: dark;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--color-text-faint);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 75, 0.15);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 4.5em;
+}
+
+.reservation__error {
+  grid-column: 1 / -1;
+  color: var(--color-oxblood-bright);
+  font-size: 0.88rem;
+}
+
+.reservation__submit {
+  grid-column: 1 / -1;
+  margin-top: 0.4rem;
+}
+
+.reservation__submit:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.reservation__success {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding-block: 1.4rem;
+}
+
+.reservation__success h3 {
+  font-size: 1.4rem;
+  color: var(--color-text);
+}
+
+.reservation__success p {
+  color: var(--color-text-dim);
+  font-size: 0.94rem;
+  max-width: 42ch;
+}
+
+@media (max-width: 900px) {
+  .reserve-page__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .reservation__form {
+    grid-template-columns: 1fr;
+  }
+}

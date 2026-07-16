@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const SOCIALS = [
@@ -33,7 +34,7 @@ export function Footer() {
           <a href="#gallery">Ambiance</a>
           <a href="#reviews">Reviews</a>
           <a href="#visit">Visit</a>
-          <a href="#reserve">Reserve</a>
+          <Link to="/reserve">Reserve</Link>
         </nav>
 
         <form className="footer__newsletter" onSubmit={handleSubscribe}>

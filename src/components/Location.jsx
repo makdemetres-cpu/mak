@@ -1,12 +1,6 @@
 import { Reveal } from './Reveal';
+import { HOURS, ADDRESS_LINES, PHONE_DISPLAY, PHONE_HREF, RESERVATION_EMAIL, MAP_EMBED_URL } from '../data/restaurant';
 import './Location.css';
-
-const HOURS = [
-  { day: 'Monday', time: 'Closed' },
-  { day: 'Tuesday — Thursday', time: '19:00 — 00:00' },
-  { day: 'Friday — Saturday', time: '13:00 — 01:00' },
-  { day: 'Sunday', time: '13:00 — 23:00' },
-];
 
 export function Location() {
   return (
@@ -24,15 +18,22 @@ export function Location() {
 
           <Reveal type="up" delay={0.16} className="location__block">
             <h3>Address</h3>
-            <p>12 Voukourestiou Street<br />Kolonaki, Athens 106 71, Greece</p>
+            <p>
+              {ADDRESS_LINES.map((line, i) => (
+                <span key={line}>
+                  {line}
+                  {i < ADDRESS_LINES.length - 1 && <br />}
+                </span>
+              ))}
+            </p>
           </Reveal>
 
           <Reveal type="up" delay={0.22} className="location__block">
             <h3>Contact</h3>
             <p>
-              <a href="tel:+302103334455">+30 210 333 4455</a>
+              <a href={PHONE_HREF}>{PHONE_DISPLAY}</a>
               <br />
-              <a href="mailto:reservations@pyra-athens.gr">reservations@pyra-athens.gr</a>
+              <a href={`mailto:${RESERVATION_EMAIL}`}>{RESERVATION_EMAIL}</a>
             </p>
           </Reveal>
 
@@ -50,11 +51,7 @@ export function Location() {
         </div>
 
         <Reveal type="scale" delay={0.12} className="location__map">
-          <iframe
-            title="PYRA Athens location map"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=23.7369%2C37.9755%2C23.7489%2C37.9835&layer=mapnik&marker=37.9795%2C23.7429"
-            loading="lazy"
-          />
+          <iframe title="PYRA Athens location map" src={MAP_EMBED_URL} loading="lazy" />
         </Reveal>
       </div>
     </section>
