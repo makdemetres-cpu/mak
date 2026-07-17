@@ -7,6 +7,7 @@ import { CursorDot } from './components/CursorDot';
 import { ScrollToTop } from './components/ScrollToTop';
 import { Home } from './pages/Home';
 import { ReservationPage } from './pages/ReservationPage';
+import { ConfirmationPage } from './pages/ConfirmationPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -32,6 +33,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/reserve" element={<ReservationPage />} />
+        <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <BackToTop />

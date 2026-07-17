@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   HOURS,
   ADDRESS_LINES,
@@ -34,6 +34,7 @@ export function ReservationPage() {
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   function update(key) {
     return (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -63,8 +64,18 @@ export function ReservationPage() {
     const mailto = `mailto:${RESERVATION_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
 
     window.setTimeout(() => {
-      window.location.href = mailto;
-      setStatus('sent');
+      const link = document.createElement('a');
+      link.href = mailto;
+      link.click();
+
+      navigate('/confirmation', {
+        state: {
+          name: form.name,
+          date: form.date,
+          time: form.time,
+          guests: form.guests,
+        },
+      });
     }, 600);
   }
 
@@ -108,86 +119,41 @@ export function ReservationPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <AnimatePresence mode="wait">
-              {status === 'sent' ? (
-                <motion.div
-                  key="success"
-                  className="reservation__success"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <svg viewBox="0 0 52 52" width="52" aria-hidden="true">
-                    <circle cx="26" cy="26" r="24" fill="none" stroke="var(--color-gold)" strokeWidth="1.4" />
-                    <motion.path
-                      d="M15 27l8 8 16-16"
-                      fill="none"
-                      stroke="var(--color-gold)"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 0.6, ease: 'easeOut' }}
-                    />
-                  </svg>
-                  <h3>Request ready to send</h3>
-                  <p>Your email client should now be open with the details pre-filled. We&rsquo;ll confirm within a few hours.</p>
-                  <button
-                    className="btn-text"
-                    onClick={() => {
-                      setForm(initialForm);
-                      setStatus('idle');
-                    }}
-                  >
-                    Make another request
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  className="reservation__form"
-                  onSubmit={handleSubmit}
-                  initial={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <Field label="Full Name">
-                    <input type="text" required value={form.name} onChange={update('name')} placeholder="Your name" />
-                  </Field>
-                  <Field label="Email">
-                    <input type="email" required value={form.email} onChange={update('email')} placeholder="you@email.com" />
-                  </Field>
-                  <Field label="Phone">
-                    <input type="tel" value={form.phone} onChange={update('phone')} placeholder="+30 …" />
-                  </Field>
-                  <Field label="Guests">
-                    <select value={form.guests} onChange={update('guests')}>
-                      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                        <option key={n} value={n}>
-                          {n} {n === 1 ? 'Guest' : 'Guests'}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                  <Field label="Date">
-                    <input type="date" required value={form.date} onChange={update('date')} />
-                  </Field>
-                  <Field label="Time">
-                    <input type="time" required value={form.time} onChange={update('time')} />
-                  </Field>
-                  <Field label="Special Requests" full>
-                    <textarea rows={3} value={form.notes} onChange={update('notes')} placeholder="Allergies, occasion, seating preference…" />
-                  </Field>
+            <form className="reservation__form" onSubmit={handleSubmit}>
+              <Field label="Full Name">
+                <input type="text" required value={form.name} onChange={update('name')} placeholder="Your name" />
+              </Field>
+              <Field label="Email">
+                <input type="email" required value={form.email} onChange={update('email')} placeholder="you@email.com" />
+              </Field>
+              <Field label="Phone">
+                <input type="tel" value={form.phone} onChange={update('phone')} placeholder="+30 …" />
+              </Field>
+              <Field label="Guests">
+                <select value={form.guests} onChange={update('guests')}>
+                  {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={n}>
+                      {n} {n === 1 ? 'Guest' : 'Guests'}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Date">
+                <input type="date" required value={form.date} onChange={update('date')} />
+              </Field>
+              <Field label="Time">
+                <input type="time" required value={form.time} onChange={update('time')} />
+              </Field>
+              <Field label="Special Requests" full>
+                <textarea rows={3} value={form.notes} onChange={update('notes')} placeholder="Allergies, occasion, seating preference…" />
+              </Field>
 
-                  {error && <p className="reservation__error">{error}</p>}
+              {error && <p className="reservation__error">{error}</p>}
 
-                  <button type="submit" className="btn btn-primary reservation__submit" disabled={status === 'sending'}>
-                    {status === 'sending' ? 'Preparing request…' : 'Request Reservation'}
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
+              <button type="submit" className="btn btn-primary reservation__submit" disabled={status === 'sending'}>
+                {status === 'sending' ? 'Preparing request…' : 'Request Reservation'}
+              </button>
+            </form>
           </motion.div>
 
           <motion.aside

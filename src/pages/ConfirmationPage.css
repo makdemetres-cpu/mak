@@ -1,0 +1,101 @@
+.confirm-page {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+.confirm-page__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 15%, rgba(201, 162, 75, 0.14), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(124, 31, 43, 0.16), transparent 65%);
+}
+
+.confirm-page__header {
+  position: relative;
+  z-index: 1;
+  padding-block: 1.4rem;
+}
+
+.confirm-page__header-inner {
+  display: flex;
+  justify-content: center;
+}
+
+.confirm-page__logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+}
+
+.confirm-page__logo span {
+  color: var(--color-gold);
+}
+
+.confirm-page__main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: clamp(2rem, 6vw, 4rem);
+}
+
+.confirm-card {
+  max-width: 560px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  padding: clamp(2.2rem, 5vw, 3.5rem);
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.7);
+}
+
+.confirm-card__eyebrow {
+  justify-content: center;
+  margin-top: 0.4rem;
+}
+
+.confirm-card__title {
+  font-size: clamp(1.7rem, 3.6vw, 2.3rem);
+  color: var(--color-text);
+}
+
+.confirm-card__details {
+  color: var(--color-text-dim);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  max-width: 42ch;
+}
+
+.confirm-card__details strong {
+  color: var(--color-gold-bright);
+  font-weight: 600;
+}
+
+.confirm-card__note {
+  color: var(--color-text-faint);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-width: 40ch;
+  border-top: 1px dashed var(--color-border);
+  padding-top: 1rem;
+}
+
+.confirm-card__cta {
+  margin-top: 0.4rem;
+}
