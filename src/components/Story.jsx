@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Reveal, RevealGroup, RevealItem } from './Reveal';
 import './Story.css';
 
@@ -42,9 +43,9 @@ export function Story() {
             </p>
           </Reveal>
           <Reveal type="up" delay={0.32}>
-            <a href="#menu" className="btn-text">
+            <Link to="/menu" className="btn-text">
               View the Full Menu &rarr;
-            </a>
+            </Link>
           </Reveal>
         </div>
 

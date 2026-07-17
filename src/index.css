@@ -214,6 +214,7 @@ h4 {
 
 .btn-text {
   position: relative;
+  display: inline-block;
   padding: 0.2em 0;
   font-size: 0.85rem;
   letter-spacing: 0.12em;

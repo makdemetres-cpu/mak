@@ -3,7 +3,6 @@ import { Hero } from '../components/Hero';
 import { Marquee } from '../components/Marquee';
 import { Story } from '../components/Story';
 import { SignatureCuts } from '../components/SignatureCuts';
-import { Menu } from '../components/Menu';
 import { Gallery } from '../components/Gallery';
 import { Testimonials } from '../components/Testimonials';
 import { Location } from '../components/Location';
@@ -18,7 +17,6 @@ export function Home() {
         <Marquee />
         <Story />
         <SignatureCuts />
-        <Menu />
         <Gallery />
         <Testimonials />
         <Location />

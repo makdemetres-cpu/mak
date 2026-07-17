@@ -5,7 +5,7 @@ import './Navbar.css';
 
 const LINKS = [
   { href: '#story', label: 'Our Story' },
-  { href: '#menu', label: 'Menu' },
+  { to: '/menu', label: 'Menu' },
   { href: '#gallery', label: 'Ambiance' },
   { href: '#reviews', label: 'Reviews' },
   { href: '#visit', label: 'Visit' },
@@ -41,11 +41,17 @@ export function Navbar() {
           </a>
 
           <nav className="navbar__links" aria-label="Primary">
-            {LINKS.map((link) => (
-              <a key={link.href} href={link.href}>
-                {link.label}
-              </a>
-            ))}
+            {LINKS.map((link) =>
+              link.to ? (
+                <Link key={link.to} to={link.to}>
+                  {link.label}
+                </Link>
+              ) : (
+                <a key={link.href} href={link.href}>
+                  {link.label}
+                </a>
+              )
+            )}
           </nav>
 
           <Link to="/reserve" className="btn btn-ghost navbar__cta">
@@ -82,15 +88,21 @@ export function Navbar() {
               variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
             >
               {LINKS.map((link) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={handleNavClick}
+                <motion.div
+                  key={link.to || link.href}
                   variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {link.label}
-                </motion.a>
+                  {link.to ? (
+                    <Link to={link.to} onClick={handleNavClick}>
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a href={link.href} onClick={handleNavClick}>
+                      {link.label}
+                    </a>
+                  )}
+                </motion.div>
               ))}
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}

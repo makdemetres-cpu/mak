@@ -8,6 +8,7 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { Home } from './pages/Home';
 import { ReservationPage } from './pages/ReservationPage';
 import { ConfirmationPage } from './pages/ConfirmationPage';
+import { MenuPage } from './pages/MenuPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -32,6 +33,7 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<MenuPage />} />
         <Route path="/reserve" element={<ReservationPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path="*" element={<Home />} />

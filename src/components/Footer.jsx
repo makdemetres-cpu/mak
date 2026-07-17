@@ -30,7 +30,7 @@ export function Footer() {
 
         <nav className="footer__links" aria-label="Footer">
           <a href="#story">Our Story</a>
-          <a href="#menu">Menu</a>
+          <Link to="/menu">Menu</Link>
           <a href="#gallery">Ambiance</a>
           <a href="#reviews">Reviews</a>
           <a href="#visit">Visit</a>
