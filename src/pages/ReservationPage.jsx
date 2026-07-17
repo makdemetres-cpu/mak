@@ -64,10 +64,6 @@ export function ReservationPage() {
     const mailto = `mailto:${RESERVATION_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
 
     window.setTimeout(() => {
-      const link = document.createElement('a');
-      link.href = mailto;
-      link.click();
-
       navigate('/confirmation', {
         state: {
           name: form.name,
@@ -76,6 +72,18 @@ export function ReservationPage() {
           guests: form.guests,
         },
       });
+
+      window.setTimeout(() => {
+        try {
+          const mailFrame = document.createElement('iframe');
+          mailFrame.style.display = 'none';
+          mailFrame.src = mailto;
+          document.body.appendChild(mailFrame);
+          window.setTimeout(() => mailFrame.remove(), 2000);
+        } catch {
+          // Opening the mail client is a best-effort convenience; never block the confirmation page on it.
+        }
+      }, 300);
     }, 600);
   }
 
