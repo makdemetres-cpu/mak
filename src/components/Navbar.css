@@ -141,10 +141,18 @@
   gap: 1.8rem;
 }
 
-.mobile-menu__links a {
+.mobile-menu__links a:not(.mobile-menu__cta) {
+  display: inline-block;
   font-family: var(--font-display);
+  font-style: italic;
   font-size: 2rem;
   color: var(--color-text);
+  transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.mobile-menu__links a:not(.mobile-menu__cta):hover {
+  color: var(--color-gold-bright);
+  transform: scale(1.08);
 }
 
 .mobile-menu__cta {
