@@ -9,6 +9,7 @@ import { Home } from './pages/Home';
 import { ReservationPage } from './pages/ReservationPage';
 import { ConfirmationPage } from './pages/ConfirmationPage';
 import { MenuPage } from './pages/MenuPage';
+import { VisitPage } from './pages/VisitPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<MenuPage />} />
+        <Route path="/visit" element={<VisitPage />} />
         <Route path="/reserve" element={<ReservationPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path="*" element={<Home />} />

@@ -13,3 +13,5 @@ export const RESERVATION_EMAIL = 'reservations@pyra-athens.gr';
 
 export const MAP_EMBED_URL =
   'https://www.openstreetmap.org/export/embed.html?bbox=23.7369%2C37.9755%2C23.7489%2C37.9835&layer=mapnik&marker=37.9795%2C23.7429';
+
+export const GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=37.9795,23.7429';

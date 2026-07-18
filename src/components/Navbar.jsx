@@ -8,7 +8,7 @@ const LINKS = [
   { to: '/menu', label: 'Menu' },
   { href: '#gallery', label: 'Ambiance' },
   { href: '#reviews', label: 'Reviews' },
-  { href: '#visit', label: 'Visit' },
+  { to: '/visit', label: 'Visit' },
 ];
 
 export function Navbar() {

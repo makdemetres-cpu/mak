@@ -33,7 +33,7 @@ export function Footer() {
           <Link to="/menu">Menu</Link>
           <a href="#gallery">Ambiance</a>
           <a href="#reviews">Reviews</a>
-          <a href="#visit">Visit</a>
+          <Link to="/visit">Visit</Link>
           <Link to="/reserve">Reserve</Link>
         </nav>
 
