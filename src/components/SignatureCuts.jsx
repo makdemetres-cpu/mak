@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import { RevealGroup, RevealItem, Reveal } from './Reveal';
+import { DishCard } from './DishCard';
 import './SignatureCuts.css';
 
 const CUTS = [
@@ -50,28 +50,8 @@ export function SignatureCuts() {
 
         <RevealGroup as="div" className="cuts__grid" stagger={0.1}>
           {CUTS.map((cut) => (
-            <RevealItem as="article" key={cut.name} className="cut-card" type="up">
-              <div className="cut-card__top">
-                <span className="cut-card__tag">{cut.tag}</span>
-                <span className="cut-card__weight">{cut.weight}</span>
-              </div>
-              <svg className="cut-card__icon" viewBox="0 0 64 64" width="46" aria-hidden="true">
-                <circle cx="32" cy="32" r="26" fill="none" stroke="var(--color-gold)" strokeWidth="1" opacity="0.5" />
-                <path
-                  d="M18 32c0-8 6-15 14-15s14 7 14 15-6 15-14 15-14-7-14-15z"
-                  fill="none"
-                  stroke="var(--color-ember)"
-                  strokeWidth="1.2"
-                />
-              </svg>
-              <h3 className="cut-card__name">{cut.name}</h3>
-              <p className="cut-card__desc">{cut.desc}</p>
-              <div className="cut-card__footer">
-                <span className="cut-card__price">{cut.price}</span>
-                <Link to="/reserve" className="btn-text">
-                  Reserve &rarr;
-                </Link>
-              </div>
+            <RevealItem as="div" key={cut.name} type="up">
+              <DishCard {...cut} />
             </RevealItem>
           ))}
         </RevealGroup>
