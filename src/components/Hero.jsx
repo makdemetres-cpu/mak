@@ -62,9 +62,9 @@ export function Hero() {
           <Link to="/reserve" className="btn btn-primary">
             Reserve a Table
           </Link>
-          <a href="#menu" className="btn btn-ghost">
+          <Link to="/menu" className="btn btn-ghost">
             Explore the Menu
-          </a>
+          </Link>
         </motion.div>
       </div>
 
