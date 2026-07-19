@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   HOURS,
@@ -11,6 +11,8 @@ import {
 } from '../data/restaurant';
 import './ReservationPage.css';
 
+const DONENESS_OPTIONS = ['Rare', 'Medium-Rare', 'Medium', 'Medium-Well', 'Well-Done'];
+
 const initialForm = {
   name: '',
   email: '',
@@ -19,6 +21,8 @@ const initialForm = {
   time: '',
   guests: '2',
   notes: '',
+  doneness: '',
+  dishQuantity: '1',
 };
 
 function Field({ label, children, full }) {
@@ -31,6 +35,9 @@ function Field({ label, children, full }) {
 }
 
 export function ReservationPage() {
+  const location = useLocation();
+  const dish = location.state?.dish;
+
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
@@ -49,6 +56,11 @@ export function ReservationPage() {
       return;
     }
 
+    if (dish && !form.doneness) {
+      setError('Please choose a preferred doneness for your dish.');
+      return;
+    }
+
     setStatus('sending');
 
     const subject = `Reservation request — ${form.name}`;
@@ -59,6 +71,9 @@ export function ReservationPage() {
       `Date: ${form.date}`,
       `Time: ${form.time}`,
       `Guests: ${form.guests}`,
+      ...(dish
+        ? [`Dish: ${dish}`, `Quantity: ${form.dishQuantity}`, `Doneness: ${form.doneness}`]
+        : []),
       `Notes: ${form.notes || '—'}`,
     ];
     const mailto = `mailto:${RESERVATION_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
@@ -70,6 +85,9 @@ export function ReservationPage() {
           date: form.date,
           time: form.time,
           guests: form.guests,
+          ...(dish
+            ? { dish, dishQuantity: form.dishQuantity, doneness: form.doneness }
+            : {}),
         },
       });
 
@@ -109,7 +127,15 @@ export function ReservationPage() {
         >
           <p className="eyebrow">Reservations</p>
           <h1 className="section-title">
-            Reserve your <em>table</em>
+            {dish ? (
+              <>
+                Reserve the <em>{dish}</em>
+              </>
+            ) : (
+              <>
+                Reserve your <em>table</em>
+              </>
+            )}
           </h1>
           <p className="section-lede">
             For parties larger than 10, or same-day requests, please call us directly at{' '}
@@ -128,6 +154,13 @@ export function ReservationPage() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
             <form className="reservation__form" onSubmit={handleSubmit}>
+              {dish && (
+                <div className="reservation__dish-banner">
+                  <span>Reserving</span>
+                  <strong>{dish}</strong>
+                </div>
+              )}
+
               <Field label="Full Name">
                 <input type="text" required value={form.name} onChange={update('name')} placeholder="Your name" />
               </Field>
@@ -152,6 +185,33 @@ export function ReservationPage() {
               <Field label="Time">
                 <input type="time" required value={form.time} onChange={update('time')} />
               </Field>
+
+              {dish && (
+                <>
+                  <Field label="Quantity">
+                    <select value={form.dishQuantity} onChange={update('dishQuantity')}>
+                      {Array.from({ length: 6 }, (_, i) => i + 1).map((n) => (
+                        <option key={n} value={n}>
+                          {n} {n === 1 ? 'Order' : 'Orders'}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label="Preferred Doneness">
+                    <select value={form.doneness} onChange={update('doneness')} required>
+                      <option value="" disabled>
+                        Select doneness
+                      </option>
+                      {DONENESS_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                </>
+              )}
+
               <Field label="Special Requests" full>
                 <textarea rows={3} value={form.notes} onChange={update('notes')} placeholder="Allergies, occasion, seating preference…" />
               </Field>

@@ -30,7 +30,7 @@ export function DishCard({ name, weight, desc, price, tag }) {
       <p className="cut-card__desc">{desc}</p>
       <div className="cut-card__footer">
         <span className="cut-card__price">{price}</span>
-        <Link to="/reserve" className="btn-text">
+        <Link to="/reserve" state={{ dish: name }} className="btn-text">
           Reserve &rarr;
         </Link>
       </div>

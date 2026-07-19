@@ -95,6 +95,16 @@ export function ConfirmationPage() {
                   {state.guests} {Number(state.guests) === 1 ? 'guest' : 'guests'}
                 </strong>
                 .
+                {state.dish && (
+                  <>
+                    {' '}
+                    We&rsquo;ll have{' '}
+                    <strong>
+                      {state.dishQuantity} {Number(state.dishQuantity) === 1 ? 'order' : 'orders'} of the {state.dish}
+                    </strong>{' '}
+                    ready, cooked <strong>{state.doneness}</strong>.
+                  </>
+                )}
               </>
             ) : (
               'We look forward to welcoming you to PYRA soon.'
