@@ -90,11 +90,10 @@ export function ConfirmationPage() {
             {hasDetails ? (
               <>
                 We look forward to welcoming <strong>{state.name}</strong> on{' '}
-                <strong>{formatDate(state.date)}</strong> at <strong>{formatTime(state.time)}</strong> for{' '}
                 <strong>
-                  {state.guests} {Number(state.guests) === 1 ? 'guest' : 'guests'}
+                  {formatDate(state.date)} at {formatTime(state.time)}
                 </strong>
-                .
+                {Number(state.guests) > 1 && ' and your friends'}.
                 {state.dish && (
                   <>
                     {' '}
@@ -102,7 +101,7 @@ export function ConfirmationPage() {
                     <strong>
                       {state.dishQuantity} {Number(state.dishQuantity) === 1 ? 'order' : 'orders'} of the {state.dish}
                     </strong>{' '}
-                    ready, cooked <strong>{state.doneness}</strong>.
+                    ready to enjoy!
                   </>
                 )}
               </>
