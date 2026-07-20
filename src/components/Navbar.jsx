@@ -31,6 +31,17 @@ export function Navbar() {
 
   const handleNavClick = () => setOpen(false);
 
+  const handleMobileHashClick = (e, href) => {
+    e.preventDefault();
+    setOpen(false);
+    window.setTimeout(() => {
+      const target = document.querySelector(href);
+      if (!target) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }, 380);
+  };
+
   return (
     <>
       <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
@@ -98,7 +109,7 @@ export function Navbar() {
                       {link.label}
                     </Link>
                   ) : (
-                    <a href={link.href} onClick={handleNavClick}>
+                    <a href={link.href} onClick={(e) => handleMobileHashClick(e, link.href)}>
                       {link.label}
                     </a>
                   )}
