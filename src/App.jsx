@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Preloader } from './components/Preloader';
 import { ScrollProgress } from './components/ScrollProgress';
 import { BackToTop } from './components/BackToTop';
-import { CursorDot } from './components/CursorDot';
+import { EmberCursorTrail } from './components/EmberCursorTrail';
 import { ScrollToTop } from './components/ScrollToTop';
 import { Home } from './pages/Home';
 import { ReservationPage } from './pages/ReservationPage';
@@ -31,7 +31,7 @@ function App() {
     <>
       <Preloader visible={loading} />
       <ScrollProgress />
-      <CursorDot />
+      <EmberCursorTrail />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
