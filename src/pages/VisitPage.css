@@ -59,8 +59,9 @@
 }
 
 .visit-page__cta p {
-  font-family: var(--font-display);
+  font-family: var(--font-accent);
   font-style: italic;
+  font-weight: 600;
   font-size: 1.2rem;
   color: var(--color-text-dim);
 }

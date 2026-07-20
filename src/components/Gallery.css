@@ -52,9 +52,10 @@
 
 .gallery-tile__label {
   position: relative;
-  font-family: var(--font-display);
+  font-family: var(--font-accent);
   font-style: italic;
-  font-size: 1.05rem;
+  font-weight: 600;
+  font-size: 1.15rem;
   color: var(--color-text);
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }

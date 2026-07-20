@@ -143,9 +143,10 @@
 
 .mobile-menu__links a:not(.mobile-menu__cta) {
   display: inline-block;
-  font-family: var(--font-display);
+  font-family: var(--font-accent);
   font-style: italic;
-  font-size: 2rem;
+  font-weight: 600;
+  font-size: 2.1rem;
   color: var(--color-text);
   transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
