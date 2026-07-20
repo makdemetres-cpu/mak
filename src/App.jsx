@@ -10,6 +10,7 @@ import { ReservationPage } from './pages/ReservationPage';
 import { ConfirmationPage } from './pages/ConfirmationPage';
 import { MenuPage } from './pages/MenuPage';
 import { VisitPage } from './pages/VisitPage';
+import { ReviewPage } from './pages/ReviewPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ function App() {
         <Route path="/visit" element={<VisitPage />} />
         <Route path="/reserve" element={<ReservationPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
+        <Route path="/review" element={<ReviewPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <BackToTop />

@@ -10,6 +10,7 @@ export const ADDRESS_LINES = ['12 Voukourestiou Street', 'Kolonaki, Athens 106 7
 export const PHONE_DISPLAY = '+30 210 333 4455';
 export const PHONE_HREF = 'tel:+302103334455';
 export const RESERVATION_EMAIL = 'reservations@pyra-athens.gr';
+export const REVIEW_EMAIL = 'reviews@pyra-athens.gr';
 
 export const MAP_EMBED_URL =
   'https://www.openstreetmap.org/export/embed.html?bbox=23.7369%2C37.9755%2C23.7489%2C37.9835&layer=mapnik&marker=37.9795%2C23.7429';

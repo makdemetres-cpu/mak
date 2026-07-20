@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Reveal } from './Reveal';
 import './Testimonials.css';
-
-const REVIEW_EMAIL = 'reviews@pyra-athens.gr';
 
 const QUOTES = [
   {
@@ -99,12 +98,9 @@ export function Testimonials() {
           </AnimatePresence>
         </div>
 
-        <a
-          className="btn btn-ghost testimonials__cta"
-          href={`mailto:${REVIEW_EMAIL}?subject=${encodeURIComponent('My PYRA Review')}&body=${encodeURIComponent('Rating (1-5 stars): \nYour review: ')}`}
-        >
+        <Link to="/review" className="btn btn-ghost testimonials__cta">
           Leave a Review
-        </a>
+        </Link>
       </div>
     </section>
   );
