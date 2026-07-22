@@ -1,6 +1,7 @@
 import { RevealGroup, RevealItem, Reveal } from './Reveal';
 import { DishCard } from './DishCard';
 import tomahawkImage from '../assets/tomahawk-for-two.jpg';
+import filetMignonImage from '../assets/filet-mignon.jpg';
 import './SignatureCuts.css';
 
 const CUTS = [
@@ -18,6 +19,7 @@ const CUTS = [
     desc: 'The most tender cut, lightly charred, served with a Madeira reduction.',
     price: '€48',
     tag: "Chef's Pick",
+    image: filetMignonImage,
   },
   {
     name: 'Wagyu Ribeye',
