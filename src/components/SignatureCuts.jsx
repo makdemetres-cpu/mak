@@ -1,5 +1,6 @@
 import { RevealGroup, RevealItem, Reveal } from './Reveal';
 import { DishCard } from './DishCard';
+import tomahawkImage from '../assets/tomahawk-for-two.jpg';
 import './SignatureCuts.css';
 
 const CUTS = [
@@ -9,6 +10,7 @@ const CUTS = [
     desc: '45-day dry-aged, bone-in, charcoal-seared and finished with rosemary butter.',
     price: '€92',
     tag: 'For Two',
+    image: tomahawkImage,
   },
   {
     name: 'Filet Mignon',
