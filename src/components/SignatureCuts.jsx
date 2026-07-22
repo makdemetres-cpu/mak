@@ -2,6 +2,8 @@ import { RevealGroup, RevealItem, Reveal } from './Reveal';
 import { DishCard } from './DishCard';
 import tomahawkImage from '../assets/tomahawk-for-two.jpg';
 import filetMignonImage from '../assets/filet-mignon.jpg';
+import wagyuRibeyeImage from '../assets/wagyu-ribeye.jpg';
+import porterhouseImage from '../assets/porterhouse.jpg';
 import './SignatureCuts.css';
 
 const CUTS = [
@@ -27,6 +29,7 @@ const CUTS = [
     desc: 'Australian F1 wagyu, marbled and rich, finished simply with sea salt.',
     price: '€78',
     tag: 'Limited',
+    image: wagyuRibeyeImage,
   },
   {
     name: 'Porterhouse',
@@ -34,6 +37,7 @@ const CUTS = [
     desc: 'Two cuts in one — strip and filet — dry-aged 30 days.',
     price: '€68',
     tag: 'Signature',
+    image: porterhouseImage,
   },
 ];
 
