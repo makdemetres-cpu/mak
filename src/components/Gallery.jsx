@@ -5,6 +5,7 @@ import dryAgeCellarImage from '../assets/dry-age-cellar.jpg';
 import marbleDiningHallImage from '../assets/marble-dining-hall.jpg';
 import rooftopTerraceImage from '../assets/rooftop-terrace.jpg';
 import theWineWallImage from '../assets/the-wine-wall.jpg';
+import privateRoomImage from '../assets/private-room.jpg';
 import './Gallery.css';
 
 const TILES = [
@@ -13,7 +14,7 @@ const TILES = [
   { label: 'Marble Dining Hall', tone: 'gold', size: 'square', image: marbleDiningHallImage },
   { label: 'Rooftop Terrace', tone: 'oxblood', size: 'square', image: rooftopTerraceImage },
   { label: 'The Wine Wall', tone: 'gold', size: 'tall', image: theWineWallImage },
-  { label: 'Private Room', tone: 'ember', size: 'wide' },
+  { label: 'Private Room', tone: 'ember', size: 'wide', image: privateRoomImage },
 ];
 
 export function Gallery() {
