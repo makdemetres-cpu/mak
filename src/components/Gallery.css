@@ -50,8 +50,25 @@
   opacity: 0.6;
 }
 
+.gallery-tile__photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.gallery-tile--photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 8, 7, 0.88) 0%, rgba(10, 8, 7, 0.15) 45%, transparent 75%);
+  z-index: 1;
+}
+
 .gallery-tile__label {
   position: relative;
+  z-index: 2;
   font-family: var(--font-accent);
   font-style: italic;
   font-weight: 600;
