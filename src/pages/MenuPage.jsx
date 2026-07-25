@@ -30,7 +30,10 @@ export function MenuPage() {
       <footer className="menu-page__footer">
         <div className="container menu-page__footer-inner">
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
-          <Link to="/">Back to homepage</Link>
+          <div className="menu-page__footer-links">
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/">Back to homepage</Link>
+          </div>
         </div>
       </footer>
     </div>

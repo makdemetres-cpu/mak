@@ -48,6 +48,7 @@ export function Footer() {
           </a>
           <Link to="/visit">Visit</Link>
           <Link to="/reserve">Reserve</Link>
+          <Link to="/privacy">Privacy Policy</Link>
         </nav>
 
         <form className="footer__newsletter" onSubmit={handleSubscribe}>

@@ -159,6 +159,11 @@
   color: var(--color-gold);
 }
 
+.reserve-page__footer-links {
+  display: flex;
+  gap: 1.4rem;
+}
+
 /* Reservation form (shared field styling) */
 .reservation__form {
   display: grid;

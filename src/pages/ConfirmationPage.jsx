@@ -131,6 +131,13 @@ export function ConfirmationPage() {
           </motion.div>
         </motion.div>
       </main>
+
+      <footer className="confirm-page__footer">
+        <div className="container confirm-page__footer-inner">
+          <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
+          <Link to="/privacy">Privacy Policy</Link>
+        </div>
+      </footer>
     </div>
   );
 }

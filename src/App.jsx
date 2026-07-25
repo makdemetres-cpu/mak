@@ -11,6 +11,7 @@ import { ConfirmationPage } from './pages/ConfirmationPage';
 import { MenuPage } from './pages/MenuPage';
 import { VisitPage } from './pages/VisitPage';
 import { ReviewPage } from './pages/ReviewPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,7 @@ function App() {
         <Route path="/reserve" element={<ReservationPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path="/review" element={<ReviewPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <BackToTop />

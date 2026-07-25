@@ -30,7 +30,10 @@ export function VisitPage() {
       <footer className="visit-page__footer">
         <div className="container visit-page__footer-inner">
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
-          <Link to="/">Back to homepage</Link>
+          <div className="visit-page__footer-links">
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/">Back to homepage</Link>
+          </div>
         </div>
       </footer>
     </div>

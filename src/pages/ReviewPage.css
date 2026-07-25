@@ -175,3 +175,8 @@
 .review-page__footer-inner a:hover {
   color: var(--color-gold);
 }
+
+.review-page__footer-links {
+  display: flex;
+  gap: 1.4rem;
+}

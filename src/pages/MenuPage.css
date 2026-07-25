@@ -85,3 +85,8 @@
 .menu-page__footer-inner a:hover {
   color: var(--color-gold);
 }
+
+.menu-page__footer-links {
+  display: flex;
+  gap: 1.4rem;
+}
