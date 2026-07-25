@@ -9,6 +9,8 @@ import {
   RESERVATION_EMAIL,
   MAP_EMBED_URL,
 } from '../data/restaurant';
+import { DatePicker } from '../components/DatePicker';
+import { TimePicker } from '../components/TimePicker';
 import './ReservationPage.css';
 
 const DONENESS_OPTIONS = ['Rare', 'Medium-Rare', 'Medium', 'Medium-Well', 'Well-Done'];
@@ -45,6 +47,10 @@ export function ReservationPage() {
 
   function update(key) {
     return (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  }
+
+  function setField(key, value) {
+    setForm((f) => ({ ...f, [key]: value }));
   }
 
   function handleSubmit(e) {
@@ -180,10 +186,10 @@ export function ReservationPage() {
                 </select>
               </Field>
               <Field label="Date">
-                <input type="date" required value={form.date} onChange={update('date')} />
+                <DatePicker value={form.date} onChange={(value) => setField('date', value)} />
               </Field>
               <Field label="Time">
-                <input type="time" required value={form.time} onChange={update('time')} />
+                <TimePicker value={form.time} onChange={(value) => setField('time', value)} />
               </Field>
 
               {dish && (
