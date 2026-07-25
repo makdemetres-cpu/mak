@@ -12,6 +12,11 @@ import { MenuPage } from './pages/MenuPage';
 import { VisitPage } from './pages/VisitPage';
 import { ReviewPage } from './pages/ReviewPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { CookiePolicyPage } from './pages/CookiePolicyPage';
+import { ConsentProvider } from './consent/ConsentContext';
+import { FontLoader } from './consent/FontLoader';
+import { CookieBanner } from './components/cookies/CookieBanner';
+import { CookiePreferencesModal } from './components/cookies/CookiePreferencesModal';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -29,7 +34,8 @@ function App() {
   }, [loading]);
 
   return (
-    <>
+    <ConsentProvider>
+      <FontLoader />
       <Preloader visible={loading} />
       <ScrollProgress />
       <EmberCursorTrail />
@@ -42,10 +48,13 @@ function App() {
         <Route path="/confirmation" element={<ConfirmationPage />} />
         <Route path="/review" element={<ReviewPage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/cookies" element={<CookiePolicyPage />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <BackToTop />
-    </>
+      {!loading && <CookieBanner />}
+      <CookiePreferencesModal />
+    </ConsentProvider>
   );
 }
 

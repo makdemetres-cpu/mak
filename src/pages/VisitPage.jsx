@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Location } from '../components/Location';
+import { useConsent } from '../consent/useConsent';
 import './VisitPage.css';
 
 export function VisitPage() {
+  const { openPreferences } = useConsent();
+
   return (
     <div className="visit-page">
       <header className="visit-page__header">
@@ -32,6 +35,9 @@ export function VisitPage() {
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
           <div className="visit-page__footer-links">
             <Link to="/privacy">Privacy Policy</Link>
+            <button type="button" className="visit-page__footer-btn" onClick={openPreferences}>
+              Cookie Preferences
+            </button>
             <Link to="/">Back to homepage</Link>
           </div>
         </div>

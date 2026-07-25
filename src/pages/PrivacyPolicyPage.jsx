@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import { RESERVATION_EMAIL, PHONE_DISPLAY, PHONE_HREF, ADDRESS_LINES } from '../data/restaurant';
+import { useConsent } from '../consent/useConsent';
 import './PrivacyPolicyPage.css';
 
 const LAST_UPDATED = 'July 25, 2026';
 
 export function PrivacyPolicyPage() {
+  const { openPreferences } = useConsent();
+
   return (
     <div className="privacy-page">
       <header className="privacy-page__header">
@@ -104,32 +107,40 @@ export function PrivacyPolicyPage() {
             consent before sending any marketing emails.
           </p>
 
-          <h3>Automatic technical data, on every visit</h3>
+          <h3>Cookies and similar technology</h3>
           <p>
-            Like any website, ours automatically receives your IP address and browser/device information
-            (&ldquo;user agent&rdquo;) as part of loading the page. We don&rsquo;t use cookies, analytics, or
-            advertising trackers of any kind &mdash; but a few things on the page are loaded directly from
-            third parties:
+            We use one strictly necessary cookie-like storage item to remember your cookie choices &mdash;
+            nothing else runs until you allow it. We don&rsquo;t use analytics or advertising trackers of any
+            kind. The only two optional items are:
           </p>
           <ul>
             <li>
-              <strong>Web fonts:</strong> we load some of our typefaces directly from Google&rsquo;s servers
-              (fonts.googleapis.com / fonts.gstatic.com). This sends your IP address and browser information
-              to Google LLC, a company based in the United States.
+              <strong>Web fonts:</strong> if you allow it, we load some of our typefaces directly from
+              Google&rsquo;s servers (fonts.googleapis.com / fonts.gstatic.com). This sends your IP address
+              and browser information to Google LLC, a company based in the United States. If you don&rsquo;t
+              allow it, the site uses your device&rsquo;s default fonts instead.
             </li>
             <li>
-              <strong>Location map:</strong> the map on our Visit page is embedded directly from
-              OpenStreetMap, which sends your IP address to the OpenStreetMap Foundation to display the map
-              tiles.
-            </li>
-            <li>
-              <strong>Hosting logs:</strong> our hosting provider, Hostinger, automatically logs visitor IP
-              addresses, browser information, and request times, as part of running and securing the site.
+              <strong>Location map:</strong> if you allow it, the map on our Visit and Reservation pages is
+              embedded directly from OpenStreetMap, which sends your IP address to the OpenStreetMap
+              Foundation to display the map tiles. If you don&rsquo;t allow it, you&rsquo;ll see our address
+              as text plus a link to Google Maps instead.
             </li>
           </ul>
           <p>
+            You can review or change these choices at any time from our{' '}
+            <Link to="/cookies">Cookie Policy</Link> page, which lists every item along with its exact name,
+            provider, and duration.
+          </p>
+          <p>
+            Separately, our hosting provider, Hostinger, automatically logs visitor IP addresses, browser
+            information, and request times for every visit, as part of running and securing the site.
+          </p>
+          <p>
             <strong>Legal basis:</strong> our legitimate interest (Article 6(1)(f) GDPR) in presenting our
-            website correctly, securely, and reliably.
+            website correctly, securely, and reliably; for the two optional items above, your consent
+            (Article 6(1)(a) GDPR), which you give or withdraw through the cookie banner or the Cookie Policy
+            page.
           </p>
 
           <h2>3. Who we share your data with</h2>
@@ -157,13 +168,13 @@ export function PrivacyPolicyPage() {
               </tr>
               <tr>
                 <td>Google LLC</td>
-                <td>IP address and browser info, via font requests</td>
+                <td>IP address and browser info, via font requests &mdash; only if you allow the &ldquo;Fonts&rdquo; cookie category</td>
                 <td>Delivering our website&rsquo;s typefaces</td>
                 <td>United States</td>
               </tr>
               <tr>
                 <td>OpenStreetMap Foundation</td>
-                <td>IP address, via the map embed</td>
+                <td>IP address, via the map embed &mdash; only if you allow the &ldquo;Maps&rdquo; cookie category</td>
                 <td>Displaying our location map</td>
                 <td>United Kingdom</td>
               </tr>
@@ -183,13 +194,14 @@ export function PrivacyPolicyPage() {
 
           <h2>4. International data transfers</h2>
           <p>
-            Loading our web fonts involves sending your IP address outside the European Economic Area, to
-            Google LLC in the United States. Google is certified under the EU-U.S. Data Privacy Framework,
+            If you allow the &ldquo;Fonts&rdquo; cookie category, loading our web fonts involves sending your
+            IP address outside the European Economic Area, to Google LLC in the United States. Google is
+            certified under the EU-U.S. Data Privacy Framework,
             which the European Commission recognizes as providing an adequate level of protection for this
-            kind of transfer. Our map embed sends your IP address to the OpenStreetMap Foundation in the
-            United Kingdom; the UK has its own adequacy decision from the European Commission, so no
-            additional safeguard is required for that transfer. We have a signed data processing agreement
-            in place with Hostinger, our hosting provider.
+            kind of transfer. If you allow the &ldquo;Maps&rdquo; cookie category, the map embed sends your
+            IP address to the OpenStreetMap Foundation in the United Kingdom; the UK has its own adequacy
+            decision from the European Commission, so no additional safeguard is required for that transfer.
+            We have a signed data processing agreement in place with Hostinger, our hosting provider.
           </p>
 
           <h2>5. How long we keep your data</h2>
@@ -262,7 +274,13 @@ export function PrivacyPolicyPage() {
       <footer className="privacy-page__footer">
         <div className="container privacy-page__footer-inner">
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
-          <Link to="/">Back to homepage</Link>
+          <div className="privacy-page__footer-links">
+            <Link to="/cookies">Cookie Policy</Link>
+            <button type="button" className="privacy-page__footer-btn" onClick={openPreferences}>
+              Cookie Preferences
+            </button>
+            <Link to="/">Back to homepage</Link>
+          </div>
         </div>
       </footer>
     </div>

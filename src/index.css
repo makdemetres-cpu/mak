@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600;1,700&family=Inter:wght@300;400;500;600&display=swap');
+/* Google Fonts are loaded conditionally at runtime by FontLoader.jsx, only
+   after the visitor consents to the "fonts" cookie category. Every variable
+   below already falls back to a system font so the site renders correctly
+   either way. */
 
 :root {
   --color-bg: #0c0a09;

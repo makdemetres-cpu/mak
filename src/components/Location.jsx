@@ -1,11 +1,11 @@
 import { Reveal } from './Reveal';
+import { MapEmbed } from './MapEmbed';
 import {
   HOURS,
   ADDRESS_LINES,
   PHONE_DISPLAY,
   PHONE_HREF,
   RESERVATION_EMAIL,
-  MAP_EMBED_URL,
   GOOGLE_MAPS_URL,
 } from '../data/restaurant';
 import './Location.css';
@@ -59,7 +59,7 @@ export function Location() {
         </div>
 
         <Reveal type="scale" delay={0.12} className="location__map">
-          <iframe title="PYRA Athens location map" src={MAP_EMBED_URL} loading="lazy" tabIndex={-1} />
+          <MapEmbed tabIndex={-1} />
           <a
             href={GOOGLE_MAPS_URL}
             target="_blank"

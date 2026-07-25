@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { scrollToSection } from '../utils/scrollToSection';
+import { useConsent } from '../consent/useConsent';
 import { ConfettiBurst } from './ConfettiBurst';
 import './Footer.css';
 
@@ -13,6 +14,7 @@ const SOCIALS = [
 export function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const { openPreferences } = useConsent();
 
   function handleSubscribe(e) {
     e.preventDefault();
@@ -49,6 +51,9 @@ export function Footer() {
           <Link to="/visit">Visit</Link>
           <Link to="/reserve">Reserve</Link>
           <Link to="/privacy">Privacy Policy</Link>
+          <button type="button" className="footer__cookie-btn" onClick={openPreferences}>
+            Cookie Preferences
+          </button>
         </nav>
 
         <form className="footer__newsletter" onSubmit={handleSubscribe}>

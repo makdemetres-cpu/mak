@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Menu } from '../components/Menu';
+import { useConsent } from '../consent/useConsent';
 import './MenuPage.css';
 
 export function MenuPage() {
+  const { openPreferences } = useConsent();
+
   return (
     <div className="menu-page">
       <header className="menu-page__header">
@@ -32,6 +35,9 @@ export function MenuPage() {
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
           <div className="menu-page__footer-links">
             <Link to="/privacy">Privacy Policy</Link>
+            <button type="button" className="menu-page__footer-btn" onClick={openPreferences}>
+              Cookie Preferences
+            </button>
             <Link to="/">Back to homepage</Link>
           </div>
         </div>

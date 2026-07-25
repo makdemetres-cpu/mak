@@ -7,10 +7,11 @@ import {
   PHONE_DISPLAY,
   PHONE_HREF,
   RESERVATION_EMAIL,
-  MAP_EMBED_URL,
 } from '../data/restaurant';
 import { DatePicker } from '../components/DatePicker';
 import { TimePicker } from '../components/TimePicker';
+import { MapEmbed } from '../components/MapEmbed';
+import { useConsent } from '../consent/useConsent';
 import './ReservationPage.css';
 
 const DONENESS_OPTIONS = ['Rare', 'Medium-Rare', 'Medium', 'Medium-Well', 'Well-Done'];
@@ -45,6 +46,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function ReservationPage() {
   const location = useLocation();
   const dish = location.state?.dish;
+  const { openPreferences } = useConsent();
 
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState('idle');
@@ -315,7 +317,7 @@ export function ReservationPage() {
             </div>
 
             <div className="reserve-page__map">
-              <iframe title="PYRA Athens location map" src={MAP_EMBED_URL} loading="lazy" />
+              <MapEmbed />
             </div>
           </motion.aside>
         </div>
@@ -326,6 +328,9 @@ export function ReservationPage() {
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
           <div className="reserve-page__footer-links">
             <Link to="/privacy">Privacy Policy</Link>
+            <button type="button" className="reserve-page__footer-btn" onClick={openPreferences}>
+              Cookie Preferences
+            </button>
             <Link to="/">Back to homepage</Link>
           </div>
         </div>

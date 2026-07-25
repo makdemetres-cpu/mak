@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { StarRatingInput } from '../components/StarRatingInput';
 import { REVIEW_EMAIL } from '../data/restaurant';
+import { useConsent } from '../consent/useConsent';
 import './ReviewPage.css';
 
 const initialForm = { name: '', rating: 0, review: '' };
@@ -11,6 +12,7 @@ export function ReviewPage() {
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
+  const { openPreferences } = useConsent();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -155,6 +157,9 @@ export function ReviewPage() {
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
           <div className="review-page__footer-links">
             <Link to="/privacy">Privacy Policy</Link>
+            <button type="button" className="review-page__footer-btn" onClick={openPreferences}>
+              Cookie Preferences
+            </button>
             <Link to="/">Back to homepage</Link>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useConsent } from '../consent/useConsent';
 import './ConfirmationPage.css';
 
 function formatDate(dateStr) {
@@ -20,6 +21,7 @@ function formatTime(timeStr) {
 export function ConfirmationPage() {
   const { state } = useLocation();
   const hasDetails = Boolean(state?.name && state?.date && state?.time);
+  const { openPreferences } = useConsent();
 
   return (
     <div className="confirm-page">
@@ -135,7 +137,12 @@ export function ConfirmationPage() {
       <footer className="confirm-page__footer">
         <div className="container confirm-page__footer-inner">
           <p>&copy; {new Date().getFullYear()} PYRA Athens Steakhouse.</p>
-          <Link to="/privacy">Privacy Policy</Link>
+          <div className="confirm-page__footer-links">
+            <Link to="/privacy">Privacy Policy</Link>
+            <button type="button" className="confirm-page__footer-btn" onClick={openPreferences}>
+              Cookie Preferences
+            </button>
+          </div>
         </div>
       </footer>
     </div>
