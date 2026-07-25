@@ -239,10 +239,56 @@
   min-height: 4.5em;
 }
 
-.reservation__error {
-  grid-column: 1 / -1;
+.field--invalid input,
+.field--invalid select,
+.field--invalid textarea,
+.field--invalid .date-picker__trigger,
+.field--invalid .time-picker__trigger {
+  border-color: var(--color-oxblood-bright);
+}
+
+.field--invalid input:focus,
+.field--invalid select:focus,
+.field--invalid textarea:focus,
+.field--invalid .date-picker__trigger:focus-visible,
+.field--invalid .time-picker__trigger:focus-visible {
+  border-color: var(--color-oxblood-bright);
+  box-shadow: 0 0 0 3px rgba(156, 42, 56, 0.18);
+}
+
+.field__error {
   color: var(--color-oxblood-bright);
-  font-size: 0.88rem;
+  font-size: 0.8rem;
+}
+
+.field--shake {
+  animation: field-shake 0.5s ease-in-out;
+}
+
+@keyframes field-shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field--shake {
+    animation: none;
+  }
 }
 
 .reservation__submit {

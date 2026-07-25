@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -27,14 +27,20 @@ const initialForm = {
   dishQuantity: '1',
 };
 
-function Field({ label, children, full }) {
+const Field = forwardRef(function Field({ label, children, full, error, shake }, ref) {
   return (
-    <label className={`field ${full ? 'field--full' : ''}`}>
+    <label
+      ref={ref}
+      className={`field ${full ? 'field--full' : ''} ${error ? 'field--invalid' : ''} ${shake ? 'field--shake' : ''}`}
+    >
       <span className="field__label">{label}</span>
       {children}
+      {error && <span className="field__error">{error}</span>}
     </label>
   );
-}
+});
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ReservationPage() {
   const location = useLocation();
@@ -42,28 +48,64 @@ export function ReservationPage() {
 
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState('idle');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
+  const [shakeField, setShakeField] = useState(null);
   const navigate = useNavigate();
+  const fieldRefs = useRef({});
 
   function update(key) {
-    return (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+    return (e) => {
+      setForm((f) => ({ ...f, [key]: e.target.value }));
+      setErrors((prev) => (prev[key] ? { ...prev, [key]: '' } : prev));
+    };
   }
 
   function setField(key, value) {
     setForm((f) => ({ ...f, [key]: value }));
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: '' } : prev));
+  }
+
+  function fieldRef(key) {
+    return (el) => {
+      fieldRefs.current[key] = el;
+    };
+  }
+
+  function validate() {
+    const next = {};
+    if (!form.name.trim()) next.name = 'Please enter your name.';
+    if (!form.email.trim()) {
+      next.email = 'Please enter your email.';
+    } else if (!EMAIL_PATTERN.test(form.email.trim())) {
+      next.email = 'Please enter a valid email address.';
+    }
+    if (!form.date) next.date = 'Please select a date.';
+    if (!form.time) next.time = 'Please select a time.';
+    if (dish && !form.doneness) next.doneness = 'Please choose a preferred doneness.';
+    return next;
+  }
+
+  function triggerShake(key) {
+    setShakeField(null);
+    requestAnimationFrame(() => {
+      setShakeField(key);
+      window.setTimeout(() => setShakeField((f) => (f === key ? null : f)), 500);
+    });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    setError('');
 
-    if (!form.name || !form.email || !form.date || !form.time) {
-      setError('Please fill in your name, email, date, and time.');
-      return;
-    }
+    const nextErrors = validate();
+    setErrors(nextErrors);
 
-    if (dish && !form.doneness) {
-      setError('Please choose a preferred doneness for your dish.');
+    const fieldOrder = ['name', 'email', 'date', 'time', 'doneness'];
+    const firstInvalid = fieldOrder.find((key) => nextErrors[key]);
+
+    if (firstInvalid) {
+      const node = fieldRefs.current[firstInvalid];
+      node?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      triggerShake(firstInvalid);
       return;
     }
 
@@ -159,7 +201,7 @@ export function ReservationPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <form className="reservation__form" onSubmit={handleSubmit}>
+            <form className="reservation__form" onSubmit={handleSubmit} noValidate>
               {dish && (
                 <div className="reservation__dish-banner">
                   <span>Reserving</span>
@@ -167,11 +209,11 @@ export function ReservationPage() {
                 </div>
               )}
 
-              <Field label="Full Name">
-                <input type="text" required value={form.name} onChange={update('name')} placeholder="Your name" />
+              <Field label="Full Name" ref={fieldRef('name')} error={errors.name} shake={shakeField === 'name'}>
+                <input type="text" value={form.name} onChange={update('name')} placeholder="Your name" />
               </Field>
-              <Field label="Email">
-                <input type="email" required value={form.email} onChange={update('email')} placeholder="you@email.com" />
+              <Field label="Email" ref={fieldRef('email')} error={errors.email} shake={shakeField === 'email'}>
+                <input type="email" value={form.email} onChange={update('email')} placeholder="you@email.com" />
               </Field>
               <Field label="Phone">
                 <input type="tel" value={form.phone} onChange={update('phone')} placeholder="+30 …" />
@@ -185,10 +227,10 @@ export function ReservationPage() {
                   ))}
                 </select>
               </Field>
-              <Field label="Date">
+              <Field label="Date" ref={fieldRef('date')} error={errors.date} shake={shakeField === 'date'}>
                 <DatePicker value={form.date} onChange={(value) => setField('date', value)} />
               </Field>
-              <Field label="Time">
+              <Field label="Time" ref={fieldRef('time')} error={errors.time} shake={shakeField === 'time'}>
                 <TimePicker value={form.time} onChange={(value) => setField('time', value)} />
               </Field>
 
@@ -203,8 +245,13 @@ export function ReservationPage() {
                       ))}
                     </select>
                   </Field>
-                  <Field label="Preferred Doneness">
-                    <select value={form.doneness} onChange={update('doneness')} required>
+                  <Field
+                    label="Preferred Doneness"
+                    ref={fieldRef('doneness')}
+                    error={errors.doneness}
+                    shake={shakeField === 'doneness'}
+                  >
+                    <select value={form.doneness} onChange={update('doneness')}>
                       <option value="" disabled>
                         Select doneness
                       </option>
@@ -221,8 +268,6 @@ export function ReservationPage() {
               <Field label="Special Requests" full>
                 <textarea rows={3} value={form.notes} onChange={update('notes')} placeholder="Allergies, occasion, seating preference…" />
               </Field>
-
-              {error && <p className="reservation__error">{error}</p>}
 
               <button type="submit" className="btn btn-primary reservation__submit" disabled={status === 'sending'}>
                 {status === 'sending' ? 'Preparing request…' : 'Request Reservation'}
