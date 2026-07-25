@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { scrollToSection } from '../utils/scrollToSection';
+import { ConfettiBurst } from './ConfettiBurst';
 import './Footer.css';
 
 const SOCIALS = [
@@ -50,6 +51,7 @@ export function Footer() {
         </nav>
 
         <form className="footer__newsletter" onSubmit={handleSubscribe}>
+          {subscribed && <ConfettiBurst />}
           <span className="footer__newsletter-label">Join the list for seasonal menus &amp; events</span>
           {subscribed ? (
             <p className="footer__newsletter-thanks">You&rsquo;re on the list — thank you.</p>

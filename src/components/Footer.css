@@ -47,6 +47,22 @@
   color: var(--color-gold);
 }
 
+.footer__newsletter {
+  position: relative;
+}
+
+.confetti-burst {
+  position: absolute;
+  top: -80px;
+  left: -60px;
+  right: -60px;
+  bottom: -80px;
+  width: calc(100% + 120px);
+  height: calc(100% + 160px);
+  pointer-events: none;
+  z-index: 5;
+}
+
 .footer__newsletter-label {
   display: block;
   color: var(--color-text-dim);
