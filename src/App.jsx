@@ -52,7 +52,7 @@ function App() {
         <Route path="*" element={<Home />} />
       </Routes>
       <BackToTop />
-      {!loading && <CookieBanner />}
+      <CookieBanner />
       <CookiePreferencesModal />
     </ConsentProvider>
   );

@@ -1,10 +1,18 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { loadConsent, persistConsent } from './consentStorage';
 import { ConsentContext } from './context';
+
+const BANNER_DELAY_MS = 2200;
 
 export function ConsentProvider({ children }) {
   const [consent, setConsent] = useState(() => loadConsent());
   const [preferencesOpen, setPreferencesOpen] = useState(false);
+  const [delayElapsed, setDelayElapsed] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDelayElapsed(true), BANNER_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   const applyDecision = useCallback((categories) => {
     setConsent(persistConsent(categories));
@@ -20,7 +28,7 @@ export function ConsentProvider({ children }) {
   const value = useMemo(
     () => ({
       consent,
-      bannerVisible: consent === null,
+      bannerVisible: consent === null && delayElapsed,
       preferencesOpen,
       acceptAll,
       rejectAll,
@@ -28,7 +36,7 @@ export function ConsentProvider({ children }) {
       openPreferences,
       closePreferences,
     }),
-    [consent, preferencesOpen, acceptAll, rejectAll, savePreferences, openPreferences, closePreferences]
+    [consent, delayElapsed, preferencesOpen, acceptAll, rejectAll, savePreferences, openPreferences, closePreferences]
   );
 
   return <ConsentContext.Provider value={value}>{children}</ConsentContext.Provider>;
