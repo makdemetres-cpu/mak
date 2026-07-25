@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { scrollToSection } from '../utils/scrollToSection';
 import './Navbar.css';
 
 const LINKS = [
@@ -31,22 +32,29 @@ export function Navbar() {
 
   const handleNavClick = () => setOpen(false);
 
+  const handleHashClick = (e, href) => {
+    e.preventDefault();
+    scrollToSection(href);
+  };
+
   const handleMobileHashClick = (e, href) => {
     e.preventDefault();
     setOpen(false);
-    window.setTimeout(() => {
-      const target = document.querySelector(href);
-      if (!target) return;
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-    }, 380);
+    window.setTimeout(() => scrollToSection(href), 380);
   };
 
   return (
     <>
       <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
         <div className="navbar__inner container">
-          <a href="#top" className="navbar__logo" onClick={handleNavClick}>
+          <a
+            href="#top"
+            className="navbar__logo"
+            onClick={(e) => {
+              handleNavClick();
+              handleHashClick(e, '#top');
+            }}
+          >
             PYRA<span className="navbar__logo-dot">.</span>
             <span className="navbar__logo-sub">ATHENS</span>
           </a>
@@ -58,7 +66,7 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ) : (
-                <a key={link.href} href={link.href}>
+                <a key={link.href} href={link.href} onClick={(e) => handleHashClick(e, link.href)}>
                   {link.label}
                 </a>
               )

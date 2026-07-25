@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { scrollToSection } from '../utils/scrollToSection';
 import './Footer.css';
 
 const SOCIALS = [
@@ -18,21 +19,32 @@ export function Footer() {
     setSubscribed(true);
   }
 
+  function handleHashClick(e, hash) {
+    e.preventDefault();
+    scrollToSection(hash);
+  }
+
   return (
     <footer className="footer">
       <div className="container footer__top">
         <div className="footer__brand">
-          <a href="#top" className="footer__logo">
+          <a href="#top" className="footer__logo" onClick={(e) => handleHashClick(e, '#top')}>
             PYRA<span>.</span>
           </a>
           <p>Athens Steakhouse — fire-forged since day one.</p>
         </div>
 
         <nav className="footer__links" aria-label="Footer">
-          <a href="#story">Our Story</a>
+          <a href="#story" onClick={(e) => handleHashClick(e, '#story')}>
+            Our Story
+          </a>
           <Link to="/menu">Menu</Link>
-          <a href="#gallery">Ambiance</a>
-          <a href="#reviews">Reviews</a>
+          <a href="#gallery" onClick={(e) => handleHashClick(e, '#gallery')}>
+            Ambiance
+          </a>
+          <a href="#reviews" onClick={(e) => handleHashClick(e, '#reviews')}>
+            Reviews
+          </a>
           <Link to="/visit">Visit</Link>
           <Link to="/reserve">Reserve</Link>
         </nav>

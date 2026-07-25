@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { scrollToSection } from '../utils/scrollToSection';
 import './BackToTop.css';
 
 export function BackToTop() {
@@ -19,6 +20,10 @@ export function BackToTop() {
           href="#top"
           className="back-to-top"
           aria-label="Back to top"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection('#top');
+          }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }}

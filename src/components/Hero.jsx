@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { EmberCanvas } from './EmberCanvas';
+import { scrollToSection } from '../utils/scrollToSection';
 import './Hero.css';
 
 const HEADLINE = ['Fire-Forged', 'in the Heart', 'of Athens'];
@@ -72,6 +73,10 @@ export function Hero() {
         href="#story"
         className="hero__scroll"
         aria-label="Scroll to learn more"
+        onClick={(e) => {
+          e.preventDefault();
+          scrollToSection('#story');
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.8 }}
