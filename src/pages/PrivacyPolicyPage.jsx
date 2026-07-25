@@ -109,9 +109,10 @@ export function PrivacyPolicyPage() {
 
           <h3>Cookies and similar technology</h3>
           <p>
-            We use one strictly necessary cookie-like storage item to remember your cookie choices &mdash;
-            nothing else runs until you allow it. We don&rsquo;t use analytics or advertising trackers of any
-            kind. The only two optional items are:
+            We use one strictly necessary storage item that keeps a timestamped record of your latest cookie
+            choice, for our own compliance records &mdash; but we ask you to choose again every time you
+            visit, regardless of what it contains. Nothing else runs until you allow it, and we don&rsquo;t
+            use analytics or advertising trackers of any kind. The only two optional items are:
           </p>
           <ul>
             <li>

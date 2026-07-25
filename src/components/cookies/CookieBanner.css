@@ -1,63 +1,63 @@
-.cookie-banner {
+.cookie-consent__overlay {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 300;
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border-strong);
-  box-shadow: 0 -16px 48px -16px rgba(0, 0, 0, 0.6);
-}
-
-.cookie-banner__inner {
+  background: rgba(8, 6, 5, 0.72);
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.4rem;
-  padding-block: 1.4rem;
+  justify-content: center;
+  padding: 1.2rem;
 }
 
-.cookie-banner__text {
-  flex: 1 1 380px;
-  max-width: 660px;
+.cookie-consent {
+  width: min(520px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  padding: 2rem;
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.7);
+  text-align: center;
 }
 
-.cookie-banner__title {
+.cookie-consent__title {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   color: var(--color-text);
-  margin-bottom: 0.35rem;
 }
 
-.cookie-banner__text p:not(.cookie-banner__title) {
-  font-size: 0.85rem;
-  line-height: 1.6;
+.cookie-consent__desc {
+  margin-top: 0.8rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
   color: var(--color-text-dim);
 }
 
-.cookie-banner__text a {
+.cookie-consent__desc a {
   color: var(--color-gold);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.cookie-banner__text a:hover {
+.cookie-consent__desc a:hover {
   color: var(--color-gold-bright);
 }
 
-.cookie-banner__actions {
+.cookie-consent__actions {
+  margin-top: 1.6rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1.1rem 1.4rem;
+  gap: 1rem;
 }
 
-.cookie-banner__actions .btn {
-  min-width: 130px;
+.cookie-consent__actions .btn {
+  width: 100%;
+  max-width: 320px;
 }
 
-.cookie-banner__manage {
+.cookie-consent__manage {
   font-size: 0.82rem;
   letter-spacing: 0.02em;
   color: var(--color-text-dim);
@@ -66,19 +66,6 @@
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-.cookie-banner__manage:hover {
+.cookie-consent__manage:hover {
   color: var(--color-gold);
-}
-
-@media (max-width: 720px) {
-  .cookie-banner__inner {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .cookie-banner__actions {
-    justify-content: flex-start;
-  }
-  .cookie-banner__actions .btn {
-    flex: 1;
-  }
 }

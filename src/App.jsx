@@ -14,27 +14,32 @@ import { ReviewPage } from './pages/ReviewPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { CookiePolicyPage } from './pages/CookiePolicyPage';
 import { ConsentProvider } from './consent/ConsentContext';
+import { useConsent } from './consent/useConsent';
 import { FontLoader } from './consent/FontLoader';
 import { CookieBanner } from './components/cookies/CookieBanner';
 import { CookiePreferencesModal } from './components/cookies/CookiePreferencesModal';
 
-function App() {
+function AppShell() {
   const [loading, setLoading] = useState(true);
+  const { awaitingDecision } = useConsent();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1400);
     return () => clearTimeout(timer);
   }, []);
 
+  // Scrolling stays locked while the preloader is up AND while the visitor
+  // hasn't made a cookie choice yet (covers the banner and the preferences
+  // panel, since either one can be open during that window).
   useEffect(() => {
-    document.body.style.overflow = loading ? 'hidden' : '';
+    document.body.style.overflow = loading || awaitingDecision ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [loading]);
+  }, [loading, awaitingDecision]);
 
   return (
-    <ConsentProvider>
+    <>
       <FontLoader />
       <Preloader visible={loading} />
       <ScrollProgress />
@@ -52,8 +57,16 @@ function App() {
         <Route path="*" element={<Home />} />
       </Routes>
       <BackToTop />
-      <CookieBanner />
+      {!loading && <CookieBanner />}
       <CookiePreferencesModal />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <ConsentProvider>
+      <AppShell />
     </ConsentProvider>
   );
 }

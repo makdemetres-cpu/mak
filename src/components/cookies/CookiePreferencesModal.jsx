@@ -89,7 +89,10 @@ export function CookiePreferencesModal() {
                 <span className="cookie-modal__category-label">Strictly Necessary</span>
                 <span className="cookie-modal__badge">Always Active</span>
               </div>
-              <p>Remembers your cookie choice itself. Doesn&rsquo;t track you and can&rsquo;t be disabled.</p>
+              <p>
+                Keeps a record of your latest choice for our compliance records; doesn&rsquo;t track you and
+                can&rsquo;t be disabled. We still ask you again on every visit.
+              </p>
             </div>
 
             {CATEGORIES.map((cat) => (

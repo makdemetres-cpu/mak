@@ -9,8 +9,9 @@ const ENTRIES = [
   {
     name: 'pyra_cookie_consent',
     provider: 'PYRA (first party)',
-    purpose: 'Remembers your cookie choices, so we don’t ask again every visit.',
-    duration: '6 months, then you’re asked again',
+    purpose:
+      'Keeps a timestamped record of your latest cookie choice, for our own compliance records. We ask again on every visit regardless of what this contains.',
+    duration: 'Overwritten each time you make a choice',
     category: 'Strictly Necessary',
   },
   {
@@ -60,8 +61,9 @@ export function CookiePolicyPage() {
           </p>
 
           <p>
-            Nothing on this list runs until you choose to allow it, except the one strictly necessary item
-            that remembers your choice. You can change your mind at any time:
+            Nothing on this list runs until you choose to allow it. We ask you to choose every time you visit
+            &mdash; we don&rsquo;t use a previous visit&rsquo;s choice to skip asking again. You can change
+            your mind at any time:
           </p>
 
           <button type="button" className="btn btn-primary cookie-page__manage-btn" onClick={openPreferences}>

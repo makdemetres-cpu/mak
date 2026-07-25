@@ -1,18 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { loadConsent, persistConsent } from './consentStorage';
+import { useCallback, useMemo, useState } from 'react';
+import { persistConsent } from './consentStorage';
 import { ConsentContext } from './context';
 
-const BANNER_DELAY_MS = 2200;
-
 export function ConsentProvider({ children }) {
-  const [consent, setConsent] = useState(() => loadConsent());
+  // Always starts undecided: the banner re-prompts on every fresh visit,
+  // even if a previous choice is on record (see consentStorage.js).
+  const [consent, setConsent] = useState(null);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
-  const [delayElapsed, setDelayElapsed] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDelayElapsed(true), BANNER_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, []);
 
   const applyDecision = useCallback((categories) => {
     setConsent(persistConsent(categories));
@@ -28,7 +22,8 @@ export function ConsentProvider({ children }) {
   const value = useMemo(
     () => ({
       consent,
-      bannerVisible: consent === null && delayElapsed,
+      awaitingDecision: consent === null,
+      bannerVisible: consent === null && !preferencesOpen,
       preferencesOpen,
       acceptAll,
       rejectAll,
@@ -36,7 +31,7 @@ export function ConsentProvider({ children }) {
       openPreferences,
       closePreferences,
     }),
-    [consent, delayElapsed, preferencesOpen, acceptAll, rejectAll, savePreferences, openPreferences, closePreferences]
+    [consent, preferencesOpen, acceptAll, rejectAll, savePreferences, openPreferences, closePreferences]
   );
 
   return <ConsentContext.Provider value={value}>{children}</ConsentContext.Provider>;

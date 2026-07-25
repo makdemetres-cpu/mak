@@ -12,41 +12,45 @@ export function CookieBanner() {
     <AnimatePresence>
       {bannerVisible && (
         <motion.div
-          ref={trapRef}
-          className="cookie-banner"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="cookie-banner-title"
-          aria-describedby="cookie-banner-desc"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 24 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="cookie-consent__overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
         >
-          <div className="cookie-banner__inner container">
-            <div className="cookie-banner__text">
-              <p id="cookie-banner-title" className="cookie-banner__title">
-                We value your privacy
-              </p>
-              <p id="cookie-banner-desc">
-                We only use cookies and similar technology that are strictly necessary, plus two optional
-                features (custom fonts and an interactive map) that stay off unless you allow them. Read our{' '}
-                <Link to="/privacy">Privacy Policy</Link> or the full <Link to="/cookies">Cookie Policy</Link>{' '}
-                for details.
-              </p>
-            </div>
-            <div className="cookie-banner__actions">
+          <motion.div
+            ref={trapRef}
+            className="cookie-consent"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cookie-banner-title"
+            aria-describedby="cookie-banner-desc"
+            initial={{ opacity: 0, y: 16, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.97 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p id="cookie-banner-title" className="cookie-consent__title">
+              We value your privacy
+            </p>
+            <p id="cookie-banner-desc" className="cookie-consent__desc">
+              We only use cookies and similar technology that are strictly necessary, plus two optional
+              features (custom fonts and an interactive map) that stay off unless you allow them. Read our{' '}
+              <Link to="/privacy">Privacy Policy</Link> or the full <Link to="/cookies">Cookie Policy</Link>{' '}
+              for details.
+            </p>
+            <div className="cookie-consent__actions">
               <button type="button" className="btn btn-ghost" onClick={rejectAll}>
                 Reject All
               </button>
               <button type="button" className="btn btn-primary" onClick={acceptAll}>
                 Accept All
               </button>
-              <button type="button" className="cookie-banner__manage" onClick={openPreferences}>
+              <button type="button" className="cookie-consent__manage" onClick={openPreferences}>
                 Manage Preferences
               </button>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
