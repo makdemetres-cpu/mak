@@ -153,7 +153,7 @@ export function PrivacyPolicyPage() {
                 <td>Hostinger (hosting provider)</td>
                 <td>Server access logs (IP, browser, request time)</td>
                 <td>Hosting and site security</td>
-                <td>[TO CONFIRM &mdash; exact data-centre location]</td>
+                <td>[TO CONFIRM]</td>
               </tr>
               <tr>
                 <td>Google LLC</td>
@@ -165,10 +165,16 @@ export function PrivacyPolicyPage() {
                 <td>OpenStreetMap Foundation</td>
                 <td>IP address, via the map embed</td>
                 <td>Displaying our location map</td>
-                <td>United Kingdom / [TO CONFIRM]</td>
+                <td>United Kingdom</td>
               </tr>
             </tbody>
           </table>
+          <p className="privacy-page__note">
+            Where you see &ldquo;[TO CONFIRM]&rdquo; above: that&rsquo;s a detail only our hosting provider,
+            Hostinger, can confirm (which of their data centres serves this site, and how long they keep
+            their own server logs). It doesn&rsquo;t change anything about how we handle your data
+            ourselves &mdash; we&rsquo;ll fill it in once we&rsquo;ve confirmed it with them.
+          </p>
           <p>
             Reservation and review requests are sent only to our own mailbox &mdash; we manage this
             ourselves, with no separate email provider acting as a processor on our behalf. We do not sell
@@ -178,22 +184,18 @@ export function PrivacyPolicyPage() {
           <h2>4. International data transfers</h2>
           <p>
             Loading our web fonts involves sending your IP address outside the European Economic Area, to
-            Google LLC in the United States.{' '}
-            <strong>
-              [TO CONFIRM &mdash; the specific safeguard Google relies on for this transfer, such as the
-              EU-US Data Privacy Framework or Standard Contractual Clauses, has not been verified for this
-              website.]
-            </strong>{' '}
-            We have a signed data processing agreement in place with Hostinger, our hosting provider.
+            Google LLC in the United States. Google is certified under the EU-U.S. Data Privacy Framework,
+            which the European Commission recognizes as providing an adequate level of protection for this
+            kind of transfer. Our map embed sends your IP address to the OpenStreetMap Foundation in the
+            United Kingdom; the UK has its own adequacy decision from the European Commission, so no
+            additional safeguard is required for that transfer. We have a signed data processing agreement
+            in place with Hostinger, our hosting provider.
           </p>
 
           <h2>5. How long we keep your data</h2>
           <ul>
             <li>Reservation and review emails: kept for a maximum of 3 days, then deleted.</li>
-            <li>
-              Server logs held by our hosting provider: <strong>[TO CONFIRM &mdash; retention period not
-              yet confirmed with Hostinger]</strong>.
-            </li>
+            <li>Server logs held by our hosting provider: [TO CONFIRM]</li>
             <li>We do not keep or store any data submitted via the (currently inactive) newsletter field.</li>
           </ul>
 

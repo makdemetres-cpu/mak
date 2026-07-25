@@ -89,6 +89,13 @@
   list-style: disc;
 }
 
+.privacy-page__note {
+  font-size: 0.86rem;
+  color: var(--color-text-faint);
+  border-left: 2px solid var(--color-border-strong);
+  padding-left: 0.9rem;
+}
+
 .privacy-page__body a {
   color: var(--color-gold);
   text-decoration: underline;
