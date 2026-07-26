@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { EmberCanvas } from './EmberCanvas';
 import { scrollToSection } from '../utils/scrollToSection';
+import grillPoster from '../assets/grill-room.jpg';
 import './Hero.css';
 
 const HEADLINE = ['Fire-Forged', 'in the Heart', 'of Athens'];
@@ -19,6 +20,20 @@ const line = {
 export function Hero() {
   return (
     <section className="hero" id="top">
+      <div className="hero__video-wrap" aria-hidden="true">
+        <video
+          className="hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={grillPoster}
+        >
+          {/* Drop the real clip in public/videos/hero-steak.mp4 — see public/videos/README.md */}
+          <source src="/videos/hero-steak.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div className="hero__bg" aria-hidden="true" />
       <EmberCanvas />
       <div className="hero__vignette" aria-hidden="true" />
