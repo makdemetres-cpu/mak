@@ -14,7 +14,8 @@
     "menuOpen": "Open menu",
     "menuClose": "Close menu",
     "language": "Language",
-    "phoneAria": "Call {phone}"
+    "phoneAria": "Call {phone}",
+    "skipToContent": "Skip to content"
   },
   "footer": {
     "legalName": "MAK THE PLUMBER",

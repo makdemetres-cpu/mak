@@ -5,11 +5,17 @@ import { useEffect, useRef } from "react";
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-/** Traps Tab/Shift+Tab within the returned container while `active`, and
- * moves focus into it as soon as it becomes active. Doesn't prevent mouse
- * interaction with the rest of the page — that's deliberate, the consent
- * UI is a non-blocking bar/panel, not a modal overlay that locks the site. */
-export function useFocusTrap<T extends HTMLElement>(active: boolean) {
+/**
+ * Moves focus into the returned container as soon as `active` becomes
+ * true. When `trap` is also true, Tab/Shift+Tab additionally wrap within
+ * the container (for true modals with a backdrop, like the preferences
+ * panel). When `trap` is false, focus still lands in the container so
+ * keyboard/screen-reader users notice it immediately, but Tab continues
+ * out into the rest of the document afterwards — for the non-blocking
+ * cookie banner, which has no backdrop and must never keep keyboard
+ * users from reaching the rest of the page.
+ */
+export function useFocusTrap<T extends HTMLElement>(active: boolean, trap = true) {
   const ref = useRef<T>(null);
 
   useEffect(() => {
@@ -19,6 +25,8 @@ export function useFocusTrap<T extends HTMLElement>(active: boolean) {
     const getFocusable = () => Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
 
     getFocusable()[0]?.focus();
+
+    if (!trap) return;
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key !== "Tab" || !container) return;
@@ -39,7 +47,7 @@ export function useFocusTrap<T extends HTMLElement>(active: boolean) {
 
     container.addEventListener("keydown", handleKeyDown);
     return () => container.removeEventListener("keydown", handleKeyDown);
-  }, [active]);
+  }, [active, trap]);
 
   return ref;
 }

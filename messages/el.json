@@ -14,7 +14,8 @@
     "menuOpen": "Άνοιγμα μενού",
     "menuClose": "Κλείσιμο μενού",
     "language": "Γλώσσα",
-    "phoneAria": "Τηλεφωνήστε στο {phone}"
+    "phoneAria": "Τηλεφωνήστε στο {phone}",
+    "skipToContent": "Μετάβαση στο περιεχόμενο"
   },
   "footer": {
     "legalName": "MAK THE PLUMBER",

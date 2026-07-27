@@ -10,6 +10,7 @@ export interface ServicesPageContent {
   eyebrow: string;
   title: string;
   intro: string;
+  listHeading: string;
 }
 
 export interface AboutPageContent {
@@ -50,6 +51,7 @@ const servicesPage: Record<AppLocale, ServicesPageContent> = {
     title: "Υπηρεσίες υδραυλικού, χωρίς εκπλήξεις στην τιμή",
     intro:
       "Έξι βασικές υπηρεσίες, ένα συνεργείο. Επιλέξτε παρακάτω για να δείτε τι περιλαμβάνει η κάθε μία και πότε αξίζει να μας καλέσετε.",
+    listHeading: "Λίστα υπηρεσιών",
   },
   en: {
     meta: {
@@ -60,6 +62,7 @@ const servicesPage: Record<AppLocale, ServicesPageContent> = {
     eyebrow: "SERVICES",
     title: "Plumbing services, no surprises on price",
     intro: "Six core services, one crew. Pick one below to see what's included and when it's worth calling us.",
+    listHeading: "List of services",
   },
 };
 

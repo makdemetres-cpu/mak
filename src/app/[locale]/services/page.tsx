@@ -33,6 +33,7 @@ export default async function ServicesPage({ params }: PageProps<"/[locale]/serv
       <PageHero eyebrow={content.eyebrow} title={content.title} intro={content.intro} />
       <Section className="pt-0">
         <Container>
+          <h2 className="sr-only">{content.listHeading}</h2>
           <ServiceRows items={items} />
         </Container>
       </Section>

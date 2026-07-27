@@ -18,7 +18,11 @@ const CHOICE_BUTTON_CLASSES =
 
 export function CookieBanner({ content }: { content: ConsentContent["banner"] }) {
   const { acceptAll, rejectAll, openPreferences } = useConsent();
-  const ref = useFocusTrap<HTMLDivElement>(true);
+  // Not trapped: this is a non-blocking bar, not a modal — Tab must be
+  // free to carry on into the rest of the page after reaching it, or a
+  // keyboard-only visitor would be stuck cycling its three buttons
+  // forever with no way to reach the header, main content, or footer.
+  const ref = useFocusTrap<HTMLDivElement>(true, false);
 
   // Keep the footer's legal links reachable — a fixed banner would
   // otherwise sit on top of them once the user scrolls to the bottom.

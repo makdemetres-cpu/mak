@@ -60,7 +60,11 @@ export function Header() {
     >
       <Container>
         <div className="flex h-16 items-center justify-between gap-4 sm:h-20">
-          <Link href="/" className="font-display text-lg text-bone" aria-label={t("home")}>
+          {/* No aria-label override: the visible "HydroCore" text is
+              already a sufficient accessible name, and a logo link to "/"
+              is a well-understood pattern — overriding it to just "Home"
+              would mismatch the visible label (WCAG 2.5.3). */}
+          <Link href="/" className="font-display text-lg text-bone">
             HydroCore
           </Link>
 
