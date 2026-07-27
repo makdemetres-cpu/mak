@@ -1,0 +1,33 @@
+{
+  "brand": {
+    "name": "HydroCore"
+  },
+  "nav": {
+    "home": "Αρχική",
+    "primary": "Κύριο μενού",
+    "services": "Υπηρεσίες",
+    "work": "Έργα",
+    "about": "Σχετικά",
+    "contact": "Επικοινωνία",
+    "bookVisit": "Κλείστε ραντεβού",
+    "emergencyCall": "Επείγον — καλέστε τώρα",
+    "menuOpen": "Άνοιγμα μενού",
+    "menuClose": "Κλείσιμο μενού",
+    "language": "Γλώσσα",
+    "phoneAria": "Τηλεφωνήστε στο {phone}"
+  },
+  "footer": {
+    "legalName": "MAK THE PLUMBER",
+    "tagline": "Υδραυλικές εργασίες στην Αθήνα από το 2003.",
+    "vatLabel": "ΑΦΜ",
+    "addressLabel": "Έδρα",
+    "address": "Καραμανλή 12, Αθήνα",
+    "contactHeading": "Επικοινωνία",
+    "legalHeading": "Νομικά",
+    "privacy": "Πολιτική Απορρήτου",
+    "cookies": "Πολιτική Cookies",
+    "terms": "Όροι Χρήσης",
+    "cookiePreferences": "Προτιμήσεις Cookies",
+    "rights": "Με επιφύλαξη παντός δικαιώματος."
+  }
+}

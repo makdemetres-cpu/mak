@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* ── Brass & Slate design tokens ─────────────────────────────────── */
+:root {
+  --ink: #14161a;
+  --slate: #1e2228;
+  --slate-line: #2c323a;
+  --bone: #ede8e0;
+  --bone-dim: #9aa0a6;
+  --brass: #b08d4f;
+  --brass-lite: #d4b77e;
+  --patina: #4a6b63;
+  --alert: #c4553d;
+  /*
+   * Derived from --alert. Measured contrast of #C4553D against both
+   * --ink and --bone tops out at ~4.07:1 — passes the 3:1 large-text
+   * bar but fails 4.5:1 for normal-size text. --alert stays the brand
+   * swatch for fills/borders/large (24px+) type; --alert-text is the
+   * one to reach for wherever the hue carries small/body-size text
+   * (5.0:1 against --ink).
+   */
+  --alert-text: #cd6a4e;
+
+  --radius-editorial: 2px;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-slate: var(--slate);
+  --color-slate-line: var(--slate-line);
+  --color-bone: var(--bone);
+  --color-bone-dim: var(--bone-dim);
+  --color-brass: var(--brass);
+  --color-brass-lite: var(--brass-lite);
+  --color-patina: var(--patina);
+  --color-alert: var(--alert);
+  --color-alert-text: var(--alert-text);
+
+  --font-display: var(--font-piazzolla);
+  --font-sans: var(--font-inter-tight);
+  --font-mono: var(--font-plex-mono);
+
+  --radius-editorial: var(--radius-editorial);
+
+  /* Type scale — fluid where the brief specifies a clamp, fixed rem elsewhere */
+  --text-hero: clamp(2.75rem, 6vw, 5.5rem);
+  --text-hero--line-height: 1.05;
+  --text-hero--letter-spacing: -0.02em;
+
+  --text-2xl: clamp(2.25rem, 4vw, 3.5rem);
+  --text-2xl--line-height: 1.1;
+  --text-2xl--letter-spacing: -0.01em;
+
+  --text-xl: clamp(1.75rem, 3vw, 2.5rem);
+  --text-xl--line-height: 1.15;
+
+  --text-lg: 1.5rem;
+  --text-lg--line-height: 1.3;
+
+  --text-md: 1.25rem;
+  --text-md--line-height: 1.5;
+
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.65;
+
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
+
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.4;
+
+  --text-mono-lg: 1.125rem;
+  --text-mono-lg--line-height: 1.4;
+
+  --text-mono-base: 0.9375rem;
+  --text-mono-base--line-height: 1.4;
+
+  --text-mono-sm: 0.8125rem;
+  --text-mono-sm--line-height: 1.4;
+
+  /* Section rhythm */
+  --spacing-section-y: clamp(5rem, 10vw, 10rem);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* Dark-first: --ink/--bone are the default surface + text everywhere.
+   Light sections are deliberate contrast blocks, opted into per-component
+   with the .contrast-block utility below — never a system light-mode swap. */
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.contrast-block {
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.contrast-block ::selection {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--ink);
+}
+
+/* Visible, brand-colored focus ring for keyboard navigation (WCAG 2.2 AA) */
+:focus-visible {
+  outline: 2px solid var(--brass-lite);
+  outline-offset: 2px;
+  border-radius: var(--radius-editorial);
+}
+
+/* Motion safety net: any transition/animation sitewide collapses to
+   instant when the user has asked for reduced motion. The FadeRise
+   primitive additionally forces its resting (fully visible) state via
+   the motion-reduce: variant, so reduced-motion users never see a
+   scroll-triggered reveal at all. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "brand": {
+    "name": "HydroCore"
+  },
+  "nav": {
+    "home": "Home",
+    "primary": "Main navigation",
+    "services": "Services",
+    "work": "Work",
+    "about": "About",
+    "contact": "Contact",
+    "bookVisit": "Book a visit",
+    "emergencyCall": "Emergency — call now",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "language": "Language",
+    "phoneAria": "Call {phone}"
+  },
+  "footer": {
+    "legalName": "MAK THE PLUMBER",
+    "tagline": "Plumbing engineers working across Athens since 2003.",
+    "vatLabel": "VAT",
+    "addressLabel": "Registered address",
+    "address": "Karamanli 12, Athens",
+    "contactHeading": "Contact",
+    "legalHeading": "Legal",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "terms": "Terms",
+    "cookiePreferences": "Cookie preferences",
+    "rights": "All rights reserved."
+  }
+}

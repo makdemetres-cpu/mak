@@ -1,0 +1,135 @@
+"use client";
+
+import { useEffect, useId, useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link, usePathname } from "@/i18n/navigation";
+import { Container } from "@/components/primitives/Container";
+import { Button } from "@/components/primitives/Button";
+import { LocaleSwitch } from "./LocaleSwitch";
+import { cn } from "@/lib/cn";
+
+const PHONE_DISPLAY = "+30 639 104 729";
+const PHONE_HREF = "tel:+30639104729";
+
+const NAV_ITEMS = [
+  { href: "/services", key: "services" },
+  { href: "/work", key: "work" },
+  { href: "/about", key: "about" },
+  { href: "/contact", key: "contact" },
+] as const;
+
+export function Header() {
+  const t = useTranslations("nav");
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b border-transparent bg-ink/95 backdrop-blur-sm transition-colors duration-300",
+        scrolled && "border-slate-line",
+      )}
+    >
+      <Container>
+        <div className="flex h-16 items-center justify-between gap-4 sm:h-20">
+          <Link href="/" className="font-display text-lg text-bone" aria-label={t("home")}>
+            HydroCore
+          </Link>
+
+          <nav className="hidden items-center gap-8 lg:flex" aria-label={t("primary")}>
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                className="text-sm text-bone-dim transition-colors hover:text-bone"
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3 sm:gap-5">
+            <LocaleSwitch className="hidden sm:flex" />
+            <a
+              href={PHONE_HREF}
+              className="hidden font-mono text-mono-sm text-bone sm:inline-flex"
+              aria-label={t("phoneAria", { phone: PHONE_DISPLAY })}
+            >
+              {PHONE_DISPLAY}
+            </a>
+            <Button href="/book" variant="primary" className="hidden sm:inline-flex">
+              {t("bookVisit")}
+            </Button>
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center border border-slate-line text-bone lg:hidden"
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              aria-label={menuOpen ? t("menuClose") : t("menuOpen")}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <MenuIcon open={menuOpen} />
+            </button>
+          </div>
+        </div>
+      </Container>
+
+      <div id={menuId} hidden={!menuOpen} className="border-t border-slate-line bg-ink lg:hidden">
+        <Container>
+          <nav className="flex flex-col gap-1 py-4" aria-label={t("primary")}>
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                className="border-b border-slate-line py-3 text-base text-bone last:border-0"
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+            <a href={PHONE_HREF} className="py-3 font-mono text-mono-base text-brass-lite">
+              {PHONE_DISPLAY}
+            </a>
+            <LocaleSwitch className="py-2" />
+            <Button href="/book" variant="primary" className="mt-2 w-full">
+              {t("bookVisit")}
+            </Button>
+          </nav>
+        </Container>
+      </div>
+    </header>
+  );
+}
+
+function MenuIcon({ open }: { open: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      {open ? (
+        <path d="M3 3L15 15M15 3L3 15" stroke="currentColor" strokeWidth="1.5" />
+      ) : (
+        <path d="M2 5H16M2 9H16M2 13H16" stroke="currentColor" strokeWidth="1.5" />
+      )}
+    </svg>
+  );
+}
