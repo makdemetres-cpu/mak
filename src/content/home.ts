@@ -13,19 +13,11 @@ export interface HomeContent {
     ctaEmergency: string;
   };
   trust: Array<{ value: string; label: string }>;
+  // Service list items live in content/services.ts (shared with the
+  // /services detail pages) — this is just the section wrapper copy.
   services: {
     kicker: string;
     heading: string;
-    items: Array<{
-      number: string;
-      slug: string;
-      title: string;
-      description: string;
-      // Split so only the figure itself (Latin/numeric) ever sits in mono
-      // type — "από"/"from" is a Greek/English word, not a price range.
-      pricePrefix: string;
-      priceValue: string;
-    }>;
   };
   howItWorks: {
     kicker: string;
@@ -81,60 +73,6 @@ const el: HomeContent = {
   services: {
     kicker: "ΥΠΗΡΕΣΙΕΣ",
     heading: "Ό,τι χρειάζεται ένα σπίτι, από έναν μηχανικό",
-    items: [
-      {
-        number: "01",
-        slug: "emergency-leaks",
-        title: "Επείγουσες διαρροές & σπασμένοι σωλήνες",
-        description:
-          "Νερό εκεί που δεν θα έπρεπε, οποιαδήποτε ώρα. Εντοπισμός, απομόνωση και επισκευή — συχνά στην ίδια επίσκεψη.",
-        pricePrefix: "από",
-        priceValue: "€ —",
-      },
-      {
-        number: "02",
-        slug: "boiler-installation-service",
-        title: "Εγκατάσταση & συντήρηση λέβητα",
-        description:
-          "Νέες εγκαταστάσεις, ετήσια συντήρηση και επισκευές αυθημερόν, για κάθε μεγάλη μάρκα που κυκλοφορεί στην Ελλάδα.",
-        pricePrefix: "από",
-        priceValue: "€ —",
-      },
-      {
-        number: "03",
-        slug: "bathroom-renovation",
-        title: "Ανακαίνιση μπάνιου",
-        description:
-          "Από πλήρη απογύμνωση έως τελική πλακόστρωση, με ένα συνεργείο από την αρχή έως το τέλος.",
-        pricePrefix: "από",
-        priceValue: "€ —",
-      },
-      {
-        number: "04",
-        slug: "underfloor-heating",
-        title: "Ενδοδαπέδια θέρμανση",
-        description: "Υδραυλικά και ηλεκτρικά συστήματα, σε υφιστάμενα δάπεδα ή σε νέες κατασκευές.",
-        pricePrefix: "από",
-        priceValue: "€ —",
-      },
-      {
-        number: "05",
-        slug: "drain-clearing",
-        title: "Καθαρισμός αποχετεύσεων",
-        description: "Έλεγχος με κάμερα, όχι μαντεψιά. Απόφραξη και εντοπισμός της αιτίας πριν φύγουμε.",
-        pricePrefix: "από",
-        priceValue: "€ —",
-      },
-      {
-        number: "06",
-        slug: "water-heaters",
-        title: "Θερμοσίφωνες & θερμαντήρες νερού",
-        description:
-          "Με ή χωρίς δεξαμενή, στο σωστό μέγεθος για το ακίνητο και σύμφωνα με τους ισχύοντες κανονισμούς.",
-        pricePrefix: "από",
-        priceValue: "€ —",
-      },
-    ],
   },
   howItWorks: {
     kicker: "ΠΩΣ ΔΟΥΛΕΥΟΥΜΕ",
@@ -243,58 +181,6 @@ const en: HomeContent = {
   services: {
     kicker: "SERVICES",
     heading: "Everything a home needs, from one engineer",
-    items: [
-      {
-        number: "01",
-        slug: "emergency-leaks",
-        title: "Emergency leaks & burst pipes",
-        description:
-          "Water where it shouldn't be, at any hour. Isolated, traced, and fixed — same visit wherever possible.",
-        pricePrefix: "from",
-        priceValue: "€ —",
-      },
-      {
-        number: "02",
-        slug: "boiler-installation-service",
-        title: "Boiler installation & service",
-        description:
-          "New installs, annual servicing, and same-day repairs across every major brand sold in Greece.",
-        pricePrefix: "from",
-        priceValue: "€ —",
-      },
-      {
-        number: "03",
-        slug: "bathroom-renovation",
-        title: "Bathroom renovation",
-        description: "Full strip-outs to finished tiling, coordinated with one crew from first fix to last.",
-        pricePrefix: "from",
-        priceValue: "€ —",
-      },
-      {
-        number: "04",
-        slug: "underfloor-heating",
-        title: "Underfloor heating",
-        description: "Wet and electric systems, retrofitted into existing floors or specified for new builds.",
-        pricePrefix: "from",
-        priceValue: "€ —",
-      },
-      {
-        number: "05",
-        slug: "drain-clearing",
-        title: "Drain clearing",
-        description: "Camera-inspected, not guessed. Blockage cleared and the cause identified before we leave.",
-        pricePrefix: "from",
-        priceValue: "€ —",
-      },
-      {
-        number: "06",
-        slug: "water-heaters",
-        title: "Water heaters",
-        description: "Tank and tankless, sized to the property and installed to current code.",
-        pricePrefix: "from",
-        priceValue: "€ —",
-      },
-    ],
   },
   howItWorks: {
     kicker: "HOW IT WORKS",

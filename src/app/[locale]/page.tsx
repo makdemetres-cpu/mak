@@ -4,6 +4,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { getHomeContent } from "@/content/home";
+import { getServices } from "@/content/services";
 import { Hero } from "@/components/home/Hero";
 import { TrustStrip } from "@/components/home/TrustStrip";
 import { Services } from "@/components/home/Services";
@@ -34,7 +35,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     <>
       <Hero content={content.hero} />
       <TrustStrip items={content.trust} />
-      <Services content={content.services} />
+      <Services content={content.services} items={getServices(locale)} />
       <HowItWorks content={content.howItWorks} />
       <FeaturedWork content={content.work} />
       <Testimonials content={content.testimonials} />

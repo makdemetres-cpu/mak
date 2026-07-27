@@ -2,7 +2,7 @@ import { Container, Grid } from "@/components/primitives/Container";
 import { Section, SectionKicker } from "@/components/primitives/Section";
 import { FadeRise } from "@/components/primitives/FadeRise";
 import { Mono } from "@/components/primitives/Mono";
-import { MapConsentPlaceholder } from "./MapConsentPlaceholder";
+import { MapConsentPlaceholder } from "@/components/primitives/MapConsentPlaceholder";
 import type { HomeContent } from "@/content/home";
 
 export function ServiceArea({ content }: { content: HomeContent["serviceArea"] }) {

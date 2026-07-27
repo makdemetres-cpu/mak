@@ -29,5 +29,12 @@
     "terms": "Terms",
     "cookiePreferences": "Cookie preferences",
     "rights": "All rights reserved."
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "This page can't be found",
+    "body": "The link might be broken, or the page may have moved. Try the homepage, or take a look at our services.",
+    "ctaHome": "Homepage",
+    "ctaServices": "Services"
   }
 }
