@@ -4,11 +4,7 @@ import { Container, Grid } from "@/components/primitives/Container";
 import { Hairline } from "@/components/primitives/Hairline";
 import { Mono } from "@/components/primitives/Mono";
 import { CookiePreferencesTrigger } from "./CookiePreferencesTrigger";
-
-const PHONE_DISPLAY = "+30 639 104 729";
-const PHONE_HREF = "tel:+30639104729";
-const EMAIL = "maktheplumber@gmail.com";
-const VAT_NUMBER = "EL835105724";
+import { PHONE_DISPLAY, PHONE_HREF, EMAIL, VAT_NUMBER } from "@/content/business";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -24,7 +20,8 @@ export function Footer() {
           </div>
 
           <div className="col-span-2 sm:col-span-4 lg:col-span-3">
-            <p className="font-mono text-mono-sm text-bone-dim uppercase tracking-[0.08em]">
+            {/* Not font-mono: this heading is Greek on the default locale. */}
+            <p className="text-mono-sm text-bone-dim uppercase tracking-[0.08em]">
               {t("contactHeading")}
             </p>
             <ul className="mt-4 space-y-2">
@@ -42,15 +39,14 @@ export function Footer() {
           </div>
 
           <div className="col-span-2 sm:col-span-4 lg:col-span-4">
-            <p className="font-mono text-mono-sm text-bone-dim uppercase tracking-[0.08em]">
+            {/* Not font-mono: this heading is Greek on the default locale. */}
+            <p className="text-mono-sm text-bone-dim uppercase tracking-[0.08em]">
               {t("legalHeading")}
             </p>
             <ul className="mt-4 space-y-2 text-sm text-bone-dim">
               <li>{t("legalName")}</li>
               <li>
-                <Mono className="text-bone-dim">
-                  {t("vatLabel")} {VAT_NUMBER}
-                </Mono>
+                {t("vatLabel")} <Mono>{VAT_NUMBER}</Mono>
               </li>
               <li>
                 <span className="sr-only">{t("addressLabel")}: </span>

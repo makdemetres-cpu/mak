@@ -33,13 +33,16 @@ export function SectionKicker({
 }) {
   return (
     <p
-      className={cn(
-        "font-mono text-mono-sm tracking-[0.08em] text-bone-dim uppercase",
-        className,
-      )}
+      className={cn("text-mono-sm tracking-[0.08em] text-bone-dim uppercase", className)}
     >
-      <span className="text-brass">{number}</span>
-      <span className="mx-3 text-slate-line" aria-hidden="true">
+      {/*
+        Only the numeral and rule are set in the mono face — IBM Plex Mono
+        has no Greek glyphs, so the label (often Greek) stays in the
+        inherited body font rather than hanging off the same font-mono
+        the number uses.
+      */}
+      <span className="font-mono text-brass">{number}</span>
+      <span className="mx-3 font-mono text-slate-line" aria-hidden="true">
         ——
       </span>
       {label}

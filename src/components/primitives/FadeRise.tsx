@@ -18,9 +18,11 @@ const HIDDEN_CLASSES = ["opacity-0", "translate-y-4"];
 export function FadeRise({
   children,
   className,
+  style,
 }: {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -47,6 +49,7 @@ export function FadeRise({
   return (
     <div
       ref={ref}
+      style={style}
       className={cn(
         "transition-[opacity,transform] duration-[400ms] ease-out motion-reduce:transition-none motion-reduce:transform-none motion-reduce:opacity-100",
         className,

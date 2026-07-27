@@ -25,7 +25,12 @@ export function ImagePlaceholder({
       )}
       style={{ aspectRatio: aspect }}
     >
-      <p className="font-mono text-mono-sm text-bone-dim">{label}</p>
+      {/*
+        Not font-mono: this is a prose caption (often Greek), and IBM Plex
+        Mono has no Greek glyphs — mono type stays reserved for digits and
+        technical notation per the type system, never body copy.
+      */}
+      <p className="text-sm text-bone-dim">{label}</p>
     </div>
   );
 }

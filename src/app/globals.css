@@ -38,7 +38,17 @@
 
   --font-display: var(--font-piazzolla);
   --font-sans: var(--font-inter-tight);
-  --font-mono: var(--font-plex-mono);
+  /*
+   * IBM Plex Mono has no Greek subset. Everywhere mono type wraps content
+   * that's guaranteed Latin/numeric (phone numbers, section numbering,
+   * prices) this fallback never engages. The one place the brief requires
+   * mono type on unavoidably-Greek text is the service-area neighbourhood
+   * list — there, the browser's normal per-character font fallback takes
+   * over for just the Greek glyphs. Named fallbacks (not just `monospace`)
+   * so that substitution is a deliberate, legible choice rather than
+   * whatever the platform default happens to be.
+   */
+  --font-mono: var(--font-plex-mono), "Courier New", "DejaVu Sans Mono", monospace;
 
   --radius-editorial: var(--radius-editorial);
 

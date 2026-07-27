@@ -7,9 +7,7 @@ import { Container } from "@/components/primitives/Container";
 import { Button } from "@/components/primitives/Button";
 import { LocaleSwitch } from "./LocaleSwitch";
 import { cn } from "@/lib/cn";
-
-const PHONE_DISPLAY = "+30 639 104 729";
-const PHONE_HREF = "tel:+30639104729";
+import { PHONE_DISPLAY, PHONE_HREF } from "@/content/business";
 
 const NAV_ITEMS = [
   { href: "/services", key: "services" },
@@ -99,6 +97,19 @@ export function Header() {
                 {t("bookVisit")}
               </Button>
             </div>
+            {/*
+              Mobile only: the phone number itself lives inside the
+              hamburger menu, which would take two taps to reach. This stays
+              on screen at every scroll position so calling is always one
+              tap, per the brief's mobile requirement.
+            */}
+            <a
+              href={PHONE_HREF}
+              className="inline-flex h-10 w-10 items-center justify-center border border-slate-line text-bone sm:hidden"
+              aria-label={t("phoneAria", { phone: PHONE_DISPLAY })}
+            >
+              <PhoneIcon />
+            </a>
             <button
               type="button"
               className="inline-flex h-10 w-10 items-center justify-center border border-slate-line text-bone lg:hidden"
@@ -136,6 +147,19 @@ export function Header() {
         </Container>
       </div>
     </header>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path
+        d="M3.5 2H6l1 3-1.5 1.5a8 8 0 0 0 4 4L11 9l3 1v2.5c0 .83-.72 1.47-1.53 1.36A11.5 11.5 0 0 1 2.14 3.53C2.03 2.72 2.67 2 3.5 2Z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
