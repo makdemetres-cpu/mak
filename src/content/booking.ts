@@ -63,6 +63,7 @@ export interface BookingContent {
       contactLabel: string;
       notesLabel: string;
       editLabel: string;
+      retentionNote: string;
       privacyPrefix: string;
       privacyLinkText: string;
       privacySuffix: string;
@@ -156,6 +157,8 @@ const el: BookingContent = {
       contactLabel: "Επικοινωνία",
       notesLabel: "Σημειώσεις",
       editLabel: "Επεξεργασία",
+      retentionNote:
+        "Χρησιμοποιούμε τα παραπάνω στοιχεία μόνο για να οργανώσουμε αυτό το ραντεβού και τυχόν εγγύηση της εργασίας. Δείτε την Πολιτική Απορρήτου για το πόσο καιρό τα διατηρούμε.",
       privacyPrefix: "Έχω διαβάσει και αποδέχομαι την ",
       privacyLinkText: "Πολιτική Απορρήτου",
       privacySuffix: ".",
@@ -263,6 +266,8 @@ const en: BookingContent = {
       contactLabel: "Contact",
       notesLabel: "Notes",
       editLabel: "Edit",
+      retentionNote:
+        "We only use the details above to organise this appointment and any related workmanship guarantee. See our Privacy Policy for how long we keep it.",
       privacyPrefix: "I have read and accept the ",
       privacyLinkText: "Privacy Policy",
       privacySuffix: ".",

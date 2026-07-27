@@ -13,7 +13,7 @@ import { FadeRise } from "@/components/primitives/FadeRise";
 import { Hairline } from "@/components/primitives/Hairline";
 import { Mono } from "@/components/primitives/Mono";
 import { Button } from "@/components/primitives/Button";
-import { MapConsentPlaceholder } from "@/components/primitives/MapConsentPlaceholder";
+import { ConsentGatedMap } from "@/components/primitives/ConsentGatedMap";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/contact">): Promise<Metadata> {
   const { locale } = await params;
@@ -86,7 +86,7 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
               className="col-span-4 mt-10 sm:col-span-8 lg:col-span-6 lg:col-start-7 lg:mt-0"
               style={{ transitionDelay: "80ms" }}
             >
-              <MapConsentPlaceholder title={serviceArea.mapTitle} body={serviceArea.mapBody} cta={serviceArea.mapCta} />
+              <ConsentGatedMap title={serviceArea.mapTitle} body={serviceArea.mapBody} cta={serviceArea.mapCta} />
             </FadeRise>
           </Grid>
         </Container>

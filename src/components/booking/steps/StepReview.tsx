@@ -104,7 +104,9 @@ export function StepReview({
 
       <Hairline className="mt-2" />
 
-      <div className="mt-6 flex items-start gap-3">
+      <p className="mt-6 max-w-[56ch] text-sm text-bone-dim">{content.retentionNote}</p>
+
+      <div className="mt-4 flex items-start gap-3">
         <input
           id="privacyAccepted"
           type="checkbox"

@@ -6,6 +6,8 @@ import { routing } from "@/i18n/routing";
 import { displayFont, bodyFont, monoFont } from "@/fonts";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ConsentProvider } from "@/components/consent/ConsentProvider";
+import { getConsentContent } from "@/content/consent";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -38,9 +40,11 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-screen flex-col antialiased">
         <NextIntlClientProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <ConsentProvider content={getConsentContent(locale)}>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </ConsentProvider>
         </NextIntlClientProvider>
       </body>
     </html>

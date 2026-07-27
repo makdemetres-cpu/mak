@@ -2,7 +2,7 @@ import { Container, Grid } from "@/components/primitives/Container";
 import { Section, SectionKicker } from "@/components/primitives/Section";
 import { FadeRise } from "@/components/primitives/FadeRise";
 import { Mono } from "@/components/primitives/Mono";
-import { MapConsentPlaceholder } from "@/components/primitives/MapConsentPlaceholder";
+import { ConsentGatedMap } from "@/components/primitives/ConsentGatedMap";
 import type { HomeContent } from "@/content/home";
 
 export function ServiceArea({ content }: { content: HomeContent["serviceArea"] }) {
@@ -27,7 +27,7 @@ export function ServiceArea({ content }: { content: HomeContent["serviceArea"] }
           </FadeRise>
 
           <FadeRise className="col-span-4 mt-10 sm:col-span-8 lg:col-span-5 lg:col-start-8 lg:mt-0">
-            <MapConsentPlaceholder title={content.mapTitle} body={content.mapBody} cta={content.mapCta} />
+            <ConsentGatedMap title={content.mapTitle} body={content.mapBody} cta={content.mapCta} />
           </FadeRise>
         </Grid>
       </Container>
