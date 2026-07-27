@@ -1,5 +1,8 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { Reveal, RevealGroup, RevealItem } from './Reveal';
+import storyPhoto from '../assets/story-section.jpg';
 import './Story.css';
 
 const STATS = [
@@ -10,6 +13,12 @@ const STATS = [
 ];
 
 export function Story() {
+  const panelRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: panelRef, offset: ['start end', 'end start'] });
+  const y = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? ['0%', '0%'] : ['-6%', '6%']);
+  const rotate = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [-2, 2]);
+
   return (
     <section className="section story" id="story">
       <div className="container story__grid">
@@ -50,24 +59,32 @@ export function Story() {
         </div>
 
         <Reveal type="scale" delay={0.1} className="story__visual">
-          <div className="story__panel">
+          <div className="story__panel" ref={panelRef}>
+            <motion.img
+              src={storyPhoto}
+              alt="A rustic corner of the PYRA dining room, with weathered blue shutters, stone walls, exposed wood beams, and shelves of spirits behind the bar"
+              className="story__photo"
+              style={{ y, rotate, scale: 1.12 }}
+            />
             <div className="story__glow" aria-hidden="true" />
-            <svg className="story__flame" viewBox="0 0 200 260" width="100%" aria-hidden="true">
-              <path
-                d="M100 20 C60 70 40 110 40 155 C40 205 65 235 100 235 C135 235 160 205 160 155 C160 110 140 70 100 20 Z"
-                fill="none"
-                stroke="var(--color-gold)"
-                strokeWidth="1"
-                opacity="0.5"
-              />
-              <path
-                d="M100 70 C78 100 68 128 68 155 C68 185 82 205 100 205 C118 205 132 185 132 155 C132 128 122 100 100 70 Z"
-                fill="none"
-                stroke="var(--color-ember)"
-                strokeWidth="1"
-                opacity="0.7"
-              />
-            </svg>
+            <div className="story__badge" aria-hidden="true">
+              <svg className="story__flame" viewBox="0 0 200 260" width="100%">
+                <path
+                  d="M100 20 C60 70 40 110 40 155 C40 205 65 235 100 235 C135 235 160 205 160 155 C160 110 140 70 100 20 Z"
+                  fill="none"
+                  stroke="var(--color-gold)"
+                  strokeWidth="1"
+                  opacity="0.8"
+                />
+                <path
+                  d="M100 70 C78 100 68 128 68 155 C68 185 82 205 100 205 C118 205 132 185 132 155 C132 128 122 100 100 70 Z"
+                  fill="none"
+                  stroke="var(--color-ember)"
+                  strokeWidth="1"
+                  opacity="0.9"
+                />
+              </svg>
+            </div>
           </div>
         </Reveal>
       </div>
