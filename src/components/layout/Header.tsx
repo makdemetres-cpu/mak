@@ -23,7 +23,16 @@ export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [lastPathname, setLastPathname] = useState(pathname);
   const menuId = useId();
+
+  // Close the mobile menu on navigation. Adjusted during render (React's
+  // documented pattern for "reset state when a prop changes") rather than
+  // in an effect, so it doesn't cause an extra commit.
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
+    setMenuOpen(false);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -31,10 +40,6 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -48,8 +53,11 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b border-transparent bg-ink/95 backdrop-blur-sm transition-colors duration-300",
-        scrolled && "border-slate-line",
+        "sticky top-0 z-50 border-b bg-ink/95 backdrop-blur-sm transition-colors duration-300",
+        // Exactly one of these, never both — applying both at once (e.g. an
+        // unconditional base class plus a conditional add-on) is a
+        // stylesheet-order conflict, not something class order resolves.
+        scrolled ? "border-slate-line" : "border-transparent",
       )}
     >
       <Container>
@@ -71,17 +79,26 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-3 sm:gap-5">
-            <LocaleSwitch className="hidden sm:flex" />
-            <a
-              href={PHONE_HREF}
-              className="hidden font-mono text-mono-sm text-bone sm:inline-flex"
-              aria-label={t("phoneAria", { phone: PHONE_DISPLAY })}
-            >
-              {PHONE_DISPLAY}
-            </a>
-            <Button href="/book" variant="primary" className="hidden sm:inline-flex">
-              {t("bookVisit")}
-            </Button>
+            {/*
+              A single "hidden sm:flex" wrapper, not per-child visibility
+              classes: Button/LocaleSwitch already hardcode an unconditional
+              display utility in their own base styles, and mixing that with
+              "hidden" on the same element is a stylesheet-order conflict,
+              not a specificity one — class string order doesn't decide it.
+            */}
+            <div className="hidden items-center gap-5 sm:flex">
+              <LocaleSwitch />
+              <a
+                href={PHONE_HREF}
+                className="font-mono text-mono-sm text-bone"
+                aria-label={t("phoneAria", { phone: PHONE_DISPLAY })}
+              >
+                {PHONE_DISPLAY}
+              </a>
+              <Button href="/book" variant="primary">
+                {t("bookVisit")}
+              </Button>
+            </div>
             <button
               type="button"
               className="inline-flex h-10 w-10 items-center justify-center border border-slate-line text-bone lg:hidden"
