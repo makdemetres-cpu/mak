@@ -1,0 +1,116 @@
+.story__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: center;
+}
+
+.story__text > * + * {
+  margin-top: 1.3rem;
+}
+
+.story__visual {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.story__panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(155deg, var(--color-surface), var(--color-bg-alt) 70%);
+  border: 1px solid var(--color-border);
+}
+
+.story__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.story__glow {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 60%;
+  height: 55%;
+  background: radial-gradient(circle at 75% 75%, rgba(232, 98, 44, 0.45), transparent 70%);
+  pointer-events: none;
+}
+
+.story__badge {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(12, 10, 9, 0.85) 0%, rgba(12, 10, 9, 0.6) 65%, transparent 100%);
+}
+
+.story__flame {
+  width: 42px;
+  max-width: 42px;
+  padding: 0;
+}
+
+.story__stats {
+  margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: clamp(2rem, 4vw, 3rem);
+}
+
+.story__stat {
+  text-align: center;
+}
+
+.story__stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  color: var(--color-gold-bright);
+}
+
+.story__stat-value small {
+  font-size: 0.45em;
+  margin-left: 0.2em;
+  color: var(--color-text-faint);
+  font-family: var(--font-body);
+}
+
+.story__stat-label {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--color-text-faint);
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 900px) {
+  .story__grid {
+    grid-template-columns: 1fr;
+  }
+  .story__visual {
+    aspect-ratio: 16 / 10;
+    order: -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .story__stats {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 2rem;
+  }
+}

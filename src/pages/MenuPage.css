@@ -1,0 +1,106 @@
+.menu-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+.menu-page__header {
+  border-bottom: 1px solid var(--color-border);
+  padding-block: 1.4rem;
+}
+
+.menu-page__header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.menu-page__logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+}
+
+.menu-page__logo span {
+  color: var(--color-gold);
+}
+
+.menu-page__back {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-dim);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.menu-page__back:hover {
+  color: var(--color-gold);
+}
+
+.menu-page__main {
+  flex: 1;
+}
+
+.menu-page__cta {
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+  padding-block: clamp(2.5rem, 5vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.menu-page__cta p {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-text-dim);
+}
+
+.menu-page__footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: 1.4rem;
+}
+
+.menu-page__footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: var(--color-text-faint);
+}
+
+.menu-page__footer-inner a {
+  color: var(--color-text-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.menu-page__footer-inner a:hover {
+  color: var(--color-gold);
+}
+
+.menu-page__footer-links {
+  display: flex;
+  gap: 1.4rem;
+}
+
+.menu-page__footer-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  color: var(--color-text-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.menu-page__footer-btn:hover {
+  color: var(--color-gold);
+}
