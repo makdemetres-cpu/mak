@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Urgency {
+  EMERGENCY_TODAY
+  WITHIN_48H
+  FLEXIBLE
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  OTHER
+}
+
+enum BookingStatus {
+  NEW
+  CONFIRMED
+  COMPLETED
+}
+
+model Booking {
+  id        String @id @default(cuid())
+  reference String @unique
+
+  locale String // "el" | "en" — which language to send confirmation email in
+
+  serviceSlug String
+  urgency     Urgency
+
+  preferredDate DateTime @db.Date
+  timeSlot      String // e.g. "08:00-10:00"
+
+  address      String
+  postcode     String
+  propertyType PropertyType
+  floor        String?
+  parkingNotes String?
+
+  name  String
+  phone String
+  email String
+  notes String?
+
+  photoUrl String?
+
+  privacyAccepted   Boolean  @default(false)
+  privacyAcceptedAt DateTime?
+
+  status BookingStatus @default(NEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([preferredDate, timeSlot])
+  @@index([status, createdAt])
+}
