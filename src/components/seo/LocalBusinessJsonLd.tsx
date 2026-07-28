@@ -13,6 +13,7 @@ export function LocalBusinessJsonLd() {
     address: {
       "@type": "PostalAddress",
       streetAddress: BUSINESS_ADDRESS.streetAddress,
+      postalCode: BUSINESS_ADDRESS.postalCode,
       addressLocality: BUSINESS_ADDRESS.addressLocality,
       addressCountry: BUSINESS_ADDRESS.addressCountry,
     },

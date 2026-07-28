@@ -8,14 +8,18 @@ export const VAT_NUMBER = "EL835105724";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hydrocore.gr";
 
 export const BUSINESS_ADDRESS = {
-  streetAddress: "Καραμανλή 12", // [TO CONFIRM]
+  streetAddress: "Καραμανλή 12",
+  postalCode: "19016",
   addressLocality: "Αθήνα",
   addressCountry: "GR",
 };
 
+export const BUSINESS_ADDRESS_DISPLAY_EL = "Καραμανλή 12, 190 16 Αθήνα";
+export const BUSINESS_ADDRESS_DISPLAY_EN = "Karamanli 12, 190 16 Athens";
+
 export const GEO = {
-  // [TO CONFIRM] — approximate central-Athens coordinates, replace with the
-  // real registered address's coordinates once confirmed.
+  // [TO CONFIRM] — approximate central-Athens coordinates; the confirmed
+  // street address and postcode haven't been geocoded to a precise point.
   latitude: 37.9838,
   longitude: 23.7275,
 };

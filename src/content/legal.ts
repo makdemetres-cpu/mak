@@ -1,5 +1,5 @@
 import type { AppLocale } from "@/i18n/routing";
-import { PHONE_DISPLAY, EMAIL, VAT_NUMBER } from "@/content/business";
+import { PHONE_DISPLAY, EMAIL, VAT_NUMBER, BUSINESS_ADDRESS_DISPLAY_EL, BUSINESS_ADDRESS_DISPLAY_EN } from "@/content/business";
 
 interface Meta {
   title: string;
@@ -53,7 +53,7 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
       {
         heading: "1. Υπεύθυνος Επεξεργασίας",
         paragraphs: [
-          `Υπεύθυνος επεξεργασίας των δεδομένων σας είναι ο mak theplumber (εμπορικό σήμα «HydroCore»), ατομική επιχείρηση με ΑΦΜ ${VAT_NUMBER}, με έδρα Καραμανλή 12, Αθήνα, Ελλάδα [TO CONFIRM — πλήρης διεύθυνση έδρας για επίσημη χρήση σε νομικό έγγραφο].`,
+          `Υπεύθυνος επεξεργασίας των δεδομένων σας είναι ο mak theplumber (εμπορικό σήμα «HydroCore»), ατομική επιχείρηση με ΑΦΜ ${VAT_NUMBER}, με έδρα ${BUSINESS_ADDRESS_DISPLAY_EL}, Ελλάδα.`,
           `Για οποιοδήποτε ερώτημα σχετικά με την επεξεργασία των δεδομένων σας, επικοινωνήστε στο ${EMAIL} ή τηλεφωνικά στο ${PHONE_DISPLAY}.`,
           "Λόγω του μεγέθους της επιχείρησης δεν απαιτείται ο ορισμός Υπεύθυνου Προστασίας Δεδομένων (ΥΠΔ) βάσει του άρθρου 37 ΓΚΠΔ. Τα ερωτήματα προστασίας δεδομένων εξετάζονται απευθείας από τον υπεύθυνο επεξεργασίας.",
         ],
@@ -82,8 +82,8 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
       {
         heading: "4. Πόσο καιρό διατηρούμε τα δεδομένα σας",
         paragraphs: [
-          "Τα στοιχεία κράτησης (συμπεριλαμβανομένων τυχόν φωτογραφιών) διατηρούνται για [TO CONFIRM — ακριβής περίοδος διατήρησης, ενδεικτικά 24 μήνες] μετά την ολοκλήρωση ή ακύρωση του ραντεβού, ώστε να μπορούμε να εξυπηρετήσουμε μελλοντικά αιτήματα και εγγυήσεις εργασιών.",
-          "Παραστατικά που σχετίζονται με τιμολόγηση διατηρούνται για πέντε (5) έτη, όπως προβλέπει η ελληνική φορολογική νομοθεσία.",
+          "Τηρούμε την αρχή του ελάχιστου δυνατού χρόνου διατήρησης: τα στοιχεία κράτησης (συμπεριλαμβανομένων τυχόν φωτογραφιών) διαγράφονται το συντομότερο δυνατό μετά την ολοκλήρωση ή ακύρωση του ραντεβού, μόλις παύσουν να είναι απαραίτητα — συνήθως εντός σύντομου χρονικού διαστήματος, εκτός αν χρειαστεί να τα κρατήσουμε λίγο περισσότερο για την εξυπηρέτηση ενεργού παραπόνου ή εγγύησης εργασίας.",
+          "Εξαίρεση αποτελούν τα παραστατικά που σχετίζονται με τιμολόγηση, τα οποία διατηρούνται για πέντε (5) έτη, όπως επιβάλλει η ελληνική φορολογική νομοθεσία — αυτή είναι η μόνη υποχρεωτική ελάχιστη περίοδος διατήρησης που ισχύει.",
           "Μετά το πέρας των παραπάνω περιόδων, τα δεδομένα διαγράφονται ή ανωνυμοποιούνται με ασφαλή τρόπο.",
         ],
       },
@@ -93,7 +93,8 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
           "Δεν πουλάμε και δεν ενοικιάζουμε τα δεδομένα σας. Τα μοιραζόμαστε μόνο με τρίτους που μας βοηθούν να λειτουργήσουμε τον ιστότοπο και την επιχείρηση, στο βαθμό που απαιτείται:",
         ],
         list: [
-          "Πάροχος φιλοξενίας ιστότοπου και βάσης δεδομένων — [TO CONFIRM — όνομα παρόχου και χώρα φιλοξενίας].",
+          "Vercel — φιλοξενία του ιστότοπου.",
+          "Supabase (βάση δεδομένων σε περιοχή ΕΕ) — αποθήκευση στοιχείων κράτησης και φωτογραφιών.",
           "Πάροχος ηλεκτρονικού ταχυδρομείου για ειδοποιήσεις κράτησης — [TO CONFIRM — αν πρόκειται για λογαριασμό Google Workspace με Σύμβαση Επεξεργασίας Δεδομένων ή προσωπικό λογαριασμό Gmail].",
           "Google Maps (μόνο εφόσον έχετε δώσει «Λειτουργική» συγκατάθεση cookies) — δείτε την Πολιτική Cookies.",
         ],
@@ -101,7 +102,7 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
       {
         heading: "6. Διεθνείς διαβιβάσεις δεδομένων",
         paragraphs: [
-          "Εφόσον κάποιος από τους παραπάνω παρόχους επεξεργάζεται δεδομένα εκτός Ευρωπαϊκού Οικονομικού Χώρου (π.χ. υπηρεσίες της Google), η διαβίβαση πραγματοποιείται βάσει κατάλληλων εγγυήσεων (όπως Τυποποιημένες Συμβατικές Ρήτρες της Ευρωπαϊκής Επιτροπής). [TO CONFIRM — οριστικοποίηση μόλις επιβεβαιωθεί ο πάροχος φιλοξενίας].",
+          "Η βάση δεδομένων μας (Supabase) βρίσκεται σε περιοχή εντός της Ευρωπαϊκής Ένωσης. Ο πάροχος φιλοξενίας του ιστότοπου (Vercel Inc.) είναι εταιρεία με έδρα τις ΗΠΑ· στον βαθμό που η υποδομή της επεξεργάζεται δεδομένα εκτός Ευρωπαϊκού Οικονομικού Χώρου, η διαβίβαση πραγματοποιείται βάσει κατάλληλων εγγυήσεων, όπως οι Τυποποιημένες Συμβατικές Ρήτρες της Ευρωπαϊκής Επιτροπής.",
         ],
       },
       {
@@ -156,7 +157,7 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
       {
         heading: "1. Data controller",
         paragraphs: [
-          `The data controller is mak theplumber (trading as "HydroCore"), a sole proprietorship with VAT number ${VAT_NUMBER}, registered at Karamanli 12, Athens, Greece [TO CONFIRM — full registered address for formal legal use].`,
+          `The data controller is mak theplumber (trading as "HydroCore"), a sole proprietorship with VAT number ${VAT_NUMBER}, registered at ${BUSINESS_ADDRESS_DISPLAY_EN}, Greece.`,
           `For any question about how we process your data, contact us at ${EMAIL} or by phone at ${PHONE_DISPLAY}.`,
           "Given the size of the business, we are not required to appoint a Data Protection Officer (DPO) under Article 37 GDPR. Data protection queries are handled directly by the controller.",
         ],
@@ -185,8 +186,8 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
       {
         heading: "4. How long we keep your data",
         paragraphs: [
-          "Booking details (including any photos) are kept for [TO CONFIRM — exact retention period, indicatively 24 months] after the appointment is completed or cancelled, so we can support follow-up requests and workmanship guarantees.",
-          "Invoicing records are kept for five (5) years, as required under Greek tax law.",
+          "We follow a minimum-necessary retention approach: booking details (including any photos) are deleted as soon as possible after the appointment is completed or cancelled, once they're no longer needed — normally within a short period — unless we need to keep them a little longer to support an active complaint or workmanship guarantee.",
+          "The one exception is invoicing records, which are kept for five (5) years as required under Greek tax law — this is the only mandatory minimum retention period that applies.",
           "After these periods, data is securely deleted or anonymised.",
         ],
       },
@@ -196,7 +197,8 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
           "We don't sell or rent your data. We only share it with third parties that help us run the site and business, to the extent required:",
         ],
         list: [
-          "Website and database hosting provider — [TO CONFIRM — provider name and hosting country].",
+          "Vercel — website hosting.",
+          "Supabase (database hosted in an EU region) — stores booking details and photos.",
           "Email provider for booking notifications — [TO CONFIRM — whether this is a Google Workspace account with a Data Processing Agreement, or a personal Gmail account].",
           "Google Maps (only once you've given \"Functional\" cookie consent) — see our Cookie Policy.",
         ],
@@ -204,7 +206,7 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
       {
         heading: "6. International data transfers",
         paragraphs: [
-          "Where any of the above providers processes data outside the European Economic Area (e.g. Google services), the transfer relies on appropriate safeguards (such as the European Commission's Standard Contractual Clauses). [TO CONFIRM — to be finalised once the hosting provider is confirmed].",
+          "Our database (Supabase) is hosted in a region within the European Union. Our website hosting provider (Vercel Inc.) is a US-headquartered company; to the extent its infrastructure processes data outside the European Economic Area, the transfer relies on appropriate safeguards, such as the European Commission's Standard Contractual Clauses.",
         ],
       },
       {
@@ -389,7 +391,7 @@ const termsPage: Record<AppLocale, LegalPageContent> = {
       {
         heading: "1. Στοιχεία επιχείρησης",
         paragraphs: [
-          `Ο ιστότοπος ανήκει και λειτουργεί από τον mak theplumber (εμπορικό σήμα «HydroCore»), ΑΦΜ ${VAT_NUMBER}, Καραμανλή 12, Αθήνα.`,
+          `Ο ιστότοπος ανήκει και λειτουργεί από τον mak theplumber (εμπορικό σήμα «HydroCore»), ΑΦΜ ${VAT_NUMBER}, ${BUSINESS_ADDRESS_DISPLAY_EL}.`,
         ],
       },
       {
@@ -402,7 +404,9 @@ const termsPage: Record<AppLocale, LegalPageContent> = {
       },
       {
         heading: "3. Ακυρώσεις",
-        paragraphs: ["[TO CONFIRM — πολιτική ακυρώσεων/επαναπρογραμματισμού, π.χ. ελάχιστο χρονικό περιθώριο ειδοποίησης]."],
+        paragraphs: [
+          "Μπορείτε να ακυρώσετε ή να αλλάξετε το ραντεβού σας χωρίς χρέωση έως 24 ώρες πριν την προγραμματισμένη ώρα. Για ακυρώσεις με μικρότερη προειδοποίηση ή μη εμφάνιση στο ραντεβού, ενδέχεται να ισχύσει χρέωση επίσκεψης.",
+        ],
       },
       {
         heading: "4. Χρήση του ιστότοπου",
@@ -452,7 +456,7 @@ const termsPage: Record<AppLocale, LegalPageContent> = {
     sections: [
       {
         heading: "1. Business details",
-        paragraphs: [`This site is owned and operated by mak theplumber (trading as "HydroCore"), VAT number ${VAT_NUMBER}, Karamanli 12, Athens.`],
+        paragraphs: [`This site is owned and operated by mak theplumber (trading as "HydroCore"), VAT number ${VAT_NUMBER}, ${BUSINESS_ADDRESS_DISPLAY_EN}.`],
       },
       {
         heading: "2. Booking requests",
@@ -464,7 +468,9 @@ const termsPage: Record<AppLocale, LegalPageContent> = {
       },
       {
         heading: "3. Cancellations",
-        paragraphs: ["[TO CONFIRM — cancellation/rescheduling policy, e.g. minimum notice period]."],
+        paragraphs: [
+          "You can cancel or reschedule your appointment free of charge up to 24 hours before the scheduled time. Cancellations with less notice, or a missed appointment, may be subject to a call-out fee.",
+        ],
       },
       {
         heading: "4. Use of the site",

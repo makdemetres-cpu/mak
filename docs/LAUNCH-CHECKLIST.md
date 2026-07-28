@@ -119,42 +119,42 @@ Notes for the shoot:
 
 ## Consolidated `[TO CONFIRM]` list
 
-Every fact below is either genuinely unverifiable from this session (no way
-to confirm real business operations) or a placeholder invented purely so the
-site has something to render — nothing here should go live without the
-business owner confirming or correcting it.
+Resolved with the business owner on 2026-07-28:
 
-**Business identity / address**
-- Registered address used sitewide (footer, Google Maps embed, structured
-  data, privacy/terms pages): `Καραμανλή 12, Αθήνα` — full official address
-  (including postcode) needed for legal documents and for map accuracy.
-  (`src/content/business.ts`, `src/components/primitives/ConsentGatedMap.tsx`,
-  `src/content/legal.ts`)
-- Map coordinates (`src/content/business.ts` → `GEO`) are approximate
-  central-Athens placeholders, not the real registered address's coordinates.
-- Production domain: the site currently assumes `hydrocore.gr` (used in
-  `SITE_URL`, sitemap, robots.txt, canonical/OG URLs, structured data) — this
-  is not a confirmed, registered domain.
+- **Registered address**: confirmed as `Καραμανλή 12, 190 16 Αθήνα` /
+  `Karamanli 12, 190 16 Athens`. Now used consistently in the footer, the
+  Google Maps embed, structured data, and the privacy/terms pages.
+- **Data retention**: minimum-necessary approach adopted — booking records
+  and photos are deleted as soon as they're no longer needed (normally
+  shortly after the job is done), except invoicing records, kept 5 years
+  per Greek tax law. Reflected in `src/content/legal.ts`.
+- **Cancellation policy**: free cancellation/rescheduling up to 24 hours
+  before the appointment; a call-out fee may apply for later cancellations
+  or no-shows. Reflected in the Terms of Use page.
+- **Hosting**: Vercel (site hosting) + Supabase, EU-region database.
+  Reflected in the privacy policy's "who we share your data with" and
+  "international data transfers" sections — Vercel Inc. is US-headquartered,
+  so that section now names it explicitly and notes Standard Contractual
+  Clauses as the safeguard for any processing outside the EEA.
 
-**Data protection / privacy policy** (`src/content/legal.ts`)
-- Exact data retention period for booking records and uploaded photos
-  (currently states "indicatively 24 months" as a placeholder).
-- Hosting provider name and hosting country for the website/database.
-- Whether the notification email account is Google Workspace (with a Data
-  Processing Agreement) or a personal Gmail account — affects the
-  "recipients/processors" and "international transfers" sections.
-- International-transfer safeguards section is written conditionally
-  ("if... relies on Standard Contractual Clauses") pending the hosting
-  answer above.
+Still open:
 
-**Terms of use** (`src/content/legal.ts`)
-- Cancellation/rescheduling policy (e.g. minimum notice period) — currently
-  left as an explicit placeholder, no policy has been specified anywhere.
-
-**Email/deliverability** (`.env.example`)
-- `BOOKING_FROM_EMAIL` assumes a `bookings@hydrocore.gr` address verified
-  with Resend — needs a real domain before booking-confirmation emails can
-  actually send from a custom domain.
+- **Production domain** — not decided yet. The site still assumes
+  `hydrocore.gr` as a placeholder everywhere a domain is needed (`SITE_URL`
+  in `src/content/business.ts`, sitemap, robots.txt, canonical/OG URLs,
+  structured data, and `BOOKING_FROM_EMAIL` in `.env.example`). Update
+  `NEXT_PUBLIC_SITE_URL` and `BOOKING_FROM_EMAIL` once a domain is chosen —
+  everything else derives from those two.
+- **Map coordinates** (`src/content/business.ts` → `GEO`) are still an
+  approximate central-Athens placeholder, not geocoded from the confirmed
+  address — the Google Maps *embed* uses the real address text directly and
+  is accurate, but the separate `GeoCoordinates` in the structured-data
+  block is not.
+- **Email account type** — still not confirmed whether
+  `maktheplumber@gmail.com` is a Google Workspace account (with a Data
+  Processing Agreement) or a personal Gmail account. Affects one line in
+  the privacy policy's "who we share your data with" section
+  (`src/content/legal.ts`).
 
 **Not flagged, but worth a final human read-through before launch**: all
 other business facts used sitewide — phone, notification email, VAT number,

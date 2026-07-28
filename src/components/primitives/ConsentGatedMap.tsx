@@ -2,8 +2,7 @@
 
 import { useConsent } from "@/components/consent/ConsentContext";
 import { MapConsentPlaceholder } from "@/components/primitives/MapConsentPlaceholder";
-
-const BUSINESS_ADDRESS = "Καραμανλή 12, Αθήνα, Ελλάδα"; // [TO CONFIRM] — full/verified address needed before launch
+import { BUSINESS_ADDRESS_DISPLAY_EL } from "@/content/business";
 
 /**
  * Shows the real Google Maps embed once Functional consent is granted;
@@ -31,7 +30,7 @@ export function ConsentGatedMap({
     <div style={{ aspectRatio: "4 / 3" }} className="border border-slate-line">
       <iframe
         title={title}
-        src={`https://maps.google.com/maps?q=${encodeURIComponent(BUSINESS_ADDRESS)}&z=14&output=embed`}
+        src={`https://maps.google.com/maps?q=${encodeURIComponent(`${BUSINESS_ADDRESS_DISPLAY_EL}, Ελλάδα`)}&z=14&output=embed`}
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
         className="h-full w-full border-0 grayscale-[20%]"
