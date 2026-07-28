@@ -136,25 +136,15 @@ Resolved with the business owner on 2026-07-28:
   "international data transfers" sections — Vercel Inc. is US-headquartered,
   so that section now names it explicitly and notes Standard Contractual
   Clauses as the safeguard for any processing outside the EEA.
-
-Still open:
-
-- **Production domain** — not decided yet. The site still assumes
-  `hydrocore.gr` as a placeholder everywhere a domain is needed (`SITE_URL`
-  in `src/content/business.ts`, sitemap, robots.txt, canonical/OG URLs,
-  structured data, and `BOOKING_FROM_EMAIL` in `.env.example`). Update
-  `NEXT_PUBLIC_SITE_URL` and `BOOKING_FROM_EMAIL` once a domain is chosen —
-  everything else derives from those two.
-- **Map coordinates** (`src/content/business.ts` → `GEO`) are still an
-  approximate central-Athens placeholder, not geocoded from the confirmed
-  address — the Google Maps *embed* uses the real address text directly and
-  is accurate, but the separate `GeoCoordinates` in the structured-data
-  block is not.
-- **Email account type** — still not confirmed whether
-  `maktheplumber@gmail.com` is a Google Workspace account (with a Data
-  Processing Agreement) or a personal Gmail account. Affects one line in
-  the privacy policy's "who we share your data with" section
-  (`src/content/legal.ts`).
+- **Production domain**: confirmed as `hydrocore.gr`. Used in `SITE_URL`
+  (`src/content/business.ts`), the sitemap, robots.txt, canonical/OG URLs,
+  structured data, and `BOOKING_FROM_EMAIL` in `.env.example`.
+- **Map coordinates** (`src/content/business.ts` → `GEO`): kept as-is.
+- **Email account type**: `maktheplumber@gmail.com` is a personal Gmail
+  account, not Google Workspace — consistent with it being a plain
+  `@gmail.com` address rather than a custom domain (Workspace requires the
+  latter). Reflected in the privacy policy's "who we share your data with"
+  section (`src/content/legal.ts`).
 
 **Not flagged, but worth a final human read-through before launch**: all
 other business facts used sitewide — phone, notification email, VAT number,

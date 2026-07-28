@@ -95,7 +95,7 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
         list: [
           "Vercel — φιλοξενία του ιστότοπου.",
           "Supabase (βάση δεδομένων σε περιοχή ΕΕ) — αποθήκευση στοιχείων κράτησης και φωτογραφιών.",
-          "Πάροχος ηλεκτρονικού ταχυδρομείου για ειδοποιήσεις κράτησης — [TO CONFIRM — αν πρόκειται για λογαριασμό Google Workspace με Σύμβαση Επεξεργασίας Δεδομένων ή προσωπικό λογαριασμό Gmail].",
+          "Google (Gmail) — για την παραλαβή ειδοποιήσεων νέων κρατήσεων στο προσωπικό email της επιχείρησης.",
           "Google Maps (μόνο εφόσον έχετε δώσει «Λειτουργική» συγκατάθεση cookies) — δείτε την Πολιτική Cookies.",
         ],
       },
@@ -199,7 +199,7 @@ const privacyPage: Record<AppLocale, LegalPageContent> = {
         list: [
           "Vercel — website hosting.",
           "Supabase (database hosted in an EU region) — stores booking details and photos.",
-          "Email provider for booking notifications — [TO CONFIRM — whether this is a Google Workspace account with a Data Processing Agreement, or a personal Gmail account].",
+          "Google (Gmail) — to receive new-booking notifications at the business's email address.",
           "Google Maps (only once you've given \"Functional\" cookie consent) — see our Cookie Policy.",
         ],
       },
