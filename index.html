@@ -1,388 +1,453 @@
 <!doctype html>
-<html lang="en">
+<html lang="el" data-lang="el"
+      data-title-el="HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη"
+      data-title-en="HydroCore — Plumbing Solutions Across Greece | Thessaloniki"
+      data-desc-el="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση."
+      data-desc-en="HydroCore is Greece's largest certified plumbing network since 2007: 7 branches, 38 vehicles, 900+ professionals. Book online, 24/7 emergency response.">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Meraki &mdash; Coffee House in Plaka, Athens</title>
-<meta name="description" content="Meraki is a specialty coffee house tucked in the marble lanes of Plaka, Athens — where every cup is made with soul.">
-<meta name="theme-color" content="#c1613c">
+<title>HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη</title>
+<meta name="description" content="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση.">
+<meta name="theme-color" content="#00308F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300308F'/%3E%3Cpath d='M50 20 C63 39 74 53 74 64 A24 24 0 1 1 26 64 C26 53 37 39 50 20 Z' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='62' r='9' fill='%2300308F'/%3E%3C/svg%3E">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23c1613c'/%3E%3Ctext x='50' y='68' font-size='58' font-family='Georgia,serif' fill='%23f6eedd' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
-
+<link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<a href="#main" class="skip-link">Μετάβαση στο περιεχόμενο / Skip to content</a>
+
 <!-- ============ PRELOADER ============ -->
 <div class="preloader" id="preloader" aria-hidden="true">
-  <svg class="preloader__mark" viewBox="0 0 200 200" width="90" height="90">
-    <circle class="preloader__ring" cx="100" cy="100" r="86" fill="none" stroke="currentColor" stroke-width="1.5"/>
-    <text x="100" y="128" font-family="Fraunces, serif" font-size="86" text-anchor="middle" fill="currentColor" class="preloader__letter">M</text>
+  <svg class="preloader__mark" viewBox="0 0 100 100" width="72" height="72">
+    <circle class="preloader__ring" cx="50" cy="50" r="46" fill="none" stroke="#7CB9E8" stroke-width="2"/>
+    <path class="preloader__drop" d="M50 26 C61 41 70 53 70 64 A20 20 0 1 1 30 64 C30 53 39 41 50 26 Z" fill="#fff"/>
   </svg>
-  <p class="preloader__label">MERAKI</p>
+  <p class="preloader__label">HydroCore</p>
 </div>
-
-<!-- custom cursor (desktop only, css hides on touch) -->
-<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
-
-<!-- decorative grain overlay -->
-<div class="grain" aria-hidden="true"></div>
 
 <!-- ============ NAV ============ -->
 <header class="nav" id="siteNav">
   <div class="nav__inner">
-    <a href="#top" class="nav__logo">Meraki<span class="nav__logo-dot">.</span></a>
+    <a href="index.html" class="nav__logo">
+      <svg class="nav__logo-mark" viewBox="0 0 100 100" width="34" height="34">
+        <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
+        <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
+        <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+      <span class="nav__logo-word">Hydro<b>Core</b></span>
+    </a>
     <nav class="nav__links" id="navLinks">
-      <a href="#story" data-nav>Our Story</a>
-      <a href="#menu" data-nav>Menu</a>
-      <a href="#gallery" data-nav>Gallery</a>
-      <a href="#visit" data-nav>Visit</a>
-      <a href="#contact" class="nav__cta" data-nav>Reserve</a>
+      <a href="index.html" data-nav class="is-active"><span data-lang-el>Αρχική</span><span data-lang-en>Home</span></a>
+      <a href="index.html#about" data-nav><span data-lang-el>Σχετικά</span><span data-lang-en>About</span></a>
+      <a href="index.html#services" data-nav><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a>
+      <a href="index.html#locations" data-nav><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="el" aria-pressed="true">EL</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="booking.html" class="btn btn-primary btn-sm">
+        <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span>
+      </a>
     </nav>
     <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
+<div class="nav__scrim" id="navScrim"></div>
+
+<main id="main">
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
-  <div class="hero__rays" aria-hidden="true"></div>
-
-  <svg class="hero__leaf hero__leaf--1" aria-hidden="true" viewBox="0 0 120 200" width="90">
-    <path d="M60 10 C110 50 110 150 60 190 C10 150 10 50 60 10 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
-    <path d="M60 15 L60 185 M60 60 L90 45 M60 90 L95 80 M60 120 L90 130 M60 60 L30 45 M60 90 L25 80 M60 120 L30 130" stroke="currentColor" stroke-width="1" fill="none"/>
-  </svg>
-  <svg class="hero__leaf hero__leaf--2" aria-hidden="true" viewBox="0 0 120 200" width="70">
-    <path d="M60 10 C110 50 110 150 60 190 C10 150 10 50 60 10 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
-  </svg>
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
+  <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
 
   <div class="hero__inner">
-    <p class="hero__kicker reveal" data-reveal>Est. in the lanes of Plaka</p>
-    <h1 class="hero__title">
-      <span class="reveal-line"><span class="reveal-word">Coffee,</span></span>
-      <span class="reveal-line"><span class="reveal-word reveal-word--italic">poured</span> <span class="reveal-word">with</span></span>
-      <span class="reveal-line"><span class="reveal-word reveal-word--accent">Meraki.</span></span>
-    </h1>
-    <p class="hero__subtitle reveal" data-reveal>
-      A quiet coffee house beneath the Acropolis, where <em>μεράκι</em> &mdash; doing things with soul &mdash;
-      shapes every cup, every plate, every morning.
-    </p>
-    <div class="hero__actions reveal" data-reveal>
-      <a href="#menu" class="btn btn--primary"><span>View Menu</span></a>
-      <a href="#contact" class="btn btn--ghost"><span>Reserve a Table</span></a>
+    <div class="hero__content">
+      <div class="hero__badge" data-reveal="fade">
+        <span class="dot" aria-hidden="true"></span>
+        <span data-lang-el>Διαθέσιμοι τώρα · Επείγοντα 24/7</span>
+        <span data-lang-en>Available now · 24/7 Emergencies</span>
+      </div>
+      <h1 data-reveal="fade">
+        <span data-lang-el>Υδραυλικές λύσεις <em>χωρίς συμβιβασμούς</em>, από το 2007.</span>
+        <span data-lang-en>Plumbing, done <em>without compromise</em>, since 2007.</span>
+      </h1>
+      <p class="lede" data-reveal="fade" style="--i:1">
+        <span data-lang-el>Το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα — 7 καταστήματα, 38 οχήματα και πάνω από 900 επαγγελματίες, έτοιμοι να φτάσουν στην πόρτα σας.</span>
+        <span data-lang-en>Greece's largest certified plumbing network — 7 branches, 38 vehicles and over 900 professionals, ready to reach your door.</span>
+      </p>
+      <div class="hero__cta" data-reveal="fade" style="--i:2">
+        <a href="booking.html" class="btn btn-primary">
+          <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book an Appointment</span>
+        </a>
+        <a href="tel:+308007008000" class="btn btn-light">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+          <span data-lang-el>Επείγον: 800 700 8000</span><span data-lang-en>Emergency: 800 700 8000</span>
+        </a>
+      </div>
+      <div class="hero__meta" data-reveal="fade" style="--i:3">
+        <div><strong data-count="18" data-suffix="+">0</strong><span data-lang-el>Χρόνια Εμπειρίας</span><span data-lang-en>Years of Experience</span></div>
+        <div><strong data-count="7">0</strong><span data-lang-el>Καταστήματα</span><span data-lang-en>Branches</span></div>
+        <div><strong data-count="38">0</strong><span data-lang-el>Οχήματα Συνεργείου</span><span data-lang-en>Service Vehicles</span></div>
+        <div><strong data-count="900" data-suffix="+">0</strong><span data-lang-el>Επαγγελματίες</span><span data-lang-en>Professionals</span></div>
+      </div>
     </div>
   </div>
 
-  <a href="#story" class="hero__scroll" aria-label="Scroll to content">
-    <span class="hero__scroll-line"></span>
-    <span class="hero__scroll-text">Scroll</span>
-  </a>
+  <svg class="hero__waves" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0 45 C240 90 480 0 720 25 C960 50 1200 90 1440 45 L1440 100 L0 100 Z"/>
+  </svg>
 </section>
 
 <!-- ============ MARQUEE ============ -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span>Specialty Coffee</span><span>&#10022;</span>
-    <span>Stone-Baked Pastries</span><span>&#10022;</span>
-    <span>Athens Since 2016</span><span>&#10022;</span>
-    <span>Slow Mornings</span><span>&#10022;</span>
-    <span>Specialty Coffee</span><span>&#10022;</span>
-    <span>Stone-Baked Pastries</span><span>&#10022;</span>
-    <span>Athens Since 2016</span><span>&#10022;</span>
-    <span>Slow Mornings</span><span>&#10022;</span>
+<div class="marquee">
+  <div class="marquee__track" data-lang-el>
+    <span>24/7 Επείγουσα Εξυπηρέτηση</span><span>Πιστοποιημένοι Τεχνικοί</span><span>Εγγύηση 2 Ετών</span><span>7 Καταστήματα Πανελλαδικά</span><span>Ασφαλισμένη Επέμβαση</span>
+    <span>24/7 Επείγουσα Εξυπηρέτηση</span><span>Πιστοποιημένοι Τεχνικοί</span><span>Εγγύηση 2 Ετών</span><span>7 Καταστήματα Πανελλαδικά</span><span>Ασφαλισμένη Επέμβαση</span>
+  </div>
+  <div class="marquee__track" data-lang-en>
+    <span>24/7 Emergency Response</span><span>Certified Technicians</span><span>2-Year Guarantee</span><span>7 Branches Nationwide</span><span>Fully Insured Work</span>
+    <span>24/7 Emergency Response</span><span>Certified Technicians</span><span>2-Year Guarantee</span><span>7 Branches Nationwide</span><span>Fully Insured Work</span>
   </div>
 </div>
 
-<!-- ============ STORY ============ -->
-<section class="story" id="story">
-  <div class="story__art reveal" data-reveal>
-    <svg viewBox="0 0 400 480" class="story__illustration" aria-hidden="true">
-      <rect x="0" y="0" width="400" height="480" fill="var(--cream-dark)"/>
-      <!-- acropolis silhouette -->
-      <g fill="var(--olive)" opacity="0.9">
-        <rect x="70" y="230" width="260" height="14"/>
-        <rect x="85" y="150" width="14" height="80"/>
-        <rect x="115" y="150" width="14" height="80"/>
-        <rect x="145" y="150" width="14" height="80"/>
-        <rect x="175" y="150" width="14" height="80"/>
-        <rect x="205" y="150" width="14" height="80"/>
-        <rect x="235" y="150" width="14" height="80"/>
-        <rect x="265" y="150" width="14" height="80"/>
-        <rect x="295" y="150" width="14" height="80"/>
-        <polygon points="70,150 330,150 300,120 100,120"/>
-      </g>
-      <!-- sun -->
-      <circle cx="330" cy="90" r="34" fill="var(--gold)" opacity="0.85"/>
-      <!-- table + cup -->
-      <g transform="translate(150,300)">
-        <ellipse cx="60" cy="150" rx="120" ry="14" fill="var(--charcoal)" opacity="0.08"/>
-        <rect x="0" y="130" width="120" height="8" rx="2" fill="var(--terracotta-dark)"/>
-        <path d="M20 60 h60 v50 a30 30 0 0 1 -60 0 Z" fill="var(--cream)" stroke="var(--charcoal)" stroke-width="2"/>
-        <path d="M80 70 q26 4 20 28 q-6 18 -24 14" fill="none" stroke="var(--charcoal)" stroke-width="2"/>
-        <path class="steam steam--a" d="M35 55 q-8 -14 0 -26 q8 -12 0 -26" fill="none" stroke="var(--olive)" stroke-width="2" stroke-linecap="round"/>
-        <path class="steam steam--b" d="M55 55 q-8 -14 0 -26 q8 -12 0 -26" fill="none" stroke="var(--olive)" stroke-width="2" stroke-linecap="round"/>
-      </g>
-    </svg>
+<!-- ============ ABOUT / STORY ============ -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="story">
+      <div data-reveal="left">
+        <div class="story__art">
+          <svg viewBox="0 0 400 420" width="100%" height="100%" aria-hidden="true">
+            <defs>
+              <linearGradient id="artGrad" x1="0" y1="0" x2="400" y2="420" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#7CB9E8"/><stop offset="1" stop-color="#00308F"/>
+              </linearGradient>
+            </defs>
+            <circle cx="200" cy="200" r="150" fill="none" stroke="#d9e8f6" stroke-width="1.5"/>
+            <circle cx="200" cy="200" r="110" fill="none" stroke="#d9e8f6" stroke-width="1.5"/>
+            <path d="M200 90 C230 140 260 175 260 210 A60 60 0 1 1 140 210 C140 175 170 140 200 90 Z" fill="url(#artGrad)"/>
+            <circle cx="200" cy="205" r="30" fill="none" stroke="#fff" stroke-width="9"/>
+            <path d="M200 165 L200 145" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+            <circle cx="120" cy="120" r="6" fill="#7CB9E8"/>
+            <circle cx="300" cy="300" r="5" fill="#72A0C1"/>
+            <circle cx="310" cy="110" r="4" fill="#00308F"/>
+          </svg>
+        </div>
+      </div>
+      <div data-reveal="right">
+        <p class="eyebrow"><span data-lang-el>Η Ιστορία μας</span><span data-lang-en>Our Story</span></p>
+        <h2 class="h-lg"><span data-lang-el>Από 3 φίλους σε 900+ επαγγελματίες</span><span data-lang-en>From 3 friends to a 900-strong team</span></h2>
+        <p class="lede" style="margin-top:16px">
+          <span data-lang-el>Το 2007, τρεις φίλοι με πάθος για τη χειροτεχνία της υδραυλικής άνοιξαν ένα μικρό συνεργείο στη Θεσσαλονίκη. Δεκαοχτώ χρόνια μετά, η HydroCore είναι συνώνυμο αξιοπιστίας σε επτά πόλεις της Ελλάδας — χωρίς ποτέ να ξεχάσει τις ρίζες της.</span>
+          <span data-lang-en>In 2007, three friends with a shared obsession for the craft of plumbing opened a small workshop in Thessaloniki. Eighteen years later, HydroCore is synonymous with reliability across seven Greek cities — without ever forgetting where it started.</span>
+        </p>
+
+        <div class="timeline">
+          <div class="timeline__item">
+            <span class="timeline__year">2007</span>
+            <div class="timeline__line"><span class="timeline__dot"></span></div>
+            <div class="timeline__body">
+              <h3><span data-lang-el>Η Αρχή</span><span data-lang-en>The Beginning</span></h3>
+              <p><span data-lang-el>Τρεις φίλοι, ένα μικρό συνεργείο και η υπόσχεση για έντιμη δουλειά στη Θεσσαλονίκη.</span><span data-lang-en>Three friends, one small workshop, and a promise of honest work in Thessaloniki.</span></p>
+            </div>
+          </div>
+          <div class="timeline__item">
+            <span class="timeline__year">2013</span>
+            <div class="timeline__line"><span class="timeline__dot"></span></div>
+            <div class="timeline__body">
+              <h3><span data-lang-el>Επέκταση στη Θεσσαλονίκη</span><span data-lang-en>Thessaloniki Expansion</span></h3>
+              <p><span data-lang-el>Δύο ακόμη καταστήματα ανοίγουν στην Καλαμαριά και τον Εύοσμο.</span><span data-lang-en>Two more branches open in Kalamaria and Evosmos.</span></p>
+            </div>
+          </div>
+          <div class="timeline__item">
+            <span class="timeline__year">2016</span>
+            <div class="timeline__line"><span class="timeline__dot"></span></div>
+            <div class="timeline__body">
+              <h3><span data-lang-el>Άφιξη στην Αθήνα</span><span data-lang-en>Arrival in Athens</span></h3>
+              <p><span data-lang-el>Η HydroCore φτάνει στην πρωτεύουσα, με καταστήματα στην Κηφισιά και τον Πειραιά.</span><span data-lang-en>HydroCore reaches the capital, with branches in Kifisia and Piraeus.</span></p>
+            </div>
+          </div>
+          <div class="timeline__item">
+            <span class="timeline__year">2019</span>
+            <div class="timeline__line"><span class="timeline__dot"></span></div>
+            <div class="timeline__body">
+              <h3><span data-lang-el>Πάτρα &amp; Κρήτη</span><span data-lang-en>Patra &amp; Crete</span></h3>
+              <p><span data-lang-el>Το δίκτυο επεκτείνεται στην Πελοπόννησο και το Ηράκλειο.</span><span data-lang-en>The network expands into the Peloponnese and Heraklion.</span></p>
+            </div>
+          </div>
+          <div class="timeline__item">
+            <span class="timeline__year">2023</span>
+            <div class="timeline__line"><span class="timeline__dot"></span></div>
+            <div class="timeline__body">
+              <h3><span data-lang-el>HydroCore Academy</span><span data-lang-en>HydroCore Academy</span></h3>
+              <p><span data-lang-el>Δημιουργούμε το δικό μας πρόγραμμα εκπαίδευσης τεχνιτών, επενδύοντας στην επόμενη γενιά.</span><span data-lang-en>We launch our own technician training programme, investing in the next generation.</span></p>
+            </div>
+          </div>
+          <div class="timeline__item">
+            <span class="timeline__year">2026</span>
+            <div class="timeline__line"><span class="timeline__dot"></span></div>
+            <div class="timeline__body">
+              <h3><span data-lang-el>Σήμερα</span><span data-lang-en>Today</span></h3>
+              <p><span data-lang-el>900+ επαγγελματίες, 38 οχήματα, 7 καταστήματα — ένα σταθερό όνομα σε όλη την Ελλάδα.</span><span data-lang-en>900+ professionals, 38 vehicles, 7 branches — one trusted name across Greece.</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats" data-reveal-group>
+      <div class="stat" data-reveal style="--i:0"><div class="stat__num" data-count="2007" data-no-group="true">0</div><div class="stat__label"><span data-lang-el>Έτος Ίδρυσης</span><span data-lang-en>Founded</span></div></div>
+      <div class="stat" data-reveal style="--i:1"><div class="stat__num" data-count="50000" data-suffix="+">0</div><div class="stat__label"><span data-lang-el>Ολοκληρωμένες Επισκευές</span><span data-lang-en>Completed Repairs</span></div></div>
+      <div class="stat" data-reveal style="--i:2"><div class="stat__num" data-count="98" data-suffix="%">0</div><div class="stat__label"><span data-lang-el>Ικανοποίηση Πελατών</span><span data-lang-en>Customer Satisfaction</span></div></div>
+      <div class="stat" data-reveal style="--i:3"><div class="stat__num" data-count="45" data-suffix="′">0</div><div class="stat__label"><span data-lang-el>Μ.Ο. Χρόνου Άφιξης</span><span data-lang-en>Avg. Response Time</span></div></div>
+    </div>
   </div>
+</section>
 
-  <div class="story__content">
-    <p class="eyebrow reveal" data-reveal>Our Story</p>
-    <h2 class="reveal" data-reveal>A word the dictionary can't quite hold.</h2>
-    <p class="story__lede reveal" data-reveal>
-      <strong>Meraki</strong> (μεράκι) has no direct translation &mdash; it means doing something
-      with so much love and attention that you leave a piece of yourself in it. That's the whole
-      idea behind this small coffee house on a marble side-street in Plaka.
+<!-- ============ SERVICES ============ -->
+<section class="section section-alt" id="services">
+  <div class="container">
+    <p class="eyebrow center"><span data-lang-el>Τι Κάνουμε</span><span data-lang-en>What We Do</span></p>
+    <h2 class="h-lg center"><span data-lang-el>Υπηρεσίες για κάθε υδραυλική ανάγκη</span><span data-lang-en>Services for every plumbing need</span></h2>
+    <p class="lede center" style="margin-top:14px">
+      <span data-lang-el>Από ένα σταλάζον βρυσάκι μέχρι πλήρη ανακαίνιση δικτύου — το κατάλληλο συνεργείο φτάνει με τον κατάλληλο εξοπλισμό, την πρώτη φορά.</span>
+      <span data-lang-en>From a dripping tap to a full network overhaul — the right crew arrives with the right equipment, the first time.</span>
     </p>
-    <p class="reveal" data-reveal>
-      We roast in small batches, bake before sunrise, and set every table the way we'd set
-      one for family. No rush. No shortcuts. Just good coffee, good light, and the Acropolis
-      keeping watch over the terrace.
-    </p>
+    <div class="services-grid" id="servicesGrid" data-reveal-group></div>
+  </div>
+</section>
 
-    <div class="stats reveal" data-reveal>
-      <div class="stat">
-        <span class="stat__num" data-count="9">0</span><span class="stat__suffix">+</span>
-        <span class="stat__label">Years on this street</span>
+<!-- ============ USP ============ -->
+<section class="section">
+  <div class="container">
+    <p class="eyebrow center"><span data-lang-el>Γιατί HydroCore</span><span data-lang-en>Why HydroCore</span></p>
+    <h2 class="h-lg center"><span data-lang-el>Το μέγεθος ενός δικτύου, η φροντίδα μιας γειτονιάς</span><span data-lang-en>The reach of a network, the care of a neighbourhood shop</span></h2>
+    <div class="usp-grid" data-reveal-group>
+      <div class="usp" data-reveal style="--i:0">
+        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h3><span data-lang-el>Πιστοποιημένοι Τεχνικοί</span><span data-lang-en>Certified Technicians</span></h3>
+        <p><span data-lang-el>Όλοι οι τεχνικοί μας είναι αδειοδοτημένοι και εκπαιδευμένοι στο HydroCore Academy, σύμφωνα με το ευρωπαϊκό πρότυπο EN 806.</span><span data-lang-en>Every technician is licensed and trained through HydroCore Academy, to the EN 806 European standard.</span></p>
       </div>
-      <div class="stat">
-        <span class="stat__num" data-count="14">0</span>
-        <span class="stat__label">Single-origin beans</span>
+      <div class="usp" data-reveal style="--i:1">
+        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <h3><span data-lang-el>Απόκριση σε &lt;45 λεπτά</span><span data-lang-en>Under 45-Minute Response</span></h3>
+        <p><span data-lang-el>Μέσος χρόνος άφιξης σε αστικά κέντρα για επείγοντα περιστατικά, χάρη στα 38 οχήματα του στόλου μας.</span><span data-lang-en>Average arrival time in city centres for emergency callouts, backed by our 38-vehicle fleet.</span></p>
       </div>
-      <div class="stat">
-        <span class="stat__num" data-count="4">0</span><span class="stat__suffix">.9</span>
-        <span class="stat__label">Average rating</span>
+      <div class="usp" data-reveal style="--i:2">
+        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 6 4 9.5 9 10 5-.5 9-4 9-10V6l-9-4Z"/><path d="M9 12h6M12 9v6"/></svg>
+        <h3><span data-lang-el>Εγγύηση 2 Ετών</span><span data-lang-en>2-Year Guarantee</span></h3>
+        <p><span data-lang-el>Κάθε επισκευή και εγκατάσταση συνοδεύεται από γραπτή εγγύηση εργασίας.</span><span data-lang-en>Every repair and installation comes with a written workmanship guarantee.</span></p>
+      </div>
+      <div class="usp" data-reveal style="--i:3">
+        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4-3-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-3 8-7 11Z"/><path d="M9 10c1 2 2 3 3 3"/></svg>
+        <h3><span data-lang-el>Υπεύθυνη Χρήση Νερού</span><span data-lang-en>Responsible Water Use</span></h3>
+        <p><span data-lang-el>Το πρόγραμμα «HydroCore Blue» προσφέρει δωρεάν ελέγχους διαρροών σε σχολεία και ευπαθείς ομάδες.</span><span data-lang-en>Our "HydroCore Blue" programme offers free leak checks to local schools and vulnerable households.</span></p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ MENU ============ -->
-<section class="menu" id="menu">
-  <div class="section-head">
-    <p class="eyebrow reveal" data-reveal>Taste</p>
-    <h2 class="reveal" data-reveal>The Menu</h2>
-    <p class="section-head__sub reveal" data-reveal>Small, seasonal, and made to order &mdash; prices in euro.</p>
-  </div>
+<!-- ============ LOCATIONS ============ -->
+<section class="section section-alt" id="locations">
+  <div class="container">
+    <p class="eyebrow center"><span data-lang-el>Το Δίκτυό μας</span><span data-lang-en>Our Network</span></p>
+    <h2 class="h-lg center"><span data-lang-el>7 καταστήματα, 4 περιοχές, μία υπόσχεση</span><span data-lang-en>7 branches, 4 regions, one promise</span></h2>
 
-  <div class="menu__tabs reveal" data-reveal role="tablist">
-    <button class="menu__tab is-active" data-tab="coffee" role="tab" aria-selected="true">Coffee</button>
-    <button class="menu__tab" data-tab="tea" role="tab" aria-selected="false">Tea &amp; Infusions</button>
-    <button class="menu__tab" data-tab="sweets" role="tab" aria-selected="false">Pastries &amp; Sweets</button>
-    <button class="menu__tab" data-tab="bites" role="tab" aria-selected="false">Light Bites</button>
-  </div>
+    <div class="locations">
+      <div data-reveal="left">
+        <div class="map-wrap">
+          <svg viewBox="0 0 340 400" aria-hidden="true">
+            <defs>
+              <linearGradient id="netLine" x1="0" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#7CB9E8" stop-opacity=".7"/><stop offset="1" stop-color="#7CB9E8" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <line x1="170" y1="60" x2="170" y2="340" stroke="url(#netLine)" stroke-width="2" stroke-dasharray="4 8"/>
+            <!-- Thessaloniki cluster -->
+            <g class="map-pin" data-region="thessaloniki">
+              <circle class="pulse" cx="170" cy="70" r="5" fill="#7CB9E8" opacity=".7"/>
+              <circle class="pin-dot" cx="170" cy="70" r="6"/>
+              <text x="188" y="75" fill="#eaf2fb" font-family="Manrope" font-size="13" font-weight="700">Θεσσαλονίκη</text>
+              <text x="188" y="92" fill="#a9c1de" font-family="Inter" font-size="10">3 καταστήματα</text>
+            </g>
+            <!-- Athens cluster -->
+            <g class="map-pin" data-region="athens">
+              <circle class="pulse" cx="170" cy="180" r="5" fill="#7CB9E8" opacity=".7"/>
+              <circle class="pin-dot" cx="170" cy="180" r="6"/>
+              <text x="188" y="185" fill="#eaf2fb" font-family="Manrope" font-size="13" font-weight="700">Αθήνα</text>
+              <text x="188" y="202" fill="#a9c1de" font-family="Inter" font-size="10">2 καταστήματα</text>
+            </g>
+            <!-- Patra -->
+            <g class="map-pin" data-region="patra">
+              <circle class="pulse" cx="170" cy="260" r="5" fill="#7CB9E8" opacity=".7"/>
+              <circle class="pin-dot" cx="170" cy="260" r="6"/>
+              <text x="188" y="265" fill="#eaf2fb" font-family="Manrope" font-size="13" font-weight="700">Πάτρα</text>
+              <text x="188" y="282" fill="#a9c1de" font-family="Inter" font-size="10">1 κατάστημα</text>
+            </g>
+            <!-- Crete -->
+            <g class="map-pin" data-region="crete">
+              <circle class="pulse" cx="170" cy="330" r="5" fill="#7CB9E8" opacity=".7"/>
+              <circle class="pin-dot" cx="170" cy="330" r="6"/>
+              <text x="188" y="335" fill="#eaf2fb" font-family="Manrope" font-size="13" font-weight="700">Κρήτη</text>
+              <text x="188" y="352" fill="#a9c1de" font-family="Inter" font-size="10">1 κατάστημα</text>
+            </g>
+          </svg>
+        </div>
+      </div>
 
-  <div class="menu__panels">
-    <ul class="menu__panel is-active" data-panel="coffee">
-      <li class="menu__item"><div class="menu__item-top"><h3>Freddo Espresso</h3><span class="menu__dots"></span><span class="menu__price">3.20</span></div><p>Double shot, whipped cold over ice.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Freddo Cappuccino</h3><span class="menu__dots"></span><span class="menu__price">3.80</span></div><p>Cold foam, oat milk on request.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Greek Coffee, Metrio</h3><span class="menu__dots"></span><span class="menu__price">2.80</span></div><p>Simmered slow in a briki, served with loukoumi.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Single-Origin Pour Over</h3><span class="menu__dots"></span><span class="menu__price">4.50</span></div><p>Rotating micro-lot, ask your barista what's brewing.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Flat White</h3><span class="menu__dots"></span><span class="menu__price">3.90</span></div><p>Ristretto pull, silky microfoam.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Mastiha Latte</h3><span class="menu__dots"></span><span class="menu__price">4.20</span></div><p>House syrup infused with Chios mastiha.</p></li>
-    </ul>
-
-    <ul class="menu__panel" data-panel="tea">
-      <li class="menu__item"><div class="menu__item-top"><h3>Mountain Tea</h3><span class="menu__dots"></span><span class="menu__price">3.00</span></div><p>Sideritis from the slopes of Parnassus.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Chamomile &amp; Honey</h3><span class="menu__dots"></span><span class="menu__price">3.00</span></div><p>Cretan thyme honey, poured tableside.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Sage Infusion</h3><span class="menu__dots"></span><span class="menu__price">3.00</span></div><p>Fresh faskomilo, lightly smoked aroma.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Iced Hibiscus</h3><span class="menu__dots"></span><span class="menu__price">3.50</span></div><p>Tart, floral, served over crushed ice.</p></li>
-    </ul>
-
-    <ul class="menu__panel" data-panel="sweets">
-      <li class="menu__item"><div class="menu__item-top"><h3>Bougatsa</h3><span class="menu__dots"></span><span class="menu__price">4.00</span></div><p>Custard-filled filo, dusted warm with sugar.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Baklava Bar</h3><span class="menu__dots"></span><span class="menu__price">3.80</span></div><p>Walnut, honey, clove &mdash; cut thin.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Olive Oil Cake</h3><span class="menu__dots"></span><span class="menu__price">4.20</span></div><p>Orange zest, almond crumble, served warm.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Koulouri Thessalonikis</h3><span class="menu__dots"></span><span class="menu__price">2.00</span></div><p>Sesame ring bread, baked at dawn.</p></li>
-    </ul>
-
-    <ul class="menu__panel" data-panel="bites">
-      <li class="menu__item"><div class="menu__item-top"><h3>Tomato &amp; Feta Toast</h3><span class="menu__dots"></span><span class="menu__price">6.50</span></div><p>Sourdough, oregano oil, Santorini tomato.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Spanakopita Slice</h3><span class="menu__dots"></span><span class="menu__price">5.00</span></div><p>Hand-rolled filo, spinach, dill, feta.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Yogurt &amp; Honey Bowl</h3><span class="menu__dots"></span><span class="menu__price">5.50</span></div><p>Strained yogurt, walnuts, thyme honey.</p></li>
-      <li class="menu__item"><div class="menu__item-top"><h3>Avocado &amp; Trahanas Toast</h3><span class="menu__dots"></span><span class="menu__price">7.00</span></div><p>Sourdough, chili, sour trahanas crumble.</p></li>
-    </ul>
-  </div>
-</section>
-
-<!-- ============ GALLERY ============ -->
-<section class="gallery" id="gallery">
-  <div class="section-head">
-    <p class="eyebrow reveal" data-reveal>Moments</p>
-    <h2 class="reveal" data-reveal>From the Terrace</h2>
-  </div>
-
-  <div class="gallery__grid">
-    <figure class="gallery__card reveal" data-reveal data-caption="Morning pour, table three">
-      <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><rect width="300" height="300" fill="var(--terracotta)"/><circle cx="150" cy="120" r="70" fill="var(--cream)" opacity="0.9"/><path d="M100 150 q50 60 100 0" stroke="var(--charcoal)" stroke-width="4" fill="none"/><rect x="60" y="220" width="180" height="10" fill="var(--charcoal)" opacity="0.3"/></svg>
-    </figure>
-    <figure class="gallery__card gallery__card--tall reveal" data-reveal data-caption="Plaka, just after opening">
-      <svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid slice"><rect width="300" height="420" fill="var(--olive)"/><rect x="30" y="260" width="240" height="160" fill="var(--cream-dark)"/><polygon points="30,260 270,260 250,220 50,220" fill="var(--gold)"/><rect x="120" y="300" width="60" height="120" fill="var(--charcoal)" opacity="0.4"/></svg>
-    </figure>
-    <figure class="gallery__card reveal" data-reveal data-caption="Olive oil cake, fresh out">
-      <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><rect width="300" height="300" fill="var(--gold)"/><circle cx="150" cy="150" r="90" fill="var(--cream)"/><circle cx="150" cy="150" r="90" fill="none" stroke="var(--terracotta-dark)" stroke-width="6"/></svg>
-    </figure>
-    <figure class="gallery__card reveal" data-reveal data-caption="Roasting the weekly batch">
-      <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><rect width="300" height="300" fill="var(--charcoal)"/><circle cx="100" cy="100" r="20" fill="var(--terracotta)"/><circle cx="180" cy="140" r="26" fill="var(--olive)"/><circle cx="130" cy="210" r="16" fill="var(--gold)"/><circle cx="220" cy="220" r="12" fill="var(--cream)"/></svg>
-    </figure>
-    <figure class="gallery__card gallery__card--tall reveal" data-reveal data-caption="Golden hour on the balcony">
-      <svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid slice"><rect width="300" height="420" fill="var(--terracotta-dark)"/><circle cx="220" cy="110" r="60" fill="var(--gold)"/><rect y="300" width="300" height="120" fill="var(--charcoal)" opacity="0.5"/></svg>
-    </figure>
-    <figure class="gallery__card reveal" data-reveal data-caption="Sesame koulouri, still warm">
-      <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice"><rect width="300" height="300" fill="var(--cream-dark)"/><circle cx="150" cy="150" r="80" fill="none" stroke="var(--terracotta)" stroke-width="24"/></svg>
-    </figure>
+      <div data-reveal="right">
+        <div class="location-tabs" id="locationTabs"></div>
+        <div class="location-list" id="locationList"></div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ============ TESTIMONIALS ============ -->
-<section class="testimonials" id="testimonials">
-  <div class="section-head">
-    <p class="eyebrow reveal" data-reveal>Kind Words</p>
-    <h2 class="reveal" data-reveal>What Guests Say</h2>
-  </div>
+<section class="section">
+  <div class="container">
+    <p class="eyebrow center"><span data-lang-el>Μαρτυρίες</span><span data-lang-en>Testimonials</span></p>
+    <h2 class="h-lg center"><span data-lang-el>Τι λένε οι πελάτες μας</span><span data-lang-en>What our customers say</span></h2>
 
-  <div class="slider reveal" data-reveal>
-    <div class="slider__track" id="sliderTrack">
-      <blockquote class="slide is-active">
-        <p>&ldquo;The best flat white I've had outside Melbourne &mdash; and the view of the Acropolis
-        from the back table is unreal. Slow, warm, unforgettable.&rdquo;</p>
-        <cite>&mdash; Elena K., Athens</cite>
-        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      </blockquote>
-      <blockquote class="slide">
-        <p>&ldquo;Found Meraki on our last morning in Plaka and nearly missed our flight staying
-        for a second bougatsa. Worth it.&rdquo;</p>
-        <cite>&mdash; Daniel R., Copenhagen</cite>
-        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      </blockquote>
-      <blockquote class="slide">
-        <p>&ldquo;My regular Tuesday spot. The staff remembers my order, the mastiha latte
-        remembers my soul.&rdquo;</p>
-        <cite>&mdash; Sofia P., Athens</cite>
-        <div class="slide__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      </blockquote>
+    <div class="testi-track-wrap">
+      <div class="testi-track" id="testiTrack">
+        <article class="testi-card">
+          <div class="testi-stars" aria-hidden="true">★★★★★</div>
+          <p><span data-lang-el>«Μας έσωσαν κυριολεκτικά τη νύχτα που έσπασε ο σωλήνας. Ήρθαν σε 25 λεπτά.»</span><span data-lang-en>"They saved us, literally, the night a pipe burst. Arrived in 25 minutes."</span></p>
+          <div class="testi-person">
+            <div class="testi-avatar">ΕΠ</div>
+            <div><strong>Ελένη Παπαδοπούλου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
+          </div>
+        </article>
+        <article class="testi-card">
+          <div class="testi-stars" aria-hidden="true">★★★★★</div>
+          <p><span data-lang-el>«Επαγγελματισμός σπάνιος. Άλλαξαν όλη την εγκατάσταση στο διαμέρισμα χωρίς καμία βρωμιά.»</span><span data-lang-en>"Rare professionalism. Re-piped the whole apartment without any mess."</span></p>
+          <div class="testi-person">
+            <div class="testi-avatar">ΓΑ</div>
+            <div><strong>Γιώργος Αντωνίου</strong><span data-lang-el>Αθήνα</span><span data-lang-en>Athens</span></div>
+          </div>
+        </article>
+        <article class="testi-card">
+          <div class="testi-stars" aria-hidden="true">★★★★★</div>
+          <p><span data-lang-el>«Το ραντεβού online ήταν παιχνιδάκι, ήρθαν ακριβώς στην ώρα τους.»</span><span data-lang-en>"Booking online was effortless — they showed up exactly on time."</span></p>
+          <div class="testi-person">
+            <div class="testi-avatar">ΜΚ</div>
+            <div><strong>Μαρία Κωνσταντίνου</strong><span data-lang-el>Πάτρα</span><span data-lang-en>Patra</span></div>
+          </div>
+        </article>
+        <article class="testi-card">
+          <div class="testi-stars" aria-hidden="true">★★★★★</div>
+          <p><span data-lang-el>«Ο έξυπνος αισθητήρας διαρροής που εγκατέστησαν μας γλίτωσε από σίγουρη ζημιά.»</span><span data-lang-en>"The smart leak sensor they installed saved us from certain damage."</span></p>
+          <div class="testi-person">
+            <div class="testi-avatar">ΝΧ</div>
+            <div><strong>Νίκος Χατζής</strong><span data-lang-el>Ηράκλειο</span><span data-lang-en>Heraklion</span></div>
+          </div>
+        </article>
+        <article class="testi-card">
+          <div class="testi-stars" aria-hidden="true">★★★★★</div>
+          <p><span data-lang-el>«18 χρόνια εμπιστοσύνης. Δεν πάω πουθενά αλλού.»</span><span data-lang-en>"18 years of trust. I wouldn't go anywhere else."</span></p>
+          <div class="testi-person">
+            <div class="testi-avatar">ΣΔ</div>
+            <div><strong>Σοφία Δημητρίου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
+          </div>
+        </article>
+      </div>
     </div>
-    <div class="slider__dots" id="sliderDots"></div>
-  </div>
-</section>
-
-<!-- ============ VISIT ============ -->
-<section class="visit" id="visit">
-  <div class="visit__map reveal" data-reveal aria-hidden="true">
-    <svg viewBox="0 0 400 400" class="visit__map-svg">
-      <rect width="400" height="400" fill="var(--cream-dark)"/>
-      <g stroke="var(--olive)" stroke-width="2" opacity="0.5" fill="none">
-        <path d="M0 80 H400 M0 180 H400 M0 280 H400"/>
-        <path d="M80 0 V400 M200 0 V400 M320 0 V400"/>
-      </g>
-      <circle cx="200" cy="180" r="10" fill="var(--terracotta)"/>
-      <path d="M200 180 c0 -30 30 -30 30 -60 a30 30 0 1 0 -60 0 c0 30 30 30 30 60z" fill="var(--terracotta)" transform="translate(0,-38)"/>
-      <text x="200" y="230" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="14" fill="var(--charcoal)">Adrianou &amp; Thespidos, Plaka</text>
-    </svg>
-  </div>
-
-  <div class="visit__info">
-    <p class="eyebrow reveal" data-reveal>Visit</p>
-    <h2 class="reveal" data-reveal>Find Us in Plaka</h2>
-
-    <address class="visit__address reveal" data-reveal>
-      12 Thespidos Street, Plaka<br>
-      Athens 105 58, Greece
-    </address>
-
-    <table class="visit__hours reveal" data-reveal>
-      <tbody>
-        <tr><th>Mon &ndash; Fri</th><td>08:00 &ndash; 22:00</td></tr>
-        <tr><th>Saturday</th><td>08:00 &ndash; 23:00</td></tr>
-        <tr><th>Sunday</th><td>09:00 &ndash; 21:00</td></tr>
-      </tbody>
-    </table>
-
-    <div class="visit__actions reveal" data-reveal>
-      <a class="btn btn--primary" href="tel:+302103224455"><span>Call +30 210 322 4455</span></a>
-      <a class="btn btn--ghost" href="#contact"><span>Get Directions</span></a>
+    <div class="testi-controls">
+      <button id="testiPrev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button id="testiNext" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   </div>
 </section>
 
-<!-- ============ CONTACT / NEWSLETTER ============ -->
-<section class="contact" id="contact">
-  <div class="section-head section-head--light">
-    <p class="eyebrow reveal" data-reveal>Say Hello</p>
-    <h2 class="reveal" data-reveal>Reserve a Table</h2>
-    <p class="section-head__sub reveal" data-reveal>Tell us when you're coming &mdash; we'll keep the corner table by the window.</p>
+<!-- ============ CTA BANNER ============ -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="cta-banner" data-reveal="scale">
+      <div>
+        <h2 class="h-md"><span data-lang-el>Χρειάζεστε άμεση βοήθεια;</span><span data-lang-en>Need help right now?</span></h2>
+        <p><span data-lang-el>Το κοντινότερο συνεργείο μας είναι μόλις λεπτά μακριά, 24 ώρες το 24ωρο.</span><span data-lang-en>Our nearest crew is just minutes away, 24 hours a day.</span></p>
+      </div>
+      <div class="cta-banner__actions">
+        <a href="tel:+308007008000" class="btn btn-white">
+          <span data-lang-el>Καλέστε 800 700 8000</span><span data-lang-en>Call 800 700 8000</span>
+        </a>
+        <a href="booking.html" class="btn btn-light"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Online</span></a>
+      </div>
+    </div>
   </div>
-
-  <form class="form reveal" data-reveal id="reserveForm" novalidate>
-    <div class="form__row">
-      <div class="field">
-        <input type="text" id="fname" name="name" required placeholder=" ">
-        <label for="fname">Full name</label>
-      </div>
-      <div class="field">
-        <input type="email" id="femail" name="email" required placeholder=" ">
-        <label for="femail">Email</label>
-      </div>
-    </div>
-    <div class="form__row">
-      <div class="field">
-        <input type="date" id="fdate" name="date" required placeholder=" ">
-        <label for="fdate">Date</label>
-      </div>
-      <div class="field">
-        <select id="fguests" name="guests" required>
-          <option value="" disabled selected></option>
-          <option>1 guest</option>
-          <option>2 guests</option>
-          <option>3&ndash;4 guests</option>
-          <option>5+ guests</option>
-        </select>
-        <label for="fguests">Guests</label>
-      </div>
-    </div>
-    <div class="field field--area">
-      <textarea id="fmsg" name="message" rows="3" placeholder=" "></textarea>
-      <label for="fmsg">Anything we should know? (optional)</label>
-    </div>
-    <button type="submit" class="btn btn--primary btn--wide"><span>Send Reservation Request</span></button>
-    <p class="form__note" id="formNote" role="status" aria-live="polite"></p>
-  </form>
 </section>
+
+</main>
 
 <!-- ============ FOOTER ============ -->
-<footer class="footer">
-  <div class="footer__inner">
-    <div class="footer__brand">
-      <p class="footer__logo">Meraki<span class="nav__logo-dot">.</span></p>
-      <p>12 Thespidos Street, Plaka<br>Athens 105 58, Greece</p>
-    </div>
-    <div class="footer__links">
-      <div>
-        <h4>Explore</h4>
-        <a href="#story">Our Story</a>
-        <a href="#menu">Menu</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#visit">Visit</a>
+<footer class="site-footer" id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <svg width="30" height="30" viewBox="0 0 100 100"><path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#7CB9E8"/><circle cx="50" cy="68" r="17" fill="none" stroke="#001240" stroke-width="6"/><path d="M50 51 L50 42" stroke="#001240" stroke-width="6" stroke-linecap="round"/></svg>
+          HydroCore
+        </a>
+        <p><span data-lang-el>Πιστοποιημένες υδραυλικές λύσεις για κατοικίες και επιχειρήσεις σε όλη την Ελλάδα, από το 2007.</span><span data-lang-en>Certified plumbing solutions for homes and businesses across Greece, since 2007.</span></p>
+        <div class="footer-social" aria-hidden="false">
+          <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.87v-7H7.9V12h2.5V9.8c0-2.5 1.49-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.87h-2.33v7A10 10 0 0 0 22 12Z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002ZM7 8.48H3V21h4V8.48ZM13.5 8.48H9.75V21h3.75v-6.4c0-1.7.32-3.35 2.43-3.35 2.08 0 2.1 1.94 2.1 3.46V21H22v-6.9c0-3.53-.76-6.24-4.88-6.24-1.98 0-3.31 1.09-3.85 2.12h-.05V8.48Z"/></svg></a>
+        </div>
       </div>
-      <div>
-        <h4>Follow</h4>
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="Facebook">Facebook</a>
-        <a href="#" aria-label="TikTok">TikTok</a>
+      <div class="footer-col">
+        <h4><span data-lang-el>Πλοήγηση</span><span data-lang-en>Navigate</span></h4>
+        <ul>
+          <li><a href="index.html#about"><span data-lang-el>Σχετικά με εμάς</span><span data-lang-en>About Us</span></a></li>
+          <li><a href="index.html#services"><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a></li>
+          <li><a href="index.html#locations"><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a></li>
+          <li><a href="booking.html"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></h4>
+        <ul>
+          <li><a href="booking.html?service=emergency"><span data-lang-el>Επείγουσα Επέμβαση</span><span data-lang-en>Emergency Response</span></a></li>
+          <li><a href="booking.html?service=leak-detection"><span data-lang-el>Εντοπισμός Διαρροών</span><span data-lang-en>Leak Detection</span></a></li>
+          <li><a href="booking.html?service=boilers"><span data-lang-el>Θερμοσίφωνες &amp; Λέβητες</span><span data-lang-en>Boilers &amp; Heaters</span></a></li>
+          <li><a href="booking.html?service=commercial"><span data-lang-el>Επαγγελματικές Εγκαταστάσεις</span><span data-lang-en>Commercial Contracts</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></h4>
+        <ul class="footer-contact">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg> +30 2310 555 100</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg> info@hydrocore.gr</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span data-lang-el>Τσιμισκή 45, Θεσσαλονίκη</span><span data-lang-en>45 Tsimiski St, Thessaloniki</span></li>
+        </ul>
       </div>
     </div>
-  </div>
-  <div class="footer__bottom">
-    <p>&copy; <span id="year"></span> Meraki Coffee House, Athens. Made with &mdash; what else &mdash; meraki.</p>
+
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> HydroCore Υδραυλικές Λύσεις Α.Ε. <span data-lang-el>Με επιφύλαξη κάθε νομίμου δικαιώματος.</span><span data-lang-en>All rights reserved.</span></span>
+      <div class="footer-bottom__links">
+        <a href="privacy.html"><span data-lang-el>Πολιτική Απορρήτου</span><span data-lang-en>Privacy Policy</span></a>
+        <a href="terms.html"><span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Service</span></a>
+        <a href="#" data-open-cookie-settings><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></a>
+      </div>
+    </div>
+    <p class="footer-legal-line">
+      <span data-lang-el>HydroCore Υδραυλικές Λύσεις Α.Ε. — Έδρα: Τσιμισκή 45, 546 23 Θεσσαλονίκη, Ελλάδα. ΑΦΜ: 099887766, Δ.Ο.Υ. Φ.Α.Ε. Θεσσαλονίκης, Αρ. Γ.Ε.ΜΗ.: 123456701000. Δεδομένα εταιρείας ενδεικτικά, για τους σκοπούς επίδειξης αυτού του website.</span>
+      <span data-lang-en>HydroCore Plumbing Solutions S.A. — Registered office: 45 Tsimiski St, 546 23 Thessaloniki, Greece. Tax ID: 099887766, Companies Registry No.: 123456701000. Company details are illustrative, for the purposes of this demo website.</span>
+    </p>
   </div>
 </footer>
 
-<button class="to-top" id="toTop" aria-label="Back to top">&uarr;</button>
-
+<script src="js/data.js"></script>
+<script src="js/strings.js"></script>
 <script src="js/main.js"></script>
+<script src="js/consent.js"></script>
 </body>
 </html>
