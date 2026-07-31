@@ -64,16 +64,30 @@
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero__grid" aria-hidden="true"></div>
-  <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
-  <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
+
+  <div class="hero__schematic" aria-hidden="true">
+    <svg viewBox="0 0 600 900" preserveAspectRatio="xMaxYMid slice">
+      <path class="sch-line" style="animation-delay:.1s" d="M560,40 L560,160 L440,160 L440,300 L280,300 L280,480 L140,480 L140,660" />
+      <path class="sch-line sch-line--alt" style="animation-delay:.5s" d="M440,300 L580,300 L580,460" />
+      <path class="sch-line sch-line--alt" style="animation-delay:.9s" d="M280,480 L280,560 L400,560 L400,720" />
+
+      <circle class="sch-node" style="animation-delay:1.5s" cx="440" cy="160" r="5" />
+      <circle class="sch-node" style="animation-delay:1.7s" cx="440" cy="300" r="5" />
+      <circle class="sch-node" style="animation-delay:2s" cx="580" cy="300" r="5" />
+      <circle class="sch-node" style="animation-delay:2.1s" cx="280" cy="480" r="5" />
+      <circle class="sch-node" style="animation-delay:2.3s" cx="400" cy="560" r="5" />
+
+      <text class="sch-label" style="animation-delay:1.8s" x="452" y="150">DN50 · VALVE-07</text>
+      <text class="sch-label" style="animation-delay:2.4s" x="292" y="475">P-04 · 4.2 BAR</text>
+      <text class="sch-label" style="animation-delay:2.6s" x="150" y="655">Ø32MM</text>
+
+      <circle class="sch-flow" r="3.5" style="offset-path:path('M560,40 L560,160 L440,160 L440,300 L280,300 L280,480 L140,480 L140,660');animation-delay:2.6s" />
+      <circle class="sch-flow" r="3.5" style="offset-path:path('M280,480 L280,560 L400,560 L400,720');animation-delay:3.4s" />
+    </svg>
+  </div>
 
   <div class="hero__inner">
     <div class="hero__content">
-      <div class="hero__badge" data-reveal="fade">
-        <span class="dot" aria-hidden="true"></span>
-        <span data-lang-el>Διαθέσιμοι τώρα · Επείγοντα 24/7</span>
-        <span data-lang-en>Available now · 24/7 Emergencies</span>
-      </div>
       <h1 data-reveal="fade">
         <span data-lang-el>Υδραυλικές λύσεις <em>χωρίς συμβιβασμούς</em>, από το 2007.</span>
         <span data-lang-en>Plumbing, done <em>without compromise</em>, since 2007.</span>
@@ -104,18 +118,6 @@
     <path fill="currentColor" d="M0 45 C240 90 480 0 720 25 C960 50 1200 90 1440 45 L1440 100 L0 100 Z"/>
   </svg>
 </section>
-
-<!-- ============ MARQUEE ============ -->
-<div class="marquee">
-  <div class="marquee__track" data-lang-el>
-    <span>24/7 Επείγουσα Εξυπηρέτηση</span><span>Πιστοποιημένοι Τεχνικοί</span><span>Εγγύηση 2 Ετών</span><span>7 Καταστήματα Πανελλαδικά</span><span>Ασφαλισμένη Επέμβαση</span>
-    <span>24/7 Επείγουσα Εξυπηρέτηση</span><span>Πιστοποιημένοι Τεχνικοί</span><span>Εγγύηση 2 Ετών</span><span>7 Καταστήματα Πανελλαδικά</span><span>Ασφαλισμένη Επέμβαση</span>
-  </div>
-  <div class="marquee__track" data-lang-en>
-    <span>24/7 Emergency Response</span><span>Certified Technicians</span><span>2-Year Guarantee</span><span>7 Branches Nationwide</span><span>Fully Insured Work</span>
-    <span>24/7 Emergency Response</span><span>Certified Technicians</span><span>2-Year Guarantee</span><span>7 Branches Nationwide</span><span>Fully Insured Work</span>
-  </div>
-</div>
 
 <!-- ============ ABOUT / STORY ============ -->
 <section class="section" id="about">
