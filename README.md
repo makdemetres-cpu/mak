@@ -12,7 +12,8 @@ A premium, animated, bilingual (Greek/English) marketing site for **HydroCore**,
 - **Terms of Service** (`terms.html`) — booking terms, pricing, cancellation, warranty, governing law (aligned with Greek consumer law, Law 2251/1994).
 - **Cookie consent banner + preference center** (`js/consent.js`) — granular opt-in (Necessary / Preferences / Analytics / Marketing), nothing non-essential loads before consent.
 - **Greek/English language toggle** — persisted per visitor, defaults to Greek.
-- Self-hosted **Manrope** (display) + **Inter** (body) variable fonts — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
+- Self-hosted **IBM Plex Sans** (headings) + **Inter** (body) + **IBM Plex Mono** (stats/labels/technical accents) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
+- An animated "engineering schematic" hero background (hand-built SVG pipe/valve diagram, not a stock gradient) instead of the generic AI-template look.
 
 ## Running it locally
 
@@ -81,7 +82,7 @@ js/strings.js         EL/EN toggle engine + small dynamic-string dictionary
 js/main.js            Nav, scroll reveal, counters, testimonials, locations, services grid
 js/consent.js         GDPR cookie consent banner + preference center
 js/booking.js         Booking form logic, validation, EmailJS + mailto fallback
-assets/fonts/         Manrope & Inter (Latin + Greek subsets), self-hosted
+assets/fonts/         IBM Plex Sans, Inter & IBM Plex Mono (Latin + Greek subsets), self-hosted
 assets/img/logo-mark.svg
 ```
 
