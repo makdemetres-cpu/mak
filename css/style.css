@@ -230,6 +230,7 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .wave-layer--back{fill:var(--sky);opacity:.22;animation:bob-a 7s ease-in-out infinite}
 .wave-layer--mid{fill:var(--steel);opacity:.34;animation:bob-b 5s ease-in-out infinite}
 .wave-layer--front{fill:var(--bg);animation:bob-c 3.6s ease-in-out infinite}
+.wave-seal{fill:var(--bg)}
 @keyframes bob-a{0%,100%{transform:translateY(-11px)}50%{transform:translateY(11px)}}
 @keyframes bob-b{0%,100%{transform:translateY(9px)}50%{transform:translateY(-10px)}}
 @keyframes bob-c{0%,100%{transform:translateY(-7px)}50%{transform:translateY(8px)}}
