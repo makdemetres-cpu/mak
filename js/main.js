@@ -7,7 +7,6 @@
     renderServices();
     initReveal();
     initCounters();
-    initTestimonials();
     initLocations();
     initFooterYear();
   });
@@ -187,32 +186,6 @@
       { threshold: 0.6 }
     );
     els.forEach((el) => io.observe(el));
-  }
-
-  /* ---------------- Testimonials carousel ---------------- */
-  function initTestimonials() {
-    const track = document.getElementById("testiTrack");
-    if (!track) return;
-    const prev = document.getElementById("testiPrev");
-    const next = document.getElementById("testiNext");
-    let index = 0;
-
-    const cardWidth = () => {
-      const card = track.querySelector(".testi-card");
-      if (!card) return 0;
-      const style = getComputedStyle(track);
-      const gap = parseFloat(style.gap || 22);
-      return card.getBoundingClientRect().width + gap;
-    };
-    const maxIndex = () => Math.max(0, track.children.length - visibleCount());
-    const visibleCount = () => Math.max(1, Math.floor(track.parentElement.getBoundingClientRect().width / cardWidth()));
-
-    const update = () => {
-      track.style.transform = `translateX(-${index * cardWidth()}px)`;
-    };
-    prev && prev.addEventListener("click", () => { index = Math.max(0, index - 1); update(); });
-    next && next.addEventListener("click", () => { index = Math.min(maxIndex(), index + 1); update(); });
-    window.addEventListener("resize", update);
   }
 
   /* ---------------- Locations ---------------- */

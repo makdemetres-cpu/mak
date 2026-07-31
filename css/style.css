@@ -363,10 +363,17 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .location-card a.dir{font-size:.8rem;font-weight:700;color:var(--deep);margin-top:8px;display:inline-block}
 
 /* ============ TESTIMONIALS ============ */
-.testi-track-wrap{overflow:hidden;margin-top:56px;position:relative}
-.testi-track{display:flex;gap:22px;transition:transform .6s var(--ease)}
+.testi-track-wrap{
+  overflow-x:auto;overflow-y:hidden;margin-top:56px;position:relative;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;-ms-overflow-style:none;
+  padding-bottom:6px;margin-bottom:-6px;
+}
+.testi-track-wrap::-webkit-scrollbar{display:none}
+.testi-track{display:flex;gap:22px}
 .testi-card{
-  flex:0 0 min(420px,86vw);background:var(--bg);border:1px solid var(--line-soft);border-radius:var(--radius-md);
+  flex:0 0 min(420px,86vw);scroll-snap-align:start;
+  background:var(--bg);border:1px solid var(--line-soft);border-radius:var(--radius-md);
   padding:30px 28px;display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow-sm);
 }
 .testi-stars{display:flex;gap:3px;color:var(--sky)}
@@ -375,9 +382,6 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .testi-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(150deg,var(--sky),var(--deep));display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--f-display);font-weight:800}
 .testi-person strong{font-size:.9rem;display:block}
 .testi-person span{font-size:.78rem;color:var(--text-soft)}
-.testi-controls{display:flex;gap:10px;margin-top:30px;justify-content:center}
-.testi-controls button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);color:var(--deep);display:flex;align-items:center;justify-content:center;transition:all .25s var(--ease)}
-.testi-controls button:hover{background:var(--deep);color:#fff;border-color:var(--deep)}
 
 /* ============ CTA BANNER ============ */
 .cta-banner{
