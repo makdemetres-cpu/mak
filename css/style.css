@@ -121,10 +121,10 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .section-alt{background:var(--bg-alt)}
 .eyebrow{
   display:inline-flex;align-items:center;gap:14px;
-  font-family:var(--f-mono);font-weight:500;font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;
+  font-family:var(--f-mono);font-weight:500;font-size:.92rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--brand-2);margin-bottom:20px;
 }
-.eyebrow::before{content:'';width:30px;height:1px;background:linear-gradient(90deg,var(--sky),var(--deep));flex-shrink:0}
+.eyebrow::before{content:'';width:34px;height:1px;background:linear-gradient(90deg,var(--sky),var(--deep));flex-shrink:0}
 .eyebrow.center{display:flex;justify-content:center;width:max-content;margin-inline:auto}
 .h-xl{font-size:clamp(2.6rem,5.2vw,4.6rem)}
 .h-lg{font-size:clamp(2.1rem,3.6vw,3.1rem)}
