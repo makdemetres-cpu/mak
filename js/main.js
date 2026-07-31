@@ -30,17 +30,30 @@
     function paint() {
       const lang = document.documentElement.getAttribute("data-lang") || "el";
       grid.innerHTML = window.HC_DATA.services.map((s, i) => `
-        <article class="service-card" data-reveal style="--i:${i % 4}">
-          <div class="service-card__icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${SERVICE_ICONS[s.icon] || ""}</svg>
+        <div class="service-flip" data-reveal style="--i:${i % 4}">
+          <div class="service-flip__inner">
+            <div class="service-flip__face service-flip__face--back" aria-hidden="true">
+              <svg viewBox="0 0 100 100" width="46" height="46">
+                <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
+                <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
+                <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="service-flip__face service-flip__face--front">
+              <article class="service-card">
+                <div class="service-card__icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${SERVICE_ICONS[s.icon] || ""}</svg>
+                </div>
+                <h3>${s.name[lang]}</h3>
+                <p>${s.desc[lang]}</p>
+                <a class="service-card__link" href="booking.html?service=${encodeURIComponent(s.id)}">
+                  ${lang === "el" ? "Κλείστε Ραντεβού" : "Book this"}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </article>
+            </div>
           </div>
-          <h3>${s.name[lang]}</h3>
-          <p>${s.desc[lang]}</p>
-          <a class="service-card__link" href="booking.html?service=${encodeURIComponent(s.id)}">
-            ${lang === "el" ? "Κλείστε Ραντεβού" : "Book this"}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </article>`).join("");
+        </div>`).join("");
       initReveal();
     }
     paint();
