@@ -225,8 +225,10 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   padding-top:120px;padding-bottom:80px;
 }
 .hero__bg{position:absolute;inset:0;z-index:0;opacity:.55}
-.hero__waves{position:absolute;left:0;right:0;bottom:-2px;width:100%;z-index:1;color:var(--bg)}
-.hero__grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,185,232,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(124,185,232,.09) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(180deg,black,transparent 92%)}
+.hero__waves{position:absolute;left:0;right:0;bottom:-2px;height:110px;overflow:hidden;z-index:1;color:var(--bg)}
+.hero__waves-track{width:200%;height:100%;display:block;animation:wave-drift 18s linear infinite}
+@keyframes wave-drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.hero__grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,185,232,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(124,185,232,.2) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(180deg,black,transparent 92%)}
 .hero__schematic{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
 .hero__schematic svg{position:absolute;top:0;right:0;height:100%;width:auto;max-width:none;opacity:.9}
 .hero__schematic .sch-line{fill:none;stroke:rgba(124,185,232,.55);stroke-width:1.5;stroke-dasharray:1400;stroke-dashoffset:1400;animation:sch-draw 3.2s var(--ease-soft) forwards}
