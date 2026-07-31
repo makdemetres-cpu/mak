@@ -120,12 +120,11 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .section{padding-block:clamp(72px,10vw,140px);position:relative}
 .section-alt{background:var(--bg-alt)}
 .eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:var(--f-mono);font-weight:500;font-size:.82rem;letter-spacing:.03em;text-transform:uppercase;
-  color:var(--brand-2);margin-bottom:18px;
-  padding:5px 12px 5px 10px;border:1px solid var(--line);border-radius:6px;
+  display:inline-flex;align-items:center;gap:14px;
+  font-family:var(--f-mono);font-weight:500;font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--brand-2);margin-bottom:20px;
 }
-.eyebrow::before{content:'//';color:var(--sky);font-weight:600}
+.eyebrow::before{content:'';width:30px;height:1px;background:linear-gradient(90deg,var(--sky),var(--deep));flex-shrink:0}
 .eyebrow.center{display:flex;justify-content:center;width:max-content;margin-inline:auto}
 .h-xl{font-size:clamp(2.6rem,5.2vw,4.6rem)}
 .h-lg{font-size:clamp(2.1rem,3.6vw,3.1rem)}
