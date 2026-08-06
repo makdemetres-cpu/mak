@@ -63,34 +63,14 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
-  <div class="hero__grid" aria-hidden="true"></div>
-
-  <div class="hero__schematic" aria-hidden="true">
-    <svg viewBox="0 0 600 900" preserveAspectRatio="xMaxYMid slice">
-      <path class="sch-line" style="animation-delay:.1s" d="M560,40 L560,160 L440,160 L440,300 L280,300 L280,480 L140,480 L140,660" />
-      <path class="sch-line sch-line--alt" style="animation-delay:.5s" d="M440,300 L580,300 L580,460" />
-      <path class="sch-line sch-line--alt" style="animation-delay:.9s" d="M280,480 L280,560 L400,560 L400,720" />
-
-      <circle class="sch-node" style="animation-delay:1.5s" cx="440" cy="160" r="5" />
-      <circle class="sch-node" style="animation-delay:1.7s" cx="440" cy="300" r="5" />
-      <circle class="sch-node" style="animation-delay:2s" cx="580" cy="300" r="5" />
-      <circle class="sch-node" style="animation-delay:2.1s" cx="280" cy="480" r="5" />
-      <circle class="sch-node" style="animation-delay:2.3s" cx="400" cy="560" r="5" />
-
-      <text class="sch-label" style="animation-delay:1.8s" x="452" y="150">DN50 · VALVE-07</text>
-      <text class="sch-label" style="animation-delay:2.4s" x="292" y="475">P-04 · 4.2 BAR</text>
-      <text class="sch-label" style="animation-delay:2.6s" x="150" y="655">Ø32MM</text>
-
-      <circle class="sch-flow" r="3.5" style="offset-path:path('M560,40 L560,160 L440,160 L440,300 L280,300 L280,480 L140,480 L140,660');animation-delay:2.6s" />
-      <circle class="sch-flow" r="3.5" style="offset-path:path('M280,480 L280,560 L400,560 L400,720');animation-delay:3.4s" />
-    </svg>
-  </div>
-
   <div class="hero__inner">
     <div class="hero__content">
+      <p class="hero__kicker" data-reveal="fade">
+        <span data-lang-el>Στην Ελλάδα από το 2007</span><span data-lang-en>In Greece since 2007</span>
+      </p>
       <h1 data-reveal="fade">
-        <span data-lang-el>Υδραυλικές λύσεις <em>χωρίς συμβιβασμούς</em>, από το 2007.</span>
-        <span data-lang-en>Plumbing, done <em>without compromise</em>, since 2007.</span>
+        <span data-lang-el>Υδραυλικές λύσεις <em>χωρίς συμβιβασμούς</em></span>
+        <span data-lang-en>Plumbing, done <em>without compromise</em></span>
       </h1>
       <p class="lede" data-reveal="fade" style="--i:1">
         <span data-lang-el>Το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα — 7 καταστήματα, 38 οχήματα και πάνω από 900 επαγγελματίες, έτοιμοι να φτάσουν στην πόρτα σας.</span>
@@ -112,14 +92,24 @@
         <div><strong data-count="900" data-suffix="+">0</strong><span data-lang-el>Επαγγελματίες</span><span data-lang-en>Professionals</span></div>
       </div>
     </div>
+
+    <div class="hero__visual" data-reveal="right" style="--i:2">
+      <div class="hero__visual-frame">
+        <!-- Placeholder brand panel — swap for a real <img src="assets/img/..."> once photography is available -->
+        <div class="hero__visual-glow" aria-hidden="true"></div>
+        <svg class="hero__visual-mark" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#fff" opacity=".13"/>
+          <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="4" opacity=".4"/>
+          <path d="M50 51 L50 42" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".4"/>
+        </svg>
+      </div>
+    </div>
   </div>
 
-  <div class="hero__waves" aria-hidden="true">
-    <svg class="hero__waves-track" viewBox="0 0 1440 140" preserveAspectRatio="none">
-      <path class="wave-layer wave-layer--back" d="M0,50 C120,20 240,80 360,50 C480,20 600,80 720,50 C840,20 960,80 1080,50 C1200,20 1320,80 1440,50 L1440,140 L0,140 Z"/>
-      <path class="wave-layer wave-layer--mid" d="M0,65 C120,35 240,95 360,65 C480,35 600,95 720,65 C840,35 960,95 1080,65 C1200,35 1320,95 1440,65 L1440,140 L0,140 Z"/>
-      <rect class="wave-seal" x="0" y="115" width="1440" height="25"/>
-      <path class="wave-layer wave-layer--front" d="M0,80 C120,50 240,110 360,80 C480,50 600,110 720,80 C840,50 960,110 1080,80 C1200,50 1320,110 1440,80 L1440,140 L0,140 Z"/>
+  <div class="hero__curve" aria-hidden="true">
+    <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+      <rect class="curve-seal" x="0" y="120" width="1440" height="80"/>
+      <path class="curve-shape" d="M0,20 Q720,220 1440,20 L1440,200 L0,200 Z"/>
     </svg>
   </div>
 </section>
