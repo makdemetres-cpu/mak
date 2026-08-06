@@ -12,8 +12,8 @@ A premium, animated, bilingual (Greek/English) marketing site for **HydroCore**,
 - **Terms of Service** (`terms.html`) — booking terms, pricing, cancellation, warranty, governing law (aligned with Greek consumer law, Law 2251/1994).
 - **Cookie consent banner + preference center** (`js/consent.js`) — granular opt-in (Necessary / Preferences / Analytics / Marketing), nothing non-essential loads before consent.
 - **Greek/English language toggle** — persisted per visitor, defaults to Greek.
-- Self-hosted **IBM Plex Sans** (headings) + **Inter** (body) + **IBM Plex Mono** (stats/labels/technical accents) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
-- An animated "engineering schematic" hero background (hand-built SVG pipe/valve diagram, not a stock gradient) instead of the generic AI-template look.
+- Self-hosted **Comfortaa** (headings) + **Inter** (body) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
+- A photography-ready split hero (text left, image panel right — currently an elegant placeholder, built to accept a real photo — see "Adding real photography" below), single-curve section divider, borderless circular icon badges, and a floating dark stats banner, following the visual language of a reference design the client supplied.
 
 ## Running it locally
 
@@ -55,6 +55,14 @@ This is a plain static site, so it runs anywhere:
 - **Netlify / Vercel** — drag-and-drop the folder or connect the repo; zero config needed. This also unlocks serverless functions later if you outgrow EmailJS (e.g. to store bookings in a real database and avoid double-booked slots).
 - **GitHub Pages / any static host** — works identically; the booking form still functions since email delivery happens client-side.
 
+## Adding real photography
+
+The hero's right-hand panel (`.hero__visual-frame` in `index.html`) is currently an elegant gradient placeholder with the logo mark, sized and positioned to accept a real photo with no other layout changes. To swap it in:
+
+1. Add your photo to `assets/img/` (a portrait-orientation shot works best — the panel's aspect ratio is roughly 4:5).
+2. In `index.html`, replace the placeholder `<div class="hero__visual-glow">`/`<svg class="hero__visual-mark">` markup inside `.hero__visual-frame` with `<img src="assets/img/your-photo.jpg" alt="...">`.
+3. Add `.hero__visual-frame img{width:100%;height:100%;object-fit:cover}` to `css/style.css` so it fills the rounded frame correctly.
+
 ## Before going live — replace these placeholders
 
 | What | Where | Current placeholder |
@@ -82,7 +90,7 @@ js/strings.js         EL/EN toggle engine + small dynamic-string dictionary
 js/main.js            Nav, scroll reveal, counters, testimonials, locations, services grid
 js/consent.js         GDPR cookie consent banner + preference center
 js/booking.js         Booking form logic, validation, EmailJS + mailto fallback
-assets/fonts/         IBM Plex Sans, Inter & IBM Plex Mono (Latin + Greek subsets), self-hosted
+assets/fonts/         Comfortaa & Inter (Latin + Greek subsets), self-hosted
 assets/img/logo-mark.svg
 ```
 
