@@ -521,7 +521,13 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .urgency-card.emergency strong{color:#c0392b}
 
 .consent-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
-.consent-row input{margin-top:3px;width:18px;height:18px;accent-color:var(--deep);flex-shrink:0}
+.consent-row input{
+  appearance:none;-webkit-appearance:none;margin-top:2px;width:20px;height:20px;flex-shrink:0;
+  border-radius:50%;border:2px solid var(--stone);background:var(--bg);cursor:pointer;
+  transition:background .2s var(--ease), border-color .2s var(--ease);
+}
+.consent-row input:checked{background:var(--deep);border-color:var(--deep)}
+.consent-row input:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
 .consent-row label{font-size:.84rem;color:var(--text-soft);line-height:1.6}
 .consent-row a{color:var(--deep);font-weight:700;text-decoration:underline}
 .consent-row.has-error label{color:#c0392b}
