@@ -211,12 +211,12 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 
 @media (max-width:920px){
   .nav__links{
-    position:fixed;inset:0 0 0 auto;width:min(84vw,360px);height:100vh;background:var(--white);
+    position:fixed;inset:0 0 0 auto;width:min(84vw,360px);height:100vh;background:var(--ink);
     flex-direction:column;align-items:stretch;justify-content:flex-start;gap:4px;padding:100px 26px 40px;
     transform:translateX(100%);transition:transform .45s var(--ease);box-shadow:-20px 0 60px rgba(0,48,143,.18);
   }
   .nav__links.is-open{transform:translateX(0)}
-  .nav__links a:not(.btn){padding:16px 10px;font-size:1.1rem;border-bottom:1px solid var(--line-soft);border-radius:0;color:var(--text) !important}
+  .nav__links a:not(.btn){padding:16px 10px;font-size:1.1rem;border-bottom:1px solid rgba(255,255,255,.14);border-radius:0;color:rgba(255,255,255,.78) !important}
   .nav__links a:not(.btn):hover, .nav__links a.is-active{background:var(--mist-100) !important;color:var(--deep) !important}
   .nav__links .btn{margin-top:16px}
   .nav__links .lang-switch{border-color:var(--line) !important}
