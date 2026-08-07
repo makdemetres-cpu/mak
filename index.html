@@ -312,6 +312,12 @@
     <p class="eyebrow center"><span data-lang-el>Μαρτυρίες</span><span data-lang-en>Testimonials</span></p>
     <h2 class="h-lg center"><span data-lang-el>Τι λένε οι πελάτες μας</span><span data-lang-en>What our customers say</span></h2>
 
+    <div class="testi-cta">
+      <button type="button" class="btn btn-ghost btn-sm" id="openReviewModal">
+        <span data-lang-el>Γράψτε μια Κριτική</span><span data-lang-en>Write a Review</span>
+      </button>
+    </div>
+
     <div class="testi-track-wrap">
       <div class="testi-track" id="testiTrack">
         <article class="testi-card">
@@ -358,6 +364,56 @@
     </div>
   </div>
 </section>
+
+<!-- ============ WRITE A REVIEW MODAL ============ -->
+<div class="review-modal-overlay" id="reviewModalOverlay"></div>
+<div class="review-modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
+  <div class="review-modal__head">
+    <h3 id="reviewModalTitle" class="h-md"><span data-lang-el>Γράψτε μια κριτική</span><span data-lang-en>Write a review</span></h3>
+    <button class="cookie-modal__close" id="reviewModalClose" type="button" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <form id="reviewForm" novalidate>
+    <div class="field">
+      <label for="reviewName"><span data-lang-el>Το όνομά σας</span><span data-lang-en>Your name</span></label>
+      <input type="text" id="reviewName" autocomplete="name" required>
+      <span class="field__error"><span data-lang-el>Συμπληρώστε το όνομά σας</span><span data-lang-en>Please enter your name</span></span>
+    </div>
+    <div class="field">
+      <label><span data-lang-el>Βαθμολογία</span><span data-lang-en>Rating</span></label>
+      <div class="star-picker" id="starPicker" role="radiogroup" aria-label="Rating">
+        <button type="button" class="star-picker__star" data-value="1" aria-label="1 star">★</button>
+        <button type="button" class="star-picker__star" data-value="2" aria-label="2 stars">★</button>
+        <button type="button" class="star-picker__star" data-value="3" aria-label="3 stars">★</button>
+        <button type="button" class="star-picker__star" data-value="4" aria-label="4 stars">★</button>
+        <button type="button" class="star-picker__star" data-value="5" aria-label="5 stars">★</button>
+      </div>
+      <span class="field__error"><span data-lang-el>Επιλέξτε βαθμολογία</span><span data-lang-en>Please pick a rating</span></span>
+    </div>
+    <div class="field">
+      <label for="reviewText"><span data-lang-el>Η κριτική σας</span><span data-lang-en>Your review</span></label>
+      <textarea id="reviewText" required></textarea>
+      <span class="field__error"><span data-lang-el>Γράψτε λίγα λόγια για την εμπειρία σας</span><span data-lang-en>Tell us a little about your experience</span></span>
+    </div>
+    <div class="review-modal__actions">
+      <button type="button" class="btn btn-ghost" id="reviewCancel"><span data-lang-el>Άκυρο</span><span data-lang-en>Cancel</span></button>
+      <button type="submit" class="btn btn-primary"><span data-lang-el>Υποβολή</span><span data-lang-en>Submit</span></button>
+    </div>
+  </form>
+</div>
+
+<!-- ============ THANK YOU / CONFETTI ============ -->
+<div class="thanks-overlay" id="thanksOverlay">
+  <canvas class="thanks-overlay__canvas" id="confettiCanvas"></canvas>
+  <div class="thanks-panel">
+    <div class="success-panel__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+    </div>
+    <h3 class="h-md"><span data-lang-el>Ευχαριστούμε!</span><span data-lang-en>Thank you!</span></h3>
+    <p><span data-lang-el>Η κριτική σας προστέθηκε με επιτυχία.</span><span data-lang-en>Your review was added successfully.</span></p>
+  </div>
+</div>
 
 <!-- ============ CTA BANNER ============ -->
 <section class="section" style="padding-top:0">
