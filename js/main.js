@@ -9,6 +9,7 @@
     initCounters();
     initLocations();
     initFooterYear();
+    initReviewFlow();
   });
 
   /* ---------------- Services grid ---------------- */
@@ -250,6 +251,167 @@
 
   function initFooterYear() {
     document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
+  }
+
+  /* ---------------- Reviews: write-a-review + confetti ---------------- */
+  function initReviewFlow() {
+    const openBtn = document.getElementById("openReviewModal");
+    const overlay = document.getElementById("reviewModalOverlay");
+    const modal = document.getElementById("reviewModal");
+    const closeBtn = document.getElementById("reviewModalClose");
+    const cancelBtn = document.getElementById("reviewCancel");
+    const form = document.getElementById("reviewForm");
+    const nameField = document.getElementById("reviewName");
+    const textField = document.getElementById("reviewText");
+    const starPicker = document.getElementById("starPicker");
+    const stars = starPicker ? starPicker.querySelectorAll(".star-picker__star") : [];
+    const track = document.getElementById("testiTrack");
+    const thanksOverlay = document.getElementById("thanksOverlay");
+    if (!openBtn || !modal || !form || !track || !thanksOverlay) return;
+
+    const openModal = () => {
+      overlay.classList.add("is-visible");
+      modal.classList.add("is-visible");
+      document.body.style.overflow = "hidden";
+      nameField.focus();
+    };
+    const closeModal = () => {
+      overlay.classList.remove("is-visible");
+      modal.classList.remove("is-visible");
+      document.body.style.overflow = "";
+    };
+
+    openBtn.addEventListener("click", openModal);
+    closeBtn && closeBtn.addEventListener("click", closeModal);
+    cancelBtn && cancelBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("is-visible")) closeModal();
+    });
+
+    let rating = 0;
+    function paintStars() {
+      stars.forEach((s) => s.classList.toggle("is-filled", Number(s.dataset.value) <= rating));
+    }
+    stars.forEach((s) => {
+      s.addEventListener("click", () => {
+        rating = Number(s.dataset.value);
+        paintStars();
+        starPicker.closest(".field").classList.remove("has-error");
+      });
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let valid = true;
+      [nameField, textField].forEach((f) => {
+        const wrap = f.closest(".field");
+        if (!f.value.trim()) { wrap.classList.add("has-error"); valid = false; }
+        else wrap.classList.remove("has-error");
+      });
+      const starsWrap = starPicker.closest(".field");
+      if (rating < 1) { starsWrap.classList.add("has-error"); valid = false; }
+      else starsWrap.classList.remove("has-error");
+      if (!valid) return;
+
+      addReviewCard({ name: nameField.value.trim(), rating, text: textField.value.trim() });
+
+      form.reset();
+      rating = 0;
+      paintStars();
+      closeModal();
+      showThanks();
+    });
+
+    function initials(name) {
+      const parts = name.trim().split(/\s+/).slice(0, 2);
+      return parts.map((w) => w[0]).join("").toUpperCase();
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function addReviewCard({ name, rating, text }) {
+      const card = document.createElement("article");
+      card.className = "testi-card testi-card--new";
+      const starsMarkup = "★".repeat(rating) + "☆".repeat(5 - rating);
+      card.innerHTML = `
+        <div class="testi-stars" aria-hidden="true">${starsMarkup}</div>
+        <p>«${escapeHtml(text)}»</p>
+        <div class="testi-person">
+          <div class="testi-avatar">${initials(name) || "?"}</div>
+          <div><strong>${escapeHtml(name)}</strong><span data-lang-el>Νέα κριτική</span><span data-lang-en>New review</span></div>
+        </div>`;
+      track.prepend(card);
+      track.scrollTo({ left: 0, behavior: "smooth" });
+    }
+
+    function showThanks() {
+      thanksOverlay.classList.add("is-visible");
+      runConfetti();
+      clearTimeout(thanksOverlay._t);
+      thanksOverlay._t = setTimeout(hideThanks, 3800);
+    }
+    function hideThanks() {
+      thanksOverlay.classList.remove("is-visible");
+    }
+    thanksOverlay.addEventListener("click", hideThanks);
+
+    function runConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const colors = ["#7CB9E8", "#72A0C1", "#00308F", "#8B8C89", "#FFFFFF"];
+      const count = 140;
+      const particles = Array.from({ length: count }, () => ({
+        x: w / 2 + (Math.random() - 0.5) * 140,
+        y: h / 2 - 20,
+        vx: (Math.random() - 0.5) * 9,
+        vy: -(Math.random() * 9 + 4),
+        size: Math.random() * 7 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.3,
+        shape: Math.random() > 0.5 ? "rect" : "circle"
+      }));
+
+      const gravity = 0.18;
+      const start = performance.now();
+      const duration = 3200;
+
+      function frame(now) {
+        const t = now - start;
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach((p) => {
+          p.vy += gravity;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rotation += p.rotationSpeed;
+          const fade = Math.max(0, 1 - t / duration);
+          ctx.save();
+          ctx.globalAlpha = fade;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotation);
+          ctx.fillStyle = p.color;
+          if (p.shape === "rect") ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+          else { ctx.beginPath(); ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2); ctx.fill(); }
+          ctx.restore();
+        });
+        if (t < duration) requestAnimationFrame(frame);
+        else ctx.clearRect(0, 0, w, h);
+      }
+      requestAnimationFrame(frame);
+    }
   }
 
   /* ---------------- Toast (shared) ---------------- */
