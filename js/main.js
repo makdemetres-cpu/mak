@@ -107,13 +107,14 @@
       window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
     }
 
-    // active link by current path
+    // active link by current path (exact match on the page path, ignoring in-page #anchors)
     const path = location.pathname.split("/").pop() || "index.html";
     nav.querySelectorAll("[data-nav]").forEach((a) => {
       const href = a.getAttribute("href") || "";
-      if (href.startsWith(path) || (path === "" && href.startsWith("index.html"))) {
-        a.classList.add("is-active");
-      }
+      const hasHash = href.includes("#");
+      const hrefPath = href.split("#")[0] || "index.html";
+      const isMatch = !hasHash && (hrefPath === path || (path === "" && hrefPath === "index.html"));
+      a.classList.toggle("is-active", isMatch);
     });
   }
 
