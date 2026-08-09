@@ -45,6 +45,152 @@
       });
     }
 
+    /* ---------- custom-styled dropdowns (visual layer over the native <select>) ---------- */
+    enhanceSelect(branchSelect);
+    enhanceSelect(document.getElementById("time"));
+
+    function enhanceSelect(selectEl) {
+      if (!selectEl || selectEl.dataset.enhanced) return;
+      selectEl.dataset.enhanced = "true";
+
+      const wrap = document.createElement("div");
+      wrap.className = "hc-select";
+
+      const trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "hc-select__trigger";
+      trigger.setAttribute("aria-haspopup", "listbox");
+      trigger.setAttribute("aria-expanded", "false");
+      const associatedLabel = selectEl.id ? document.querySelector(`label[for="${selectEl.id}"]`) : null;
+      if (associatedLabel) {
+        if (!associatedLabel.id) associatedLabel.id = `${selectEl.id}-label`;
+        trigger.setAttribute("aria-labelledby", associatedLabel.id);
+      }
+
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "hc-select__trigger-label";
+
+      const chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      chevron.setAttribute("class", "hc-select__chevron");
+      chevron.setAttribute("viewBox", "0 0 24 24");
+      chevron.setAttribute("fill", "none");
+      chevron.setAttribute("stroke", "currentColor");
+      chevron.setAttribute("stroke-width", "2.4");
+      chevron.setAttribute("stroke-linecap", "round");
+      chevron.setAttribute("stroke-linejoin", "round");
+      chevron.innerHTML = '<path d="m6 9 6 6 6-6"/>';
+
+      trigger.appendChild(labelSpan);
+      trigger.appendChild(chevron);
+
+      const panel = document.createElement("div");
+      panel.className = "hc-select__panel";
+      panel.setAttribute("role", "listbox");
+      if (selectEl.id) {
+        panel.id = `${selectEl.id}-listbox`;
+        trigger.setAttribute("aria-controls", panel.id);
+      }
+
+      const optionEls = Array.from(selectEl.options).map((opt) => {
+        const optEl = document.createElement("div");
+        optEl.className = "hc-select__option";
+        optEl.setAttribute("role", "option");
+        optEl.setAttribute("aria-selected", "false");
+        optEl.dataset.value = opt.value;
+        const checkSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        checkSvg.setAttribute("viewBox", "0 0 24 24");
+        checkSvg.setAttribute("fill", "none");
+        checkSvg.setAttribute("stroke", "currentColor");
+        checkSvg.setAttribute("stroke-width", "2.6");
+        checkSvg.setAttribute("stroke-linecap", "round");
+        checkSvg.setAttribute("stroke-linejoin", "round");
+        checkSvg.innerHTML = '<path d="m5 13 4 4L19 7"/>';
+        const textSpan = document.createElement("span");
+        textSpan.textContent = opt.textContent;
+        optEl.appendChild(textSpan);
+        optEl.appendChild(checkSvg);
+        panel.appendChild(optEl);
+        return optEl;
+      });
+
+      selectEl.insertAdjacentElement("afterend", panel);
+      selectEl.insertAdjacentElement("afterend", trigger);
+      selectEl.insertAdjacentElement("afterend", wrap);
+      wrap.appendChild(trigger);
+      wrap.appendChild(panel);
+      selectEl.classList.add("hc-select__native");
+
+      function syncFromValue() {
+        const selected = Array.from(selectEl.options).find((o) => o.value === selectEl.value) || selectEl.options[0];
+        const isPlaceholder = !selectEl.value;
+        trigger.dataset.placeholder = String(isPlaceholder);
+        labelSpan.textContent = selected ? selected.textContent : "";
+        optionEls.forEach((el) => {
+          const isSelected = el.dataset.value === selectEl.value;
+          el.classList.toggle("is-selected", isSelected);
+          el.setAttribute("aria-selected", String(isSelected));
+        });
+      }
+
+      function openPanel() {
+        wrap.classList.add("is-open");
+        trigger.setAttribute("aria-expanded", "true");
+        const activeEl = optionEls.find((el) => el.classList.contains("is-selected")) || optionEls[0];
+        setActive(activeEl);
+      }
+      function closePanel() {
+        wrap.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+      }
+      function setActive(el) {
+        optionEls.forEach((o) => o.classList.remove("is-active"));
+        if (el) { el.classList.add("is-active"); el.scrollIntoView({ block: "nearest" }); }
+      }
+
+      trigger.addEventListener("click", () => {
+        wrap.classList.contains("is-open") ? closePanel() : openPanel();
+      });
+
+      // all keyboard handling stays on the trigger — focus never actually
+      // moves into the panel (roving "active" option is visual-only, like
+      // a standard aria-activedescendant combobox)
+      trigger.addEventListener("keydown", (e) => {
+        const isOpen = wrap.classList.contains("is-open");
+        if (!isOpen && ["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) {
+          e.preventDefault();
+          openPanel();
+          return;
+        }
+        if (!isOpen) return;
+        const activeEl = optionEls.find((el) => el.classList.contains("is-active"));
+        const idx = optionEls.indexOf(activeEl);
+        if (e.key === "ArrowDown") { e.preventDefault(); setActive(optionEls[Math.min(optionEls.length - 1, idx + 1)]); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); setActive(optionEls[Math.max(0, idx - 1)]); }
+        else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (activeEl) selectOption(activeEl); }
+        else if (e.key === "Escape") { e.preventDefault(); closePanel(); }
+        else if (e.key === "Tab") { closePanel(); }
+      });
+
+      function selectOption(optEl) {
+        selectEl.value = optEl.dataset.value;
+        selectEl.dispatchEvent(new Event("change", { bubbles: true }));
+        syncFromValue();
+        closePanel();
+        trigger.focus();
+      }
+
+      optionEls.forEach((optEl) => {
+        optEl.addEventListener("click", () => selectOption(optEl));
+        optEl.addEventListener("mouseenter", () => setActive(optEl));
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!wrap.contains(e.target)) closePanel();
+      });
+
+      syncFromValue();
+    }
+
     /* ---------- stepper UI ---------- */
     const nodes = Array.from(document.querySelectorAll(".step-node"));
     const fill = document.getElementById("stepperFill");
