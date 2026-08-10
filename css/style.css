@@ -253,7 +253,7 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .hero__meta span{font-size:.8rem;color:#b9cfe9;font-weight:500}
 
 .hero__visual-frame{
-  position:relative;aspect-ratio:.82/1;border-radius:var(--radius-lg);overflow:hidden;
+  position:relative;aspect-ratio:1.02/1;border-radius:42% 58% 55% 45% / 45% 40% 60% 55%;overflow:hidden;
   background:linear-gradient(155deg,var(--sky),var(--deep) 65%,var(--deep-900));
   box-shadow:0 40px 80px -28px rgba(0,18,64,.55);
   display:flex;align-items:center;justify-content:center;
