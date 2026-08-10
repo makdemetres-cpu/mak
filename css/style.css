@@ -259,12 +259,10 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   display:flex;align-items:center;justify-content:center;
 }
 .hero__visual-photo{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
   transform-origin:50% 50%;animation:hero-kenburns 22s ease-in-out infinite alternate;
 }
-/* grows up to (never past) its fully-contained size, so the photo is always
-   fully visible inside the frame — no edge ever gets cropped */
-@keyframes hero-kenburns{from{transform:scale(.94)}to{transform:scale(1)}}
+@keyframes hero-kenburns{from{transform:scale(1)}to{transform:scale(1.1)}}
 .hero__visual-glow{position:absolute;inset:-20%;z-index:1;background:radial-gradient(circle at 30% 22%, rgba(255,255,255,.28), transparent 55%)}
 .hero__visual-mark{width:44%;height:auto;position:relative;z-index:1}
 
