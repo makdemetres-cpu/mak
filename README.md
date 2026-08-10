@@ -13,7 +13,7 @@ A premium, animated, bilingual (Greek/English) marketing site for **HydroCore**,
 - **Cookie consent banner + preference center** (`js/consent.js`) — granular opt-in (Necessary / Preferences / Analytics / Marketing), nothing non-essential loads before consent.
 - **Greek/English language toggle** — persisted per visitor, defaults to Greek.
 - Self-hosted **Comfortaa** (headings) + **Inter** (body) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
-- A photography-ready split hero (text left, image panel right — currently an elegant placeholder, built to accept a real photo — see "Adding real photography" below), single-curve section divider, borderless circular icon badges, and a floating dark stats banner, following the visual language of a reference design the client supplied.
+- A split hero (text left, real team/fleet photo right with a slow Ken Burns zoom — see "Hero photography" below), single-curve section divider, borderless circular icon badges, and a floating dark stats banner, following the visual language of a reference design the client supplied.
 
 ## Running it locally
 
@@ -55,13 +55,11 @@ This is a plain static site, so it runs anywhere:
 - **Netlify / Vercel** — drag-and-drop the folder or connect the repo; zero config needed. This also unlocks serverless functions later if you outgrow EmailJS (e.g. to store bookings in a real database and avoid double-booked slots).
 - **GitHub Pages / any static host** — works identically; the booking form still functions since email delivery happens client-side.
 
-## Adding real photography
+## Hero photography
 
-The hero's right-hand panel (`.hero__visual-frame` in `index.html`) is currently an elegant gradient placeholder with the logo mark, sized and positioned to accept a real photo with no other layout changes. To swap it in:
+The hero's right-hand panel (`.hero__visual-frame` in `index.html`) shows a real team/fleet photo (`assets/img/hero-team.jpg`), filling the rounded frame via `object-fit:cover` with a slow continuous "Ken Burns" zoom (`@keyframes hero-kenburns` in `css/style.css`) plus a one-time fade/slide-in on scroll (the existing `[data-reveal]` system). It's shown on both desktop and mobile — see `.hero__visual` in the `@media (max-width:760px)` block if you need to resize it further. The zoom animation is automatically disabled for visitors with `prefers-reduced-motion: reduce`, same as every other animation on the site.
 
-1. Add your photo to `assets/img/` (a portrait-orientation shot works best — the panel's aspect ratio is roughly 4:5).
-2. In `index.html`, replace the placeholder `<div class="hero__visual-glow">`/`<svg class="hero__visual-mark">` markup inside `.hero__visual-frame` with `<img src="assets/img/your-photo.jpg" alt="...">`.
-3. Add `.hero__visual-frame img{width:100%;height:100%;object-fit:cover}` to `css/style.css` so it fills the rounded frame correctly.
+To swap in a different photo, just replace `assets/img/hero-team.jpg` (object-fit:cover means any aspect ratio works — a wide/landscape shot crops best into the portrait frame) and update the `alt` text on the `<img class="hero__visual-photo">` tag in `index.html`.
 
 ## Before going live — replace these placeholders
 
@@ -73,7 +71,7 @@ The hero's right-hand panel (`.hero__visual-frame` in `index.html`) is currently
 | DPO contact | `privacy.html` §1 | `privacy@hydrocore.gr` |
 | EmailJS credentials | `js/booking.js` | blank (mailto fallback active) |
 | Google Analytics ID (optional) | `js/consent.js` (`GA_MEASUREMENT_ID`) | blank (analytics stays off until you set this) |
-| Real photography / team photos | currently uses custom SVG illustrations only, by design | — |
+| Hero team/fleet photo | `assets/img/hero-team.jpg` | using a real client-supplied photo — replace with your own if this deploy is reused for a different business |
 | Favicon / social share image | inline SVG favicon in each page `<head>` | — |
 
 ## Structure
