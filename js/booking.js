@@ -323,11 +323,234 @@
       });
     });
 
-    // min date = today
+    // bookable window: today .. +60 days
     const dateInput = document.getElementById("date");
     if (dateInput) {
       const today = new Date();
+      const maxDate = new Date(today);
+      maxDate.setDate(maxDate.getDate() + 60);
       dateInput.min = today.toISOString().slice(0, 10);
+      dateInput.max = maxDate.toISOString().slice(0, 10);
+      enhanceDateField(dateInput, { disableSundays: true });
+    }
+
+    function enhanceDateField(inputEl, opts) {
+      if (!inputEl || inputEl.dataset.enhanced) return;
+      inputEl.dataset.enhanced = "true";
+      const disableSundays = !!(opts && opts.disableSundays);
+
+      const toISO = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      const parseISO = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+      const stripTime = (d) => { const c = new Date(d); c.setHours(0, 0, 0, 0); return c; };
+
+      const minDate = inputEl.min ? stripTime(parseISO(inputEl.min)) : stripTime(new Date());
+      const maxDate = inputEl.max ? stripTime(parseISO(inputEl.max)) : null;
+
+      function currentLang() { return document.documentElement.getAttribute("data-lang") || "el"; }
+      function locale() { return currentLang() === "el" ? "el-GR" : "en-GB"; }
+
+      const wrap = document.createElement("div");
+      wrap.className = "hc-select";
+
+      const trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "hc-select__trigger";
+      trigger.setAttribute("aria-haspopup", "dialog");
+      trigger.setAttribute("aria-expanded", "false");
+      const associatedLabel = inputEl.id ? document.querySelector(`label[for="${inputEl.id}"]`) : null;
+      if (associatedLabel) {
+        if (!associatedLabel.id) associatedLabel.id = `${inputEl.id}-label`;
+        trigger.setAttribute("aria-labelledby", associatedLabel.id);
+      }
+
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "hc-select__trigger-label";
+
+      const calIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      calIcon.setAttribute("class", "hc-select__chevron");
+      calIcon.setAttribute("viewBox", "0 0 24 24");
+      calIcon.setAttribute("fill", "none");
+      calIcon.setAttribute("stroke", "currentColor");
+      calIcon.setAttribute("stroke-width", "2.2");
+      calIcon.setAttribute("stroke-linecap", "round");
+      calIcon.setAttribute("stroke-linejoin", "round");
+      calIcon.innerHTML = '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>';
+
+      trigger.appendChild(labelSpan);
+      trigger.appendChild(calIcon);
+
+      const panel = document.createElement("div");
+      panel.className = "hc-select__panel hc-date__panel";
+      panel.setAttribute("role", "dialog");
+      if (inputEl.id) {
+        panel.id = `${inputEl.id}-calendar`;
+        trigger.setAttribute("aria-controls", panel.id);
+      }
+
+      const head = document.createElement("div");
+      head.className = "hc-date__head";
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button"; prevBtn.className = "hc-date__nav"; prevBtn.setAttribute("aria-label", "Previous month");
+      prevBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>';
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button"; nextBtn.className = "hc-date__nav"; nextBtn.setAttribute("aria-label", "Next month");
+      nextBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
+      const monthLabel = document.createElement("strong");
+      head.appendChild(prevBtn); head.appendChild(monthLabel); head.appendChild(nextBtn);
+
+      const weekdaysRow = document.createElement("div");
+      weekdaysRow.className = "hc-date__weekdays";
+      const grid = document.createElement("div");
+      grid.className = "hc-date__grid";
+
+      panel.appendChild(head);
+      panel.appendChild(weekdaysRow);
+      panel.appendChild(grid);
+
+      inputEl.insertAdjacentElement("afterend", panel);
+      inputEl.insertAdjacentElement("afterend", trigger);
+      inputEl.insertAdjacentElement("afterend", wrap);
+      wrap.appendChild(trigger);
+      wrap.appendChild(panel);
+      inputEl.classList.add("hc-select__native");
+
+      let selectedDate = inputEl.value ? stripTime(parseISO(inputEl.value)) : null;
+      let viewDate = selectedDate ? new Date(selectedDate) : new Date(minDate);
+      let activeDate = selectedDate ? new Date(selectedDate) : new Date(minDate);
+
+      function isDisabled(d) {
+        if (d < minDate) return true;
+        if (maxDate && d > maxDate) return true;
+        if (disableSundays && d.getDay() === 0) return true;
+        return false;
+      }
+
+      function syncTriggerLabel() {
+        const isPlaceholder = !selectedDate;
+        trigger.dataset.placeholder = String(isPlaceholder);
+        labelSpan.textContent = isPlaceholder
+          ? inputEl.getAttribute("data-placeholder") || (currentLang() === "el" ? "Επιλέξτε ημερομηνία…" : "Select date…")
+          : new Intl.DateTimeFormat(locale(), { day: "numeric", month: "short", year: "numeric" }).format(selectedDate);
+      }
+
+      function renderCalendar() {
+        const year = viewDate.getFullYear();
+        const month = viewDate.getMonth();
+        monthLabel.textContent = new Intl.DateTimeFormat(locale(), { month: "long", year: "numeric" }).format(new Date(year, month, 1));
+
+        weekdaysRow.innerHTML = "";
+        const weekStart = new Date(2024, 0, 1); // a Monday
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(weekStart); d.setDate(d.getDate() + i);
+          const span = document.createElement("span");
+          span.textContent = new Intl.DateTimeFormat(locale(), { weekday: "narrow" }).format(d);
+          weekdaysRow.appendChild(span);
+        }
+
+        grid.innerHTML = "";
+        const firstOfMonth = new Date(year, month, 1);
+        const startOffset = (firstOfMonth.getDay() + 6) % 7; // Monday-first grid
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < startOffset; i++) {
+          const empty = document.createElement("div");
+          empty.className = "hc-date__day is-empty";
+          grid.appendChild(empty);
+        }
+        for (let day = 1; day <= daysInMonth; day++) {
+          const d = new Date(year, month, day);
+          const cell = document.createElement("button");
+          cell.type = "button";
+          cell.className = "hc-date__day";
+          cell.textContent = String(day);
+          cell.setAttribute("role", "gridcell");
+          const disabled = isDisabled(d);
+          if (disabled) { cell.classList.add("is-disabled"); cell.disabled = true; cell.tabIndex = -1; }
+          if (stripTime(d).getTime() === stripTime(new Date()).getTime()) cell.classList.add("is-today");
+          if (selectedDate && stripTime(d).getTime() === selectedDate.getTime()) cell.classList.add("is-selected");
+          if (activeDate && stripTime(d).getTime() === stripTime(activeDate).getTime()) cell.classList.add("is-active");
+          cell.addEventListener("click", () => { if (!disabled) selectDate(d); });
+          cell.addEventListener("mouseenter", () => { if (!disabled) { activeDate = d; refreshActive(); } });
+          grid.appendChild(cell);
+        }
+
+        const prevMonthEnd = new Date(year, month, 0);
+        prevBtn.disabled = prevMonthEnd < minDate;
+        const nextMonthStart = new Date(year, month + 1, 1);
+        nextBtn.disabled = !!maxDate && nextMonthStart > maxDate;
+      }
+
+      function refreshActive() {
+        Array.from(grid.children).forEach((cell) => {
+          if (cell.classList.contains("is-empty")) return;
+          const day = Number(cell.textContent);
+          const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
+          cell.classList.toggle("is-active", !!activeDate && stripTime(d).getTime() === stripTime(activeDate).getTime());
+        });
+      }
+
+      function selectDate(d) {
+        selectedDate = stripTime(d);
+        activeDate = new Date(selectedDate);
+        inputEl.value = toISO(selectedDate);
+        inputEl.dispatchEvent(new Event("change", { bubbles: true }));
+        syncTriggerLabel();
+        closePanel();
+        trigger.focus();
+      }
+
+      function openPanel() {
+        viewDate = activeDate ? new Date(activeDate) : new Date(minDate);
+        wrap.classList.add("is-open");
+        trigger.setAttribute("aria-expanded", "true");
+        renderCalendar();
+      }
+      function closePanel() {
+        wrap.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+      }
+
+      trigger.addEventListener("click", () => {
+        wrap.classList.contains("is-open") ? closePanel() : openPanel();
+      });
+
+      trigger.addEventListener("keydown", (e) => {
+        const isOpen = wrap.classList.contains("is-open");
+        if (!isOpen && ["ArrowDown", "Enter", " "].includes(e.key)) { e.preventDefault(); openPanel(); return; }
+        if (!isOpen) return;
+        if (e.key === "Escape") { e.preventDefault(); closePanel(); return; }
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (activeDate && !isDisabled(activeDate)) selectDate(activeDate); return; }
+        const deltas = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+        if (deltas[e.key] !== undefined) {
+          e.preventDefault();
+          const next = new Date(activeDate || minDate);
+          next.setDate(next.getDate() + deltas[e.key]);
+          activeDate = next;
+          if (next.getMonth() !== viewDate.getMonth() || next.getFullYear() !== viewDate.getFullYear()) {
+            viewDate = new Date(next);
+            renderCalendar();
+          } else {
+            refreshActive();
+          }
+        }
+      });
+
+      prevBtn.addEventListener("click", () => {
+        viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1);
+        renderCalendar();
+      });
+      nextBtn.addEventListener("click", () => {
+        viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1);
+        renderCalendar();
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!wrap.contains(e.target)) closePanel();
+      });
+
+      document.addEventListener("hc:langchange", () => { syncTriggerLabel(); if (wrap.classList.contains("is-open")) renderCalendar(); });
+
+      syncTriggerLabel();
     }
 
     /* ---------- submit ---------- */
