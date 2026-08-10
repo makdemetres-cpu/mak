@@ -572,6 +572,31 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .hc-select__option svg{width:16px;height:16px;flex-shrink:0;opacity:0;transition:opacity .15s var(--ease)}
 .hc-select__option.is-selected svg{opacity:1}
 
+/* ---- Custom calendar (date field) — shares .hc-select box/trigger/panel look ---- */
+.hc-date__panel{width:min(320px,92vw)}
+.hc-date__head{display:flex;align-items:center;justify-content:space-between;padding:4px 4px 10px}
+.hc-date__head strong{font-size:.92rem;text-transform:capitalize}
+.hc-date__nav{
+  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--text-soft);transition:background .15s var(--ease), color .15s var(--ease);
+}
+.hc-date__nav:hover{background:var(--mist-100);color:var(--deep-bright)}
+.hc-date__nav:disabled{opacity:.3;pointer-events:none}
+.hc-date__nav svg{width:16px;height:16px}
+.hc-date__weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.hc-date__weekdays span{font-size:.7rem;font-weight:700;color:var(--text-soft);text-align:center;text-transform:uppercase}
+.hc-date__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.hc-date__day{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;
+  font-size:.86rem;cursor:pointer;transition:background .15s var(--ease), color .15s var(--ease);position:relative;
+}
+.hc-date__day:hover,.hc-date__day.is-active{background:var(--mist-100);color:var(--deep-bright)}
+.hc-date__day.is-today::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--deep-bright)}
+.hc-date__day.is-selected{background:var(--deep-bright);color:#fff;font-weight:700}
+.hc-date__day.is-selected::after{background:#fff}
+.hc-date__day.is-disabled{color:var(--line);cursor:not-allowed;pointer-events:none}
+.hc-date__day.is-empty{visibility:hidden;pointer-events:none}
+
 .service-pick{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .service-pick label{
   border:1.5px solid var(--line);border-radius:var(--radius-md);padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;
