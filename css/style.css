@@ -444,11 +444,16 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 
 /* ============ CTA BANNER ============ */
 .cta-banner{
-  border-radius:var(--radius-lg);background:linear-gradient(135deg,var(--deep-900),var(--deep) 55%,var(--steel));
+  border-radius:var(--radius-lg);background:var(--deep-900);
   padding:clamp(40px,6vw,74px);display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;
   position:relative;overflow:hidden;
 }
-.cta-banner::before{content:'';position:absolute;width:400px;height:400px;background:var(--sky);opacity:.28;filter:blur(90px);border-radius:50%;top:-140px;right:-80px}
+.cta-banner__bg{position:absolute;inset:0;z-index:0}
+.cta-banner__bg-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cta-banner__bg-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg, rgba(0,18,64,.4) 0%, rgba(0,48,143,.32) 60%, rgba(114,160,193,.16) 130%);
+}
 .cta-banner h2{color:#fff;max-width:16ch;position:relative;z-index:1}
 .cta-banner p{color:#cfe2f7;margin-top:10px;position:relative;z-index:1}
 .cta-banner__actions{display:flex;gap:14px;flex-wrap:wrap;position:relative;z-index:1}
