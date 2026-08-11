@@ -243,7 +243,7 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 }
 .hero__bg-overlay{
   position:absolute;inset:0;z-index:1;
-  background:linear-gradient(160deg, rgba(0,18,64,.88) 0%, rgba(0,48,143,.75) 55%, rgba(114,160,193,.45) 130%);
+  background:linear-gradient(160deg, rgba(0,18,64,.7) 0%, rgba(0,48,143,.56) 55%, rgba(114,160,193,.28) 130%);
 }
 .hero__inner{
   position:relative;z-index:2;max-width:var(--container);margin-inline:auto;padding-inline:24px;width:100%;
