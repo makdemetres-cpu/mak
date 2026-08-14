@@ -8,6 +8,7 @@
     initReveal();
     initCounters();
     initLocations();
+    initLocationSwitcher();
     initFooterYear();
     initReviewFlow();
   });
@@ -194,7 +195,6 @@
   function initLocations() {
     const listEl = document.getElementById("locationList");
     const tabsEl = document.getElementById("locationTabs");
-    const mapPinsEl = document.getElementById("mapPins");
     if (!listEl || !window.HC_DATA) return;
 
     const data = window.HC_DATA;
@@ -236,17 +236,50 @@
         </div>`).join("");
     }
 
-    function renderPins() {
-      if (!mapPinsEl) return;
-      mapPinsEl.querySelectorAll(".map-pin").forEach((pin) => {
-        const show = activeRegion === "all" || pin.dataset.region === activeRegion;
-        pin.style.opacity = show ? "1" : ".25";
-      });
-    }
-
-    function renderAll() { renderTabs(); renderList(); renderPins(); }
+    function renderAll() { renderTabs(); renderList(); }
     document.addEventListener("hc:langchange", renderAll);
     renderAll();
+  }
+
+  /* ---------------- Location switcher (hover a branch, its photo crossfades in) ---------------- */
+  function initLocationSwitcher() {
+    const bgEl = document.getElementById("locationSwitcherBg");
+    const listEl = document.getElementById("locationSwitcherList");
+    if (!bgEl || !listEl || !window.HC_DATA) return;
+
+    const locations = window.HC_DATA.locations;
+    function lang() { return document.documentElement.getAttribute("data-lang") || "el"; }
+
+    const pinIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+    bgEl.innerHTML = locations.map((loc, i) => `
+      <div class="location-switcher__bg-layer${i === 0 ? " is-active" : ""}" data-idx="${i}">${pinIcon}</div>
+    `).join("");
+    const layers = Array.from(bgEl.children);
+
+    function setActive(idx) {
+      layers.forEach((el, i) => el.classList.toggle("is-active", i === idx));
+      Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-active", i === idx));
+    }
+
+    function renderList() {
+      listEl.innerHTML = locations.map((loc) => `
+        <button type="button" class="location-switcher__item">
+          <strong>${loc.name[lang()]}</strong>
+          <span>${loc.hours[lang()]}</span>
+        </button>
+      `).join("");
+      Array.from(listEl.children).forEach((btn, i) => {
+        btn.addEventListener("mouseenter", () => setActive(i));
+        btn.addEventListener("focus", () => setActive(i));
+        btn.addEventListener("click", () => setActive(i));
+      });
+      setActive(0);
+    }
+    listEl.addEventListener("mouseleave", () => setActive(0));
+
+    renderList();
+    document.addEventListener("hc:langchange", renderList);
   }
 
   function initFooterYear() {
