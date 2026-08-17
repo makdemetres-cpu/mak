@@ -364,10 +364,11 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 
 /* ============ LOCATIONS ============ */
 .locations{display:flex;justify-content:center;margin-top:56px}
+.locations>[data-reveal]{width:100%;display:flex;justify-content:center}
 
 /* ---- Location switcher: hover a branch, its photo crossfades in behind the list ---- */
 .location-switcher{
-  position:relative;width:100%;max-width:564px;aspect-ratio:.92/1;min-height:0;border-radius:var(--radius-lg);overflow:hidden;
+  position:relative;width:100%;max-width:1128px;aspect-ratio:2.15/1;min-height:0;border-radius:var(--radius-lg);overflow:hidden;
   background:var(--deep-900);box-shadow:var(--shadow-lg);
 }
 .location-switcher__bg{position:absolute;inset:0;z-index:0}
@@ -730,6 +731,7 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   .cta-banner__actions{justify-content:center}
   .hero__meta{gap:22px}
   .stepper__label-text{display:none}
+  .location-switcher{aspect-ratio:.92/1}
 }
 @media (max-width:520px){
   .services-grid{grid-template-columns:1fr}
