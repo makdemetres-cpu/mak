@@ -7,6 +7,7 @@
     renderServices();
     initReveal();
     initCounters();
+    initLocations();
     initLocationSwitcher();
     initFooterYear();
     initReviewFlow();
@@ -188,6 +189,56 @@
       { threshold: 0.6 }
     );
     els.forEach((el) => io.observe(el));
+  }
+
+  /* ---------------- Locations ---------------- */
+  function initLocations() {
+    const listEl = document.getElementById("locationList");
+    const tabsEl = document.getElementById("locationTabs");
+    if (!listEl || !window.HC_DATA) return;
+
+    const data = window.HC_DATA;
+    let activeRegion = "all";
+
+    function lang() { return document.documentElement.getAttribute("data-lang") || "el"; }
+
+    function renderTabs() {
+      if (!tabsEl) return;
+      const allLabel = lang() === "el" ? "Όλα τα καταστήματα" : "All branches";
+      tabsEl.innerHTML = "";
+      const allBtn = document.createElement("button");
+      allBtn.textContent = allLabel;
+      allBtn.className = activeRegion === "all" ? "is-active" : "";
+      allBtn.addEventListener("click", () => { activeRegion = "all"; renderAll(); });
+      tabsEl.appendChild(allBtn);
+      data.regions.forEach((r) => {
+        const btn = document.createElement("button");
+        btn.textContent = r.label[lang()];
+        btn.className = activeRegion === r.id ? "is-active" : "";
+        btn.addEventListener("click", () => { activeRegion = r.id; renderAll(); });
+        tabsEl.appendChild(btn);
+      });
+    }
+
+    function renderList() {
+      const items = activeRegion === "all" ? data.locations : data.locations.filter((l) => l.region === activeRegion);
+      listEl.innerHTML = items.map((loc) => `
+        <div class="location-card" data-id="${loc.id}">
+          <div class="location-card__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <h4>${loc.name[lang()]}</h4>
+            <p>${loc.address[lang()]}</p>
+            <p>${loc.phone} · ${loc.hours[lang()]}</p>
+            <a class="dir" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.mapsQuery)}">${window.HC_LANG ? window.HC_LANG.t("getDirections") : "Directions"} →</a>
+          </div>
+        </div>`).join("");
+    }
+
+    function renderAll() { renderTabs(); renderList(); }
+    document.addEventListener("hc:langchange", renderAll);
+    renderAll();
   }
 
   /* ---------------- Location switcher (hover a branch, its photo crossfades in) ---------------- */

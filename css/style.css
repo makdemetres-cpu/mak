@@ -363,11 +363,11 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .usp p{color:var(--text-soft);font-size:.9rem}
 
 /* ============ LOCATIONS ============ */
-.locations{display:flex;justify-content:center;margin-top:56px}
+.locations{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:56px}
 
 /* ---- Location switcher: hover a branch, its photo crossfades in behind the list ---- */
 .location-switcher{
-  position:relative;width:100%;max-width:560px;aspect-ratio:.92/1;min-height:0;border-radius:var(--radius-lg);overflow:hidden;
+  position:relative;aspect-ratio:.92/1;min-height:0;border-radius:var(--radius-lg);overflow:hidden;
   background:var(--deep-900);box-shadow:var(--shadow-lg);
 }
 .location-switcher__bg{position:absolute;inset:0;z-index:0}
@@ -405,6 +405,19 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   background:rgba(255,255,255,.16);transform:scale(1.035) translateX(4px);
 }
 
+.location-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.location-tabs button{padding:9px 16px;border-radius:var(--radius-pill);border:1px solid var(--line);font-weight:700;font-size:.84rem;color:var(--text-soft);transition:all .25s var(--ease)}
+.location-tabs button.is-active{background:var(--deep-bright);border-color:var(--deep-bright);color:#fff}
+.location-list{display:flex;flex-direction:column;gap:14px;max-height:480px;overflow:auto;padding-right:6px}
+.location-card{
+  border-radius:var(--radius-md);padding:18px 20px;display:flex;gap:16px;align-items:flex-start;
+  transition:background .25s var(--ease);
+}
+.location-card:hover, .location-card.is-active{background:var(--mist-50)}
+.location-card__icon{width:40px;height:40px;border-radius:50%;background:linear-gradient(150deg,var(--sky),var(--deep));color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.location-card h4{font-size:1rem;margin-bottom:3px}
+.location-card p{font-size:.86rem;color:var(--text-soft)}
+.location-card a.dir{font-size:.8rem;font-weight:700;color:var(--deep-bright);margin-top:8px;display:inline-block}
 
 /* ============ TESTIMONIALS ============ */
 .testi-track-wrap{
@@ -717,6 +730,8 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   .services-grid{grid-template-columns:repeat(2,1fr)}
   .usp-grid{grid-template-columns:repeat(2,1fr)}
   .stats{grid-template-columns:repeat(2,1fr)}
+  .locations{grid-template-columns:1fr}
+  .map-wrap{aspect-ratio:16/10}
   .booking-wrap{grid-template-columns:1fr}
   .booking-side{position:static}
 }
