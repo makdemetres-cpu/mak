@@ -387,8 +387,9 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .location-switcher__list{
   position:relative;z-index:2;height:100%;max-height:100%;overflow-y:auto;
   display:flex;flex-direction:column;gap:4px;padding:18px;
-  scrollbar-width:thin;
+  scrollbar-width:none;-ms-overflow-style:none;
 }
+.location-switcher__list::-webkit-scrollbar{display:none}
 .location-switcher__item{
   text-align:left;padding:14px 16px;border-radius:var(--radius-md);color:#fff;
   transition:background .25s var(--ease), transform .25s var(--ease);flex-shrink:0;
