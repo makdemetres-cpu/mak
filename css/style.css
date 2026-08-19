@@ -373,17 +373,12 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 }
 .location-switcher__bg{position:absolute;inset:0;z-index:0}
 .location-switcher__bg-layer{
-  position:absolute;inset:0;opacity:0;transition:opacity .55s var(--ease-soft);
-  display:flex;align-items:center;justify-content:center;
+  position:absolute;inset:0;opacity:0;transition:opacity .7s var(--ease-soft);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
 }
 .location-switcher__bg-layer.is-active{opacity:1}
+.location-switcher__bg-layer img{width:100%;height:100%;object-fit:cover;display:block}
 .location-switcher__bg-layer svg{width:34%;height:auto;opacity:.16}
-.location-switcher__bg-layer[data-idx="0"]{background:linear-gradient(135deg,var(--deep-900),var(--deep) 70%)}
-.location-switcher__bg-layer[data-idx="1"]{background:linear-gradient(200deg,var(--deep-900),var(--steel) 80%)}
-.location-switcher__bg-layer[data-idx="2"]{background:linear-gradient(160deg,var(--deep),var(--deep-900) 55%,var(--steel))}
-.location-switcher__bg-layer[data-idx="3"]{background:linear-gradient(120deg,var(--deep-900),var(--sky) 95%)}
-.location-switcher__bg-layer[data-idx="4"]{background:linear-gradient(210deg,var(--steel),var(--deep-900) 70%)}
-.location-switcher__bg-layer[data-idx="5"]{background:linear-gradient(150deg,var(--deep-900),var(--deep) 35%,var(--sky) 130%)}
 .location-switcher__bg-layer[data-idx="6"]{background:linear-gradient(180deg,var(--deep),var(--deep-900))}
 .location-switcher__overlay{
   position:absolute;inset:0;z-index:1;
@@ -403,7 +398,19 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .location-switcher__item:hover,
 .location-switcher__item:focus-visible,
 .location-switcher__item.is-active{
-  background:rgba(255,255,255,.16);transform:scale(1.035) translateX(4px);
+  background:rgba(255,255,255,.16);transform:scale(1.045) translateX(4px);
+}
+.location-switcher__item .item-directions{
+  display:inline-flex;align-items:center;gap:6px;
+  max-height:0;opacity:0;margin-top:0;padding:0 14px;overflow:hidden;
+  font-size:.74rem;font-weight:700;color:#fff;letter-spacing:.02em;
+  border:1px solid rgba(255,255,255,.4);border-radius:var(--radius-pill);
+  transition:max-height .3s var(--ease-soft), opacity .25s var(--ease-soft), margin-top .3s var(--ease-soft), padding .3s var(--ease-soft);
+}
+.location-switcher__item:hover .item-directions,
+.location-switcher__item:focus-visible .item-directions,
+.location-switcher__item.is-engaged .item-directions{
+  max-height:30px;opacity:1;margin-top:10px;padding:6px 14px;
 }
 
 

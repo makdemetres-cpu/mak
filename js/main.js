@@ -200,9 +200,19 @@
     function lang() { return document.documentElement.getAttribute("data-lang") || "el"; }
 
     const pinIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+    const locationPhotos = {
+      0: "assets/img/location-1.jpg",
+      1: "assets/img/location-2.jpg",
+      2: "assets/img/location-3.jpg",
+      3: "assets/img/location-4.jpg",
+      4: "assets/img/location-5.jpg",
+      5: "assets/img/location-6.jpg",
+    };
 
     bgEl.innerHTML = locations.map((loc, i) => `
-      <div class="location-switcher__bg-layer${i === 0 ? " is-active" : ""}" data-idx="${i}">${pinIcon}</div>
+      <div class="location-switcher__bg-layer${i === 0 ? " is-active" : ""}" data-idx="${i}">${
+        locationPhotos[i] ? `<img src="${locationPhotos[i]}" alt="" loading="lazy">` : pinIcon
+      }</div>
     `).join("");
     const layers = Array.from(bgEl.children);
 
@@ -211,17 +221,22 @@
       Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-active", i === idx));
     }
 
+    function setEngaged(idx) {
+      Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-engaged", i === idx));
+    }
+
     function renderList() {
       listEl.innerHTML = locations.map((loc) => `
         <button type="button" class="location-switcher__item">
           <strong>${loc.name[lang()]}</strong>
           <span>${loc.hours[lang()]}</span>
+          <span class="item-directions"><span data-lang-el>Οδηγίες</span><span data-lang-en>Directions</span></span>
         </button>
       `).join("");
       Array.from(listEl.children).forEach((btn, i) => {
         btn.addEventListener("mouseenter", () => setActive(i));
         btn.addEventListener("focus", () => setActive(i));
-        btn.addEventListener("click", () => setActive(i));
+        btn.addEventListener("click", () => { setActive(i); setEngaged(i); });
       });
       setActive(0);
     }
