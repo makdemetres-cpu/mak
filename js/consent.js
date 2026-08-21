@@ -147,7 +147,7 @@
       <div class="cookie-modal__head">
         <div>
           <h3 id="cookieModalTitle"><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></h3>
-          <p style="color:var(--text-soft);font-size:.86rem;margin-top:6px">
+          <p style="color:var(--deep);font-size:.86rem;margin-top:6px">
             <span data-lang-el>Επιλέξτε ποιες κατηγορίες cookies επιτρέπετε. Περισσότερα στην <a href="privacy.html#cookies" style="color:var(--deep);font-weight:700">Πολιτική Cookies</a>.</span>
             <span data-lang-en>Choose which categories of cookies you allow. More in our <a href="privacy.html#cookies" style="color:var(--deep);font-weight:700">Cookie Policy</a>.</span>
           </p>
