@@ -506,6 +506,11 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .footer-legal-line{font-size:.76rem;color:#5f7ba3;padding-bottom:20px;line-height:1.7}
 
 /* ============ COOKIE CONSENT ============ */
+.cookie-banner-overlay{
+  position:fixed;inset:0;z-index:4990;background:rgba(3,10,26,.5);
+  opacity:0;visibility:hidden;transition:opacity .5s var(--ease);
+}
+.cookie-banner-overlay.is-visible{opacity:1;visibility:visible}
 .cookie-banner{
   position:fixed;left:0;right:0;bottom:0;z-index:5000;
   background:var(--white);border-top:1px solid var(--line);box-shadow:0 -20px 50px -20px rgba(0,48,143,.25);
