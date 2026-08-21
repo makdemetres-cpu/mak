@@ -2,6 +2,7 @@
   "use strict";
 
   document.addEventListener("DOMContentLoaded", () => {
+    if (window.__hcFreshVisit) window.scrollTo(0, 0);
     initPreloader();
     initNav();
     renderServices();
