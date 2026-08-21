@@ -175,10 +175,14 @@
     const openModal = () => { overlay.classList.add("is-visible"); modal.classList.add("is-visible"); };
     const closeModal = () => { overlay.classList.remove("is-visible"); modal.classList.remove("is-visible"); };
 
-    /* This gate reappears on every visit (by design), so scrolling stays
-       locked from the moment the page loads until the visitor resolves it
-       via Accept, Reject, or Save/Reject inside Manage. */
-    document.body.style.overflow = "hidden";
+    /* This gate reappears on every fresh visit (new tab/browser session) —
+       set by js/session-gate.js, which runs first on every page — but not
+       on a plain refresh or when navigating between pages in the same
+       session. When it does apply, scrolling stays locked from the moment
+       the page loads until the visitor resolves it via Accept, Reject, or
+       Save/Reject inside Manage. */
+    const isFreshVisit = window.__hcFreshVisit !== false;
+    if (isFreshVisit) document.body.style.overflow = "hidden";
     function resolveGate() {
       document.body.style.overflow = "";
       bannerOverlay.classList.remove("is-visible");
@@ -212,11 +216,14 @@
       CATS.forEach((id) => setToggleState(id, !!existing[id]));
       applyIntegrations(existing);
     }
-    // Shown on every visit by design, regardless of a past choice.
-    setTimeout(() => {
-      bannerOverlay.classList.add("is-visible");
-      banner.classList.add("is-visible");
-    }, 300);
+    // Shown on every fresh visit by design, regardless of a past choice —
+    // but not on a refresh or when navigating between pages.
+    if (isFreshVisit) {
+      setTimeout(() => {
+        bannerOverlay.classList.add("is-visible");
+        banner.classList.add("is-visible");
+      }, 300);
+    }
 
     document.getElementById("cookieAccept").addEventListener("click", () => {
       saveConsent({ preferences: true, analytics: true, marketing: true });
