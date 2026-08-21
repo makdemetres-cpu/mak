@@ -113,21 +113,63 @@
     <div class="story">
       <div data-reveal="left">
         <div class="story__art">
-          <svg viewBox="0 0 400 420" width="100%" height="100%" aria-hidden="true">
-            <defs>
-              <linearGradient id="artGrad" x1="0" y1="0" x2="400" y2="420" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#7CB9E8"/><stop offset="1" stop-color="#00308F"/>
-              </linearGradient>
-            </defs>
-            <circle cx="200" cy="200" r="150" fill="none" stroke="#d9e8f6" stroke-width="1.5"/>
-            <circle cx="200" cy="200" r="110" fill="none" stroke="#d9e8f6" stroke-width="1.5"/>
-            <path d="M200 90 C230 140 260 175 260 210 A60 60 0 1 1 140 210 C140 175 170 140 200 90 Z" fill="url(#artGrad)"/>
-            <circle cx="200" cy="205" r="30" fill="none" stroke="#fff" stroke-width="9"/>
-            <path d="M200 165 L200 145" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
-            <circle cx="120" cy="120" r="6" fill="#7CB9E8"/>
-            <circle cx="300" cy="300" r="5" fill="#72A0C1"/>
-            <circle cx="310" cy="110" r="4" fill="#00308F"/>
-          </svg>
+          <div class="coverflow" id="storyCoverflow" tabindex="0" role="group"
+               aria-label="Φωτογραφικό ταξίδι στην ιστορία της HydroCore, 2007 έως σήμερα. Μετακινήστε το ποντίκι ή σύρετε, ή χρησιμοποιήστε τα βέλη αριστερά/δεξιά.">
+            <div class="coverflow__stage" id="coverflowStage">
+              <figure class="coverflow__slide" data-index="0" style="--grain:1">
+                <img src="assets/img/story-1.jpg" alt="Τα εγκαίνια του πρώτου συνεργείου της HydroCore στη Θεσσαλονίκη, 2007" loading="lazy">
+                <span class="coverflow__grain" aria-hidden="true"></span>
+                <figcaption>
+                  <span class="coverflow__date">26.06.2007</span>
+                  <span class="coverflow__cap"><span data-lang-el>Τα Εγκαίνια</span><span data-lang-en>The Grand Opening</span></span>
+                </figcaption>
+              </figure>
+              <figure class="coverflow__slide" data-index="1" style="--grain:0.8">
+                <img src="assets/img/story-2.jpg" alt="Δύο νέα καταστήματα HydroCore στην Καλαμαριά και τον Εύοσμο, 2013" loading="lazy">
+                <span class="coverflow__grain" aria-hidden="true"></span>
+                <figcaption>
+                  <span class="coverflow__date">14.03.2013</span>
+                  <span class="coverflow__cap"><span data-lang-el>Νέα Καταστήματα</span><span data-lang-en>New Branches</span></span>
+                </figcaption>
+              </figure>
+              <figure class="coverflow__slide" data-index="2" style="--grain:0.6">
+                <img src="assets/img/story-3.jpg" alt="Η HydroCore φτάνει στην Αθήνα με καταστήματα στην Κηφισιά και τον Πειραιά, 2016" loading="lazy">
+                <span class="coverflow__grain" aria-hidden="true"></span>
+                <figcaption>
+                  <span class="coverflow__date">09.11.2016</span>
+                  <span class="coverflow__cap"><span data-lang-el>Άφιξη στην Αθήνα</span><span data-lang-en>Arrival in Athens</span></span>
+                </figcaption>
+              </figure>
+              <figure class="coverflow__slide" data-index="3" style="--grain:0.4">
+                <img src="assets/img/story-4.jpg" alt="Το δίκτυο HydroCore επεκτείνεται στην Πάτρα και την Κρήτη, 2019" loading="lazy">
+                <span class="coverflow__grain" aria-hidden="true"></span>
+                <figcaption>
+                  <span class="coverflow__date">22.05.2019</span>
+                  <span class="coverflow__cap"><span data-lang-el>Πάτρα &amp; Κρήτη</span><span data-lang-en>Patra &amp; Crete</span></span>
+                </figcaption>
+              </figure>
+              <figure class="coverflow__slide" data-index="4" style="--grain:0.2">
+                <img src="assets/img/story-5.jpg" alt="Το εκπαιδευτικό πρόγραμμα HydroCore Academy ξεκινά, 2023" loading="lazy">
+                <span class="coverflow__grain" aria-hidden="true"></span>
+                <figcaption>
+                  <span class="coverflow__date">03.09.2023</span>
+                  <span class="coverflow__cap"><span data-lang-el>Η Ακαδημία μας</span><span data-lang-en>Our Academy</span></span>
+                </figcaption>
+              </figure>
+              <figure class="coverflow__slide" data-index="5" style="--grain:0">
+                <img src="assets/img/story-6.jpg" alt="Η ομάδα της HydroCore σήμερα, με 7 καταστήματα σε όλη την Ελλάδα, 2026" loading="lazy">
+                <span class="coverflow__grain" aria-hidden="true"></span>
+                <figcaption>
+                  <span class="coverflow__date">17.01.2026</span>
+                  <span class="coverflow__cap"><span data-lang-el>Σήμερα, Πανελλαδικά</span><span data-lang-en>Today, Nationwide</span></span>
+                </figcaption>
+              </figure>
+            </div>
+            <p class="coverflow__hint" id="coverflowHint" aria-hidden="true">
+              <span data-lang-el>Περιηγηθείτε στην ιστορία μας</span>
+              <span data-lang-en>Hover to explore our story</span>
+            </p>
+          </div>
         </div>
       </div>
       <div data-reveal="right">
@@ -461,5 +503,6 @@
 <script src="js/strings.js"></script>
 <script src="js/main.js"></script>
 <script src="js/consent.js"></script>
+<script src="js/story-coverflow.js"></script>
 </body>
 </html>
