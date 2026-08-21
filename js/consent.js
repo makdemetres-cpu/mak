@@ -56,6 +56,14 @@
   }
 
   /* ---------------- UI ---------------- */
+  function buildBannerOverlay() {
+    const el = document.createElement("div");
+    el.className = "cookie-banner-overlay";
+    el.id = "cookieBannerOverlay";
+    document.body.appendChild(el);
+    return el;
+  }
+
   function buildBanner() {
     const el = document.createElement("div");
     el.className = "cookie-banner";
@@ -160,11 +168,22 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    const bannerOverlay = buildBannerOverlay();
     const banner = buildBanner();
     const { overlay, modal } = buildModal();
 
     const openModal = () => { overlay.classList.add("is-visible"); modal.classList.add("is-visible"); };
     const closeModal = () => { overlay.classList.remove("is-visible"); modal.classList.remove("is-visible"); };
+
+    /* This gate reappears on every visit (by design), so scrolling stays
+       locked from the moment the page loads until the visitor resolves it
+       via Accept, Reject, or Save/Reject inside Manage. */
+    document.body.style.overflow = "hidden";
+    function resolveGate() {
+      document.body.style.overflow = "";
+      bannerOverlay.classList.remove("is-visible");
+      banner.classList.remove("is-visible");
+    }
 
     function setToggleState(id, on) {
       const btn = modal.querySelector(`.toggle[data-cat="${id}"]`);
@@ -192,18 +211,21 @@
     if (existing) {
       CATS.forEach((id) => setToggleState(id, !!existing[id]));
       applyIntegrations(existing);
-    } else {
-      setTimeout(() => banner.classList.add("is-visible"), 900);
     }
+    // Shown on every visit by design, regardless of a past choice.
+    setTimeout(() => {
+      bannerOverlay.classList.add("is-visible");
+      banner.classList.add("is-visible");
+    }, 300);
 
     document.getElementById("cookieAccept").addEventListener("click", () => {
       saveConsent({ preferences: true, analytics: true, marketing: true });
-      banner.classList.remove("is-visible");
+      resolveGate();
       window.HCToast && window.HCToast(window.HC_LANG.t("consentAcceptedAll"));
     });
     document.getElementById("cookieReject").addEventListener("click", () => {
       saveConsent({ preferences: false, analytics: false, marketing: false });
-      banner.classList.remove("is-visible");
+      resolveGate();
       window.HCToast && window.HCToast(window.HC_LANG.t("consentRejected"));
     });
     document.getElementById("cookieManage").addEventListener("click", () => {
@@ -217,13 +239,13 @@
       CATS.forEach((id) => setToggleState(id, id === "necessary"));
       saveConsent(readToggles());
       closeModal();
-      banner.classList.remove("is-visible");
+      resolveGate();
       window.HCToast && window.HCToast(window.HC_LANG.t("consentRejected"));
     });
     document.getElementById("cookieSaveModal").addEventListener("click", () => {
       saveConsent(readToggles());
       closeModal();
-      banner.classList.remove("is-visible");
+      resolveGate();
       window.HCToast && window.HCToast(window.HC_LANG.t("consentSaved"));
     });
 
