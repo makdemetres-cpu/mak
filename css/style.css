@@ -249,8 +249,6 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   position:relative;z-index:2;max-width:var(--container);margin-inline:auto;padding-inline:24px;width:100%;
 }
 .hero__content{max-width:620px}
-.hero__kicker{display:inline-flex;align-items:center;gap:10px;color:#cfe2f7;font-size:.9rem;font-weight:600;letter-spacing:.01em;margin-bottom:22px}
-.hero__kicker::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--sky);flex-shrink:0}
 .hero h1{color:#fff;font-weight:700;font-size:clamp(2.5rem,4.4vw,3.9rem);line-height:1.14;text-wrap:balance}
 .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--sky),#c9e6fb);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p.lede{color:#dce8f7;margin-top:22px;font-size:clamp(1.02rem,1.4vw,1.18rem)}
