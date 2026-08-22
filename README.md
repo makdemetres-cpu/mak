@@ -12,7 +12,7 @@ A premium, animated, bilingual (Greek/English) marketing site for **HydroCore**,
 - **Terms of Service** (`terms.html`) — booking terms, pricing, cancellation, warranty, governing law (aligned with Greek consumer law, Law 2251/1994).
 - **Cookie consent banner + preference center** (`js/consent.js`) — granular opt-in (Necessary / Preferences / Analytics / Marketing), nothing non-essential loads before consent.
 - **Greek/English language toggle** — persisted per visitor, defaults to Greek.
-- Self-hosted **Comfortaa** (headings) + **Inter** (body) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
+- Self-hosted **Vollkorn** (headings) + **Inter** (body) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
 - A split hero (text left, real team/fleet photo right with a slow Ken Burns zoom — see "Hero photography" below), single-curve section divider, borderless circular icon badges, and a floating dark stats banner, following the visual language of a reference design the client supplied.
 
 ## Running it locally
@@ -88,7 +88,7 @@ js/strings.js         EL/EN toggle engine + small dynamic-string dictionary
 js/main.js            Nav, scroll reveal, counters, testimonials, locations, services grid
 js/consent.js         GDPR cookie consent banner + preference center
 js/booking.js         Booking form logic, validation, EmailJS + mailto fallback
-assets/fonts/         Comfortaa & Inter (Latin + Greek subsets), self-hosted
+assets/fonts/         Vollkorn, Inter & Miama (Latin + Greek subsets), self-hosted
 assets/img/logo-mark.svg
 ```
 

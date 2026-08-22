@@ -35,8 +35,8 @@
   --accent-glow: rgba(124,185,232,.35);
 
   /* ---- type ---- */
-  --f-display: 'Comfortaa', 'Inter', system-ui, sans-serif;
-  --f-body:    'Inter', 'Comfortaa', system-ui, sans-serif;
+  --f-display: 'Vollkorn', Georgia, 'Times New Roman', serif;
+  --f-body:    'Inter', system-ui, sans-serif;
 
   /* ---- scale ---- */
   --container: 1240px;
@@ -319,7 +319,7 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   color:#fff;text-align:left;
 }
 .coverflow__date{display:block;font-size:.74rem;font-weight:700;letter-spacing:.06em;color:#d9e8f6;opacity:.9}
-.coverflow__cap{display:block;font-family:'Miama','Comfortaa',cursive;font-size:1.5rem;line-height:1.2;margin-top:2px;color:#fff}
+.coverflow__cap{display:block;font-family:'Miama','Vollkorn',cursive;font-size:1.5rem;line-height:1.2;margin-top:2px;color:#fff}
 .coverflow__hint{
   position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:20;
   padding:8px 18px;border-radius:var(--radius-pill);background:rgba(0,18,64,.6);backdrop-filter:blur(6px);
