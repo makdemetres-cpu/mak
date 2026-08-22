@@ -643,6 +643,14 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
 .breadcrumbs a{color:#a9c1de}
 .breadcrumbs a:hover{color:#fff}
 
+.notfound{text-align:center;padding-bottom:110px}
+.notfound .page-hero__inner{max-width:640px}
+.notfound__code{font-family:var(--f-display);font-weight:700;font-size:clamp(3.4rem,10vw,5.5rem);line-height:1;letter-spacing:-.02em;color:var(--sky);margin:0 0 6px;opacity:.85}
+.notfound h1{margin-bottom:4px}
+.notfound p:not(.notfound__code){margin-inline:auto}
+.notfound__actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+@media (max-width:520px){.notfound__actions{flex-direction:column;align-items:stretch}}
+
 .booking-wrap{display:grid;grid-template-columns:1fr 380px;gap:50px;align-items:flex-start;margin-top:-60px;position:relative;z-index:5;min-width:0}
 .booking-card{background:var(--bg);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:clamp(26px,4vw,48px);border:1px solid var(--line-soft);min-width:0}
 .stepper{display:flex;justify-content:space-between;margin-bottom:40px;position:relative}
