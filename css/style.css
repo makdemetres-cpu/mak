@@ -834,6 +834,8 @@ html[data-lang="el"] [data-lang-en]{display:none !important}
   .hero__meta div:nth-child(odd)::after{content:'';position:absolute;top:2px;bottom:2px;right:0;width:1px;background:rgba(255,255,255,.18)}
   .stepper__label-text{display:none}
   .location-switcher{aspect-ratio:.92/1}
+  .form-step[data-step="4"] .form-nav{gap:10px}
+  .form-step[data-step="4"] .form-nav .btn{flex:1;padding:14px 10px;font-size:.82rem;white-space:normal;text-align:center;line-height:1.25}
 }
 @media (max-width:520px){
   .services-grid{grid-template-columns:1fr}
