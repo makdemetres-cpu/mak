@@ -110,6 +110,23 @@
       hideHint();
     });
 
+    // Coalesce pointermove into one render per animation frame instead of
+    // one per event (touch can fire well past 60/s) — keeps the drag
+    // tracking the finger exactly, just without doing the work more than
+    // once a frame. rect is only re-measured on pointerdown/resize since
+    // it can't change mid-drag; measuring on every move forced a layout
+    // read for no reason and was the main source of mobile jank.
+    let pendingClientX = null;
+    let rafId = null;
+    function scheduleRender(clientX) {
+      pendingClientX = clientX;
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setPosition(xToPosition(pendingClientX));
+      });
+    }
+
     let isTouch = false;
     root.addEventListener("pointerdown", (e) => {
       isTouch = e.pointerType !== "mouse";
@@ -122,13 +139,13 @@
       hideHint();
     });
     root.addEventListener("pointermove", (e) => {
-      measure();
-      setPosition(xToPosition(e.clientX));
+      scheduleRender(e.clientX);
       hideHint();
     });
     ["pointerup", "pointercancel"].forEach((evt) => {
       root.addEventListener(evt, () => {
         root.classList.remove("is-grabbing");
+        if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
         if (isTouch) setPosition(Math.round(position)); // snap to nearest photo on release
       });
     });
