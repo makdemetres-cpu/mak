@@ -215,9 +215,12 @@
     `).join("");
     const layers = Array.from(bgEl.children);
 
+    let current = 0;
     function setActive(idx) {
+      current = idx;
       layers.forEach((el, i) => el.classList.toggle("is-active", i === idx));
       Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-active", i === idx));
+      updateDots();
     }
 
     function setEngaged(idx) {
@@ -240,6 +243,60 @@
       setActive(0);
     }
     listEl.addEventListener("mouseleave", () => setActive(0));
+
+    /* ---- Mobile-only affordances: swipe the photo to change branch, plus dots + arrows ---- */
+    const switcherEl = document.getElementById("locationSwitcher");
+    const controls = document.createElement("div");
+    controls.className = "location-switcher__controls";
+    controls.innerHTML = `
+      <button type="button" class="location-switcher__arrow location-switcher__arrow--prev" aria-label="Προηγούμενο κατάστημα">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="location-switcher__dots" role="tablist" aria-label="Καταστήματα"></div>
+      <button type="button" class="location-switcher__arrow location-switcher__arrow--next" aria-label="Επόμενο κατάστημα">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    `;
+    switcherEl.parentElement.appendChild(controls);
+    const dotsEl = controls.querySelector(".location-switcher__dots");
+    const dots = locations.map((_, i) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "location-switcher__dot";
+      dot.setAttribute("role", "tab");
+      dot.setAttribute("aria-label", `${i + 1}`);
+      dot.addEventListener("click", () => { setActive(i); setEngaged(i); });
+      dotsEl.appendChild(dot);
+      return dot;
+    });
+    function updateDots() {
+      dots.forEach((d, i) => {
+        d.classList.toggle("is-active", i === current);
+        d.setAttribute("aria-selected", i === current ? "true" : "false");
+      });
+    }
+    function step(delta) {
+      const next = Math.max(0, Math.min(locations.length - 1, current + delta));
+      setActive(next);
+      setEngaged(next);
+    }
+    controls.querySelector(".location-switcher__arrow--prev").addEventListener("click", () => step(-1));
+    controls.querySelector(".location-switcher__arrow--next").addEventListener("click", () => step(1));
+
+    let dragStartX = null;
+    bgEl.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse") return;
+      dragStartX = e.clientX;
+      try { bgEl.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+    });
+    bgEl.addEventListener("pointerup", (e) => {
+      if (dragStartX === null) return;
+      const delta = e.clientX - dragStartX;
+      dragStartX = null;
+      if (Math.abs(delta) < 32) return;
+      step(delta < 0 ? 1 : -1);
+    });
+    bgEl.addEventListener("pointercancel", () => { dragStartX = null; });
 
     renderList();
     document.addEventListener("hc:langchange", renderList);

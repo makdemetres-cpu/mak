@@ -1,8 +1,12 @@
 /* ==========================================================================
    HydroCore — Our Story photo coverflow
-   3D coverflow of 6 chronological photos in .story__art. Desktop: hover
-   scrubs continuously by cursor X. Touch: drag/swipe scrubs the same way.
-   Keyboard: left/right arrows step through photos when focused.
+   3D coverflow of 6 chronological photos in .story__art.
+   - Desktop: hover scrubs continuously by cursor X (untouched, as designed).
+   - Touch: drag/swipe scrubs the same way, then snaps to the nearest photo
+     on release — plus visible dots and prev/next arrows (mobile-only UI)
+     so the gesture is discoverable instead of a bare hover pattern ported
+     onto touch.
+   - Keyboard: left/right arrows step through photos when focused.
    ========================================================================== */
 (() => {
   "use strict";
@@ -43,6 +47,7 @@
         slide.style.zIndex = String(Math.round(100 - abs * 10));
         slide.setAttribute("aria-hidden", abs < 0.5 ? "false" : "true");
       });
+      updateDots();
     }
 
     function setPosition(p) {
@@ -64,8 +69,51 @@
       return Math.max(0, Math.min(1, fraction)) * (count - 1);
     }
 
+    /* ---- mobile-only affordances: dots + prev/next arrows ---- */
+    const controls = document.createElement("div");
+    controls.className = "coverflow__controls";
+    controls.innerHTML = `
+      <button type="button" class="coverflow__arrow coverflow__arrow--prev" aria-label="Προηγούμενη φωτογραφία">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="coverflow__dots" role="tablist" aria-label="Φωτογραφίες ιστορίας"></div>
+      <button type="button" class="coverflow__arrow coverflow__arrow--next" aria-label="Επόμενη φωτογραφία">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    `;
+    const artBox = root.closest(".story__art");
+    (artBox ? artBox.parentElement : root.parentElement).appendChild(controls);
+    const dotsEl = controls.querySelector(".coverflow__dots");
+    const dots = slides.map((_, i) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "coverflow__dot";
+      dot.setAttribute("role", "tab");
+      dot.setAttribute("aria-label", `${i + 1}`);
+      dot.addEventListener("click", () => { setPosition(i); hideHint(); });
+      dotsEl.appendChild(dot);
+      return dot;
+    });
+    function updateDots() {
+      const nearest = Math.round(position);
+      dots.forEach((d, i) => {
+        d.classList.toggle("is-active", i === nearest);
+        d.setAttribute("aria-selected", i === nearest ? "true" : "false");
+      });
+    }
+    controls.querySelector(".coverflow__arrow--prev").addEventListener("click", () => {
+      setPosition(Math.round(position) - 1);
+      hideHint();
+    });
+    controls.querySelector(".coverflow__arrow--next").addEventListener("click", () => {
+      setPosition(Math.round(position) + 1);
+      hideHint();
+    });
+
+    let isTouch = false;
     root.addEventListener("pointerdown", (e) => {
-      if (e.pointerType !== "mouse") {
+      isTouch = e.pointerType !== "mouse";
+      if (isTouch) {
         try { root.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
       }
       root.classList.add("is-grabbing");
@@ -79,7 +127,10 @@
       hideHint();
     });
     ["pointerup", "pointercancel"].forEach((evt) => {
-      root.addEventListener(evt, () => root.classList.remove("is-grabbing"));
+      root.addEventListener(evt, () => {
+        root.classList.remove("is-grabbing");
+        if (isTouch) setPosition(Math.round(position)); // snap to nearest photo on release
+      });
     });
 
     root.addEventListener("keydown", (e) => {
