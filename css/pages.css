@@ -417,14 +417,17 @@ a.line:hover { color: var(--accent); }
   color: var(--fg-muted);
   margin-bottom: 1.1rem;
 }
-.toc a {
+/* The contents list sits inside .legal, which gives every prose link a brass
+   underline. Twenty-two underlined rows is a fence, not a table of contents. */
+.legal .toc a:not(.btn):not(.link) {
   display: block;
   padding: 0.4rem 0;
   font-size: var(--step--1);
   color: var(--fg-muted);
+  border-bottom: 0;
   transition: color 0.25s var(--ease);
 }
-.toc a:hover { color: var(--accent); }
+.legal .toc a:not(.btn):not(.link):hover { color: var(--accent); }
 
 .legal__body { max-width: 68ch; }
 .legal__body > section + section { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
@@ -450,6 +453,9 @@ a.line:hover { color: var(--accent); }
 .legal__body p, .legal__body li { line-height: 1.75; color: var(--fg); }
 .legal__body p + p { margin-top: 1em; }
 .legal__body ul, .legal__body ol { margin: 1em 0 0; padding-left: 1.35rem; }
+/* A paragraph straight after a list was butting up against the last item. */
+.legal__body ul + p, .legal__body ol + p,
+.legal__body ul + h3, .legal__body ol + h3 { margin-top: 1.25em; }
 .legal__body li + li { margin-top: 0.6em; }
 .legal__body li::marker { color: var(--accent); }
 .legal__body strong { font-weight: 600; }

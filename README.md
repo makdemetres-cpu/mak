@@ -82,11 +82,54 @@ and both forms POST JSON to it instead, falling back to the email route if the
 request fails. **If you do, name that provider in the privacy policy §7** — they
 become a processor.
 
-### 7. Terms of service
+### 7. Finish the booking terms — `terms.html`
 
-There isn't one. A villa rental business needs booking terms, a cancellation
-policy and a liability position as a separate document, and the FAQ is not a
-substitute. Ask for it and it can be built to match.
+The document is complete and drafted to sit correctly inside Greek and EU
+consumer law, but it is **not yet your contract**:
+
+- **Every figure marked _"to confirm"_ is a placeholder** — deposit percentage,
+  balance date, cancellation bands, security deposit, check-in and check-out
+  times, accepted payment methods. Replace them with your real terms. A payment
+  or cancellation schedule you never agreed to is not enforceable, and a guest
+  who relies on it and is then told something different has a fair complaint.
+- **§4 taxes** needs the levies that actually apply to you, by name and rate,
+  plus your VAT position. Rates change most years; don't publish figures your
+  accountant hasn't confirmed.
+- **§11 is the one to deal with first — see below.**
+- Then have a Greek lawyer read the whole document.
+
+Two things in there are deliberate and worth keeping when you revise it: the
+re-letting refund in §9 (a term that keeps 100% of the price for a cancellation
+made months ahead, with no attempt to re-let, risks being struck down as unfair
+under Law 2251/1994), and the unlimited-liability carve-outs in §15, which you
+cannot exclude anyway.
+
+### 8. ⚠️ Resolve the package-travel question — `terms.html` §11
+
+**This is the most consequential legal issue on the site, and it needs a lawyer
+rather than a template.**
+
+Under the Package Travel Directive (EU) 2015/2302, implemented in Greece by
+Ministerial Decision 7397/2018, combining **accommodation with carriage of
+passengers** — your airport transfers — or with car rental, or with other
+tourist services that form a significant part of the value or are advertised as
+an essential feature of the trip, can make the seller the **organiser of a
+package**.
+
+This site advertises chauffeur transfers, a private chef and curated
+experiences as essential features. If that makes you an organiser, you take on
+prescribed pre-contractual information, liability for the performance of the
+*whole* package including other people's services, price-revision limits,
+statutory traveller termination rights, and — the expensive one — **compulsory
+insolvency protection**: a bond, guarantee or insurance that refunds and
+repatriates travellers if the business fails. There is also an intermediate
+"linked travel arrangement" regime with its own duties.
+
+Get advice on which of the three you are. If you are an organiser, §11 has to
+be rewritten around that regime, the booking flow must serve the prescribed
+information form *before* the contract is made, and the insolvency protection
+has to be in place first. Selling packages without it is an offence, not a
+technicality.
 
 ---
 
@@ -111,6 +154,7 @@ automatically by GitHub Pages, Netlify, Vercel and Cloudflare Pages.
 | `index.html` | Homepage — 3D hero, the family, four estates, services, guests, FAQ |
 | `booking.html` | Four-step booking enquiry with a running summary |
 | `contact.html` | Direct lines, a drawn chart of the four locations, contact form |
+| `terms.html` | Booking terms & conditions |
 | `privacy.html` | Privacy & cookie policy |
 | `404.html` | Custom not-found page |
 | `css/base.css` | Tokens, reset, typography, buttons, form controls |
