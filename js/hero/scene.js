@@ -19,7 +19,7 @@ import {
   ACESFilmicToneMapping, Color, EquirectangularReflectionMapping, Fog,
   HemisphereLight, DirectionalLight, PerspectiveCamera, PMREMGenerator,
   Scene, SRGBColorSpace, Texture, WebGLRenderer
-} from '../vendor/three.module.min.js';
+} from '../vendor/three.slim.js';
 
 /* --------------------------------------------------------------------------
    Quality tiers
@@ -209,9 +209,16 @@ export function makeResizer(renderer, camera, settings, view) {
     camera.aspect = w / h;
 
     // A portrait phone sees far too little of the frame the path was composed
-    // for. Rather than a second set of keyframes, every shot's field of view is
-    // scaled up on tall screens — same choreography, wider lens.
-    view.fovScale = h / w > 1.3 ? 1.34 : (h > w ? 1.18 : 1);
+    // for, so every shot's field of view is scaled up on tall screens — same
+    // choreography, wider lens, no second set of keyframes.
+    //
+    // The scale is kept modest on purpose. three.js fov is *vertical*, so
+    // opening it far enough to fit the whole 27m facade horizontally also adds
+    // a great deal of empty sky and foreground, and the villa ends up a small
+    // object in the middle of a lot of nothing. 1.16 is the point where the
+    // building still fills the width and the wings are only just cropped.
+    view.fovScale = h / w > 1.3 ? 1.16 : (h > w ? 1.08 : 1);
+    view.portrait = h / w > 1.3;
     camera.updateProjectionMatrix();
     return true;
   };

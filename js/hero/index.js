@@ -20,7 +20,7 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.module.min.js';
+import { Vector3 } from '../vendor/three.slim.js';
 import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js';
 import { buildVilla, makeMaterials } from './villa.js';
 import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js';
@@ -64,7 +64,7 @@ function boot() {
 
   // Shared between the resizer (which decides how much wider a tall screen
   // needs to be) and the draw loop (which applies it to each shot's fov).
-  const view = { fovScale: 1 };
+  const view = { fovScale: 1, portrait: false };
   const resize = makeResizer(renderer, camera, settings, view);
 
   const pos = new Vector3();
@@ -131,6 +131,16 @@ function boot() {
     }
     camera.position.copy(pos);
     camera.lookAt(look);
+
+    // Portrait framing: on the approach shots a phone's tall frame is nearly
+    // half empty sky, so the camera is tipped down a few degrees to bring the
+    // house up out of it. The tilt fades to nothing by the time we are through
+    // the door — indoors it would only buy us more floor.
+    if (view.portrait) {
+      const fade = 1 - clamp01(smooth / 0.6);
+      if (fade > 0) camera.rotateX(-0.14 * fade);
+    }
+
     doorPivot.rotation.y = doorAngle(smooth);
     renderer.render(scene, camera);
     syncUI(smooth);

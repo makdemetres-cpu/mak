@@ -226,6 +226,19 @@ h1, h2, h3 {
   position: relative;
 }
 
+/* Anchored sections stop under the fixed header, not behind it. */
+[id] { scroll-margin-top: calc(var(--header-h) + 1.5rem); }
+
+/* Grid and flex children default to min-width:auto, which means a child with
+   wide content inside it (a data table in a scroll container, a long unbroken
+   string) refuses to shrink and pushes the whole page sideways. Every grid on
+   this site opts out. Without this the privacy policy's tables widen the layout
+   viewport on a phone and the page scrolls horizontally. */
+.story__grid > *, .faq__grid > *, .legal__grid > *, .booking__grid > *,
+.contact__grid > *, .section-head > *, .estate > *, .service__inner > * {
+  min-width: 0;
+}
+
 .section-head {
   display: grid;
   gap: clamp(1.5rem, 4vw, 3.5rem);
