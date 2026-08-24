@@ -1,0 +1,538 @@
+/* ==========================================================================
+   Ermis' Villas — foundations
+   Tokens, reset, typography, and the small set of atoms every page shares.
+   Load order: fonts.css → base.css → site.css → (hero.css | pages.css)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   The palette is built from one warm near-black, one warm off-white, and a
+   single metallic accent. Nothing else. Restraint is what reads as expensive —
+   the moment a second accent colour appears the whole thing looks like a
+   template.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Core palette */
+  --ink:        #0F110E;   /* near-black, green undertone — the dark surface  */
+  --ink-raised: #171A15;   /* one step up: cards on dark                      */
+  --ink-line:   #262A22;   /* hairlines on dark                               */
+  --char:       #2C312A;   /* muted charcoal text on light                    */
+  --stone:      #6E6E63;   /* secondary text on light                         */
+  --mist:       #9A9A8E;   /* secondary text on dark                          */
+  --bone:       #F3F0E8;   /* the light surface                               */
+  --bone-warm:  #EAE5D9;   /* light surface, one step down                    */
+  --bone-line:  #D8D2C4;   /* hairlines on light                              */
+  --brass:      #B08D57;   /* the accent. Used sparingly and never for text
+                              longer than a few words.                        */
+  --brass-lit:  #D6B888;   /* accent on dark backgrounds (needs more lift)    */
+  --sage:       #7A8770;   /* the only other hue — foliage, success states    */
+  --alarm:      #A2543F;   /* form errors — terracotta, not fire-engine red   */
+
+  /* Surface variables. Sections flip these two and every component follows.
+     This is why the same card markup works on dark and light backgrounds. */
+  --surface:     var(--bone);
+  --surface-2:   var(--bone-warm);
+  --fg:          var(--char);
+  --fg-muted:    var(--stone);
+  --line:        var(--bone-line);
+  --accent:      var(--brass);
+
+  /* Typography */
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino,
+                  Georgia, 'Times New Roman', serif;
+  --font-text:    'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                  Roboto, Helvetica, Arial, sans-serif;
+
+  --step--1: clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem);
+  --step-0:  clamp(1rem, 0.97rem + 0.16vw, 1.0625rem);
+  --step-1:  clamp(1.125rem, 1.07rem + 0.28vw, 1.3125rem);
+  --step-2:  clamp(1.35rem, 1.24rem + 0.55vw, 1.75rem);
+  --step-3:  clamp(1.7rem, 1.45rem + 1.25vw, 2.5rem);
+  --step-4:  clamp(2.1rem, 1.6rem + 2.5vw, 3.75rem);
+  --step-5:  clamp(2.75rem, 1.6rem + 5.6vw, 6.5rem);
+
+  /* Space & rhythm */
+  --gutter:  clamp(1.25rem, 5vw, 4rem);
+  --measure: 62ch;
+  --section-y: clamp(4.5rem, 11vh, 9rem);
+  --container: 1320px;
+  --container-tight: 980px;
+
+  /* Motion — one easing curve for the whole site */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur: 0.55s;
+
+  --radius: 2px;   /* almost square. Rounded corners cheapen this palette. */
+  --header-h: 76px;
+}
+
+@media (max-width: 760px) {
+  :root { --header-h: 64px; }
+}
+
+/* Dark surfaces flip the tokens rather than restating every colour. */
+.on-dark {
+  --surface:   var(--ink);
+  --surface-2: var(--ink-raised);
+  --fg:        var(--bone);
+  --fg-muted:  var(--mist);
+  --line:      var(--ink-line);
+  --accent:    var(--brass-lit);
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font-text);
+  font-size: var(--step-0);
+  font-weight: 350;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+body.is-locked { overflow: hidden; }
+
+h1, h2, h3, h4, p, figure, blockquote, ul, ol, dl, dd { margin: 0; }
+ul[class], ol[class] { list-style: none; padding: 0; }
+
+img, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--brass); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+/* Keyboard users get the ring; pointer users never see it. */
+:focus:not(:focus-visible) { outline: none; }
+
+/* --------------------------------------------------------------------------
+   3. Typography
+   -------------------------------------------------------------------------- */
+.display,
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 144, 'SOFT' 0, 'WONK' 0;
+  line-height: 1.02;
+  letter-spacing: -0.021em;
+  text-wrap: balance;
+}
+
+.t-display { font-size: var(--step-5); line-height: 0.94; letter-spacing: -0.03em; }
+.t-h1      { font-size: var(--step-4); }
+.t-h2      { font-size: var(--step-3); line-height: 1.08; }
+.t-h3      { font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.012em; }
+
+/* Small display text needs a smaller optical size or the serifs go spindly. */
+.t-h3, .t-h4 { font-variation-settings: 'opsz' 36, 'SOFT' 0, 'WONK' 0; }
+.t-h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--step-1);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.eyebrow {
+  font-family: var(--font-text);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+}
+.eyebrow::before {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+  flex: none;
+}
+.eyebrow--plain::before { display: none; }
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.55;
+  font-weight: 300;
+  color: var(--fg-muted);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.prose { max-width: var(--measure); }
+.prose p + p { margin-top: 1.1em; }
+.prose p { text-wrap: pretty; }
+
+.muted { color: var(--fg-muted); }
+.accent { color: var(--accent); }
+
+/* Numerals in Fraunces, tabular so stacked figures align. */
+.numeral {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 144, 'SOFT' 0, 'WONK' 0;
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   4. Layout atoms
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--tight { max-width: var(--container-tight); }
+
+.section {
+  background: var(--surface);
+  color: var(--fg);
+  padding-block: var(--section-y);
+  position: relative;
+}
+
+.section-head {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  grid-template-columns: 1fr;
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+@media (min-width: 900px) {
+  .section-head--split {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    align-items: end;
+  }
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Buttons & links
+   -------------------------------------------------------------------------- */
+.btn {
+  --btn-bg: var(--accent);
+  --btn-fg: #14150F;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75em;
+  padding: 1.05em 1.9em;
+  min-height: 52px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-bg);
+  border-radius: var(--radius);
+  font-family: var(--font-text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+/* The fill wipes up from the bottom rather than cross-fading — cheaper to
+   composite and it reads as more deliberate. */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fg);
+  transform: translateY(101%);
+  transition: transform var(--dur) var(--ease);
+}
+.btn:hover::after, .btn:focus-visible::after { transform: translateY(0); }
+.btn:hover, .btn:focus-visible { color: var(--btn-bg); }
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--fg);
+  border-color: var(--line);
+  color: var(--fg);
+}
+.btn--ghost::after { background: var(--fg); }
+.btn--ghost:hover, .btn--ghost:focus-visible {
+  color: var(--surface);
+  border-color: var(--fg);
+}
+
+.btn--solid {
+  --btn-bg: var(--fg);
+  --btn-fg: var(--surface);
+}
+.btn--solid::after { background: var(--accent); }
+.btn--solid:hover, .btn--solid:focus-visible { color: #14150F; border-color: var(--accent); }
+
+.btn[disabled], .btn[aria-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.btn .btn-icon { flex: none; width: 1em; height: 1em; }
+
+/* A text link that underlines from the left on hover. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-bottom: 0.45em;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--dur) var(--ease);
+}
+.link:hover, .link:focus-visible { background-size: 100% 1px; }
+.link svg { width: 1.1em; height: 1.1em; flex: none; }
+
+/* Inline links inside prose keep a permanent hairline. */
+.prose a:not(.btn):not(.link),
+.legal a:not(.btn):not(.link) {
+  color: var(--fg);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.prose a:not(.btn):not(.link):hover,
+.legal a:not(.btn):not(.link):hover { color: var(--accent); }
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 200;
+  background: var(--brass);
+  color: #14150F;
+  padding: 0.85rem 1.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: top 0.25s var(--ease);
+}
+.skip-link:focus { top: 1rem; }
+
+/* --------------------------------------------------------------------------
+   6. Form controls
+   Shared by the booking flow, the contact form and the consent centre.
+   -------------------------------------------------------------------------- */
+.field { display: block; position: relative; }
+.field + .field { margin-top: 1.5rem; }
+
+.field-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.7rem;
+}
+.field-label .req { color: var(--accent); margin-left: 0.25em; }
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 0.95rem 1.05rem;
+  min-height: 54px;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 350;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+  appearance: none;
+}
+.textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+
+.input:hover, .select:hover, .textarea:hover { border-color: var(--fg-muted); }
+.input:focus, .select:focus, .textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.input::placeholder, .textarea::placeholder { color: var(--fg-muted); opacity: 0.7; }
+
+/* iOS renders date inputs with a shrunken box unless height is forced. */
+.input[type="date"] { min-height: 54px; line-height: 1.2; }
+.input[type="date"]::-webkit-date-and-time-value { text-align: left; }
+
+.select-wrap { position: relative; }
+.select { padding-right: 3rem; cursor: pointer; }
+.select-wrap::after {
+  content: "";
+  position: absolute;
+  right: 1.15rem;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 1px solid var(--fg-muted);
+  border-bottom: 1px solid var(--fg-muted);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.field-hint {
+  display: block;
+  margin-top: 0.55rem;
+  font-size: var(--step--1);
+  color: var(--fg-muted);
+}
+
+.field-error {
+  display: none;
+  margin-top: 0.55rem;
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--alarm);
+}
+.field.has-error .field-error { display: block; }
+.field.has-error .input,
+.field.has-error .select,
+.field.has-error .textarea { border-color: var(--alarm); }
+.on-dark .field.has-error .input,
+.on-dark .field.has-error .select,
+.on-dark .field.has-error .textarea { border-color: #D08A72; }
+.on-dark .field-error { color: #D08A72; }
+
+/* Checkbox / radio — custom marks, real inputs underneath for a11y. */
+.check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  cursor: pointer;
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--fg-muted);
+  padding: 0.15rem 0;
+}
+.check input {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  flex: none;
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.check input::before {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border-left: 1.5px solid var(--surface);
+  border-bottom: 1.5px solid var(--surface);
+  transform: rotate(-45deg) scale(0);
+  transition: transform 0.2s var(--ease);
+  margin-top: -2px;
+}
+.check input:checked { background: var(--accent); border-color: var(--accent); }
+.check input:checked::before { transform: rotate(-45deg) scale(1); }
+.check input[type="radio"] { border-radius: 50%; }
+.check input[type="radio"]::before {
+  width: 8px; height: 8px; border: 0; border-radius: 50%;
+  background: var(--surface); margin: 0;
+  transform: scale(0);
+}
+.check input[type="radio"]:checked::before { transform: scale(1); }
+.check:hover input { border-color: var(--fg-muted); }
+.check a { color: var(--fg); }
+
+/* Honeypot — visually gone, still focusable-free for real users. */
+.hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7. Reveal on scroll
+   One IntersectionObserver in main.js adds .is-in. Kept to transform+opacity
+   so it never triggers layout.
+   -------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+[data-reveal].is-in { opacity: 1; transform: none; }
+[data-reveal].is-in { will-change: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
