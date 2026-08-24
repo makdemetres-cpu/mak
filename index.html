@@ -6,7 +6,9 @@
 <title>Ermis' Villas — Four private estates on the Greek coast</title>
 <meta name="description" content="Four private estates in Crete, Paros, Mykonos and the Peloponnese, owned and run by one family since 2019. Private chauffeur, private chef, and someone who answers the phone at three in the morning.">
 <meta name="theme-color" content="#0F110E">
-<link rel="canonical" href="/">
+<!-- Set this to the live URL once there is a domain. A canonical of "/" is
+     wrong on any host that serves the site from a subfolder. -->
+<!-- <link rel="canonical" href="https://example.com/"> -->
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ermis' Villas">
@@ -31,7 +33,7 @@
 <!-- ===================== Header ===================== -->
 <header class="header" id="header">
   <div class="header__inner">
-    <a class="brand" href="/" aria-label="Ermis' Villas — home">
+    <a class="brand" href="index.html" aria-label="Ermis' Villas — home">
       <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
         <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1"/>
         <path d="M10.5 25h19M13 20.5h14.5M16.5 16h10" fill="none" stroke="currentColor"
@@ -656,7 +658,7 @@
   <div class="container">
     <div class="footer__grid">
       <div>
-        <a class="brand" href="/">
+        <a class="brand" href="index.html">
           <svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true">
             <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1"/>
             <path d="M10.5 25h19M13 20.5h14.5M16.5 16h10" fill="none" stroke="currentColor"
@@ -785,6 +787,26 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script src="js/consent.js"></script>
+
+<!-- A deadline for the hero.
+     js/hero/index.js sets its own fallback when WebGL is missing or the visitor
+     wants reduced motion — but only if it runs at all. If the module never
+     boots (an old browser that cannot parse it, a page opened straight off the
+     disk with file:// where CORS blocks module loading, a request that fails),
+     nothing would ever set that class and the visitor would be left staring at
+     640vh of empty dark. A classic script, so it runs everywhere. -->
+<script>
+(function () {
+  setTimeout(function () {
+    var root = document.documentElement;
+    if (root.className.indexOf('hero-ready') > -1 ||
+        root.className.indexOf('hero-fallback') > -1) return;
+    root.className += ' hero-fallback';
+    var hero = document.getElementById('hero');
+    if (hero) hero.className += ' hero--static';
+  }, 2500);
+})();
+</script>
 <script type="module" src="js/hero/index.js"></script>
 </body>
 </html>
