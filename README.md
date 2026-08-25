@@ -133,6 +133,40 @@ technicality.
 
 ---
 
+## ⚠️ One find-and-replace before launch: the domain
+
+Three things need an absolute URL and there is no domain yet, so they all use
+`https://example.com` as a placeholder: the link-preview images, the structured
+data, and the sitemap. One command fixes all of them:
+
+```bash
+sed -i 's#https://example.com#https://YOURDOMAIN#g' *.html sitemap.xml robots.txt
+sed -i 's#content="assets/img/#content="https://YOURDOMAIN/assets/img/#' *.html
+```
+
+The second line makes the `og:image` paths absolute. Relative ones work on most
+platforms; Twitter in particular does not resolve them.
+
+### Link previews
+
+`assets/img/share-card.jpg` (1200×630) is rendered out of the site's own 3D
+scene, so it needs no photography and no licence. To regenerate it after a
+design change, screenshot the homepage hero at 1200×630 with the header hidden.
+
+### Structured data
+
+`index.html` carries `LodgingBusiness` and `WebSite`; each estate page carries
+`VacationRental` and `BreadcrumbList`. Note that the telephone, email and
+address appear **both** in `js/data.js` and inside the JSON-LD blocks. That
+duplication is deliberate — crawlers do not run the site's JavaScript, so those
+values have to be present in the markup. Update both, and check the result with
+Google's Rich Results Test before launch.
+
+`FAQPage` markup is deliberately absent: Google restricted FAQ rich results to
+government and health sites, so it would add clutter and return nothing.
+
+---
+
 ## Running it
 
 No build step, no dependencies:
@@ -154,12 +188,15 @@ automatically by GitHub Pages, Netlify, Vercel and Cloudflare Pages.
 | `index.html` | Homepage — 3D hero, the family, four estates, services, guests, FAQ |
 | `booking.html` | Four-step booking enquiry with a running summary |
 | `contact.html` | Direct lines, a drawn chart of the four locations, contact form |
+| `estate-*.html` | One detail page per estate — setting, house, grounds, distances, rates |
 | `terms.html` | Booking terms & conditions |
 | `privacy.html` | Privacy & cookie policy |
 | `404.html` | Custom not-found page |
 | `css/base.css` | Tokens, reset, typography, buttons, form controls |
 | `css/site.css` | Header, mobile menu, hero, homepage sections, footer, consent |
-| `css/pages.css` | Booking, contact, legal documents, 404 |
+| `css/pages.css` | Booking, contact, legal documents, 404, estate pages |
+| `css/print.css` | Print rules (loaded `media="print"`, costs nothing on screen) |
+| `robots.txt`, `sitemap.xml` | Crawling |
 | `js/data.js` | **The only file with business facts in it** |
 | `js/main.js` | Header state, mobile menu, accordions, scroll reveals |
 | `js/consent.js` | Cookie consent |

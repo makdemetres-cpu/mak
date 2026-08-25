@@ -14,10 +14,25 @@
      wrong on any host that serves the site from a subfolder. -->
 <!-- <link rel="canonical" href="https://example.com/"> -->
 
+
+<!-- Link previews. og:image is a relative path so it works on any host without
+     editing; once there is a real domain, make these absolute — some crawlers
+     (Twitter in particular) will not resolve a relative image. One command:
+       sed -i 's#content="assets/img/#content="https://YOURDOMAIN/assets/img/#' *.html
+     See README.md → "Link previews". -->
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Ermis' Villas">
 <meta property="og:title" content="Ermis' Villas">
 <meta property="og:description" content="Four private estates on the Greek coast, run by one family since 2019.">
+<meta property="og:image" content="assets/img/share-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="One of the Ermis' Villas estates at golden hour, seen from the cypress drive.">
 <meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ermis' Villas">
+<meta name="twitter:description" content="Four private estates on the Greek coast, run by one family since 2019.">
+<meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
@@ -28,7 +43,117 @@
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/print.css" media="print">
 <link rel="modulepreload" href="js/vendor/three.slim.js">
+
+<!-- Structured data. Every absolute URL below uses the placeholder domain
+     https://example.com — replace it once there is a real one:
+       sed -i 's#https://example.com#https://YOURDOMAIN#g' *.html sitemap.xml
+     The telephone, email and address here duplicate js/data.js on purpose:
+     crawlers do not run our JavaScript, so these have to be in the markup.
+     Update both. See README.md -> "Structured data". -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "@id": "https://example.com/#business",
+  "name": "Ermis' Villas",
+  "legalName": "ERMIS VILLAS P.C.",
+  "description": "Four private estates in Crete, Paros, Mykonos and the Peloponnese, owned and run by one family since 2019. Private chauffeur, private chef, experiences and a 24-hour concierge.",
+  "url": "https://example.com/",
+  "logo": "https://example.com/assets/img/favicon.svg",
+  "image": "https://example.com/assets/img/share-card.jpg",
+  "telephone": "+30 000 000 0000",
+  "email": "reservations@example.com",
+  "priceRange": "€€€€",
+  "foundingDate": "2019",
+  "currenciesAccepted": "EUR",
+  "areaServed": [
+    {
+      "@type": "Place",
+      "name": "Crete"
+    },
+    {
+      "@type": "Place",
+      "name": "Paros"
+    },
+    {
+      "@type": "Place",
+      "name": "Mykonos"
+    },
+    {
+      "@type": "Place",
+      "name": "Peloponnese"
+    }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "00 Example Street",
+    "addressLocality": "Athens",
+    "postalCode": "000 00",
+    "addressCountry": "GR"
+  },
+  "amenityFeature": [
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Private swimming pool",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Airport transfer",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Private chef",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "24-hour concierge",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Free Wi-Fi",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Air conditioning",
+      "value": true
+    }
+  ],
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "00:00",
+    "closes": "23:59"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://example.com/#website",
+  "name": "Ermis' Villas",
+  "url": "https://example.com/",
+  "publisher": {
+    "@id": "https://example.com/#business"
+  },
+  "inLanguage": "en-GB"
+}
+</script>
 </head>
 <body>
 
@@ -244,7 +369,7 @@
       <article class="estate" data-reveal>
         <p class="estate__num">01</p>
         <div class="estate__name">
-          <h3 class="t-h3">Villa Thalassa</h3>
+          <h3 class="t-h3"><a href="estate-thalassa.html">Villa Thalassa</a></h3>
           <p class="estate__place">Elounda, Crete</p>
         </div>
         <div class="estate__glyph" aria-hidden="true">
@@ -263,7 +388,8 @@
         </div>
         <div class="estate__cta">
           <p class="estate__from">from <b>€2,400</b> / night</p>
-          <a class="link" href="booking.html?estate=thalassa">Check dates</a>
+          <a class="link" href="estate-thalassa.html">See the house</a>
+          <a class="link" href="booking.html?estate=thalassa" style="opacity:.72">Check dates</a>
         </div>
       </article>
 
@@ -271,7 +397,7 @@
       <article class="estate" data-reveal>
         <p class="estate__num">02</p>
         <div class="estate__name">
-          <h3 class="t-h3">Villa Anemos</h3>
+          <h3 class="t-h3"><a href="estate-anemos.html">Villa Anemos</a></h3>
           <p class="estate__place">Naoussa, Paros</p>
         </div>
         <div class="estate__glyph" aria-hidden="true">
@@ -289,7 +415,8 @@
         </div>
         <div class="estate__cta">
           <p class="estate__from">from <b>€1,850</b> / night</p>
-          <a class="link" href="booking.html?estate=anemos">Check dates</a>
+          <a class="link" href="estate-anemos.html">See the house</a>
+          <a class="link" href="booking.html?estate=anemos" style="opacity:.72">Check dates</a>
         </div>
       </article>
 
@@ -297,7 +424,7 @@
       <article class="estate" data-reveal>
         <p class="estate__num">03</p>
         <div class="estate__name">
-          <h3 class="t-h3">Villa Kyma</h3>
+          <h3 class="t-h3"><a href="estate-kyma.html">Villa Kyma</a></h3>
           <p class="estate__place">Agios Lazaros, Mykonos</p>
         </div>
         <div class="estate__glyph" aria-hidden="true">
@@ -317,7 +444,8 @@
         </div>
         <div class="estate__cta">
           <p class="estate__from">from <b>€3,600</b> / night</p>
-          <a class="link" href="booking.html?estate=kyma">Check dates</a>
+          <a class="link" href="estate-kyma.html">See the house</a>
+          <a class="link" href="booking.html?estate=kyma" style="opacity:.72">Check dates</a>
         </div>
       </article>
 
@@ -325,7 +453,7 @@
       <article class="estate" data-reveal>
         <p class="estate__num">04</p>
         <div class="estate__name">
-          <h3 class="t-h3">Villa Elaia</h3>
+          <h3 class="t-h3"><a href="estate-elaia.html">Villa Elaia</a></h3>
           <p class="estate__place">Porto Heli, Peloponnese</p>
         </div>
         <div class="estate__glyph" aria-hidden="true">
@@ -344,7 +472,8 @@
         </div>
         <div class="estate__cta">
           <p class="estate__from">from <b>€1,650</b> / night</p>
-          <a class="link" href="booking.html?estate=elaia">Check dates</a>
+          <a class="link" href="estate-elaia.html">See the house</a>
+          <a class="link" href="booking.html?estate=elaia" style="opacity:.72">Check dates</a>
         </div>
       </article>
 
@@ -679,10 +808,10 @@
       <div>
         <h2 class="footer__head">Estates</h2>
         <div class="footer__links">
-          <a href="#estates">Villa Thalassa — Crete</a>
-          <a href="#estates">Villa Anemos — Paros</a>
-          <a href="#estates">Villa Kyma — Mykonos</a>
-          <a href="#estates">Villa Elaia — Peloponnese</a>
+          <a href="estate-thalassa.html">Villa Thalassa — Crete</a>
+          <a href="estate-anemos.html">Villa Anemos — Paros</a>
+          <a href="estate-kyma.html">Villa Kyma — Mykonos</a>
+          <a href="estate-elaia.html">Villa Elaia — Peloponnese</a>
         </div>
       </div>
 

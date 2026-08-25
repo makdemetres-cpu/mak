@@ -563,3 +563,111 @@ a.line:hover { color: var(--accent-ink); }
 }
 .lost__links a { color: var(--fg-muted); transition: color 0.25s var(--ease); }
 .lost__links a:hover { color: var(--accent-ink); }
+
+/* --------------------------------------------------------------------------
+   5. Estate detail pages
+   -------------------------------------------------------------------------- */
+
+/* The drawn setting, at full size rather than the thumbnail used in the index. */
+.estate-figure {
+  border-block: 1px solid var(--line);
+  padding-block: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+}
+.estate-figure svg { width: min(100%, 34rem); height: auto; }
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+@media (min-width: 860px) { .facts { grid-template-columns: repeat(4, 1fr); } }
+.facts > div {
+  background: var(--surface);
+  padding: clamp(1.15rem, 3vw, 1.75rem);
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+.facts dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 72;
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.facts dt {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.estate-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (min-width: 900px) {
+  .estate-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+}
+.estate-grid > * { min-width: 0; }
+
+/* Distances to the things a guest actually asks about. */
+.nearby { border-top: 1px solid var(--line); }
+.nearby div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--step--1);
+}
+.nearby dt { color: var(--fg-muted); }
+.nearby dd { margin: 0; font-weight: 500; text-align: right; white-space: nowrap; }
+
+/* The other three houses, at the foot of each estate page. */
+.siblings { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); }
+@media (min-width: 760px) { .siblings { grid-template-columns: repeat(3, 1fr); } }
+.sibling {
+  background: var(--surface);
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: background-color 0.35s var(--ease);
+}
+.sibling:hover { background: var(--surface-2); }
+.sibling b {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-variation-settings: 'opsz' 72;
+  font-size: var(--step-2);
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+.sibling span {
+  font-size: 0.63rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.sibling em { font-style: normal; margin-top: auto; padding-top: 0.9rem; font-size: var(--step--1); color: var(--fg-muted); }
+
+/* The AADE registry number, which Greek law requires on every listing. */
+.registry {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding: 1.15rem 1.35rem;
+  border: 1px solid var(--line);
+  font-size: var(--step--1);
+  color: var(--fg-muted);
+  line-height: 1.6;
+}
+.registry b { color: var(--fg); font-weight: 500; letter-spacing: 0.04em; }

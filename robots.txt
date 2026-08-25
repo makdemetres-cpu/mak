@@ -1,0 +1,11 @@
+# Ermis' Villas
+# Replace the Sitemap host below once there is a real domain.
+
+User-agent: *
+Allow: /
+
+# The booking form is a private flow, not a landing page, and its query strings
+# (?estate=kyma) would otherwise be indexed as duplicates of one another.
+Disallow: /booking.html
+
+Sitemap: https://example.com/sitemap.xml

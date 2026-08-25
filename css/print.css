@@ -1,0 +1,118 @@
+/* ==========================================================================
+   Ermis' Villas — print
+   --------------------------------------------------------------------------
+   Guests print contracts. Someone will print the booking terms to read on a
+   plane, or the privacy policy to hand to a lawyer, and the screen design is
+   the wrong shape for both: a fixed header lands on top of the first
+   paragraph, the cookie banner prints across the footer, and 640vh of dark
+   hero costs a cartridge.
+
+   This turns the whole site into a plain black-on-white document. It is loaded
+   with media="print" so it costs nothing on screen.
+   ========================================================================== */
+
+@page {
+  margin: 18mm 16mm 20mm;
+}
+
+html, body {
+  background: #fff !important;
+  color: #000 !important;
+  font-size: 10.5pt;
+  line-height: 1.5;
+}
+
+/* ---- Things that have no business on paper ---- */
+.header, .menu, .menu-btn, .skip-link, .consent, .summary-bar,
+.hero__canvas, .hero__rail, .hero__cue, .hero__veil, .hero__grain,
+.footer__grid, .footer__legal, .cta, .siblings, .estate-figure,
+.map, .steps, .step-nav, .booking__grid > div:first-child form,
+[data-consent-open] {
+  display: none !important;
+}
+
+/* The hero collapses rather than printing an empty tall box. */
+.hero__stage { height: auto !important; }
+.hero__sticky { position: static !important; height: auto !important; background: none !important; }
+.hero__ui { position: static !important; padding: 0 !important; color: #000 !important; }
+.hero-panel { position: static !important; opacity: 1 !important; visibility: visible !important;
+              transform: none !important; page-break-inside: avoid; }
+
+/* ---- Colour ---- */
+.section, .page-head, .footer, .on-dark, .estates, .services, .lost {
+  background: #fff !important;
+  color: #000 !important;
+}
+.page-head::after { display: none !important; }
+*, *::before, *::after {
+  color: #000 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.eyebrow, .field-label, .estate__place, .summary__place, .footer__reg,
+.legal__body h2 em, .steps li { color: #333 !important; }
+hr, .rule, .estate, .service, .faq, .spec, .review__row, .nearby div,
+.table-wrap th, .table-wrap td, .lines .line, .legal__meta, .registry {
+  border-color: #999 !important;
+}
+
+/* Reveal-on-scroll must not hide half the document. */
+[data-reveal] { opacity: 1 !important; transform: none !important; }
+
+/* Accordions print open — a printed FAQ with the answers collapsed is useless. */
+.service__body, .faq__a { grid-template-rows: 1fr !important; }
+.service__body > div, .faq__a > div { overflow: visible !important; }
+.service__sign { display: none !important; }
+
+/* ---- Document furniture ---- */
+main { padding-top: 0 !important; }
+.section, .legal, .page-head { padding-block: 0 !important; }
+.section + .section { margin-top: 8mm; }
+.container { max-width: none !important; padding-inline: 0 !important; }
+
+h1 { font-size: 20pt; margin-bottom: 4mm; }
+h2 { font-size: 14pt; margin-top: 7mm; }
+h3 { font-size: 12pt; }
+h1, h2, h3, h4 { page-break-after: avoid; break-after: avoid; }
+p, li, tr, .spec, .nearby div { page-break-inside: avoid; break-inside: avoid; }
+.legal__body > section { page-break-inside: auto; }
+.table-wrap { overflow: visible !important; }
+.table-wrap table { min-width: 0 !important; page-break-inside: auto; }
+
+/* The contents list is a screen navigation aid; on paper it is dead weight. */
+.toc { display: none !important; }
+.legal__grid { display: block !important; }
+.legal__body { max-width: none !important; }
+
+/* ---- Links ----
+   A printed document should say where its links went, but only for real
+   destinations: expanding every in-page anchor to a URL is noise. */
+.legal__body a[href^="http"]::after,
+.legal__body a[href$=".html"]::after {
+  content: " (" attr(href) ")";
+  font-size: 8.5pt;
+  color: #555 !important;
+  word-break: break-all;
+}
+a { text-decoration: underline; }
+
+/* Who this document belongs to, on paper, where there is no browser chrome.
+   It goes above the page title rather than inside the body, or it lands
+   between the subtitle and the first paragraph looking like a stray line. */
+.page-head::before {
+  content: "Ermis' Villas";
+  display: block;
+  font-family: var(--font-display);
+  font-size: 12pt;
+  letter-spacing: 0.06em;
+  padding-bottom: 2.5mm;
+  margin-bottom: 6mm;
+  border-bottom: 1px solid #999;
+}
+
+/* Keep the identity block readable when the browser is not printing
+   backgrounds, which is the default in most print dialogs. */
+.legal__meta { border: 1px solid #999; padding: 4mm !important; background: none !important; }
+
+/* The editor's-note blocks are internal. They must never reach a guest. */
+.todo { display: none !important; }

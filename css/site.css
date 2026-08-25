@@ -1007,3 +1007,14 @@ body.menu-open .menu__foot { opacity: 1; }
 /* Accordions are opened by JS toggling aria-expanded; without it, open them. */
 .no-js .service__body, .no-js .faq__a { grid-template-rows: 1fr; }
 .no-js .service__sign, .no-js .menu-btn { display: none; }
+
+/* The estate name in the homepage index is now a link to its own page. */
+.estate__name h3 a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.5s var(--ease), color 0.3s var(--ease);
+  padding-bottom: 0.08em;
+}
+.estate__name h3 a:hover { background-size: 100% 1px; color: var(--accent-ink); }
