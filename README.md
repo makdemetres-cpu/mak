@@ -147,6 +147,21 @@ sed -i 's#content="assets/img/#content="https://YOURDOMAIN/assets/img/#' *.html
 The second line makes the `og:image` paths absolute. Relative ones work on most
 platforms; Twitter in particular does not resolve them.
 
+### Cache busting
+
+Every `css/` and `js/` URL carries a `?v=` version string, and the hero's ES
+module imports carry the same one. Without it, a returning visitor gets new
+HTML with a stylesheet the browser cached days ago, which looks broken rather
+than out of date — and on GitHub Pages you will chase it for ten minutes
+wondering why a deploy did nothing.
+
+**Bump it whenever anything in `css/` or `js/` changes:**
+
+```bash
+OLD=260825; NEW=$(date +%y%m%d)
+sed -i "s/?v=$OLD/?v=$NEW/g" *.html js/hero/*.js
+```
+
 ### Link previews
 
 `assets/img/share-card.jpg` (1200×630) is rendered out of the site's own 3D
