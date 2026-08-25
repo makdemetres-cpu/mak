@@ -17,14 +17,21 @@
   --ink-raised: #171A15;   /* one step up: cards on dark                      */
   --ink-line:   #262A22;   /* hairlines on dark                               */
   --char:       #2C312A;   /* muted charcoal text on light                    */
-  --stone:      #6E6E63;   /* secondary text on light                         */
+  --stone:      #66665C;   /* secondary text on light (4.6:1 on bone-warm)    */
   --mist:       #9A9A8E;   /* secondary text on dark                          */
   --bone:       #F3F0E8;   /* the light surface                               */
   --bone-warm:  #EAE5D9;   /* light surface, one step down                    */
   --bone-line:  #D8D2C4;   /* hairlines on light                              */
-  --brass:      #B08D57;   /* the accent. Used sparingly and never for text
-                              longer than a few words.                        */
-  --brass-lit:  #D6B888;   /* accent on dark backgrounds (needs more lift)    */
+  /* The accent exists in two tones because one cannot do both jobs.
+     #B08D57 is right as a *surface* — button fills, the checkbox tick's
+     ground, the hairline drawings — where the contrast rules that matter are
+     about the label sitting on it. As *text* on our bone background it only
+     reaches 2.7:1, well under the 4.5:1 WCAG AA needs, and it genuinely is
+     hard to read at eyebrow sizes. --brass-ink is the same metal taken down
+     until it clears 4.5:1 on both light surfaces. Verified, not eyeballed. */
+  --brass:      #B08D57;   /* accent as a surface / decorative stroke         */
+  --brass-ink:  #7E5E30;   /* accent as text on light: 5.2:1 bone, 4.7:1 warm */
+  --brass-lit:  #D6B888;   /* accent on dark backgrounds: 10:1 on ink         */
   --sage:       #7A8770;   /* the only other hue — foliage, success states    */
   --alarm:      #A2543F;   /* form errors — terracotta, not fire-engine red   */
 
@@ -35,7 +42,8 @@
   --fg:          var(--char);
   --fg-muted:    var(--stone);
   --line:        var(--bone-line);
-  --accent:      var(--brass);
+  --accent:      var(--brass);      /* fills and strokes */
+  --accent-ink:  var(--brass-ink);  /* text, focus rings, meaningful borders */
 
   /* Typography */
   --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino,
@@ -79,6 +87,7 @@
   --fg-muted:  var(--mist);
   --line:      var(--ink-line);
   --accent:    var(--brass-lit);
+  --accent-ink: var(--brass-lit);
   color-scheme: dark;
 }
 
@@ -125,7 +134,7 @@ a { color: inherit; text-decoration: none; }
 ::selection { background: var(--brass); color: #fff; }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 3px;
   border-radius: 1px;
 }
@@ -166,7 +175,7 @@ h1, h2, h3 {
   font-weight: 500;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-ink);
   margin: 0 0 1.25rem;
   display: flex;
   align-items: center;
@@ -196,7 +205,7 @@ h1, h2, h3 {
 .prose p { text-wrap: pretty; }
 
 .muted { color: var(--fg-muted); }
-.accent { color: var(--accent); }
+.accent { color: var(--accent-ink); }
 
 /* Numerals in Fraunces, tabular so stacked figures align. */
 .numeral {
@@ -336,7 +345,7 @@ h1, h2, h3 {
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-ink);
   padding-bottom: 0.45em;
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
@@ -351,12 +360,12 @@ h1, h2, h3 {
 .prose a:not(.btn):not(.link),
 .legal a:not(.btn):not(.link) {
   color: var(--fg);
-  border-bottom: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent-ink);
   padding-bottom: 1px;
   transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 .prose a:not(.btn):not(.link):hover,
-.legal a:not(.btn):not(.link):hover { color: var(--accent); }
+.legal a:not(.btn):not(.link):hover { color: var(--accent-ink); }
 
 .skip-link {
   position: absolute;
@@ -390,7 +399,7 @@ h1, h2, h3 {
   color: var(--fg-muted);
   margin-bottom: 0.7rem;
 }
-.field-label .req { color: var(--accent); margin-left: 0.25em; }
+.field-label .req { color: var(--accent-ink); margin-left: 0.25em; }
 
 .input,
 .select,
@@ -412,8 +421,8 @@ h1, h2, h3 {
 .input:hover, .select:hover, .textarea:hover { border-color: var(--fg-muted); }
 .input:focus, .select:focus, .textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  border-color: var(--accent-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ink) 18%, transparent);
 }
 .input::placeholder, .textarea::placeholder { color: var(--fg-muted); opacity: 0.7; }
 
@@ -489,8 +498,8 @@ h1, h2, h3 {
   content: "";
   width: 10px;
   height: 6px;
-  border-left: 1.5px solid var(--surface);
-  border-bottom: 1.5px solid var(--surface);
+  border-left: 1.5px solid #14150F;
+  border-bottom: 1.5px solid #14150F;
   transform: rotate(-45deg) scale(0);
   transition: transform 0.2s var(--ease);
   margin-top: -2px;
@@ -500,7 +509,7 @@ h1, h2, h3 {
 .check input[type="radio"] { border-radius: 50%; }
 .check input[type="radio"]::before {
   width: 8px; height: 8px; border: 0; border-radius: 50%;
-  background: var(--surface); margin: 0;
+  background: #14150F; margin: 0;
   transform: scale(0);
 }
 .check input[type="radio"]:checked::before { transform: scale(1); }

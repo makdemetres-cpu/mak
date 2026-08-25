@@ -476,29 +476,39 @@ body.menu-open .menu__foot { opacity: 1; }
 /* ---- Fallback: no WebGL, or the visitor asked for reduced motion ----
    The stage collapses and every panel becomes a normal stacked block, so the
    content is all still there and still designed. Nothing is lost but the fly-in. */
-.hero--static .hero__stage { height: auto; }
-.hero--static .hero__sticky { position: static; height: auto; }
+.hero--static .hero__stage,
+.no-js .hero__stage { height: auto; }
+.hero--static .hero__sticky,
+.no-js .hero__sticky { position: static; height: auto; }
 .hero--static .hero__canvas,
 .hero--static .hero__rail,
-.hero--static .hero__cue { display: none; }
-.hero--static .hero__sticky {
+.hero--static .hero__cue,
+.no-js .hero__canvas,
+.no-js .hero__rail,
+.no-js .hero__cue { display: none; }
+.hero--static .hero__sticky,
+.no-js .hero__sticky {
   background:
     radial-gradient(120% 100% at 80% 0%, #2E3A2C 0%, rgba(46,58,44,0) 60%),
     linear-gradient(160deg, #1B2018 0%, #0F110E 60%);
 }
-.hero--static .hero__ui {
+.hero--static .hero__ui,
+.no-js .hero__ui {
   position: static;
   padding-block: calc(var(--header-h) + 4rem) 4rem;
 }
-.hero--static .hero__panels { max-width: none; min-height: 0; }
-.hero--static .hero-panel {
+.hero--static .hero__panels,
+.no-js .hero__panels { max-width: none; min-height: 0; }
+.hero--static .hero-panel,
+.no-js .hero-panel {
   position: static;
   opacity: 1;
   visibility: visible;
   transform: none;
   max-width: 40rem;
 }
-.hero--static .hero-panel + .hero-panel {
+.hero--static .hero-panel + .hero-panel,
+.no-js .hero-panel + .hero-panel {
   margin-top: 3.25rem;
   padding-top: 3.25rem;
   border-top: 1px solid var(--ink-line);
@@ -523,7 +533,7 @@ body.menu-open .menu__foot { opacity: 1; }
   letter-spacing: -0.022em;
   text-wrap: balance;
 }
-.story__statement b { font-weight: 300; color: var(--accent); }
+.story__statement b { font-weight: 300; color: var(--accent-ink); }
 .story__sign {
   margin-top: 2.25rem;
   display: flex;
@@ -552,18 +562,21 @@ body.menu-open .menu__foot { opacity: 1; }
   background: var(--surface);
   padding: clamp(1.5rem, 3.5vw, 2.35rem);
   display: flex;
-  flex-direction: column;
+  /* Reversed: the markup is dt (label) then dd (figure), which is the correct
+     order for a description list, but the figure has to read first. */
+  flex-direction: column-reverse;
+  justify-content: flex-end;
   gap: 0.5rem;
 }
-.stat b { font-size: clamp(2.1rem, 5.5vw, 3.1rem); }
-.stat b sup {
+.stat dd { font-size: clamp(2.1rem, 5.5vw, 3.1rem); margin: 0; }
+.stat dd sup {
   font-size: 0.42em;
   vertical-align: super;
   letter-spacing: 0;
   margin-left: 0.08em;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
-.stat span {
+.stat dt {
   font-size: 0.63rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -602,7 +615,7 @@ body.menu-open .menu__foot { opacity: 1; }
   font-family: var(--font-display);
   font-size: 0.85rem;
   letter-spacing: 0.12em;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 .estate__name { display: flex; flex-direction: column; gap: 0.45rem; }
 .estate__name h3 { font-size: var(--step-2); }
@@ -662,7 +675,7 @@ body.menu-open .menu__foot { opacity: 1; }
   font-family: var(--font-display);
   font-size: 0.8rem;
   letter-spacing: 0.12em;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 .service__title {
   font-family: var(--font-display);
@@ -673,7 +686,7 @@ body.menu-open .menu__foot { opacity: 1; }
   letter-spacing: -0.015em;
   transition: color 0.35s var(--ease);
 }
-.service__head:hover .service__title { color: var(--accent); }
+.service__head:hover .service__title { color: var(--accent-ink); }
 .service__sign {
   position: relative;
   width: 20px; height: 20px;
@@ -752,7 +765,7 @@ body.menu-open .menu__foot { opacity: 1; }
   text-transform: uppercase;
   color: var(--fg-muted);
 }
-.quote figcaption b { display: block; color: var(--accent); margin-bottom: 0.3rem; }
+.quote figcaption b { display: block; color: var(--accent-ink); margin-bottom: 0.3rem; }
 
 /* --------------------------------------------------------------------------
    8. FAQ
@@ -779,7 +792,7 @@ body.menu-open .menu__foot { opacity: 1; }
   cursor: pointer;
   transition: color 0.3s var(--ease);
 }
-.faq__q:hover { color: var(--accent); }
+.faq__q:hover { color: var(--accent-ink); }
 .faq__a {
   display: grid;
   grid-template-rows: 0fr;
@@ -818,7 +831,7 @@ body.menu-open .menu__foot { opacity: 1; }
 @media (min-width: 760px) { .footer__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1040px) { .footer__grid { grid-template-columns: 1.5fr 1fr 1fr 1.2fr; } }
 
-.footer h4 {
+.footer__head {
   font-family: var(--font-text);
   font-size: 0.62rem;
   font-weight: 600;
@@ -834,7 +847,7 @@ body.menu-open .menu__foot { opacity: 1; }
   transition: color 0.3s var(--ease);
   width: fit-content;
 }
-.footer__links a:hover { color: var(--accent); }
+.footer__links a:hover { color: var(--accent-ink); }
 .footer__blurb { color: var(--fg-muted); font-size: var(--step--1); line-height: 1.7; max-width: 34ch; margin-top: 1.25rem; }
 .footer .brand { color: var(--bone); }
 .footer .brand__mark { color: var(--brass-lit); }
@@ -851,7 +864,7 @@ body.menu-open .menu__foot { opacity: 1; }
 }
 .footer__legal { display: flex; flex-wrap: wrap; gap: 1rem 1.75rem; }
 .footer__legal a { transition: color 0.3s var(--ease); }
-.footer__legal a:hover { color: var(--accent); }
+.footer__legal a:hover { color: var(--accent-ink); }
 .footer__reg {
   margin-top: 1rem;
   font-size: 0.68rem;
@@ -901,7 +914,7 @@ body.menu-open .menu__foot { opacity: 1; }
 }
 .consent h2 { font-size: var(--step-2); margin-bottom: 0.6rem; }
 .consent p { color: var(--fg-muted); font-size: var(--step--1); line-height: 1.65; max-width: 62ch; }
-.consent p a { color: var(--fg); border-bottom: 1px solid var(--accent); }
+.consent p a { color: var(--fg); border-bottom: 1px solid var(--accent-ink); }
 .consent__actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
 .consent__actions .btn { flex: 1 1 auto; white-space: nowrap; }
 @media (min-width: 900px) { .consent__actions .btn { flex: 0 0 auto; } }
@@ -983,3 +996,14 @@ body.menu-open .menu__foot { opacity: 1; }
   text-transform: uppercase;
   color: var(--fg-muted);
 }
+
+/* --------------------------------------------------------------------------
+   Scripting off
+   The reveal-on-scroll utility starts at opacity:0 and waits for JS to add
+   .is-in. With scripting disabled that never comes, so the whole page below
+   the hero would be blank. Show everything instead.
+   -------------------------------------------------------------------------- */
+.no-js [data-reveal] { opacity: 1; transform: none; }
+/* Accordions are opened by JS toggling aria-expanded; without it, open them. */
+.no-js .service__body, .no-js .faq__a { grid-template-rows: 1fr; }
+.no-js .service__sign, .no-js .menu-btn { display: none; }

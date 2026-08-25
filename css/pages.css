@@ -49,13 +49,13 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--accent);
+  background: var(--accent-ink);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.6s var(--ease);
 }
 .steps li.is-done i::after, .steps li.is-now i::after { transform: scaleX(1); }
-.steps li.is-now { color: var(--accent); }
+.steps li.is-now { color: var(--accent-ink); }
 .steps li.is-done { color: var(--fg); }
 .steps li span { display: none; }
 @media (min-width: 620px) { .steps li span { display: block; } }
@@ -107,7 +107,7 @@
   transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
 }
 .pick:hover { border-color: var(--fg-muted); }
-.pick:has(input:checked) { border-color: var(--accent); background: var(--surface-2); }
+.pick:has(input:checked) { border-color: var(--accent-ink); background: var(--surface-2); }
 .pick input {
   appearance: none;
   width: 20px; height: 20px;
@@ -124,15 +124,15 @@
 .pick input::before {
   content: "";
   width: 10px; height: 6px;
-  border-left: 1.5px solid var(--surface);
-  border-bottom: 1.5px solid var(--surface);
+  border-left: 1.5px solid #14150F;
+  border-bottom: 1.5px solid #14150F;
   transform: rotate(-45deg) scale(0);
   transition: transform 0.2s var(--ease);
   margin-top: -2px;
 }
 .pick input[type="radio"]::before {
   width: 8px; height: 8px; border: 0; border-radius: 50%;
-  background: var(--surface); margin: 0; transform: scale(0);
+  background: #14150F; margin: 0; transform: scale(0);
 }
 .pick input:checked { background: var(--accent); border-color: var(--accent); }
 .pick input:checked::before { transform: rotate(-45deg) scale(1); }
@@ -290,11 +290,11 @@
 .done__mark {
   width: 68px; height: 68px;
   margin: 0 auto 2rem;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--accent-ink);
   border-radius: 50%;
   display: grid;
   place-content: center;
-  color: var(--accent);
+  color: var(--accent-ink);
 }
 .done__mark svg { width: 26px; height: 26px; }
 .done h2 { font-size: var(--step-3); margin-bottom: 1rem; }
@@ -338,7 +338,7 @@
   border-bottom: 1px solid var(--line);
   transition: color 0.3s var(--ease);
 }
-a.line:hover { color: var(--accent); }
+a.line:hover { color: var(--accent-ink); }
 .line__label {
   font-size: 0.63rem;
   font-weight: 600;
@@ -379,14 +379,14 @@ a.line:hover { color: var(--accent); }
   font-style: normal;
   font-weight: 600;
   letter-spacing: 0.14em;
-  color: var(--accent);
+  color: var(--accent-ink);
   flex: none;
 }
 .map__legend b { color: var(--fg); font-weight: 500; }
 .map__legend i {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--accent-ink);
   flex: none;
   transform: translateY(-2px);
 }
@@ -427,7 +427,7 @@ a.line:hover { color: var(--accent); }
   border-bottom: 0;
   transition: color 0.25s var(--ease);
 }
-.legal .toc a:not(.btn):not(.link):hover { color: var(--accent); }
+.legal .toc a:not(.btn):not(.link):hover { color: var(--accent-ink); }
 
 .legal__body { max-width: 68ch; }
 .legal__body > section + section { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
@@ -438,7 +438,7 @@ a.line:hover { color: var(--accent); }
 }
 .legal__body h2 em {
   font-style: normal;
-  color: var(--accent);
+  color: var(--accent-ink);
   font-size: 0.55em;
   letter-spacing: 0.04em;
   margin-right: 0.6em;
@@ -457,7 +457,7 @@ a.line:hover { color: var(--accent); }
 .legal__body ul + p, .legal__body ol + p,
 .legal__body ul + h3, .legal__body ol + h3 { margin-top: 1.25em; }
 .legal__body li + li { margin-top: 0.6em; }
-.legal__body li::marker { color: var(--accent); }
+.legal__body li::marker { color: var(--accent-ink); }
 .legal__body strong { font-weight: 600; }
 
 .legal__meta {
@@ -544,7 +544,7 @@ a.line:hover { color: var(--accent); }
   font-size: clamp(5rem, 20vw, 11rem);
   line-height: 0.82;
   letter-spacing: -0.045em;
-  color: var(--accent);
+  color: var(--accent-ink);
   margin-bottom: 1.75rem;
 }
 .lost h1 { font-size: var(--step-4); margin-bottom: 1.25rem; }
@@ -562,4 +562,4 @@ a.line:hover { color: var(--accent); }
   font-size: var(--step--1);
 }
 .lost__links a { color: var(--fg-muted); transition: color 0.25s var(--ease); }
-.lost__links a:hover { color: var(--accent); }
+.lost__links a:hover { color: var(--accent-ink); }

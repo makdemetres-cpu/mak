@@ -57,16 +57,16 @@
   </div>
 </div>
 
-<main id="main">
+<main id="main" tabindex="-1">
 
 <section class="page-head" data-header-watch>
   <div class="container">
     <p class="eyebrow">Reserve</p>
     <h1 class="display">Begin a<br>booking.</h1>
     <p class="lede">
-      This is an enquiry, not a checkout — nothing is charged here and no card
-      is asked for. Tell us the shape of the trip and one of us comes back with
-      availability and a full price.
+      An enquiry, not a checkout: nothing is charged here and no card is asked
+      for. Tell us the shape of the trip and we come back with availability and
+      a full price.
     </p>
     <p class="page-head__meta">
       <span>Four hours to an answer in season</span>
@@ -83,15 +83,15 @@
       <div class="fallback-note" style="margin-bottom:2.5rem">
         This booking form needs JavaScript to work. It is switched off in your
         browser, so please email <a href="#" data-ev="emailLink"><span data-ev="email"></span></a>
-        or call <a href="#" data-ev="phoneLink"><span data-ev="phone"></span></a> instead —
-        you will reach the same three people either way.
+        or call <a href="#" data-ev="phoneLink"><span data-ev="phone"></span></a> instead.
+        You will reach the same three people either way.
       </div>
     </noscript>
 
     <div class="booking__grid">
       <div>
         <ol class="steps" id="steps" aria-label="Booking progress">
-          <li class="is-now"><i></i><span>The stay</span><b>01</b></li>
+          <li class="is-now" aria-current="step"><i></i><span>The stay</span><b>01</b></li>
           <li><i></i><span>Arrival &amp; extras</span><b>02</b></li>
           <li><i></i><span>Your details</span><b>03</b></li>
           <li><i></i><span>Review</span><b>04</b></li>
@@ -116,7 +116,7 @@
                 </select>
               </div>
               <span class="field-error" data-error-for="estate">Please choose which house you would like.</span>
-              <span class="field-hint" id="estateHint">Not sure yet? Choose the closest and say so in the notes — we will tell you honestly which of the four suits you.</span>
+              <span class="field-hint" id="estateHint">Not sure yet? Choose the closest and say so in the notes, and we will tell you which of the four actually suits you.</span>
             </div>
 
             <div class="field-row field-row--2">
@@ -213,7 +213,7 @@
               <div class="field">
                 <label class="field-label" for="phone">Phone <span class="req">*</span></label>
                 <input class="input" type="tel" id="phone" name="phone" required autocomplete="tel" inputmode="tel">
-                <span class="field-error" data-error-for="phone">Please give us a number — for the day you arrive, if nothing else.</span>
+                <span class="field-error" data-error-for="phone">Please give us a number, for the day you arrive if nothing else.</span>
               </div>
             </div>
 
@@ -271,9 +271,8 @@
           </div>
           <h2 class="t-h3">That is with us.</h2>
           <p>
-            One of us — Ermis or one of his sons — will read this and reply within
-            four hours during the season, usually a good deal sooner. If it is urgent,
-            call: it is a real number.
+            Ermis or one of his sons will read this and reply within four hours in
+            season, usually sooner. If it is urgent, call instead.
           </p>
           <p class="done__ref" id="doneRef"></p>
           <div class="cta__row">
@@ -346,8 +345,8 @@
         <div class="consent__lead">
           <p>
             Strictly necessary cookies keep this site working. Anything beyond that
-            loads only if you say yes. Change your mind any time from the footer —
-            <a href="privacy.html">privacy &amp; cookie policy</a>.
+            loads only if you say yes, and you can change your mind at any time from the
+            footer. See our <a href="privacy.html">privacy &amp; cookie policy</a>.
           </p>
         </div>
       </div>

@@ -1,7 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
+<!-- Removed immediately when scripting is on. With scripting off the class
+     survives and CSS falls the hero back to its static layout — otherwise the
+     homepage is a brand plate followed by 640vh of empty dark. -->
+<script>document.documentElement.classList.remove('no-js');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ermis' Villas — Four private estates on the Greek coast</title>
 <meta name="description" content="Four private estates in Crete, Paros, Mykonos and the Peloponnese, owned and run by one family since 2019. Private chauffeur, private chef, and someone who answers the phone at three in the morning.">
@@ -74,7 +78,7 @@
   </div>
 </div>
 
-<main id="main">
+<main id="main" tabindex="-1">
 
 <!-- ===================== Hero ===================== -->
 <section class="hero" id="hero" data-header-watch aria-label="A walk through the villa">
@@ -115,7 +119,7 @@
             <article class="hero-panel" data-chapter="booking">
               <p class="eyebrow">01 — Reserve</p>
               <h2 class="t-h2">Tell us the dates.<br>We do the rest.</h2>
-              <p>No quote engine and no availability calendar that lies. Send us who is coming and when, and you get an answer from one of us within four hours — with a plan and a price.</p>
+              <p>Send us the dates and who is coming. You get a written answer within four hours in season: availability, a full price, and a hold on the dates while you think about it.</p>
               <a class="link" href="booking.html">Begin a booking
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg>
               </a>
@@ -124,7 +128,7 @@
             <article class="hero-panel" data-chapter="estates">
               <p class="eyebrow">02 — The estates</p>
               <h2 class="t-h2">Four houses.<br>All of them ours.</h2>
-              <p>Crete, Paros, Mykonos and the Peloponnese. Eight to twelve guests each. We manage nothing on anyone else's behalf, which is why we can promise what is actually in them.</p>
+              <p>Crete, Paros, Mykonos and the Peloponnese. Eight to twelve guests each. All four belong to us, so everything we tell you about them is first-hand.</p>
               <a class="link" href="#estates">See all four
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg>
               </a>
@@ -142,7 +146,7 @@
             <article class="hero-panel" data-chapter="chef">
               <p class="eyebrow">04 — The table</p>
               <h2 class="t-h2">A chef in your<br>kitchen, not ours.</h2>
-              <p>Menus agreed the week before; the morning market decides the rest. Breakfast every day, one long dinner, or every meal of the stay — it is your kitchen, so it is your call.</p>
+              <p>Menus agreed the week before, with the morning market deciding the rest. Breakfast every day, one long dinner, or every meal of the stay. It is your kitchen, so it is your call.</p>
               <a class="link" href="#services">About the chef
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg>
               </a>
@@ -160,7 +164,7 @@
             <article class="hero-panel" data-chapter="concierge">
               <p class="eyebrow">06 — Every hour of it</p>
               <h2 class="t-h2">One number.<br>One of us on it.</h2>
-              <p>Not a call centre and not a rota of strangers. For the whole of your stay you have Ermis or one of his sons — at nine in the morning, and at three in the morning.</p>
+              <p>For the whole of your stay you have Ermis or one of his sons on a direct line. At nine in the morning, and at three in the morning.</p>
               <a class="link" href="contact.html">Talk to us
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg>
               </a>
@@ -180,7 +184,7 @@
       <div data-reveal>
         <p class="eyebrow">The family</p>
         <p class="story__statement">
-          Ermis bought the first house in 2019 and let it out himself — met the guests
+          Ermis bought the first house in 2019 and let it out himself: met the guests
           at the gate, carried the bags, cooked when the cook cancelled.
           <b>Seven years later there are four houses,</b> and the only real change is
           that his two sons answer the phone as well.
@@ -190,31 +194,32 @@
 
       <div class="prose" data-reveal style="--reveal-delay:120ms">
         <p>
-          We are not a management company. We do not have a portfolio, a regional
-          director, or a hundred houses we have never slept in. We have four, all of
-          them ours, and between the three of us we have stayed a night in every
-          bedroom in all of them.
+          We have four houses. All of them are ours, and between the three of us we
+          have slept a night in every bedroom in all of them. There is no portfolio
+          behind us and no regional director above us.
         </p>
         <p>
-          That is the whole proposition. When we tell you the water pressure on the
-          top floor of Villa Kyma is excellent, or that the road down to the cove at
-          Thalassa is steeper than it photographs, it is because we have been there
-          in February with nobody watching.
+          It is why we can be specific. The water pressure on the top floor of Villa
+          Kyma is excellent. The road down to the cove at Thalassa is steeper than it
+          photographs. We know because we have been in both houses in February, with
+          nobody watching.
         </p>
         <p>
-          Just over a hundred and fifty guests have stayed with us since 2019. Most
-          of them have come back, several of them every summer, and a few now text
-          Ermis directly about dates before we have opened the year. We would rather
-          keep it that way than grow into something that needs a call centre.
+          Just over a hundred and fifty guests have stayed since 2019. Most come
+          back, several every summer, and a few now text Ermis about dates before we
+          have opened the year. We would rather stay this size than grow into
+          something with a switchboard.
         </p>
       </div>
     </div>
 
+    <!-- dt is the label and dd the figure, which is the correct way round for a
+         description list; CSS reverses them visually so the number reads first. -->
     <dl class="stats" data-reveal>
-      <div class="stat"><b class="numeral">2019</b><span>The first house</span></div>
-      <div class="stat"><b class="numeral">4</b><span>Private estates</span></div>
-      <div class="stat"><b class="numeral">150<sup>+</sup></b><span>Guests, most returning</span></div>
-      <div class="stat"><b class="numeral">24/7</b><span>Someone answering</span></div>
+      <div class="stat"><dt>The first house</dt><dd class="numeral">2019</dd></div>
+      <div class="stat"><dt>Private estates</dt><dd class="numeral">4</dd></div>
+      <div class="stat"><dt>Guests, most returning</dt><dd class="numeral">150<sup>+</sup></dd></div>
+      <div class="stat"><dt>Someone answering</dt><dd class="numeral">24/7</dd></div>
     </dl>
   </div>
 </section>
@@ -279,7 +284,7 @@
           </svg>
         </div>
         <div>
-          <p class="estate__line">Set back from the harbour in an old olive terrace — close enough to walk down to dinner, far enough not to hear it.</p>
+          <p class="estate__line">Set back from the harbour in an old olive terrace, close enough to walk down to dinner and far enough not to hear it.</p>
           <p class="estate__meta"><span>4 bedrooms</span><span>Sleeps 8</span><span>Roof deck</span><span>Outdoor kitchen</span></p>
         </div>
         <div class="estate__cta">
@@ -357,7 +362,8 @@
       </div>
       <p class="lede" data-reveal style="--reveal-delay:100ms">
         Anyone can hand you a key. What takes seven years to build is knowing which
-        captain, which cook, and which table — and being able to get them at short notice.
+        captain, which cook and which table, and being able to get all three at
+        short notice.
       </p>
     </header>
 
@@ -374,9 +380,9 @@
           <div><div class="service__inner">
             <div>
               <p>
-                Give us the flight, the ferry or the train and a driver is waiting
-                before you reach the door — with your name, your bags, and the air
-                already cold in the car. The same driver takes you back at the end,
+                Give us the flight, the ferry or the train, and a driver is waiting
+                before you reach the door: your name on the card, your bags taken,
+                the air already cold in the car. The same driver takes you back at the end,
                 however early that is.
               </p>
               <p>
@@ -406,9 +412,9 @@
           <div><div class="service__inner">
             <div>
               <p>
-                We agree the shape of the menus the week before you arrive — what you
+                We agree the shape of the menus the week before you arrive: what you
                 love, what you will not eat, who is allergic to what. Then the chef
-                goes to the market that morning and the day's fish decides the rest.
+                goes to the market and the day's fish decides the rest.
               </p>
               <p>
                 Take breakfast every day and nothing else, or one long dinner on the
@@ -438,10 +444,10 @@
           <div><div class="service__inner">
             <div>
               <p>
-                Each of the four houses sits in a town we actually know. Not a
-                partner list — people we have used for years and would send our own
-                family to. A boat and a captain who knows which cove empties out at
-                four. A cellar that opens after hours. A guide worth the walk.
+                Each of the four houses sits in a town we actually know. These are
+                people we have used for years and would send our own family to. A boat
+                and a captain who knows which cove empties out at four. A cellar that
+                opens after hours. A guide worth the walk.
               </p>
               <p>
                 Tell us roughly what kind of days you want before you arrive and we
@@ -471,9 +477,8 @@
             <div>
               <p>
                 From the moment your booking is confirmed to the moment you are back
-                at the airport, you have one number. It reaches Ermis or one of his
-                sons — not a call centre, not a rota of names you will never meet
-                twice.
+                at the airport, you have one number. It rings one of the three of us,
+                and it is the same three all week.
               </p>
               <p>
                 A pharmacy at midnight, a doctor who speaks English, a forgotten
@@ -533,7 +538,6 @@
         <h2 class="t-h1">Before you<br>write to us.</h2>
         <p class="lede" style="margin-top:1.5rem">
           If the answer you need is not here, the fastest route is the phone.
-          It is a real number and one of us picks it up.
         </p>
         <p style="margin-top:1.75rem">
           <a class="link" href="contact.html">Contact us
@@ -552,7 +556,7 @@
             How do I reserve, and how quickly will you reply?
           </button>
           <div class="faq__a" id="faq-1"><div>
-            <p>Send us the dates, the house and how many of you there are — through the booking page, by email, or on the phone. One of us replies within four hours during the season, with availability, a full price including everything you have asked for, and a hold on the dates while you decide.</p>
+            <p>Send us the dates, the house and how many of you there are, through the booking page, by email or on the phone. We reply within four hours in season, with availability, a full price covering everything you have asked for, and a hold on the dates while you decide.</p>
           </div></div>
         </div>
 
@@ -562,7 +566,7 @@
           </button>
           <div class="faq__a" id="faq-2"><div>
             <p>The house itself, all of it, with nothing locked off. Daily housekeeping, linen and towels, pool and garden maintenance, utilities, wifi, and the 24-hour concierge line. Tourist taxes and the climate resilience levy are shown separately, because they are set by the state and change.</p>
-            <p>Chef, drivers, boats and excursions are quoted per booking. You will always see the full number before you commit to anything — we do not add extras at the end.</p>
+            <p>Chef, drivers, boats and excursions are quoted per booking. You always see the full number before you commit to anything, and nothing is added at the end.</p>
           </div></div>
         </div>
 
@@ -571,7 +575,7 @@
             Can you meet us at the airport, and can we choose the car?
           </button>
           <div class="faq__a" id="faq-3"><div>
-            <p>Yes to both. A driver meets you inside the terminal with your name, and tracks the flight, so a delay costs you nothing and changes nothing. Choose the Mercedes-Maybach, the Rolls-Royce Phantom, or the Lamborghini Gallardo — bearing in mind the Gallardo takes two people and almost no luggage, so most guests take it for a day on the coast road rather than for the airport.</p>
+            <p>Yes to both. A driver meets you inside the terminal with your name, and tracks the flight, so a delay costs you nothing and changes nothing. Choose the Mercedes-Maybach, the Rolls-Royce Phantom, or the Lamborghini Gallardo. Bear in mind that the Gallardo takes two people and almost no luggage, so most guests take it for a day on the coast road rather than for the airport.</p>
             <p>The Phantom moves between the islands, so ask for it as early as you can.</p>
           </div></div>
         </div>
@@ -590,7 +594,7 @@
             What is your cancellation policy?
           </button>
           <div class="faq__a" id="faq-5"><div>
-            <p>A booking is confirmed with a deposit, and the balance falls due before arrival. Cancel outside the window set out in your rental agreement and the deposit is refunded in full; inside it, part or all of it is retained. The exact figures and dates are set out in our <a href="terms.html">booking terms</a> and repeated in the agreement you sign — we will never apply a term you have not seen in writing first.</p>
+            <p>A booking is confirmed with a deposit, and the balance falls due before arrival. Cancel outside the window set out in your rental agreement and the deposit is refunded in full; inside it, part or all of it is retained. The exact figures and dates are set out in our <a href="terms.html">booking terms</a> and repeated in the agreement you sign. We will never apply a term you have not seen in writing first.</p>
             <p>If we ever have to cancel on you, you get everything back, and we will do our best to move you into one of the other three houses.</p>
           </div></div>
         </div>
@@ -600,7 +604,7 @@
             Is there a minimum stay?
           </button>
           <div class="faq__a" id="faq-6"><div>
-            <p>In July and August, yes — a week, running Saturday to Saturday. Outside those two months we are flexible, and shorter stays in the shoulder season are usually possible. Ask; the worst we can say is that the dates are taken.</p>
+            <p>In July and August, yes: a week, running Saturday to Saturday. Outside those two months we are flexible, and shorter stays in the shoulder season are usually possible. Ask; the worst we can say is that the dates are taken.</p>
           </div></div>
         </div>
 
@@ -609,7 +613,7 @@
             Are the houses suitable for children?
           </button>
           <div class="faq__a" id="faq-7"><div>
-            <p>They are, and a good number of our returning guests come with small children. Cots, high chairs, stair gates, pool fencing and a vetted local babysitter can all be in place before you arrive — tell us ages at the time of booking so it is done rather than discussed.</p>
+            <p>They are, and a good number of our returning guests come with small children. Cots, high chairs, stair gates, pool fencing and a vetted local babysitter can all be in place before you arrive. Tell us ages at the time of booking so that it is done rather than discussed.</p>
             <p>Two of the four houses have level access from the parking to the front door, which matters more than people expect. Ask us which.</p>
           </div></div>
         </div>
@@ -628,7 +632,7 @@
             What happens to the personal data I send you?
           </button>
           <div class="faq__a" id="faq-9"><div>
-            <p>It is used to answer you, to run your booking, and to meet the record-keeping Greek law requires of us — and for nothing else. We do not sell it and we do not share it with anybody who is not actually working on your stay. You can ask us for a copy, a correction or its deletion at any time.</p>
+            <p>It is used to answer you, to run your booking, and to meet the record-keeping Greek law requires of us, and for nothing else. We do not sell it and we do not share it with anybody who is not actually working on your stay. You can ask us for a copy, a correction or its deletion at any time.</p>
             <p>The detail, including how long we keep what and how to complain, is in our <a href="privacy.html">privacy &amp; cookie policy</a>.</p>
           </div></div>
         </div>
@@ -643,7 +647,7 @@
   <div class="container container--tight" data-reveal>
     <p class="eyebrow eyebrow--plain" style="justify-content:center">Reserve</p>
     <h2 class="t-h1">Tell us when, and who with.</h2>
-    <p>Four hours to an answer during the season, from one of the three people who own the houses. No forms that go nowhere.</p>
+    <p>An answer within four hours in season, written by one of the three people who own the houses.</p>
     <div class="cta__row">
       <a class="btn" href="booking.html">Begin a booking</a>
       <a class="btn btn--ghost" href="contact.html">Ask a question first</a>
@@ -673,7 +677,7 @@
       </div>
 
       <div>
-        <h4>Estates</h4>
+        <h2 class="footer__head">Estates</h2>
         <div class="footer__links">
           <a href="#estates">Villa Thalassa — Crete</a>
           <a href="#estates">Villa Anemos — Paros</a>
@@ -683,7 +687,7 @@
       </div>
 
       <div>
-        <h4>Services</h4>
+        <h2 class="footer__head">Services</h2>
         <div class="footer__links">
           <a href="#services">Arrival &amp; chauffeur</a>
           <a href="#services">Private chef</a>
@@ -693,7 +697,7 @@
       </div>
 
       <div>
-        <h4>Reach us</h4>
+        <h2 class="footer__head">Reach us</h2>
         <div class="footer__links">
           <a href="#" data-ev="phoneLink"><span data-ev="phone"></span></a>
           <a href="#" data-ev="emailLink"><span data-ev="email"></span></a>
@@ -731,8 +735,8 @@
         <div class="consent__lead">
           <p id="consentDesc">
             Strictly necessary cookies keep this site working. Anything beyond that
-            loads only if you say yes. Change your mind any time from the footer —
-            <a href="privacy.html">privacy &amp; cookie policy</a>.
+            loads only if you say yes, and you can change your mind at any time from the
+            footer. See our <a href="privacy.html">privacy &amp; cookie policy</a>.
           </p>
         </div>
       </div>
@@ -748,7 +752,7 @@
         <label class="check">
           <input type="checkbox" checked disabled data-cat="necessary">
           <span>Strictly necessary
-            <small>Needed for the site to work at all — remembering this choice, keeping a booking form's contents while you fill it in, and basic security. These cannot be switched off, and are set on the basis of our legitimate interest rather than consent.</small>
+            <small>Needed for the site to work at all: remembering this choice, keeping a booking form's contents while you fill it in, and basic security. These cannot be switched off, and are set on the basis of our legitimate interest rather than consent.</small>
           </span>
         </label>
       </div>
@@ -756,7 +760,7 @@
         <label class="check">
           <input type="checkbox" data-cat="preferences">
           <span>Preferences
-            <small>Remembers choices you have made — such as which estate you were last looking at — so you do not have to make them again.</small>
+            <small>Remembers choices you have made, such as which estate you were last looking at, so you do not have to make them again.</small>
           </span>
         </label>
       </div>

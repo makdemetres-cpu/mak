@@ -251,7 +251,7 @@
   /* ------------------------------------------------------------------
      Step navigation
      ------------------------------------------------------------------ */
-  function show(n) {
+  function show(n, moveFocus) {
     current = n;
     stepEls.forEach((s) => {
       const on = Number(s.dataset.step) === n;
@@ -261,6 +261,10 @@
     Array.from(steps.children).forEach((li, i) => {
       li.classList.toggle('is-now', i + 1 === n);
       li.classList.toggle('is-done', i + 1 < n);
+      // Tells assistive tech which of the four we are on, rather than leaving
+      // the state entirely to colour.
+      if (i + 1 === n) li.setAttribute('aria-current', 'step');
+      else li.removeAttribute('aria-current');
     });
     if (n === 4) buildReview();
 
@@ -268,13 +272,35 @@
     // very first render.
     const top = form.getBoundingClientRect().top + window.scrollY - 130;
     window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+
+    // Moving focus to the new step's heading is what announces the change.
+    // A live region would talk over the visitor; this just re-orients them.
+    if (moveFocus) {
+      const heading = stepEls[n - 1] && stepEls[n - 1].querySelector('h2');
+      if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); }
+    }
   }
 
   form.addEventListener('click', (e) => {
     if (e.target.closest('[data-next]')) {
-      if (validateStep(current)) show(Math.min(4, current + 1));
+      if (validateStep(current)) show(Math.min(4, current + 1), true);
     }
-    if (e.target.closest('[data-back]')) show(Math.max(1, current - 1));
+    if (e.target.closest('[data-back]')) show(Math.max(1, current - 1), true);
+  });
+
+  /* Enter inside a field used to fire the form's implicit submission — which
+     meant the submit handler ran from step 1, flagged the consent box the
+     visitor could not see yet, and tried to focus a hidden checkbox. On a
+     multi-step form Enter should mean "next", and only mean "send" on the last
+     step where the send button actually is. */
+  form.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const t = e.target;
+    if (t.tagName === 'TEXTAREA' || t.tagName === 'BUTTON') return;
+    if (current < 4) {
+      e.preventDefault();
+      if (validateStep(current)) show(Math.min(4, current + 1), true);
+    }
   });
 
   /* ------------------------------------------------------------------

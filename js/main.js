@@ -11,9 +11,38 @@
     initHeader();
     initMenu();
     initDisclosures();
+    initFieldErrors();
     initReveal();
     initYear();
   });
+
+  /* ------------------------------------------------------------------
+     Form error messages
+     The markup pairs each message with its field via data-error-for, but
+     that is only a styling hook — nothing tied the two together for a
+     screen reader, so aria-invalid announced "invalid" and never said
+     why. This wires up aria-describedby (hint first, then error) and
+     gives the message role="alert" so it is read the moment it appears.
+     ------------------------------------------------------------------ */
+  function initFieldErrors() {
+    document.querySelectorAll('[data-error-for]').forEach((err) => {
+      const input = document.getElementById(err.dataset.errorFor);
+      if (!input) return;
+
+      if (!err.id) err.id = 'err-' + err.dataset.errorFor;
+      err.setAttribute('role', 'alert');
+
+      const ids = (input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+      const field = input.closest('.field');
+      const hint = field && field.querySelector('.field-hint');
+      if (hint) {
+        if (!hint.id) hint.id = 'hint-' + input.id;
+        if (ids.indexOf(hint.id) === -1) ids.push(hint.id);
+      }
+      if (ids.indexOf(err.id) === -1) ids.push(err.id);
+      input.setAttribute('aria-describedby', ids.join(' '));
+    });
+  }
 
   /* ------------------------------------------------------------------
      Business details
@@ -91,12 +120,45 @@
     const menu = document.getElementById('menu');
     if (!btn || !menu) return;
 
+    // The menu covers the page, so while it is open the rest of the document
+    // must be out of reach — otherwise Tab walks straight off the menu and into
+    // links nobody can see, which is disorienting for a keyboard user and
+    // completely opaque for a screen reader.
+    const behind = Array.from(document.body.children)
+      .filter((el) => el !== menu && el.id !== 'header');
+
+    const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]),' +
+                      'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
     const setOpen = (open) => {
       document.body.classList.toggle('menu-open', open);
       document.body.classList.toggle('is-locked', open);
       btn.setAttribute('aria-expanded', String(open));
       btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.setAttribute('aria-hidden', String(!open));
+      behind.forEach((el) => {
+        if (open) el.setAttribute('inert', '');
+        else el.removeAttribute('inert');
+      });
+      if (open) {
+        const first = menu.querySelector(FOCUSABLE);
+        if (first) first.focus();
+      }
     };
+
+    // inert covers everything outside the menu; this keeps Tab cycling within
+    // it rather than escaping to the browser chrome and back.
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const items = Array.from(menu.querySelectorAll(FOCUSABLE))
+        .filter((el) => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); btn.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); btn.focus(); }
+    });
+
+    menu.setAttribute('aria-hidden', 'true');
 
     btn.addEventListener('click', () => {
       setOpen(!document.body.classList.contains('menu-open'));
