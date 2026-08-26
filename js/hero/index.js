@@ -20,10 +20,11 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.slim.js?v=260826';
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260826';
-import { buildVilla, makeMaterials } from './villa.js?v=260826';
-import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260826';
+import { Vector3 } from '../vendor/three.slim.js?v=260826b';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260826b';
+import { buildVilla, makeMaterials } from './villa.js?v=260826b';
+import { buildPhotos } from './photos.js?v=260826b';
+import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260826b';
 
 const hero    = document.getElementById('hero');
 const stage   = document.getElementById('heroStage');
@@ -60,12 +61,17 @@ function boot() {
 
   const { renderer, scene, camera, settings } = rig;
   const mats = makeMaterials();
-  const { doorPivot } = buildVilla(scene, mats, settings);
+  const { root: villa, doorPivot } = buildVilla(scene, mats, settings);
 
   // Shared between the resizer (which decides how much wider a tall screen
   // needs to be) and the draw loop (which applies it to each shot's fov).
   const view = { fovScale: 1, portrait: false };
   const resize = makeResizer(renderer, camera, settings, view);
+
+  // The seven photographs. They arrive one at a time as the visitor scrolls
+  // toward them, and each arrival has to wake a loop that has almost
+  // certainly already shut itself down.
+  const photos = buildPhotos(scene, camera, () => wake());
 
   const pos = new Vector3();
   const look = new Vector3();
@@ -124,8 +130,17 @@ function boot() {
   }
 
   function draw() {
-    const fov = evaluate(smooth, pos, look) * view.fovScale;
-    if (Math.abs(fov - lastFov) > 0.01) {
+    // Rebuilding the projection matrix on every frame for a hundredth of a
+    // degree is waste, so the focal length is quantised to 0.01° and only
+    // written when that lands on a new value.
+    //
+    // Quantised, and not compared against the last value with a tolerance:
+    // a tolerance is hysteresis, and hysteresis means the focal length at a
+    // given scroll position depends on which direction you arrived from. The
+    // difference is far too small to see, but "reverses exactly" is the whole
+    // premise of this hero, and rounding costs nothing.
+    const fov = Math.round(evaluate(smooth, pos, look) * view.fovScale * 100) / 100;
+    if (fov !== lastFov) {
       lastFov = camera.fov = fov;
       camera.updateProjectionMatrix();
     }
@@ -140,6 +155,15 @@ function boot() {
       const fade = 1 - clamp01(smooth / 0.6);
       if (fade > 0) camera.rotateX(-0.14 * fade);
     }
+
+    // After the camera is placed, aimed and tilted, so the photographs solve
+    // their cover against the frame that will actually be drawn.
+    //
+    // When one of them is covering the frame outright there is nothing to be
+    // gained by drawing the villa underneath it: forty-one draw calls and
+    // four thousand triangles that cannot reach a single pixel. It comes back
+    // by itself the moment a photograph is missing or mid-dissolve.
+    villa.visible = !photos.update(smooth, view.fovScale);
 
     doorPivot.rotation.y = doorAngle(smooth);
     renderer.render(scene, camera);

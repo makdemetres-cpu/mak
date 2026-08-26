@@ -189,9 +189,16 @@ wondering why a deploy did nothing.
 **Bump it whenever anything in `css/` or `js/` changes:**
 
 ```bash
-OLD=260825; NEW=$(date +%y%m%d)
+OLD=260826b; NEW=$(date +%y%m%d)
 sed -i "s/?v=$OLD/?v=$NEW/g" *.html js/hero/*.js
 ```
+
+**Deploying twice in one day?** Then `date +%y%m%d` gives you the string that
+is already live, the command is a no-op, and every visitor who loaded the site
+between the two deploys gets the new HTML with the old stylesheet — the exact
+failure the version exists to prevent. Add a letter: `260826` → `260826b` →
+`260826c`. Anything that changes the string works; the date is only a
+convention for reading it later.
 
 ### Link previews
 
@@ -263,7 +270,64 @@ background, the image-based lighting and the reflections.
 | `scene.js` | Renderer, camera, lights, environment, quality tiers, resize |
 | `villa.js` | All the geometry — shell, glazing, interior, grounds |
 | `path.js` | The camera choreography: 16 keyframes of position, target and focal length |
+| `photos.js` | The seven photographs, and the maths that makes each one fill the frame |
 | `index.js` | Binds scroll to the camera, drives the panels, handles fallbacks |
+
+### The photographs
+
+Seven photographs stand in for the modelled surfaces, one per chapter, in the
+order the camera meets them: the house across the pool, the approach at dusk,
+the front door, the great room, the kitchen, the fire, and a bedroom over the
+water. The camera move underneath is unchanged — same keyframes, same door,
+same scroll binding.
+
+Each one is a plane placed on the camera's own view axis and sized, every
+frame, from the live field of view, aspect ratio and distance so that it
+covers the frame exactly. That is `object-fit: cover` done in three
+dimensions, and it has one consequence worth understanding:
+
+> **No photograph is ever cropped on disk for framing.** Whatever a given
+> screen shape cannot fit simply falls outside the frustum. A phone held
+> upright sees very nearly the whole picture; a wide laptop sees a band
+> through the middle of it.
+
+Which band is the `focus` value in the table at the top of `photos.js`. It
+slides the picture up the frame, so **positive shows more of the bottom of the
+photograph and negative shows more of the top**. Each value has a comment
+saying what it is protecting — the horizon in the bedroom, the pendants in the
+kitchen. Change one, reload, look.
+
+Each photograph dissolves in **on top of** the one before it, which holds at
+full opacity underneath until it is completely covered. Fading one out while
+fading the other in would let a quarter of the model show through between
+them, and the join reads as a double exposure. While a photograph is covering
+the frame outright the villa behind it is switched off, taking the frame from
+about forty-three draw calls to two; it returns the instant anything could be
+seen through, so a photograph that fails to load leaves the modelled villa
+standing in its place.
+
+### Replacing or re-cropping the photographs
+
+The originals live in `assets/` exactly as they were uploaded.
+`tools/hero-photos.py` is the only thing that writes to `assets/img/hero/` —
+edit it and re-run rather than hand-editing the output:
+
+```bash
+pip install Pillow
+python3 tools/hero-photos.py
+```
+
+It trims two watermarks (the crop boxes are measured, and commented with the
+row numbers), upscales, and writes WebP and JPEG at two sizes. **If you upload
+larger originals, set the scale factors in `SIZES` to 1** — the upscale exists
+only to compensate for 736px sources, and upscaling something already large
+just spends video memory.
+
+Which set a visitor gets turns on the pointing device, not on the 3D quality
+tier next door: a mouse means a machine with the memory for seven 1288px
+textures at roughly 10MB each, a finger means a phone where that would be 70MB
+and a reloaded tab. Textures load one chapter ahead of where the visitor is,
+so somebody who never scrolls never downloads six of them.
 
 ### How the scroll binding works
 
@@ -299,7 +363,13 @@ fast.
 
 If WebGL is unavailable, the context fails, or the visitor has asked for reduced
 motion, the hero collapses into a designed stacked layout with all the same
-content. Nothing is lost but the fly-in. Both paths are tested.
+content — now with the same seven photographs behind the seven panels, in the
+same order. Nothing is lost but the fly-in. The JavaScript-off path gets it too.
+
+Those are CSS background images rather than `<img>` tags, deliberately: a CSS
+image is only fetched when it lands on something that renders, so a visitor who
+gets the real hero never downloads one of them, whereas a hidden `<img>` would
+be downloaded by everybody. All three paths are tested.
 
 ### Editing the tour
 
@@ -385,14 +455,39 @@ never as a `<script>` in the page, or the consent gate becomes decorative.
 
 ## Photography
 
-There is none, and none is faked. The estates are represented by hairline
-drawings of their settings, and the hero is the 3D villa. Everything on the site
-is either drawn or built in code, so there is nothing whose licensing has to be
-tracked.
+Seven photographs, in the hero only — see **The 3D hero → The photographs**.
+Everywhere else the site is still drawn or built in code: the estates are
+hairline drawings of their settings, and the contact page's map of the four
+locations is a drawing rather than a map service.
 
-When real photographs of the four estates exist, the natural places for them are
-the estate rows on the homepage and a gallery on each estate's own page, which
-does not exist yet.
+### ⚠️ These seven need their rights sorted out
+
+They were supplied as uploads, and two of them arrived carrying somebody
+else's mark:
+
+| | |
+|---|---|
+| `assets/Ermis Villas hero no 1.jpg` | a `TheBrainAndTheBrawn.com` copyright line across the bottom |
+| `assets/ermis villas hero no 6.jpg` | a Pinterest `FOLLOW MMV_TRADES` overlay |
+
+Both marks have been trimmed off the versions the site loads, on request. **A
+trimmed watermark is not a licence.** Removing it changes what the picture
+looks like and nothing about who owns it, and a visible credit is usually
+evidence that somebody expected to be credited. Before this site takes a
+booking, either establish that you hold the rights to all seven, or replace
+them — `tools/hero-photos.py` regenerates everything from whatever is in
+`assets/`, so swapping the originals and re-running is the whole job.
+
+Worth knowing as well: they are seven different houses, not seven rooms of one.
+The front door in photographs 2 and 3 carries a street number, `28`, that
+belongs to neither. Guests do compare photographs to what they arrive at, and
+the AADE registry number on each listing is a promise about a specific
+property. Photographs of the four estates you actually let are the real answer
+here; these are a good-looking placeholder.
+
+When those real photographs exist, the natural places for them beyond the hero
+are the estate rows on the homepage and a gallery on each estate's own page,
+which does not exist yet.
 
 ---
 

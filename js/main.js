@@ -178,10 +178,17 @@
       if (main) main.focus({ preventScroll: true });
     });
 
+    // The homepage hero is over five viewports tall on its own, so "two
+    // viewports down" lands squarely in the middle of it. A back-to-top
+    // button parked over a full-screen photograph is the one place it has no
+    // business being.
+    const stage = document.getElementById('heroStage');
+
     let shown = false, ticking = false, atFoot = false;
     const update = () => {
       ticking = false;
-      const should = window.scrollY > window.innerHeight * 2 && !atFoot;
+      const inHero = stage && window.scrollY < stage.offsetTop + stage.offsetHeight - window.innerHeight * 0.5;
+      const should = window.scrollY > window.innerHeight * 2 && !atFoot && !inHero;
       if (should === shown) return;
       shown = should;
       btn.classList.toggle('is-shown', should);
