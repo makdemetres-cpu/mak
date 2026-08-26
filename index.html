@@ -2,6 +2,11 @@
 <html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<!-- GitHub Pages serves HTML with max-age=600 and offers no way to change it,
+     so a deploy that restructures the markup can be invisible for ten minutes.
+     This helps where it is honoured; js/main.js -> checkVersion covers the rest
+     by comparing against version.txt and reloading once. -->
 <!-- Removed immediately when scripting is on. With scripting off the class
      survives and CSS falls the hero back to its static layout — otherwise the
      homepage is a brand plate followed by 640vh of empty dark. -->
@@ -40,11 +45,11 @@
      stops the headline reflowing a beat after paint. -->
 <link rel="preload" href="assets/fonts/Fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/HankenGrotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/fonts.css?v=260826c">
-<link rel="stylesheet" href="css/base.css?v=260826c">
-<link rel="stylesheet" href="css/site.css?v=260826c">
-<link rel="stylesheet" href="css/print.css?v=260826c" media="print">
-<link rel="modulepreload" href="js/vendor/three.slim.js?v=260826c">
+<link rel="stylesheet" href="css/fonts.css?v=260826d">
+<link rel="stylesheet" href="css/base.css?v=260826d">
+<link rel="stylesheet" href="css/site.css?v=260826d">
+<link rel="stylesheet" href="css/print.css?v=260826d" media="print">
+<link rel="modulepreload" href="js/vendor/three.slim.js?v=260826d">
 
 <!-- Structured data. Every absolute URL below uses the placeholder domain
      https://example.com — replace it once there is a real one:
@@ -930,9 +935,9 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826c"></script>
-<script src="js/main.js?v=260826c"></script>
-<script src="js/consent.js?v=260826c"></script>
+<script src="js/data.js?v=260826d"></script>
+<script src="js/main.js?v=260826d"></script>
+<script src="js/consent.js?v=260826d"></script>
 
 <!-- A deadline for the hero.
      js/hero/index.js sets its own fallback when WebGL is missing or the visitor
@@ -953,6 +958,6 @@
   }, 2500);
 })();
 </script>
-<script type="module" src="js/hero/index.js?v=260826c"></script>
+<script type="module" src="js/hero/index.js?v=260826d"></script>
 </body>
 </html>

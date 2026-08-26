@@ -6,6 +6,8 @@
 (() => {
   "use strict";
 
+  checkVersion();
+
   document.addEventListener('DOMContentLoaded', () => {
     hydrate();
     initHeader();
@@ -19,6 +21,62 @@
     initReadingProgress();
     initBackToTop();
   });
+
+  /* ------------------------------------------------------------------
+     Stale HTML
+     ------------------------------------------------------------------
+     Every stylesheet and script URL on this site carries ?v=YYMMDD, which
+     stops a returning visitor pairing new markup with an old stylesheet. What
+     it cannot version is the HTML file itself, and GitHub Pages serves that
+     with max-age=600 and gives us no way to change it. So for ten minutes
+     after a deploy that restructures the markup, a visitor can be handed a
+     stale page — and, because the assets are versioned, a stale page that
+     looks perfectly fine while being the wrong page.
+
+     version.txt holds the version the site was last built with, fetched with
+     no-store so it is never itself cached. If the page in front of us was
+     built with something older, we reload once.
+
+     "Once" is doing real work in that sentence. If a CDN edge is still
+     handing out the old HTML, a naive version of this would reload forever.
+     So the target version is written to sessionStorage before the reload and
+     checked before the next one, which caps it at one attempt per version per
+     tab, and any storage failure is treated as "do not reload at all".
+     ------------------------------------------------------------------ */
+  const RELOAD_KEY = 'ev_stale_reload';
+
+  function checkVersion() {
+    if (!window.fetch || location.protocol === 'file:') return;
+
+    // The version this document was built with, read off one of its own asset
+    // URLs so there is no second copy of the number to keep in step.
+    const link = document.querySelector('link[rel="stylesheet"][href*="?v="]');
+    const built = link ? (link.getAttribute('href').split('?v=')[1] || '') : '';
+    if (!built) return;
+
+    // Two belts. `cache: no-store` keeps the browser's own cache out of it,
+    // but Chromium enforces that internally without telling the server, so a
+    // CDN edge would happily serve its own ten-minute-old copy of the very
+    // file whose job is to be current. A unique query has no edge entry to
+    // hit, so it goes to the origin.
+    fetch('version.txt?t=' + Date.now(), { cache: 'no-store' })
+      .then((r) => (r.ok ? r.text() : null))
+      .then((text) => {
+        if (!text) return;
+        const latest = text.trim();
+        if (!latest || latest === built) return;
+
+        // One attempt, and only if we can record that we made it.
+        try {
+          if (sessionStorage.getItem(RELOAD_KEY) === latest) return;
+          sessionStorage.setItem(RELOAD_KEY, latest);
+        } catch (e) {
+          return;               // private mode: better stale than looping
+        }
+        location.reload();
+      })
+      .catch(() => { /* offline, or the file is not there yet. Carry on. */ });
+  }
 
   /* ------------------------------------------------------------------
      Social profiles

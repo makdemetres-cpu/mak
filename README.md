@@ -189,8 +189,9 @@ wondering why a deploy did nothing.
 **Bump it whenever anything in `css/` or `js/` changes:**
 
 ```bash
-OLD=260826b; NEW=$(date +%y%m%d)
+OLD=260826d; NEW=$(date +%y%m%d)
 sed -i "s/?v=$OLD/?v=$NEW/g" *.html js/hero/*.js
+printf '%s\n' "$NEW" > version.txt          # keep this in step — see below
 ```
 
 **Deploying twice in one day?** Then `date +%y%m%d` gives you the string that
@@ -199,6 +200,37 @@ between the two deploys gets the new HTML with the old stylesheet — the exact
 failure the version exists to prevent. Add a letter: `260826` → `260826b` →
 `260826c`. Anything that changes the string works; the date is only a
 convention for reading it later.
+
+### The other half: stale HTML
+
+`?v=` versions every stylesheet and script. **What it cannot version is the
+HTML file itself**, and GitHub Pages serves that with `max-age=600` and gives
+you no way to change it. So for ten minutes after a deploy that *restructures
+the markup*, a visitor can be handed a stale page — and because the assets are
+versioned, a stale page that looks perfectly fine while being the wrong page.
+It cost us one round of "I refreshed and nothing changed" on the booking form.
+
+Two things now cover it:
+
+- A `<meta http-equiv="Cache-Control">` in every page, which helps in the
+  browsers that honour it and is harmless in the ones that do not.
+- `version.txt` in the repository root, holding the current version string,
+  and `checkVersion()` in `js/main.js`. On every page load it fetches that file
+  — with `cache: no-store` **and** a unique `?t=` query, because Chromium
+  enforces no-store internally without telling the server and a CDN edge would
+  otherwise serve its own stale copy of the very file whose job is to be
+  current — compares it against the version the page was built with, and if
+  the page is older, reloads once.
+
+**"Once" is doing real work in that sentence.** If an edge is still handing out
+old HTML, a naive version of this reloads forever. The target version is
+written to `sessionStorage` before the reload and checked before the next one,
+capping it at one attempt per version per tab, and any storage failure is
+treated as "do not reload at all". Better a stale page than a spinning one.
+
+So `version.txt` must be bumped with the rest. If it drifts *behind*, nothing
+happens and you are back where you started; if it drifts *ahead*, every
+visitor reloads once for nothing. The command above does both together.
 
 ### Link previews
 
