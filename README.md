@@ -131,6 +131,37 @@ information form *before* the contract is made, and the insolvency protection
 has to be in place first. Selling packages without it is an offence, not a
 technicality.
 
+### 9. Switch on the social icons — `js/data.js` → `social`
+
+All three URLs are empty, so the footer's social row renders nothing and removes
+itself. Paste a full profile URL in and that icon appears; leave one empty and it
+stays absent. An icon that links nowhere reads as a broken site rather than a
+deliberate absence, which is why it works this way round.
+
+```js
+social: {
+  whatsapp:  "https://wa.me/30XXXXXXXXXX",
+  instagram: "https://instagram.com/yourhandle",
+  facebook:  ""                                  // not on Facebook? leave it
+}
+```
+
+### 10. Date the legal documents when you finalise them
+
+`privacy.html` and `terms.html` each carry a hard-coded in-force date in their
+`.legal__meta` block:
+
+```html
+<p><b>Version:</b> 1.0 · <b>In force from:</b> <time datetime="2026-08-26">26 August 2026</time></p>
+```
+
+**Change both the `datetime` attribute and the visible text whenever you change
+the substance of either document, and bump the version number.** They used to be
+derived from the file's modification date, which meant a deploy that only touched
+the CSS silently re-dated your privacy policy — a date that moves on its own is
+worse than no date at all, and under Article 12 GDPR you need to be able to say
+what was in force when.
+
 ---
 
 ## ⚠️ One find-and-replace before launch: the domain

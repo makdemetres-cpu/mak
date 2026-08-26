@@ -1018,3 +1018,144 @@ body.menu-open .menu__foot { opacity: 1; }
   padding-bottom: 0.08em;
 }
 .estate__name h3 a:hover { background-size: 100% 1px; color: var(--accent-ink); }
+
+/* --------------------------------------------------------------------------
+   13. Social profiles
+   --------------------------------------------------------------------------
+   Rendered by js/main.js only for platforms that actually have a URL set, so
+   the row shrinks to whatever exists rather than showing dead icons. Hairline
+   squares in the site's own language — a row of filled brand-colour circles
+   would be the single loudest cheap note on the page.
+   -------------------------------------------------------------------------- */
+.social {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-block: clamp(1.75rem, 4vw, 2.5rem);
+}
+/* On the slim footers this row opens the footer, and the footer's own top
+   padding is already generous. No rule of its own either way: the link grid
+   above it on the full footers already draws one. */
+.container > .social:first-child { padding-top: 0; }
+.social[hidden] { display: none; }
+.social__label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  flex: none;
+}
+.social__list { display: flex; gap: 0.6rem; }
+
+.social__link {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--fg-muted);
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease),
+              transform 0.3s var(--ease);
+}
+.social__link svg { width: 19px; height: 19px; }
+.social__link:hover, .social__link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+@media (max-width: 560px) {
+  .social { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  .social__link { width: 46px; height: 46px; }   /* comfortable thumb target */
+}
+
+/* --------------------------------------------------------------------------
+   14. Reading progress (legal documents only)
+   --------------------------------------------------------------------------
+   The homepage already has the hero chapter rail; a second indicator there
+   would compete. This exists only where a document runs to 11,000+ pixels and
+   the reader has no idea how much is left.
+   -------------------------------------------------------------------------- */
+.progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 120;              /* over the header, under the cookie banner */
+  height: 2px;
+  background: transparent;
+  pointer-events: none;
+}
+.progress i {
+  display: block;
+  height: 100%;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  /* No transition: this follows the scrollbar exactly. Easing it would make
+     the bar lag behind the thumb, which reads as lag rather than polish. */
+}
+
+/* --------------------------------------------------------------------------
+   15. Back to top
+   --------------------------------------------------------------------------
+   Only added by JS where the page is over three viewports tall, and only
+   revealed two viewports down. A hairline square with a label, not a filled
+   floating circle — the circle is the tell that says "template".
+   -------------------------------------------------------------------------- */
+.to-top {
+  position: fixed;
+  z-index: 50;               /* deliberately under the cookie banner (200) */
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  width: 54px;
+  padding: 0.55rem 0 0.5rem;
+  background: var(--ink);
+  color: var(--bone);
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease),
+              visibility 0.4s, border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.to-top.is-shown { opacity: 1; visibility: visible; transform: none; }
+.to-top svg { width: 17px; height: 17px; }
+.to-top span {
+  font-size: 0.53rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.to-top:hover, .to-top:focus-visible {
+  color: var(--brass-lit);
+  border-color: var(--brass-lit);
+}
+/* The booking page docks a summary bar along the bottom on small screens. */
+@media (max-width: 999px) {
+  .booking ~ .to-top, body:has(.summary-bar) .to-top { bottom: 5.5rem; }
+}
+
+/* --------------------------------------------------------------------------
+   16. Call button in the mobile header
+   --------------------------------------------------------------------------
+   Below 1000px the "Reserve" button is hidden, which left the phone number
+   two taps away behind the hamburger — on a site whose whole promise is "one
+   number, any hour". This puts it back, in space that was already empty.
+   -------------------------------------------------------------------------- */
+.header__call {
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: inherit;
+  transition: color 0.3s var(--ease);
+}
+.header__call svg { width: 20px; height: 20px; }
+.header__call + .menu-btn { margin-left: 0.25rem; }
+@media (min-width: 1000px) { .header__call { display: none; } }

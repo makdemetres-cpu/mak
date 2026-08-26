@@ -14,7 +14,198 @@
     initFieldErrors();
     initReveal();
     initYear();
+    initSocial();
+    initCampaign();
+    initReadingProgress();
+    initBackToTop();
   });
+
+  /* ------------------------------------------------------------------
+     Social profiles
+     Rendered from EV.BUSINESS.social, and only for platforms with a URL
+     actually set. An icon that links nowhere is worse than no icon: it
+     looks like a broken site rather than a deliberate absence. Add a URL
+     in js/data.js and the icon appears; leave it empty and the row
+     silently shrinks. If none are set the whole block is removed.
+     ------------------------------------------------------------------ */
+  const SOCIAL_ICONS = {
+    whatsapp: '<path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.5-4.3A8.5 8.5 0 1 1 20.5 11.6Z"/>' +
+              '<path d="M9.2 9.1c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.7 1.7c.1.2 0 .4-.1.6l-.4.5c-.1.2-.3.3-.1.6a7 7 0 0 0 3 2.6c.3.1.5.1.7-.1l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.3.1.4.3.4.5 0 .5-.3 1.4-1.5 1.7-1 .2-2.3.1-4.4-1.2a8.6 8.6 0 0 1-3.2-3.6c-.4-.9-.4-2 .3-2.8Z"/>',
+    instagram: '<rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/>' +
+               '<circle cx="12" cy="12" r="4"/>' +
+               '<circle cx="17.1" cy="6.9" r="1.05" fill="currentColor" stroke="none"/>',
+    facebook: '<circle cx="12" cy="12" r="9.3"/>' +
+              '<path d="M14.9 7.7h-1.4c-1.1 0-1.8.7-1.8 1.9V11h3l-.4 3h-2.6v6.9"/>' +
+              '<path d="M9.1 11h2.6"/>'
+  };
+  const SOCIAL_LABELS = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Facebook' };
+
+  function initSocial() {
+    const hosts = document.querySelectorAll('[data-social]');
+    if (!hosts.length) return;
+    const cfg = (window.EV && window.EV.BUSINESS && window.EV.BUSINESS.social) || {};
+
+    const links = Object.keys(SOCIAL_ICONS)
+      .filter((k) => typeof cfg[k] === 'string' && cfg[k].trim())
+      .map((k) => {
+        const url = cfg[k].trim();
+        return '<a class="social__link" href="' + url + '" target="_blank" rel="me noopener noreferrer" ' +
+               'aria-label="' + SOCIAL_LABELS[k] + ' — opens in a new tab">' +
+               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" ' +
+               'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+               SOCIAL_ICONS[k] + '</svg></a>';
+      });
+
+    hosts.forEach((host) => {
+      if (!links.length) { host.remove(); return; }
+      host.querySelector('[data-social-list]').innerHTML = links.join('');
+      host.hidden = false;
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Campaign attribution
+     Reads utm_* (and the click ids the ad platforms append) from the URL
+     and keeps them for this visit only, so that an enquiry sent three
+     pages later still knows which link brought the visitor. First-party
+     sessionStorage, never shared, gone when the tab closes. Disclosed in
+     privacy.html §9. EV.TRACK_CAMPAIGN = false switches it off entirely.
+     ------------------------------------------------------------------ */
+  const CAMPAIGN_KEY = 'ev_campaign';
+  const CAMPAIGN_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign',
+                           'utm_term', 'utm_content', 'gclid', 'fbclid'];
+
+  function initCampaign() {
+    if (!window.EV || window.EV.TRACK_CAMPAIGN === false) return;
+    let params;
+    try { params = new URLSearchParams(window.location.search); } catch (e) { return; }
+
+    const found = {};
+    CAMPAIGN_FIELDS.forEach((f) => {
+      const v = params.get(f);
+      // Cap the length: these end up in an email, and a hostile or broken
+      // link should not be able to paste a novel into it.
+      if (v) found[f] = v.slice(0, 120);
+    });
+    if (!Object.keys(found).length) return;
+
+    found.landedOn = window.location.pathname.split('/').pop() || 'index.html';
+    found.at = new Date().toISOString();
+    try { sessionStorage.setItem(CAMPAIGN_KEY, JSON.stringify(found)); } catch (e) { /* private mode */ }
+  }
+
+  /* Read by booking.js and contact.js when an enquiry is sent. */
+  window.EV = window.EV || {};
+  window.EV.campaign = function () {
+    if (window.EV.TRACK_CAMPAIGN === false) return null;
+    try { return JSON.parse(sessionStorage.getItem(CAMPAIGN_KEY) || 'null'); }
+    catch (e) { return null; }
+  };
+
+  /* The same thing as one line of plain text, for the email fallback — where
+     a JSON blob at the bottom of an enquiry would look like a fault. Returns
+     an empty string when there is nothing to say, so callers can just filter
+     it out of their line list. */
+  window.EV.campaignLine = function () {
+    const c = window.EV.campaign();
+    if (!c) return '';
+    const parts = CAMPAIGN_FIELDS.filter((f) => c[f]).map((f) => f.replace('utm_', '') + ': ' + c[f]);
+    return parts.length ? 'Came from — ' + parts.join(', ') : '';
+  };
+
+  /* ------------------------------------------------------------------
+     Reading progress
+     Only on the two legal documents, which run to 11,000 and 13,000
+     pixels. The homepage already has the hero's chapter rail doing this
+     job, and two progress indicators on one page compete rather than
+     help. Opt in with <body class="has-progress">.
+     ------------------------------------------------------------------ */
+  function initReadingProgress() {
+    if (!document.body.classList.contains('has-progress')) return;
+
+    const bar = document.createElement('div');
+    bar.className = 'progress';
+    bar.setAttribute('aria-hidden', 'true');
+    bar.innerHTML = '<i></i>';
+    document.body.appendChild(bar);
+    const fill = bar.firstElementChild;
+
+    let ticking = false, last = -1;
+    const update = () => {
+      ticking = false;
+      const travel = document.documentElement.scrollHeight - window.innerHeight;
+      const p = travel > 0 ? Math.min(1, Math.max(0, window.scrollY / travel)) : 0;
+      const rounded = Math.round(p * 500) / 500;   // avoid pointless style writes
+      if (rounded === last) return;
+      last = rounded;
+      fill.style.transform = 'scaleX(' + rounded + ')';
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
+
+  /* ------------------------------------------------------------------
+     Back to top
+     Enabled only where the page is genuinely long enough to need it —
+     three viewports — so it never appears on the booking form or the
+     404. Hidden until two viewports down, so it is not competing with
+     anything above the fold.
+     ------------------------------------------------------------------ */
+  function initBackToTop() {
+    if (document.documentElement.scrollHeight < window.innerHeight * 3) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'to-top';
+    btn.setAttribute('aria-label', 'Back to the top of the page');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.4" aria-hidden="true"><path d="M12 19V6m0 0-5.5 5.5M12 6l5.5 5.5"/></svg>' +
+      '<span>Top</span>';
+    document.body.appendChild(btn);
+
+    btn.addEventListener('click', () => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      // Send focus back to the top of the document, or a keyboard user is
+      // left stranded at the bottom of the tab order.
+      const main = document.getElementById('main');
+      if (main) main.focus({ preventScroll: true });
+    });
+
+    let shown = false, ticking = false, atFoot = false;
+    const update = () => {
+      ticking = false;
+      const should = window.scrollY > window.innerHeight * 2 && !atFoot;
+      if (should === shown) return;
+      shown = should;
+      btn.classList.toggle('is-shown', should);
+    };
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+
+    // Watch the legal strip specifically rather than the whole footer: it is
+    // the short line of company details the button would otherwise sit on top
+    // of, and it sits at the same place in both the full and the slim footer.
+    // Once it is on screen the button has nothing left to offer anyway.
+    const foot = document.querySelector('.footer__bottom');
+    if (foot && 'IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        atFoot = entries[0].isIntersecting;
+        update();
+      }).observe(foot);
+    }
+
+    update();
+  }
 
   /* ------------------------------------------------------------------
      Form error messages

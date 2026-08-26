@@ -27,6 +27,7 @@ html, body {
 .hero__canvas, .hero__rail, .hero__cue, .hero__veil, .hero__grain,
 .footer__grid, .footer__legal, .cta, .siblings, .estate-figure,
 .map, .steps, .step-nav, .booking__grid > div:first-child form,
+.progress, .to-top, .social, .refcopy__btn, .header__call,
 [data-consent-open] {
   display: none !important;
 }

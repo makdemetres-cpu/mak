@@ -366,11 +366,20 @@
     const consent = el('bookingConsent');
     el('consentError').style.display = consent.checked ? 'none' : 'block';
     if (!consent.checked) { consent.focus(); return; }
-    if (!validateStep(1) || !validateStep(3)) { show(1); return; }
+    // Re-check the two steps that carry required fields. Send them back to the
+    // step that actually failed — being bounced to step 1 to fix a missing
+    // phone number on step 3 is how a form loses someone at the last hurdle.
+    if (!validateStep(1)) { show(1); return; }
+    if (!validateStep(3)) { show(3); return; }
 
     const ref = reference();
     const payload = Object.assign({ reference: ref, sentAt: new Date().toISOString() },
                                   collect());
+
+    // If they arrived on a tagged link this visit, say which one. See
+    // js/main.js → initCampaign and privacy.html §9.
+    const campaign = window.EV.campaign && window.EV.campaign();
+    if (campaign) payload.campaign = campaign;
 
     const btn = el('submitBtn');
     btn.setAttribute('aria-disabled', 'true');
@@ -394,6 +403,8 @@
     const lines = reviewRows().map(([k, v]) => `${k}: ${v}`);
     lines.unshift(`Reference: ${ref}`, '');
     if (collect().news) lines.push('', 'Happy to hear about dates opening up: yes');
+    const from = window.EV.campaignLine && window.EV.campaignLine();
+    if (from) lines.push('', from);
     const body = lines.join('\n').slice(0, 1800);   // mailto URLs have limits
     const to = BUSINESS.email || '';
     const subject = `Booking enquiry ${ref}`;
@@ -408,6 +419,59 @@
     el('mailFallback').style.display = viaMail ? 'block' : 'none';
     done.classList.add('is-shown');
     done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  /* ---- Copying the reference ----
+     Clipboard access is refused outright on http:// origins and in some
+     embedded browsers, so there is a selection-based fallback, and if even
+     that fails we say so rather than pretending it worked. ---- */
+  const refBtn = el('refCopy');
+  if (refBtn) {
+    const refLabel  = el('refCopyLabel');
+    const refStatus = el('refCopyStatus');
+    let revert;
+
+    refBtn.addEventListener('click', () => {
+      const text = el('doneRef').textContent.trim();
+      if (!text) return;
+
+      const say = (ok) => {
+        clearTimeout(revert);
+        refBtn.classList.toggle('is-done', ok);
+        refLabel.textContent = ok ? 'Copied' : 'Copy reference';
+        refStatus.textContent = ok
+          ? 'Reference ' + text + ' copied to your clipboard.'
+          : 'Could not reach the clipboard — select the reference and copy it by hand.';
+        if (ok) {
+          revert = setTimeout(() => {
+            refBtn.classList.remove('is-done');
+            refLabel.textContent = 'Copy reference';
+            refStatus.textContent = '';
+          }, 3200);
+        }
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => say(true), () => say(legacyCopy(text)));
+      } else {
+        say(legacyCopy(text));
+      }
+    });
+  }
+
+  function legacyCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    let ok = false;
+    try {
+      ta.select();
+      ok = document.execCommand('copy');
+    } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
   }
 
   /* ---- Go ---- */

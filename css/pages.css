@@ -301,12 +301,50 @@
 .done p { color: var(--fg-muted); max-width: 50ch; margin: 0 auto 1em; text-wrap: pretty; }
 .done__ref {
   display: inline-block;
-  margin: 1.5rem 0 2rem;
+  margin: 0;
   padding: 0.85rem 1.5rem;
   border: 1px solid var(--line);
   font-family: var(--font-display);
   font-size: var(--step-1);
   letter-spacing: 0.08em;
+}
+
+/* The reference is the one thing on this page a guest will need again, and
+   it is exactly the kind of string that gets mistyped. The button sits beside
+   it rather than inside it, so the reference itself stays selectable. */
+.refcopy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0.75rem;
+}
+.refcopy__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.refcopy__btn svg { width: 16px; height: 16px; flex: none; }
+.refcopy__btn:hover, .refcopy__btn:focus-visible {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.refcopy__btn.is-done { color: var(--accent-ink); border-color: var(--accent); }
+.refcopy__status {
+  min-height: 1.4em;                 /* reserved, so nothing shifts on copy */
+  margin: 0 auto 2rem;
+  font-size: 0.78rem;
 }
 
 /* Shown only when there is no form endpoint and we fall back to email. */

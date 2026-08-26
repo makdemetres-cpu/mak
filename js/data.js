@@ -48,6 +48,15 @@ window.EV.BUSINESS = {
   // listing and advertisement. One per property.
   registryLabel: "AADE Short-Term Property Registry",
 
+  // Social profiles. Leave a value empty and its icon simply does not render —
+  // an icon that links nowhere is worse than no icon, so the footer only shows
+  // the platforms you are actually on. Paste a full URL in to switch one on.
+  social: {
+    whatsapp:  "",   // e.g. https://wa.me/30XXXXXXXXXX  (or reuse whatsappHref)
+    instagram: "",   // e.g. https://instagram.com/ermisvillas
+    facebook:  ""    // e.g. https://facebook.com/ermisvillas
+  },
+
   founded: 2019,
   founder: "Ermis",
   guests:  150,
@@ -135,3 +144,17 @@ window.EV.SERVICES = [
    properly — and see README.md before you do, because the privacy policy
    names the processor. */
 window.EV.FORM_ENDPOINT = '';
+
+/* --------------------------------------------------------------------------
+   Campaign attribution
+   --------------------------------------------------------------------------
+   When someone arrives on a tagged link — an Instagram bio, a partner's page,
+   an email — the utm_* parameters are read from the URL and kept for the length
+   of that visit only, then attached to whatever enquiry they send. It is how
+   you find out that a €25,000 booking came from one particular post.
+
+   Deliberately narrow: our own storage, nothing shared with anyone, cleared
+   when the tab closes, and disclosed in privacy.html §9. Set this to false and
+   nothing is read or stored at all.
+   -------------------------------------------------------------------------- */
+window.EV.TRACK_CAMPAIGN = true;

@@ -23,11 +23,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260825">
-<link rel="stylesheet" href="css/base.css?v=260825">
-<link rel="stylesheet" href="css/site.css?v=260825">
-<link rel="stylesheet" href="css/pages.css?v=260825">
-<link rel="stylesheet" href="css/print.css?v=260825" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260826">
+<link rel="stylesheet" href="css/base.css?v=260826">
+<link rel="stylesheet" href="css/site.css?v=260826">
+<link rel="stylesheet" href="css/pages.css?v=260826">
+<link rel="stylesheet" href="css/print.css?v=260826" media="print">
 
 <!-- Structured data. Every absolute URL below uses the placeholder domain
      https://example.com — replace it once there is a real one:
@@ -167,6 +167,12 @@
       <a class="nav__link" href="contact.html">Contact</a>
     </nav>
     <a class="btn header__cta" href="booking.html?estate=kyma">Reserve</a>
+    <a class="header__call" href="#" data-ev="phoneLink" aria-label="Call us">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+    </a>
     <button class="menu-btn" id="menuBtn" type="button"
             aria-expanded="false" aria-controls="menu" aria-label="Open menu">
       <span></span><span></span>
@@ -430,6 +436,13 @@
         </div>
       </div>
     </div>
+    <!-- Rendered by js/main.js, and only for platforms with a URL in
+         js/data.js. Empty for all three, and this block removes itself. -->
+    <div class="social" data-social hidden>
+      <p class="social__label">Find us</p>
+      <div class="social__list" data-social-list></div>
+    </div>
+
     <div class="footer__bottom">
       <p>© <span id="year">2026</span> <span data-ev="legalName"></span>. All rights reserved.</p>
       <nav class="footer__legal" aria-label="Legal">
@@ -491,8 +504,8 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260825"></script>
-<script src="js/main.js?v=260825"></script>
-<script src="js/consent.js?v=260825"></script>
+<script src="js/data.js?v=260826"></script>
+<script src="js/main.js?v=260826"></script>
+<script src="js/consent.js?v=260826"></script>
 </body>
 </html>

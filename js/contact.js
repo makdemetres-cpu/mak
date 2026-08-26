@@ -73,6 +73,11 @@
       message: el('cMessage').value.trim()
     };
 
+    // If they arrived on a tagged link this visit, say which one. See
+    // js/main.js → initCampaign and privacy.html §9.
+    const campaign = window.EV.campaign && window.EV.campaign();
+    if (campaign) payload.campaign = campaign;
+
     const btn = el('cSubmit');
     btn.setAttribute('aria-disabled', 'true');
     btn.textContent = 'Sending…';
@@ -98,7 +103,8 @@
       p.phone ? `Phone: ${p.phone}` : '',
       `About: ${p.topic}`,
       '',
-      p.message
+      p.message,
+      (window.EV.campaignLine && window.EV.campaignLine()) ? '\n' + window.EV.campaignLine() : ''
     ].filter(Boolean).join('\n').slice(0, 1800);
 
     window.location.href = `mailto:${BUSINESS.email || ''}` +

@@ -27,11 +27,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260825">
-<link rel="stylesheet" href="css/base.css?v=260825">
-<link rel="stylesheet" href="css/site.css?v=260825">
-<link rel="stylesheet" href="css/pages.css?v=260825">
-<link rel="stylesheet" href="css/print.css?v=260825" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260826">
+<link rel="stylesheet" href="css/base.css?v=260826">
+<link rel="stylesheet" href="css/site.css?v=260826">
+<link rel="stylesheet" href="css/pages.css?v=260826">
+<link rel="stylesheet" href="css/print.css?v=260826" media="print">
 </head>
 <body>
 
@@ -55,6 +55,12 @@
       <a class="nav__link" href="contact.html">Contact</a>
     </nav>
     <a class="btn header__cta" href="booking.html" aria-current="page">Reserve</a>
+    <a class="header__call" href="#" data-ev="phoneLink" aria-label="Call us">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+    </a>
     <button class="menu-btn" id="menuBtn" type="button"
             aria-expanded="false" aria-controls="menu" aria-label="Open menu">
       <span></span><span></span>
@@ -294,7 +300,19 @@
             Ermis or one of his sons will read this and reply within four hours in
             season, usually sooner. If it is urgent, call instead.
           </p>
-          <p class="done__ref" id="doneRef"></p>
+          <div class="refcopy">
+            <p class="done__ref" id="doneRef"></p>
+            <button class="refcopy__btn" id="refCopy" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="11.5" height="11.5" rx="2"/>
+                <path d="M6 15H4.8A1.8 1.8 0 0 1 3 13.2V4.8C3 3.8 3.8 3 4.8 3h8.4c1 0 1.8.8 1.8 1.8V6"/>
+              </svg>
+              <span id="refCopyLabel">Copy reference</span>
+            </button>
+          </div>
+          <!-- Announces the result of the copy without moving anything. -->
+          <p class="refcopy__status" id="refCopyStatus" role="status" aria-live="polite"></p>
           <div class="cta__row">
             <a class="btn btn--ghost" href="#" data-ev="phoneLink">Call us instead</a>
             <a class="btn btn--ghost" href="index.html">Back to the estates</a>
@@ -340,7 +358,14 @@
 
 <footer class="footer">
   <div class="container">
-    <div class="footer__bottom" style="border-top:0;padding-top:0">
+    <!-- Rendered by js/main.js, and only for platforms with a URL in
+         js/data.js. Empty for all three, and this block removes itself. -->
+    <div class="social" data-social hidden>
+      <p class="social__label">Find us</p>
+      <div class="social__list" data-social-list></div>
+    </div>
+
+    <div class="footer__bottom">
       <p>© <span id="year">2026</span> <span data-ev="legalName"></span>. All rights reserved.</p>
       <nav class="footer__legal" aria-label="Legal">
         <a href="index.html">Home</a>
@@ -401,9 +426,9 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260825"></script>
-<script src="js/main.js?v=260825"></script>
-<script src="js/consent.js?v=260825"></script>
-<script src="js/booking.js?v=260825"></script>
+<script src="js/data.js?v=260826"></script>
+<script src="js/main.js?v=260826"></script>
+<script src="js/consent.js?v=260826"></script>
+<script src="js/booking.js?v=260826"></script>
 </body>
 </html>
