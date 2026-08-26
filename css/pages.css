@@ -709,3 +709,569 @@ a.line:hover { color: var(--accent-ink); }
   line-height: 1.6;
 }
 .registry b { color: var(--fg); font-weight: 500; letter-spacing: 0.04em; }
+
+/* ==========================================================================
+   Booking — the house picker, the calendar and the guest steppers
+   --------------------------------------------------------------------------
+   Everything in this block replaces a native control: a <select>, two
+   <input type="date"> and two number spinners. The native ones worked; they
+   just arrived wearing the operating system's clothes, in the middle of a page
+   where nothing else does.
+
+   The rules the rest of the site is built on hold here too — 2px corners
+   rather than rounded, --brass for fills and --brass-ink for anything that has
+   to be read as text, hairlines instead of shadows.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   The four houses
+   --------------------------------------------------------------------------
+   Real radio inputs under real labels: arrow-key movement, the correct
+   announcement and the browser's own required-field handling, none of which is
+   worth reimplementing. The input itself is taken out of the flow but stays
+   focusable, and the card wears its focus ring.
+   -------------------------------------------------------------------------- */
+.estate-pick {
+  display: grid;
+  gap: 0.75rem;
+}
+@media (min-width: 700px) {
+  .estate-pick { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+}
+
+.estate-card { position: relative; display: block; cursor: pointer; }
+/* Out of sight but still focusable and still a radio, so the keyboard, the
+   screen reader and the required-field check all keep working. The wrapping
+   label takes every click, which is why this needs no pointer target of its
+   own. */
+.estate-card input {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1px; height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  appearance: none;
+}
+
+.estate-card__body {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "num   name"
+    "num   place"
+    "glyph glyph"
+    "meta  meta"
+    "from  from";
+  gap: 0.15rem 0.9rem;
+  padding: 1.15rem 1.25rem 1.1rem;
+  min-height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease),
+              transform 0.3s var(--ease);
+}
+
+.estate-card__num {
+  grid-area: num;
+  align-self: start;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s var(--ease);
+}
+.estate-card__name {
+  grid-area: name;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.15;
+  color: var(--fg);
+}
+.estate-card__place {
+  grid-area: place;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* The same hairline drawing that stands for the house on the homepage and on
+   its own page. It is the thing that makes four cards read as four places
+   rather than four rows of text. */
+.estate-card__glyph {
+  grid-area: glyph;
+  display: block;
+  margin: 1rem 0 0.9rem;
+  color: var(--line);
+  transition: color 0.4s var(--ease);
+}
+.estate-card__glyph svg { display: block; width: 100%; height: auto; }
+
+.estate-card__meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.85rem;
+  font-size: 0.76rem;
+  color: var(--fg-muted);
+}
+.estate-card__meta span { position: relative; }
+.estate-card__meta span + span::before {
+  content: "";
+  position: absolute;
+  left: -0.48rem;
+  top: 0.58em;
+  width: 2px; height: 2px;
+  background: currentColor;
+  border-radius: 50%;
+}
+
+.estate-card__from {
+  grid-area: from;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  transition: border-color 0.3s var(--ease);
+}
+.estate-card__from b {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: 0.01em;
+}
+
+/* The tick only exists once the card is chosen. A permanently visible empty
+   circle on every card is four pieces of furniture asking to be noticed. */
+.estate-card__tick {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  width: 22px; height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
+}
+.estate-card__tick svg { width: 13px; height: 13px; }
+
+.estate-card:hover .estate-card__body { border-color: var(--fg-muted); }
+.estate-card:hover .estate-card__glyph { color: var(--fg-muted); }
+
+.estate-card input:focus-visible + .estate-card__body {
+  outline: none;
+  border-color: var(--accent-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ink) 18%, transparent);
+}
+
+.estate-card input:checked + .estate-card__body {
+  border-color: var(--accent-ink);
+  background: var(--surface-2);
+}
+.estate-card input:checked + .estate-card__body .estate-card__glyph { color: var(--accent); }
+.estate-card input:checked + .estate-card__body .estate-card__num { color: var(--accent-ink); }
+.estate-card input:checked + .estate-card__body .estate-card__tick { opacity: 1; transform: none; }
+
+.field.has-error .estate-card__body { border-color: var(--alarm); }
+
+/* --------------------------------------------------------------------------
+   The dates, closed
+   --------------------------------------------------------------------------
+   One control holding both ends of the range, because that is what it is. Two
+   separate fields make the visitor answer the same question twice and give
+   them nowhere to see the number of nights.
+   -------------------------------------------------------------------------- */
+.daterange {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.25rem;
+  min-height: 76px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.daterange:hover { border-color: var(--fg-muted); }
+.daterange:focus-visible {
+  outline: none;
+  border-color: var(--accent-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ink) 18%, transparent);
+}
+.daterange.is-set { border-color: var(--accent-ink); background: var(--surface-2); }
+
+.daterange__leg { display: block; min-width: 0; }
+.daterange__leg--to { text-align: right; }
+.daterange__leg small {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.3rem;
+}
+.daterange__leg b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 400;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.daterange__mid {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding-inline: 0.4rem;
+  color: var(--fg-muted);
+}
+.daterange__mid svg { width: 40px; height: 8px; }
+.daterange__nights {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+@media (max-width: 420px) {
+  .daterange { padding-inline: 1rem; }
+  .daterange__mid svg { width: 22px; }
+}
+
+.field.has-error .daterange { border-color: var(--alarm); }
+
+/* --------------------------------------------------------------------------
+   The dates, open
+   --------------------------------------------------------------------------
+   A modal on both, styled differently: a panel on a wide screen, a full-height
+   sheet on a phone. One code path for focus and for Escape, which is the part
+   that is easy to get subtly wrong.
+   -------------------------------------------------------------------------- */
+.cal { position: fixed; inset: 0; z-index: 300; }
+.cal[hidden] { display: none; }
+.cal__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 9, 0.55);
+  backdrop-filter: blur(3px);
+  animation: calFade 0.3s var(--ease) both;
+}
+
+.cal__panel {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 92dvh;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+  animation: calRise 0.42s var(--ease) both;
+}
+@media (min-width: 760px) {
+  .cal__panel {
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    width: min(46rem, calc(100vw - 3rem));
+    max-height: min(44rem, calc(100dvh - 3rem));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    animation: calPop 0.34s var(--ease) both;
+  }
+}
+
+@keyframes calFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes calRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes calPop {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.985); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal__scrim, .cal__panel { animation: none; }
+}
+
+.cal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem clamp(1.25rem, 4vw, 1.9rem) 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+.cal__eyebrow {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.4rem;
+}
+.cal__read {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.25;
+  color: var(--fg);
+  text-wrap: pretty;
+}
+.cal__close {
+  flex: none;
+  width: 40px; height: 40px;
+  display: grid;
+  place-items: center;
+  margin: -0.35rem -0.5rem 0 0;
+  border-radius: var(--radius);
+  color: var(--fg-muted);
+  transition: color 0.25s var(--ease);
+}
+.cal__close:hover, .cal__close:focus-visible { color: var(--fg); }
+.cal__close svg { width: 18px; height: 18px; }
+
+.cal__body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 1.25rem clamp(1.25rem, 4vw, 1.9rem);
+}
+@media (min-width: 760px) {
+  .cal__body {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: 0.5rem;
+    overflow: visible;
+    padding-block: 1.6rem;
+  }
+}
+
+.cal__months { display: grid; gap: 2rem; }
+@media (min-width: 760px) {
+  .cal__months { grid-template-columns: 1fr 1fr; gap: 2.25rem; }
+}
+
+/* The month arrows only exist on a wide screen. On a phone the whole 90-day
+   window is one scroll, which is one fewer control to explain and one fewer
+   thing to mis-tap. */
+.cal__step { display: none; }
+@media (min-width: 760px) {
+  .cal__step {
+    display: grid;
+    place-items: center;
+    width: 38px; height: 38px;
+    margin-top: 0.1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--fg-muted);
+    transition: color 0.25s var(--ease), border-color 0.25s var(--ease), opacity 0.25s var(--ease);
+  }
+  .cal__step:hover:not(:disabled), .cal__step:focus-visible {
+    color: var(--accent-ink);
+    border-color: var(--accent);
+  }
+  .cal__step:disabled { opacity: 0.3; cursor: default; }
+  .cal__step svg { width: 15px; height: 15px; }
+}
+
+.cal__mname {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-align: center;
+  margin-bottom: 0.9rem;
+  color: var(--fg);
+}
+
+.cal__grid { display: block; }
+.cal__grid > [role="row"], .cal__dow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.cal__dow {
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.cal__dow span {
+  text-align: center;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+}
+
+.cal__day {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+  border-radius: var(--radius);
+  transition: color 0.18s var(--ease);
+}
+.cal__day > span { position: relative; z-index: 1; }
+
+/* The band behind the run of nights. A pseudo-element rather than a
+   background so the ends can be square against each other and rounded on the
+   outside without the cells having to know about their neighbours. */
+.cal__day::before {
+  content: "";
+  position: absolute;
+  inset: 6% 0;
+  background: transparent;
+  transition: background-color 0.18s var(--ease);
+}
+.cal__day.is-in::before,
+.cal__day.is-preview::before { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+.cal__day.is-from::before { background: color-mix(in srgb, var(--accent) 20%, transparent); left: 50%; }
+.cal__day.is-to::before   { background: color-mix(in srgb, var(--accent) 20%, transparent); right: 50%; }
+.cal__day.is-from.is-to::before { background: transparent; }
+
+.cal__day::after {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: transparent;
+  transition: background-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.cal__day.is-edge::after { background: var(--ink); }
+.cal__day.is-edge { color: var(--bone); }
+
+.cal__day:hover:not(:disabled)::after { background: color-mix(in srgb, var(--fg) 10%, transparent); }
+.cal__day.is-edge:hover::after { background: var(--ink); }
+
+.cal__day:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -2px;
+}
+
+/* Today gets a mark rather than a colour, so it never competes with the
+   selection for meaning. */
+.cal__day.is-today > span::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: -0.5em;
+  width: 3px; height: 3px;
+  margin-left: -1.5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.cal__day.is-out {
+  color: var(--fg-muted);
+  opacity: 0.32;
+  cursor: default;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.cal__blank { aspect-ratio: 1; }
+
+.cal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1.25rem, 4vw, 1.9rem);
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.cal__clear {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--line);
+  transition: color 0.25s var(--ease);
+}
+.cal__clear:hover, .cal__clear:focus-visible { color: var(--fg); }
+.cal__note {
+  flex: 1;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+}
+@media (max-width: 560px) { .cal__note { display: none; } }
+.cal__done { flex: none; }
+
+/* --------------------------------------------------------------------------
+   Guest steppers
+   --------------------------------------------------------------------------
+   The number input is still there and still typeable — the buttons are a
+   second way to reach the same value, not a replacement for it. Anyone who
+   would rather type 12 than press + twelve times still can.
+   -------------------------------------------------------------------------- */
+.stepper {
+  display: grid;
+  grid-template-columns: 54px 1fr 54px;
+  align-items: stretch;
+  min-height: 54px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color 0.25s var(--ease);
+}
+.stepper:hover { border-color: var(--fg-muted); }
+.stepper:focus-within {
+  border-color: var(--accent-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ink) 18%, transparent);
+}
+
+.stepper__btn {
+  display: grid;
+  place-items: center;
+  color: var(--fg-muted);
+  transition: color 0.2s var(--ease), background-color 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+.stepper__btn svg { width: 16px; height: 16px; }
+.stepper__btn:hover:not(:disabled) { color: var(--accent-ink); background: var(--surface-2); }
+.stepper__btn:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: -3px; }
+.stepper__btn:disabled { opacity: 0.28; cursor: default; }
+
+.stepper__value {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 400;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.stepper__value::-webkit-outer-spin-button,
+.stepper__value::-webkit-inner-spin-button { appearance: none; margin: 0; }
+.stepper__value:focus { outline: none; }
+
+.field.has-error .stepper { border-color: var(--alarm); }

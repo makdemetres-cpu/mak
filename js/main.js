@@ -224,21 +224,26 @@
      ------------------------------------------------------------------ */
   function initFieldErrors() {
     document.querySelectorAll('[data-error-for]').forEach((err) => {
-      const input = document.getElementById(err.dataset.errorFor);
-      if (!input) return;
+      // Usually the message describes the field it names. Where the real
+      // control is not the thing holding the value — the booking form's date
+      // range writes into hidden inputs, and its house picker is a group of
+      // radios rather than one element — data-error-on points at whatever the
+      // visitor actually lands on, since that is what has to announce it.
+      const owner = document.getElementById(err.dataset.errorOn || err.dataset.errorFor);
+      if (!owner) return;
 
       if (!err.id) err.id = 'err-' + err.dataset.errorFor;
       err.setAttribute('role', 'alert');
 
-      const ids = (input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
-      const field = input.closest('.field');
+      const ids = (owner.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+      const field = owner.closest('.field');
       const hint = field && field.querySelector('.field-hint');
       if (hint) {
-        if (!hint.id) hint.id = 'hint-' + input.id;
+        if (!hint.id) hint.id = 'hint-' + (owner.id || err.dataset.errorFor);
         if (ids.indexOf(hint.id) === -1) ids.push(hint.id);
       }
       if (ids.indexOf(err.id) === -1) ids.push(err.id);
-      input.setAttribute('aria-describedby', ids.join(' '));
+      owner.setAttribute('aria-describedby', ids.join(' '));
     });
   }
 

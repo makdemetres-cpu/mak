@@ -27,7 +27,7 @@
   const el = (id) => document.getElementById(id);
   const steps      = el('steps');
   const stepEls    = Array.from(form.querySelectorAll('[data-step]'));
-  const estateSel  = el('estate');
+  const estatePick = el('estatePick');
   const servicePicks = el('servicePicks');
   const carPicks   = el('carPicks');
   const transferBlock = el('transferBlock');
@@ -39,12 +39,55 @@
   /* ------------------------------------------------------------------
      Build the options that come from data.js
      ------------------------------------------------------------------ */
-  ESTATES.forEach((e) => {
-    const o = document.createElement('option');
-    o.value = e.id;
-    o.textContent = `${e.name} — ${e.place} · sleeps ${e.sleeps}`;
-    estateSel.appendChild(o);
-  });
+  /* The hairline drawings that stand in for each estate elsewhere on the site.
+     Keyed by the `glyph` field in data.js so a new estate only has to name one
+     of these — or add one here alongside its entry. */
+  const GLYPHS = {
+    headland: '<circle cx="150" cy="20" r="9"/><path d="M0 46h200"/>' +
+              '<path d="M8 46c14-2 22-10 34-19s24-11 36-4 20 20 34 23"/>' +
+              '<path d="M0 54h64M84 54h52M156 54h44"/><path d="M0 60h40M60 60h84M164 60h36"/>',
+    olives:   '<path d="M0 50h200M0 58h200"/><ellipse cx="34" cy="30" rx="20" ry="11"/>' +
+              '<path d="M34 41v9"/><ellipse cx="96" cy="24" rx="25" ry="13"/><path d="M96 37v13"/>' +
+              '<ellipse cx="160" cy="31" rx="18" ry="10"/><path d="M160 41v9"/>',
+    cove:     '<path d="M0 26c26 0 44 8 56 20"/><path d="M200 20c-30 2-52 12-66 26"/>' +
+              '<path d="M40 52h120"/><path d="M28 58h150"/><path d="M74 46h56"/>' +
+              '<circle cx="102" cy="16" r="6"/>',
+    vines:    '<path d="M0 44h200M0 56h200"/><path d="M18 44V26M42 44V22M66 44V25M90 44V21M114 44V24"/>' +
+              '<path d="M10 30h112"/><path d="M150 44v-8h34v8"/><path d="M160 36V22h14v14"/>'
+  };
+
+  const money = (n) => '€' + Number(n).toLocaleString('en-GB');
+
+  estatePick.innerHTML = ESTATES.map((e, i) => `
+    <label class="estate-card">
+      <input type="radio" name="estate" value="${e.id}" required>
+      <span class="estate-card__body">
+        <span class="estate-card__glyph" aria-hidden="true">
+          <svg viewBox="0 0 200 64" fill="none" stroke="currentColor" stroke-width="1"
+               vector-effect="non-scaling-stroke">${GLYPHS[e.glyph] || ''}</svg>
+        </span>
+        <span class="estate-card__num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+        <span class="estate-card__name">${e.name}</span>
+        <span class="estate-card__place">${e.place}</span>
+        <span class="estate-card__meta">
+          <span>Sleeps ${e.sleeps}</span><span>${e.bedrooms} bedrooms</span><span>${e.baths} baths</span>
+        </span>
+        <span class="estate-card__from">from <b>${money(e.from)}</b> / night</span>
+        <span class="estate-card__tick" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+        </span>
+      </span>
+    </label>`).join('');
+
+  const getEstate = () => {
+    const hit = form.querySelector('input[name="estate"]:checked');
+    return hit ? hit.value : '';
+  };
+  const setEstate = (id) => {
+    const hit = form.querySelector(`input[name="estate"][value="${id}"]`);
+    if (hit) hit.checked = true;
+  };
 
   servicePicks.innerHTML = SERVICES.map((s) => `
     <label class="pick">
@@ -58,21 +101,104 @@
       <span><b>${c.name}</b><small>${c.note}</small></span>
     </label>`).join('');
 
-  /* Dates: never in the past, and departure always after arrival. */
+  /* ------------------------------------------------------------------
+     Dates
+     ------------------------------------------------------------------
+     One range calendar (js/calendar.js) writing into two hidden inputs, so
+     everything downstream — the draft, the summary, validation, the email —
+     still reads `arrive` and `depart` exactly as it did when these were a
+     pair of native date fields.
+
+     The window is today to 90 days out, and it applies to both ends of the
+     range rather than only the arrival. A stay that starts on day 88 is
+     therefore necessarily a short one, which is what a hard booking window
+     means.
+     ------------------------------------------------------------------ */
+  const BOOKING_WINDOW_DAYS = 90;
+
   const arrive = el('arrive'), depart = el('depart');
-  const todayISO = new Date().toISOString().slice(0, 10);
-  arrive.min = todayISO;
-  depart.min = todayISO;
-  arrive.addEventListener('change', () => {
-    depart.min = arrive.value || todayISO;
-    if (depart.value && depart.value <= arrive.value) depart.value = '';
-    update();
-  });
+  const DH = window.EV.dateHelpers;
+  // Local calendar day, not `new Date().toISOString()` — that is UTC, and in
+  // Greece it names yesterday for the first two or three hours of the morning.
+  const todayISO = DH ? DH.iso(DH.today()) : new Date().toISOString().slice(0, 10);
+
+  const dateTrigger = el('dateTrigger');
+  let calendar = null;
+
+  function paintDates() {
+    const a = arrive.value, b = depart.value;
+    const pretty = (v) => (DH && v) ? DH.shortDate(DH.fromISO(v)) : '';
+    el('dateFromText').textContent = a ? pretty(a) : 'Choose a date';
+    el('dateToText').textContent   = b ? pretty(b) : 'Choose a date';
+
+    const n = nightsBetween(a, b);
+    el('dateNights').textContent = n ? (n + (n === 1 ? ' night' : ' nights')) : '';
+    dateTrigger.classList.toggle('is-set', !!(a && b));
+
+    el('dateReadout').textContent = (a && b)
+      ? `${n} ${n === 1 ? 'night' : 'nights'}, ${prettyDate(a)} to ${prettyDate(b)}`
+      : (a ? `Arriving ${prettyDate(a)}, no departure chosen yet` : 'No dates chosen yet');
+  }
+
+  if (window.EV.createRangeCalendar && dateTrigger) {
+    calendar = window.EV.createRangeCalendar({
+      trigger: dateTrigger,
+      minDays: 0,
+      maxDays: BOOKING_WINDOW_DAYS,
+      onChange(a, b) {
+        arrive.value = a;
+        depart.value = b;
+        paintDates();
+        if (a && b) setError('arrive', false);
+        update();
+      }
+    });
+    el('dateHint').textContent =
+      'Any dates from today up to ' + BOOKING_WINDOW_DAYS +
+      ' days ahead. Beyond that, tell us in the notes and we will answer by hand.';
+  }
 
   /* Pre-select an estate from the link that got them here
      (booking.html?estate=kyma). */
   const wanted = new URLSearchParams(location.search).get('estate');
-  if (wanted && ESTATES.some((e) => e.id === wanted)) estateSel.value = wanted;
+  if (wanted && ESTATES.some((e) => e.id === wanted)) setEstate(wanted);
+
+  /* ------------------------------------------------------------------
+     Guest steppers
+     ------------------------------------------------------------------
+     The number input stays underneath and stays typeable — the buttons are an
+     easier way to reach the same value, not a replacement for it. Everything
+     goes through `input` events so the summary and the draft update the same
+     way they do for any other field.
+     ------------------------------------------------------------------ */
+  function nudge(input, by) {
+    const min = Number(input.min || 0), max = Number(input.max || 99);
+    const now = parseInt(input.value, 10);
+    const next = Math.min(max, Math.max(min, (isNaN(now) ? min : now) + by));
+    if (next === now) return;
+    input.value = String(next);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function paintSteppers() {
+    form.querySelectorAll('[data-stepper]').forEach((wrap) => {
+      const input = wrap.querySelector('.stepper__value');
+      const now = parseInt(input.value, 10);
+      const min = Number(input.min || 0), max = Number(input.max || 99);
+      wrap.querySelector('[data-step-down]').disabled = !(now > min);
+      wrap.querySelector('[data-step-up]').disabled = !(now < max);
+    });
+  }
+
+  form.querySelectorAll('[data-stepper]').forEach((wrap) => {
+    const input = wrap.querySelector('.stepper__value');
+    wrap.addEventListener('click', (e) => {
+      const down = e.target.closest('[data-step-down]');
+      const up = e.target.closest('[data-step-up]');
+      if (!down && !up) return;
+      nudge(input, down ? -1 : 1);
+    });
+  });
 
   /* ------------------------------------------------------------------
      Draft: keep what has been typed if the page is reloaded mid-form.
@@ -89,11 +215,27 @@
     let d;
     try { d = JSON.parse(sessionStorage.getItem(DRAFT_KEY) || 'null'); } catch (e) { return; }
     if (!d) return;
-    ['estate', 'arrive', 'depart', 'adults', 'children', 'pickup', 'flight',
+    ['adults', 'children', 'pickup', 'flight',
      'name', 'country', 'email', 'phone', 'notes'].forEach((k) => {
       if (el(k) && d[k]) el(k).value = d[k];
     });
-    if (wanted) estateSel.value = wanted;   // an explicit link still wins
+    if (d.estate) setEstate(d.estate);
+    if (wanted) setEstate(wanted);          // an explicit link still wins
+
+    /* Dates go back through the calendar rather than straight into the hidden
+       inputs, because a draft can outlive the window it was made in: leave a
+       tab open over a weekend and yesterday's arrival is now in the past. The
+       calendar drops anything outside the window and hands back what it kept,
+       so the form and the picker never disagree. */
+    if (calendar) {
+      const kept = calendar.setRange(d.arrive || '', d.depart || '');
+      arrive.value = kept.from;
+      depart.value = kept.to;
+    } else {
+      if (d.arrive) arrive.value = d.arrive;
+      if (d.depart) depart.value = d.depart;
+    }
+    paintDates();
     if (Array.isArray(d.services)) {
       form.querySelectorAll('input[name="service"]').forEach((i) => {
         if (!i.disabled) i.checked = d.services.indexOf(i.value) !== -1;
@@ -113,7 +255,7 @@
       .filter((i) => i.checked).map((i) => i.value);
     const car = form.querySelector('input[name="car"]:checked');
     return {
-      estate: estateSel.value,
+      estate: getEstate(),
       arrive: arrive.value,
       depart: depart.value,
       adults: el('adults').value,
@@ -192,6 +334,7 @@
       ? (nights ? `${est.name} · ${nights} nights` : `${est.name} · choose your dates`)
       : 'Choose a house and your dates';
 
+    paintSteppers();
     saveDraft();
   }
 
@@ -207,12 +350,31 @@
   /* ------------------------------------------------------------------
      Validation
      ------------------------------------------------------------------ */
-  function setError(id, on) {
+  /* Two of step one's fields no longer hold their own value: the house is a
+     group of radios, and the dates are a button in front of two hidden inputs.
+     So the field to mark and the thing to focus are looked up rather than
+     assumed to be the element with that id. */
+  function fieldFor(id) {
+    if (id === 'estate') return el('estateField');
+    if (id === 'arrive' || id === 'depart') return el('datesField');
     const input = el(id);
-    if (!input) return;
-    const field = input.closest('.field');
+    return input ? input.closest('.field') : null;
+  }
+
+  function focusFor(id) {
+    if (id === 'estate') {
+      return form.querySelector('input[name="estate"]:checked') ||
+             form.querySelector('input[name="estate"]');
+    }
+    if (id === 'arrive' || id === 'depart') return dateTrigger;
+    return el(id);
+  }
+
+  function setError(id, on) {
+    const field = fieldFor(id);
     if (field) field.classList.toggle('has-error', on);
-    input.setAttribute('aria-invalid', on ? 'true' : 'false');
+    const target = focusFor(id);
+    if (target) target.setAttribute('aria-invalid', on ? 'true' : 'false');
   }
 
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -220,15 +382,24 @@
   function validateStep(n) {
     const d = collect();
     let ok = true;
-    const fail = (id) => { setError(id, true); ok = false; };
+    let firstFail = null;
+    const fail = (id) => { setError(id, true); ok = false; if (!firstFail) firstFail = id; };
 
     if (n === 1) {
-      setError('estate', false); setError('arrive', false);
-      setError('depart', false); setError('adults', false);
+      setError('estate', false); setError('arrive', false); setError('adults', false);
 
       if (!d.estate) fail('estate');
-      if (!d.arrive || d.arrive < todayISO) fail('arrive');
-      if (!d.depart || nightsBetween(d.arrive, d.depart) < 1) fail('depart');
+
+      // One message for the pair, because they are now one control. The window
+      // check is belt and braces — the calendar cannot produce a date outside
+      // it — but a stale draft or a hand-edited field should not slip past.
+      const maxISO = calendar ? calendar.maxISO : '';
+      const badDates = !d.arrive || !d.depart ||
+                       nightsBetween(d.arrive, d.depart) < 1 ||
+                       d.arrive < todayISO ||
+                       (maxISO && (d.arrive > maxISO || d.depart > maxISO));
+      if (badDates) fail('arrive');
+
       if (!(parseInt(d.adults, 10) >= 1)) fail('adults');
     }
 
@@ -241,9 +412,9 @@
       if (d.phone.replace(/[^\d]/g, '').length < 6) fail('phone');
     }
 
-    if (!ok) {
-      const firstBad = form.querySelector('.step.is-active .has-error input, .step.is-active .has-error select');
-      if (firstBad) { firstBad.focus(); }
+    if (!ok && firstFail) {
+      const target = focusFor(firstFail);
+      if (target) target.focus();
     }
     return ok;
   }
@@ -478,5 +649,6 @@
   loadDraft();
   const t = form.querySelector('input[name="service"][value="transfer"]');
   if (t && t.checked) transferBlock.classList.add('is-shown');
+  paintDates();
   update();
 })();

@@ -19,7 +19,7 @@ import {
   ACESFilmicToneMapping, Color, EquirectangularReflectionMapping, Fog,
   HemisphereLight, DirectionalLight, PerspectiveCamera, PMREMGenerator,
   Scene, SRGBColorSpace, Texture, WebGLRenderer
-} from '../vendor/three.slim.js?v=260826b';
+} from '../vendor/three.slim.js?v=260826c';
 
 /* --------------------------------------------------------------------------
    Quality tiers

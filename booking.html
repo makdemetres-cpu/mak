@@ -27,11 +27,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260826b">
-<link rel="stylesheet" href="css/base.css?v=260826b">
-<link rel="stylesheet" href="css/site.css?v=260826b">
-<link rel="stylesheet" href="css/pages.css?v=260826b">
-<link rel="stylesheet" href="css/print.css?v=260826b" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260826c">
+<link rel="stylesheet" href="css/base.css?v=260826c">
+<link rel="stylesheet" href="css/site.css?v=260826c">
+<link rel="stylesheet" href="css/pages.css?v=260826c">
+<link rel="stylesheet" href="css/print.css?v=260826c" media="print">
 </head>
 <body>
 
@@ -134,39 +134,76 @@
             <h2 class="t-h3">The stay</h2>
             <p class="lede">Which house, when, and how many of you.</p>
 
-            <div class="field">
-              <label class="field-label" for="estate">The house <span class="req">*</span></label>
-              <div class="select-wrap">
-                <select class="select" id="estate" name="estate" required>
-                  <option value="">Choose an estate</option>
-                </select>
-              </div>
-              <span class="field-error" data-error-for="estate">Please choose which house you would like.</span>
+            <!-- Four houses, so a dropdown would hide the whole inventory
+                 behind one click. Radios in cards: the browser gives us arrow
+                 keys and the correct announcement for free, and js/booking.js
+                 fills them from js/data.js. -->
+            <div class="field" id="estateField">
+              <span class="field-label" id="estateLabel">The house <span class="req">*</span></span>
+              <div class="estate-pick" id="estatePick" role="radiogroup"
+                   aria-labelledby="estateLabel" aria-describedby="estateHint"></div>
+              <span class="field-error" data-error-for="estate" data-error-on="estatePick">Please choose which house you would like.</span>
               <span class="field-hint" id="estateHint">Not sure yet? Choose the closest and say so in the notes, and we will tell you which of the four actually suits you.</span>
             </div>
 
-            <div class="field-row field-row--2">
-              <div class="field">
-                <label class="field-label" for="arrive">Arriving <span class="req">*</span></label>
-                <input class="input" type="date" id="arrive" name="arrive" required>
-                <span class="field-error" data-error-for="arrive">Please choose an arrival date in the future.</span>
-              </div>
-              <div class="field">
-                <label class="field-label" for="depart">Leaving <span class="req">*</span></label>
-                <input class="input" type="date" id="depart" name="depart" required>
-                <span class="field-error" data-error-for="depart">Please choose a departure date after your arrival.</span>
-              </div>
+            <!-- One control for both dates. The two hidden inputs stay the
+                 source of truth so the draft, the summary and the validation
+                 all carry on reading exactly what they read before. -->
+            <div class="field" id="datesField">
+              <span class="field-label" id="datesLabel">Your dates <span class="req">*</span></span>
+              <button class="daterange" type="button" id="dateTrigger"
+                      aria-labelledby="datesLabel dateReadout">
+                <span class="daterange__leg">
+                  <small>Arriving</small>
+                  <b id="dateFromText">Choose a date</b>
+                </span>
+                <span class="daterange__mid" aria-hidden="true">
+                  <span class="daterange__nights" id="dateNights"></span>
+                  <svg viewBox="0 0 40 8" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                    <path d="M0 4h34M30 1l4 3-4 3"/>
+                  </svg>
+                </span>
+                <span class="daterange__leg daterange__leg--to">
+                  <small>Leaving</small>
+                  <b id="dateToText">Choose a date</b>
+                </span>
+                <span class="sr-only" id="dateReadout">No dates chosen yet</span>
+              </button>
+              <input type="hidden" id="arrive" name="arrive">
+              <input type="hidden" id="depart" name="depart">
+              <span class="field-error" data-error-for="arrive" data-error-on="dateTrigger">Please choose your arrival and departure.</span>
+              <span class="field-hint" id="dateHint"></span>
             </div>
 
             <div class="field-row field-row--2">
               <div class="field">
-                <label class="field-label" for="adults">Adults <span class="req">*</span></label>
-                <input class="input" type="number" id="adults" name="adults" min="1" max="16" value="2" required inputmode="numeric">
+                <span class="field-label" id="adultsLabel">Adults <span class="req">*</span></span>
+                <div class="stepper" data-stepper="adults">
+                  <button class="stepper__btn" type="button" data-step-down aria-label="One fewer adult">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>
+                  </button>
+                  <input class="stepper__value" type="number" id="adults" name="adults"
+                         min="1" max="16" value="2" required inputmode="numeric"
+                         aria-labelledby="adultsLabel">
+                  <button class="stepper__btn" type="button" data-step-up aria-label="One more adult">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+                  </button>
+                </div>
                 <span class="field-error" data-error-for="adults">Please enter at least one adult.</span>
               </div>
               <div class="field">
-                <label class="field-label" for="children">Children</label>
-                <input class="input" type="number" id="children" name="children" min="0" max="12" value="0" inputmode="numeric">
+                <span class="field-label" id="childrenLabel">Children</span>
+                <div class="stepper" data-stepper="children">
+                  <button class="stepper__btn" type="button" data-step-down aria-label="One fewer child">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>
+                  </button>
+                  <input class="stepper__value" type="number" id="children" name="children"
+                         min="0" max="12" value="0" inputmode="numeric"
+                         aria-labelledby="childrenLabel" aria-describedby="childHint">
+                  <button class="stepper__btn" type="button" data-step-up aria-label="One more child">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>
+                  </button>
+                </div>
                 <span class="field-hint" id="childHint">Tell us their ages in the notes and cots, gates and a sitter will be arranged before you land.</span>
               </div>
             </div>
@@ -275,7 +312,7 @@
                 <a href="privacy.html">privacy &amp; cookie policy</a>. <span class="req">*</span>
               </span>
             </label>
-            <span class="field-error" id="consentError" style="display:none">Please agree to this so that we are allowed to reply to you.</span>
+            <span class="field-error" id="consentError" data-error-for="bookingConsent" style="display:none">Please agree to this so that we are allowed to reply to you.</span>
 
             <label class="check">
               <input type="checkbox" id="news" name="news">
@@ -426,9 +463,10 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826b"></script>
-<script src="js/main.js?v=260826b"></script>
-<script src="js/consent.js?v=260826b"></script>
-<script src="js/booking.js?v=260826b"></script>
+<script src="js/data.js?v=260826c"></script>
+<script src="js/main.js?v=260826c"></script>
+<script src="js/consent.js?v=260826c"></script>
+<script src="js/calendar.js?v=260826c"></script>
+<script src="js/booking.js?v=260826c"></script>
 </body>
 </html>
