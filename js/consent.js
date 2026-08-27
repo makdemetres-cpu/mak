@@ -110,17 +110,41 @@
       });
     }
 
+    /* ---- Keeping out of the page's way ----
+       The banner is fixed to the foot of the window, so while it is up it
+       covers whatever the page happens to have down there. On the booking
+       form that was the "Send the enquiry" button: genuinely unclickable,
+       not merely hidden, because the card takes the pointer events.
+
+       So publish the card's height and let the stylesheet reserve exactly
+       that much room at the end of the document. Measured rather than
+       guessed: the card's height depends on its text, on the viewport, and
+       on whether the preference centre is open. */
+    const card = root.querySelector('.consent__card');
+
+    function reserve() {
+      const on = root.classList.contains('is-open');
+      const h = on ? Math.ceil(root.getBoundingClientRect().height) : 0;
+      document.documentElement.style.setProperty('--consent-h', h + 'px');
+      document.documentElement.classList.toggle('consent-open', on);
+    }
+
+    // The card grows when "Choose" opens the preference centre, and again
+    // when a narrow window rewraps the buttons. Re-measure either way.
+    if ('ResizeObserver' in window && card) new ResizeObserver(reserve).observe(card);
+    window.addEventListener('resize', reserve, { passive: true });
+
     function open(showPrefs) {
       fill(read());
       root.hidden = false;
       root.classList.toggle('is-prefs', !!showPrefs);
       // A frame's delay so the transform transition has a start value to run from.
-      requestAnimationFrame(() => root.classList.add('is-open'));
+      requestAnimationFrame(() => { root.classList.add('is-open'); reserve(); });
     }
 
     function close() {
       root.classList.remove('is-open');
-      const done = () => { root.hidden = true; root.classList.remove('is-prefs'); };
+      const done = () => { root.hidden = true; root.classList.remove('is-prefs'); reserve(); };
       // Wait for the slide-out, but never hang if the transition never fires.
       let settled = false;
       root.addEventListener('transitionend', function once(e) {

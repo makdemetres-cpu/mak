@@ -592,11 +592,30 @@
     return `EV-${stamp}-${tail}`;
   }
 
+  /* "Sending…" is written with aria-disabled, and css/base.css turns that into
+     pointer-events: none. That is right while the request is in flight and
+     wrong for a second longer: an attribute that outlives its request leaves a
+     dead button on the screen with no way back. So every path that sets it has
+     a path that clears it. */
+  function setSending(btn, on) {
+    if (on) {
+      btn.dataset.idle = btn.dataset.idle || btn.textContent;
+      btn.setAttribute('aria-disabled', 'true');
+      btn.textContent = 'Sending…';
+    } else {
+      btn.removeAttribute('aria-disabled');
+      btn.textContent = btn.dataset.idle || 'Send the enquiry';
+    }
+  }
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // Honeypot: a bot filled the invisible field, so quietly do nothing.
     if (form.querySelector('input[name="company"]').value) return;
+
+    // Already in flight — don't send it twice.
+    if (el('submitBtn').getAttribute('aria-disabled') === 'true') return;
 
     const consent = el('bookingConsent');
     el('consentError').style.display = consent.checked ? 'none' : 'block';
@@ -616,9 +635,7 @@
     const campaign = window.EV.campaign && window.EV.campaign();
     if (campaign) payload.campaign = campaign;
 
-    const btn = el('submitBtn');
-    btn.setAttribute('aria-disabled', 'true');
-    btn.textContent = 'Sending…';
+    setSending(el('submitBtn'), true);
 
     if (ENDPOINT) {
       fetch(ENDPOINT, {
@@ -648,6 +665,7 @@
 
   function finish(ref, viaMail) {
     try { sessionStorage.removeItem(DRAFT_KEY); } catch (e) { /* ignore */ }
+    setSending(el('submitBtn'), false);
     form.hidden = true;
     steps.hidden = true;
     el('doneRef').textContent = ref;

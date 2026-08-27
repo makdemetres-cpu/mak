@@ -64,10 +64,25 @@
     if (field) field.classList.remove('has-error');
   });
 
+  /* aria-disabled is what makes "Sending…" unpressable (css/base.css turns it
+     into pointer-events: none), so it must never outlive the request that set
+     it. Same reasoning as js/booking.js. */
+  function setSending(btn, on) {
+    if (on) {
+      btn.dataset.idle = btn.dataset.idle || btn.textContent;
+      btn.setAttribute('aria-disabled', 'true');
+      btn.textContent = 'Sending…';
+    } else {
+      btn.removeAttribute('aria-disabled');
+      btn.textContent = btn.dataset.idle || 'Send';
+    }
+  }
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     if (form.querySelector('input[name="website"]').value) return;   // honeypot
+    if (el('cSubmit').getAttribute('aria-disabled') === 'true') return;   // in flight
 
     const consent = el('cConsent');
     el('cConsentError').style.display = consent.checked ? 'none' : 'block';
@@ -88,9 +103,7 @@
     const campaign = window.EV.campaign && window.EV.campaign();
     if (campaign) payload.campaign = campaign;
 
-    const btn = el('cSubmit');
-    btn.setAttribute('aria-disabled', 'true');
-    btn.textContent = 'Sending…';
+    setSending(el('cSubmit'), true);
 
     if (ENDPOINT) {
       fetch(ENDPOINT, {
@@ -123,6 +136,7 @@
   }
 
   function finish(viaMail) {
+    setSending(el('cSubmit'), false);
     form.hidden = true;
     el('cMailFallback').style.display = viaMail ? 'block' : 'none';
     const done = el('cDone');

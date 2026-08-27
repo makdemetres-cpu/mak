@@ -1187,6 +1187,16 @@ body.menu-open .menu__foot { opacity: 1; }
 }
 .consent[hidden] { display: none; }
 
+/* A fixed bar takes pointer events from whatever it covers, so anything the
+   page ends with sits under it and stops responding — which is how the
+   booking form's "Send the enquiry" button became unpressable. Reserve the
+   banner's real height at the end of the document while it is up, so every
+   control can be scrolled clear of it. --consent-h is measured in
+   js/consent.js; it is 0 whenever the banner is down. */
+:root { --consent-h: 0px; }
+.consent-open { scroll-padding-bottom: calc(var(--consent-h) + 1.5rem); }
+.consent-open .footer { padding-bottom: calc(2rem + var(--consent-h)); }
+
 .consent__card {
   --surface: var(--ink);
   --surface-2: var(--ink-raised);

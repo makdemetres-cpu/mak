@@ -59,8 +59,8 @@
    ========================================================================== */
 
 import { Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, Texture, Vector3 }
-  from '../vendor/three.slim.js?v=260827a';
-import { CHAPTERS, clamp01 } from './path.js?v=260827a';
+  from '../vendor/three.slim.js?v=260827b';
+import { CHAPTERS, clamp01 } from './path.js?v=260827b';
 
 /* --------------------------------------------------------------------------
    The photographs, in the order the camera meets them.
