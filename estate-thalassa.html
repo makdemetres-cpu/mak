@@ -28,11 +28,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260826f">
-<link rel="stylesheet" href="css/base.css?v=260826f">
-<link rel="stylesheet" href="css/site.css?v=260826f">
-<link rel="stylesheet" href="css/pages.css?v=260826f">
-<link rel="stylesheet" href="css/print.css?v=260826f" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260826g">
+<link rel="stylesheet" href="css/base.css?v=260826g">
+<link rel="stylesheet" href="css/site.css?v=260826g">
+<link rel="stylesheet" href="css/pages.css?v=260826g">
+<link rel="stylesheet" href="css/print.css?v=260826g" media="print">
 
 <!-- Structured data. Every absolute URL below uses the placeholder domain
      https://example.com — replace it once there is a real one:
@@ -176,7 +176,10 @@
       <a class="nav__link" href="index.html#faq">Questions</a>
       <a class="nav__link" href="contact.html">Contact</a>
     </nav>
-    <a class="btn header__cta" href="booking.html?estate=thalassa">Reserve</a>
+    <!-- Plain, no ?estate=. The body buttons below lock the booking form to
+         this house; the header must always be the way to all four, on
+         every page of the site. -->
+    <a class="btn header__cta" href="booking.html">Reserve</a>
     <a class="header__call" href="#" data-ev="phoneLink" aria-label="Call us">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -515,8 +518,8 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826f"></script>
-<script src="js/main.js?v=260826f"></script>
-<script src="js/consent.js?v=260826f"></script>
+<script src="js/data.js?v=260826g"></script>
+<script src="js/main.js?v=260826g"></script>
+<script src="js/consent.js?v=260826g"></script>
 </body>
 </html>

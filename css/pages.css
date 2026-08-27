@@ -863,6 +863,39 @@ a.line:hover { color: var(--accent-ink); }
 
 .field.has-error .estate-card__body { border-color: var(--alarm); }
 
+/* ---- One house, locked ----
+   Arriving from an estate page books that house and only that house, so the
+   card is not a radio, not a label and not hoverable — there is no choice
+   left to offer. It wears the chosen state permanently, because it is
+   chosen. The way to the other three is the link under it, which goes to the
+   plain booking page. */
+/* Capped rather than stretched across the column. The glyph scales with the
+   card's width, so a full-width single card gives you a 200px-tall drawing
+   with a lot of air in it — bigger without being better. */
+.estate-pick--one { grid-template-columns: minmax(0, 32rem); }
+
+.estate-card--locked { cursor: default; }
+.estate-card--locked .estate-card__body {
+  border-color: var(--accent-ink);
+  background: var(--surface-2);
+}
+.estate-card--locked .estate-card__glyph { color: var(--accent); }
+.estate-card--locked .estate-card__num { color: var(--accent-ink); }
+.estate-card--locked .estate-card__tick { opacity: 1; transform: none; }
+/* No lift, no border change: nothing here responds to a pointer because
+   nothing here does anything. */
+.estate-card--locked:hover .estate-card__body { border-color: var(--accent-ink); }
+
+/* The "reserve a different house" link sits in the hint slot, so it needs to
+   sit on the same line as the sentence in front of it rather than starting a
+   block of its own. */
+.link--sm {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  padding-bottom: 0.2em;
+  vertical-align: baseline;
+}
+
 /* --------------------------------------------------------------------------
    The dates, closed
    --------------------------------------------------------------------------

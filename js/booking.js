@@ -58,9 +58,26 @@
 
   const money = (n) => '€' + Number(n).toLocaleString('en-GB');
 
-  estatePick.innerHTML = ESTATES.map((e, i) => `
-    <label class="estate-card">
-      <input type="radio" name="estate" value="${e.id}" required>
+  /* --------------------------------------------------------------------
+     One house, or all four
+     --------------------------------------------------------------------
+     Arriving from an estate page — booking.html?estate=thalassa — books that
+     house and only that house. Arriving at booking.html plain shows all four
+     to choose between.
+
+     The rule is the URL and nothing else, so the two states can never
+     disagree with each other. An unrecognised id is ignored rather than
+     locking the form to a house that does not exist.
+
+     Every page's header "Reserve" button points at the plain page, including
+     the estate pages': the header is the one control that must never lock you
+     into anything.
+     -------------------------------------------------------------------- */
+  const wanted = new URLSearchParams(location.search).get('estate');
+  const lockedTo = ESTATES.some((e) => e.id === wanted) ? wanted : '';
+
+  function cardHTML(e, i, locked) {
+    const inner = `
       <span class="estate-card__body">
         <span class="estate-card__glyph" aria-hidden="true">
           <svg viewBox="0 0 200 64" fill="none" stroke="currentColor" stroke-width="1"
@@ -77,14 +94,33 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
                stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
         </span>
-      </span>
-    </label>`).join('');
+      </span>`;
+
+    // Locked, there is no choice to make, so it is not a radio and not a
+    // label. Rendering one lonely radio that cannot be unpicked would be
+    // offering a decision that does not exist.
+    return locked
+      ? `<div class="estate-card estate-card--locked">${inner}</div>`
+      : `<label class="estate-card"><input type="radio" name="estate" value="${e.id}" required>${inner}</label>`;
+  }
+
+  if (lockedTo) {
+    const e = ESTATES.filter((x) => x.id === lockedTo)[0];
+    const i = ESTATES.indexOf(e);
+    estatePick.innerHTML = cardHTML(e, i, true);
+    estatePick.removeAttribute('role');          // a group of one is not a radiogroup
+    estatePick.classList.add('estate-pick--one');
+  } else {
+    estatePick.innerHTML = ESTATES.map((e, i) => cardHTML(e, i, false)).join('');
+  }
 
   const getEstate = () => {
+    if (lockedTo) return lockedTo;
     const hit = form.querySelector('input[name="estate"]:checked');
     return hit ? hit.value : '';
   };
   const setEstate = (id) => {
+    if (lockedTo) return;                        // the URL decides, nothing else
     const hit = form.querySelector(`input[name="estate"][value="${id}"]`);
     if (hit) hit.checked = true;
   };
@@ -158,10 +194,42 @@
       ' days ahead. Beyond that, tell us in the notes and we will answer by hand.';
   }
 
-  /* Pre-select an estate from the link that got them here
-     (booking.html?estate=kyma). */
-  const wanted = new URLSearchParams(location.search).get('estate');
-  if (wanted && ESTATES.some((e) => e.id === wanted)) setEstate(wanted);
+  /* --------------------------------------------------------------------
+     Wording the two states
+     --------------------------------------------------------------------
+     "Which house, when, and how many of you" is the wrong question when the
+     house is already settled, and the hint about choosing the closest one is
+     advice about a decision that is no longer on the table. So both change,
+     and the hint becomes the way back to all four.
+
+     That link is not a hedge against the lock — it is the lock working. It
+     goes to the plain booking page, which is the Reserve route, and the draft
+     in sessionStorage means the dates and the guest count survive the trip.
+     -------------------------------------------------------------------- */
+  if (lockedTo) {
+    const house = ESTATES.filter((e) => e.id === lockedTo)[0];
+
+    const lede = form.querySelector('.step[data-step="1"] > .lede');
+    if (lede) lede.textContent = 'When, and how many of you.';
+
+    const label = el('estateLabel');
+    if (label) label.innerHTML = 'Your house';
+
+    const hint = el('estateHint');
+    if (hint) {
+      hint.textContent = '';
+      hint.appendChild(document.createTextNode('Booking ' + house.name + '. '));
+      const a = document.createElement('a');
+      a.className = 'link link--sm';
+      a.href = 'booking.html';
+      a.textContent = 'Reserve a different house';
+      hint.appendChild(a);
+    }
+
+    // The house is in the address bar, so it belongs in the title too — it is
+    // what a bookmark, a shared link and a browser tab will show.
+    document.title = 'Book ' + house.name + ' — Ermis’ Villas';
+  }
 
   /* ------------------------------------------------------------------
      Guest steppers
