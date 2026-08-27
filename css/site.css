@@ -664,6 +664,30 @@ body.menu-open .menu__foot { opacity: 1; }
 }
 .estate__cta { display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-start; }
 @media (min-width: 860px) { .estate__cta { align-items: flex-end; text-align: right; } }
+
+/* The two links on an estate row lift slightly under the cursor, on top of the
+   underline they already draw. The underline is a background on the same
+   element rather than a separate rule, so it rises with the text instead of
+   being left behind by it — which is the whole reason .link was built that way.
+
+   Transform only: no layout, no reflow, so running the cursor down a column of
+   four of these costs nothing. Kept to this section deliberately; the same
+   .link elsewhere on the site is unchanged. */
+.estate__cta .link {
+  transition: background-size var(--dur) var(--ease),
+              transform 0.22s var(--ease);
+}
+/* (hover: hover) keeps it off touch screens, where :hover sticks after a tap
+   and would leave a link parked 3px above its neighbours. */
+@media (hover: hover) {
+  .estate__cta .link:hover { transform: translateY(-3px); }
+}
+.estate__cta .link:focus-visible { transform: translateY(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .estate__cta .link:hover,
+  .estate__cta .link:focus-visible { transform: none; }
+}
 .estate__from { font-size: var(--step--1); color: var(--fg-muted); }
 .estate__from b {
   font-family: var(--font-display);
