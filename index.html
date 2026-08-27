@@ -45,11 +45,11 @@
      stops the headline reflowing a beat after paint. -->
 <link rel="preload" href="assets/fonts/Fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/HankenGrotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/fonts.css?v=260826d">
-<link rel="stylesheet" href="css/base.css?v=260826d">
-<link rel="stylesheet" href="css/site.css?v=260826d">
-<link rel="stylesheet" href="css/print.css?v=260826d" media="print">
-<link rel="modulepreload" href="js/vendor/three.slim.js?v=260826d">
+<link rel="stylesheet" href="css/fonts.css?v=260826e">
+<link rel="stylesheet" href="css/base.css?v=260826e">
+<link rel="stylesheet" href="css/site.css?v=260826e">
+<link rel="stylesheet" href="css/print.css?v=260826e" media="print">
+<link rel="modulepreload" href="js/vendor/three.slim.js?v=260826e">
 
 <!-- Structured data. Every absolute URL below uses the placeholder domain
      https://example.com — replace it once there is a real one:
@@ -640,34 +640,134 @@
   </div>
 </section>
 
-<!-- ===================== Testimonials ===================== -->
-<section class="section" aria-label="What guests say">
+<!-- ===================== Reviews ===================== -->
+<section class="section reviews" id="reviews" aria-labelledby="reviewsTitle">
   <div class="container">
-    <header class="section-head" data-reveal>
+    <header class="section-head reviews__head" data-reveal>
       <div>
         <p class="eyebrow">Guests</p>
-        <h2 class="t-h1">Most of them come back.</h2>
+        <h2 class="t-h1" id="reviewsTitle">Most of them come back.</h2>
+      </div>
+      <div class="reviews__aside">
+        <!-- Hidden until there is at least one real review to count. An
+             average built out of the placeholder quotes would be a number we
+             invented about our own business. -->
+        <p class="review-score" id="reviewScore" hidden></p>
+        <button class="btn btn--ghost" type="button" id="reviewOpen" aria-expanded="false">
+          Leave a review
+        </button>
       </div>
     </header>
 
-    <!-- PLACEHOLDER — these three quotes are written for layout. Replace with
-         real, attributable guest quotes before launch, with permission. -->
-    <div class="quotes" data-reveal>
-      <figure class="quote">
-        <blockquote>“We landed at eleven at night with a sick child and a lost bag. By the time we reached the house there was a doctor's number, a pharmacy run done, and someone had put the light on in the nursery.”</blockquote>
-        <figcaption><b>Villa Thalassa</b>Fourth stay · London</figcaption>
-      </figure>
-      <figure class="quote">
-        <blockquote>“I have booked a lot of houses that photograph better than they live. This is the first one I have walked into and thought: he actually stays here himself.”</blockquote>
-        <figcaption><b>Villa Kyma</b>Second stay · Zürich</figcaption>
-      </figure>
-      <figure class="quote">
-        <blockquote>“The chef asked what my mother used to cook. On the last night he made it, badly on purpose, exactly the way she did. My father did not speak for a minute.”</blockquote>
-        <figcaption><b>Villa Elaia</b>Sixth stay · Thessaloniki</figcaption>
-      </figure>
+    <!-- Shown only while js/data.js has no backend configured. See README →
+         "Guest reviews". It removes itself the moment the keys are filled in. -->
+    <div class="todo" id="reviewNote" hidden>
+      <b>Reviews are not connected yet</b>
+      The form below works and the four cards behave exactly as they will once
+      it is live — but nothing leaves this browser, so no one else can see a
+      review left here. Add your Supabase URL and anon key to
+      <code>js/data.js</code> → <code>REVIEWS</code> and this note disappears.
+      The four quotes showing now are placeholders written for layout.
     </div>
+
+    <div class="reviews__list" id="reviewList" data-reveal></div>
+
+    <p class="reviews__status" id="reviewStatus" role="status" aria-live="polite"></p>
   </div>
 </section>
+
+<!-- ===================== Leave a review ===================== -->
+<div class="rvdialog" id="reviewDialog" hidden>
+  <div class="rvdialog__scrim" data-review-close></div>
+  <div class="rvdialog__panel" role="dialog" aria-modal="true" aria-labelledby="rvTitle">
+    <div class="rvdialog__head">
+      <div>
+        <p class="eyebrow">Your stay</p>
+        <h2 class="t-h3" id="rvTitle">Leave a review</h2>
+      </div>
+      <button class="rvdialog__close" type="button" data-review-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+             stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <form id="reviewForm" class="rvdialog__form" novalidate>
+      <!-- Spam trap. Real people never see it; bots fill it in. -->
+      <div class="hp" aria-hidden="true">
+        <label>Do not fill this in <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+
+      <!-- The fields scroll; the buttons below them do not, so "Publish" is
+           never somewhere you have to go looking for. -->
+      <div class="rvdialog__body">
+      <div class="field">
+        <label class="field-label" for="rvName">Your name <span class="req">*</span></label>
+        <input class="input" type="text" id="rvName" name="name" maxlength="60"
+               autocomplete="given-name" required>
+        <span class="field-error" data-error-for="rvName">Please tell us who you are.</span>
+        <span class="field-hint" id="rvNameHint">A first name is plenty. It is published with your review.</span>
+      </div>
+
+      <div class="field" id="ratingField">
+        <span class="field-label" id="rvRatingLabel">Your rating <span class="req">*</span></span>
+        <!-- Real radios: arrow keys, the right announcement, and it still
+             works if the styling never loads. -->
+        <div class="rate" role="radiogroup" aria-labelledby="rvRatingLabel">
+          <label class="rate__star">
+            <input type="radio" name="rating" value="1" required>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+            <span class="sr-only">1 star</span>
+          </label>
+          <label class="rate__star">
+            <input type="radio" name="rating" value="2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+            <span class="sr-only">2 stars</span>
+          </label>
+          <label class="rate__star">
+            <input type="radio" name="rating" value="3">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+            <span class="sr-only">3 stars</span>
+          </label>
+          <label class="rate__star">
+            <input type="radio" name="rating" value="4">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+            <span class="sr-only">4 stars</span>
+          </label>
+          <label class="rate__star">
+            <input type="radio" name="rating" value="5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.45L12 17.45 6.2 20.5l1.1-6.45-4.7-4.6 6.5-.95z"/></svg>
+            <span class="sr-only">5 stars</span>
+          </label>
+        </div>
+        <span class="field-error" data-error-for="ratingField" data-error-on="ratingField">Please choose a rating.</span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="rvBody">Your review <span class="req">*</span></label>
+        <textarea class="textarea" id="rvBody" name="body" rows="5" required></textarea>
+        <span class="field-error" data-error-for="rvBody">Please write a few words about your stay.</span>
+        <span class="field-hint" id="rvCount"></span>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="rvConsent" required>
+        <span>
+          I agree that the name and review above may be published on this
+          website, and I understand I can ask for them to be removed at any
+          time as described in the
+          <a href="privacy.html">privacy &amp; cookie policy</a>. <span class="req">*</span>
+        </span>
+      </label>
+      <span class="field-error" id="rvConsentError" data-error-for="rvConsent" style="display:none">Please agree before publishing.</span>
+      </div>
+
+      <div class="rvdialog__foot">
+        <button class="btn btn--ghost" type="button" data-review-close>Cancel</button>
+        <button class="btn" type="submit" id="rvSubmit">Publish review</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- ===================== FAQ ===================== -->
 <section class="section services" id="faq">
@@ -935,9 +1035,10 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826d"></script>
-<script src="js/main.js?v=260826d"></script>
-<script src="js/consent.js?v=260826d"></script>
+<script src="js/data.js?v=260826e"></script>
+<script src="js/main.js?v=260826e"></script>
+<script src="js/consent.js?v=260826e"></script>
+<script src="js/reviews.js?v=260826e"></script>
 
 <!-- A deadline for the hero.
      js/hero/index.js sets its own fallback when WebGL is missing or the visitor
@@ -958,6 +1059,6 @@
   }, 2500);
 })();
 </script>
-<script type="module" src="js/hero/index.js?v=260826d"></script>
+<script type="module" src="js/hero/index.js?v=260826e"></script>
 </body>
 </html>

@@ -146,6 +146,63 @@ window.EV.SERVICES = [
 window.EV.FORM_ENDPOINT = '';
 
 /* --------------------------------------------------------------------------
+   Guest reviews
+   --------------------------------------------------------------------------
+   The homepage shows the four most recent reviews. Leave `url` and `anonKey`
+   empty and the section runs in preview mode: the form works, the rolling four
+   behave exactly as they will live, but everything is kept in the visitor's own
+   browser and nobody else ever sees it. A visible note says so, and the note
+   disappears by itself once the two values below are filled in.
+
+   To make it real, see README.md → "Guest reviews". It is a Supabase project
+   (free, no card) and one SQL statement; you paste the project URL and the
+   *anon* key here. The anon key is designed to be public — it is in every
+   visitor's browser either way — and the table's row-level security is what
+   actually protects the data. Never paste the service_role key here.
+   -------------------------------------------------------------------------- */
+window.EV.REVIEWS = {
+  url:     "",            // e.g. https://xxxxxxxx.supabase.co
+  anonKey: "",            // the anon / publishable key, never service_role
+
+  // How many to show. The oldest falls off the page as a newer one arrives.
+  show: 4,
+
+  /* ⚠️  Reviews go live the moment they are written, which is what was asked
+     for and what the rolling four are built around.
+
+     Turn this to true before you take real bookings. It costs you a tick in
+     the Supabase table editor per review and it means nothing appears on your
+     business's homepage at three in the morning without a person having read
+     it first. It is also the honest answer to the question EU law now requires
+     you to answer — whether and how you check that a review came from someone
+     who actually stayed. See README.md and privacy.html §18. */
+  moderated: false,
+
+  // One review per browser per this many hours. A courtesy against double
+  // taps and accidents, not a security measure — anyone determined can clear
+  // their storage. Real protection is rate limiting at the database.
+  cooldownHours: 12
+};
+
+/* The four the section starts with.
+   PLACEHOLDER — written for layout, like everything else factual on this site.
+   Real reviews push these off one at a time as they arrive, newest first. */
+window.EV.SEED_REVIEWS = [
+  { name: 'Villa Thalassa', rating: 5, seed: true,
+    meta: 'Fourth stay · London',
+    body: 'We landed at eleven at night with a sick child and a lost bag. By the time we reached the house there was a doctor’s number, a pharmacy run done, and someone had put the light on in the nursery.' },
+  { name: 'Villa Kyma', rating: 5, seed: true,
+    meta: 'Second stay · Zürich',
+    body: 'I have booked a lot of houses that photograph better than they live. This is the first one I have walked into and thought: he actually stays here himself.' },
+  { name: 'Villa Elaia', rating: 5, seed: true,
+    meta: 'Sixth stay · Thessaloniki',
+    body: 'The chef asked what my mother used to cook. On the last night he made it, badly on purpose, exactly the way she did. My father did not speak for a minute.' },
+  { name: 'Villa Anemos', rating: 4, seed: true,
+    meta: 'First stay · Copenhagen',
+    body: 'The house is quieter than the photographs suggest, which turned out to be the point. We asked for a boat on the Tuesday and had one by lunchtime.' }
+];
+
+/* --------------------------------------------------------------------------
    Campaign attribution
    --------------------------------------------------------------------------
    When someone arrives on a tagged link — an Instagram bio, a partner's page,

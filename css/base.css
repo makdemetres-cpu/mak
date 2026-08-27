@@ -558,3 +558,48 @@ h1, h2, h3 {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   Shared between the homepage and the inner pages
+   --------------------------------------------------------------------------
+   These three started life in pages.css, when only the booking flow and the
+   legal documents needed them. The homepage's review dialog needs them too,
+   and index.html does not load pages.css — so rather than duplicating them or
+   pulling a 1,200-line stylesheet onto the busiest page of the site, they live
+   here, in the layer everything already loads.
+   -------------------------------------------------------------------------- */
+
+/* Editor's notes. Deliberately loud and deliberately ugly: every one of these
+   marks something invented that must be dealt with before launch, and a
+   tasteful version would be easy to stop seeing. */
+.todo {
+  margin: 2rem 0;
+  padding: 1.15rem 1.35rem;
+  border: 1px dashed var(--alarm);
+  background: color-mix(in srgb, var(--alarm) 7%, transparent);
+  font-size: var(--step--1);
+  line-height: 1.65;
+}
+.todo b { color: var(--alarm); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.63rem; display: block; margin-bottom: 0.4rem; }
+
+/* The row of buttons at the foot of a step or a dialog. */
+.step-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: clamp(2rem, 5vw, 3rem);
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+.step-nav .btn { flex: 1 1 auto; }
+@media (min-width: 560px) { .step-nav .btn { flex: 0 0 auto; } }
+.step-nav__spacer { flex: 1 1 auto; }
+
+/* Modal entrances, shared by the booking calendar and the review dialog. */
+@keyframes calFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes calRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes calPop {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.985); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}

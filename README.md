@@ -48,10 +48,14 @@ included in the rate are **indicative wording, not your terms**. They are marked
 with an HTML comment above the block. Align them with your actual rental
 agreement, or delete the specifics and point to the agreement instead.
 
-### 4. Replace the testimonials — `index.html`
+### 4. Replace the seed reviews — `js/data.js` → `SEED_REVIEWS`
 
-The three guest quotes are written for layout. Replace them with real,
-attributable quotes, with the guest's permission.
+Four quotes written for layout. They are what the review section shows before
+any real review arrives, and real ones push them off one at a time as they come
+in — so they are a floor, not a fixture. Replace them with real, attributable
+quotes with the guest's permission, or empty the array and let the section fill
+up on its own. They are excluded from the average and the review count either
+way, so they can never inflate your score. See step 11 for the rest of it.
 
 ### 5. Finish the privacy policy — `privacy.html`
 
@@ -161,6 +165,78 @@ derived from the file's modification date, which meant a deploy that only touche
 the CSS silently re-dated your privacy policy — a date that moves on its own is
 worse than no date at all, and under Article 12 GDPR you need to be able to say
 what was in force when.
+
+### 11. Guest reviews — connect the backend
+
+The homepage shows the four most recent reviews and has a **Leave a review**
+button. Until `js/data.js` → `REVIEWS` has a URL and a key it runs in **preview
+mode**: the form works and the rolling four behave exactly as they will live,
+but everything stays in the visitor's own browser and nobody else sees it. A
+red editor's note on the page says so, and removes itself once you fill the
+values in.
+
+To make it real, in Supabase (free, no card):
+
+1. Create a project. Note the **Project URL** and the **anon / publishable**
+   key from Settings → API. The anon key is meant to be public — it ships in
+   every visitor's browser either way — and row-level security below is what
+   actually protects the table. **Never put the `service_role` key here**; it
+   bypasses every policy you are about to write.
+
+2. Run this in the SQL editor:
+
+```sql
+create table public.reviews (
+  id          uuid primary key default gen_random_uuid(),
+  created_at  timestamptz not null default now(),
+  name        text not null check (char_length(name) between 1 and 60),
+  rating      smallint not null check (rating between 1 and 5),
+  body        text not null check (char_length(body) between 10 and 600),
+  approved    boolean not null default false
+);
+
+alter table public.reviews enable row level security;
+
+-- Anyone may add a review. The checks above are the real validation: the
+-- browser's are a courtesy to the guest, not a defence.
+create policy "anyone can leave a review"
+  on public.reviews for insert to anon with check (true);
+
+-- Only approved reviews are readable. If you set REVIEWS.moderated = false in
+-- js/data.js, change this to `using (true)` so unapproved ones show too.
+create policy "approved reviews are public"
+  on public.reviews for select to anon using (approved = true);
+```
+
+3. Paste the URL and anon key into `js/data.js` → `REVIEWS`.
+
+**Moderation.** `REVIEWS.moderated` ships as `false`, so a review goes live the
+moment it is written — which is what was asked for, and what the rolling four
+are built around. **Turn it to `true` before you take real bookings**, and
+change the select policy to match. It costs you a tick in the Supabase table
+editor per review, and it means nothing appears on your business's homepage at
+three in the morning without a person having read it first.
+
+It is also the honest answer to a question EU law now makes you answer. Since
+the 2019 amendment to the Unfair Commercial Practices Directive — in Greece,
+Law 2251/1994 — a trader displaying consumer reviews must state **whether and
+how** they check the reviews come from people who actually used the service,
+and presenting unverified reviews as genuine guest reviews is a listed unfair
+practice. `privacy.html` §18 currently says, plainly, that reviews are not
+verified. If you start checking that reviewers really stayed, rewrite that
+section to describe what you do. Either way it must be true.
+
+**What is deliberately not here.** No aggregate-rating structured data, so
+Google will not show stars under your search listing. That is on purpose while
+any of the four are placeholders — star snippets built from invented reviews
+are what manual penalties are for. Once every review is real and verified, it
+is a small addition to `index.html`'s JSON-LD.
+
+**Spam.** There is a hidden honeypot field, a 12-hour per-browser cooldown
+(`REVIEWS.cooldownHours`) and length limits enforced by the database. All of
+that is a courtesy against accidents, not a defence against anyone determined
+— client-side limits are trivially bypassed. If reviews start attracting junk,
+add rate limiting at Supabase and turn moderation on.
 
 ---
 

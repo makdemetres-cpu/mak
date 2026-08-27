@@ -31,11 +31,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260826d">
-<link rel="stylesheet" href="css/base.css?v=260826d">
-<link rel="stylesheet" href="css/site.css?v=260826d">
-<link rel="stylesheet" href="css/pages.css?v=260826d">
-<link rel="stylesheet" href="css/print.css?v=260826d" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260826e">
+<link rel="stylesheet" href="css/base.css?v=260826e">
+<link rel="stylesheet" href="css/site.css?v=260826e">
+<link rel="stylesheet" href="css/pages.css?v=260826e">
+<link rel="stylesheet" href="css/print.css?v=260826e" media="print">
 </head>
 <body class="has-progress">
 
@@ -128,6 +128,7 @@
         <a href="#s15">15. Automated decisions</a>
         <a href="#s16">16. Changes</a>
         <a href="#s17">17. How to reach us</a>
+        <a href="#s18">18. Reviews you publish</a>
       </nav>
 
       <!-- ---------------- Body ---------------- -->
@@ -465,6 +466,18 @@
                   <td>Until you close the tab</td>
                 </tr>
                 <tr>
+                  <td><code>ev_review_last</code></td>
+                  <td>Local storage · strictly necessary</td>
+                  <td>The time you last left a review, so the form can ask you to wait a while before leaving another. A courtesy against double taps, nothing more.</td>
+                  <td>12 hours</td>
+                </tr>
+                <tr>
+                  <td><code>ev_reviews_preview</code></td>
+                  <td>Local storage · strictly necessary</td>
+                  <td>Only while the review feature is still in preview: holds reviews written on this device so the section can be seen working. Never sent anywhere. It disappears once reviews are connected properly.</td>
+                  <td>Until you clear your browser</td>
+                </tr>
+                <tr>
                   <td>Analytics</td>
                   <td>Optional · consent</td>
                   <td>None are currently installed. If we ever add analytics, it will be listed here and will only load after you agree.</td>
@@ -658,6 +671,84 @@
           </p>
         </section>
 
+        <section id="s18">
+          <h2><em>18</em>Reviews you publish</h2>
+
+          <div class="todo">
+            <b>Editor's note — resolve before launch</b>
+            Two things here need a decision rather than a paragraph. First,
+            whether reviews are moderated: <code>js/data.js</code> →
+            <code>REVIEWS.moderated</code> is currently <code>false</code>, so
+            a review appears the moment it is written. Second, and related:
+            since 2022 a trader who displays consumer reviews has to say
+            whether and how they check that the reviews come from people who
+            actually used the service. The paragraph below says what the site
+            does today. If you start verifying that reviewers really stayed —
+            which is the safer position — rewrite it to describe that instead.
+          </div>
+
+          <p>
+            If you leave a review on our homepage, the name you type and the
+            words you write are published on that page for anyone to read. That
+            is the point of them, but it does mean you are choosing to make
+            that information public, and it is why the form asks you to agree
+            before it will publish anything.
+          </p>
+
+          <h3>What we ask for, and what we do not</h3>
+          <p>
+            A name and the review itself. Nothing else — no email address, no
+            account, no rating of you. A first name is genuinely enough, and if
+            you would rather appear as “A guest, Athens” then type that. We
+            store the review, the rating and the time it was written.
+          </p>
+
+          <h3>How reviews are checked</h3>
+          <p>
+            <strong>Reviews on this site are not currently verified as coming
+            from guests who stayed with us.</strong> Anyone who visits the site
+            can leave one. We say so plainly because Article 7(6) of the
+            Unfair Commercial Practices Directive, as amended in 2019 and
+            implemented in Greece through Law 2251/1994, requires a trader who
+            displays consumer reviews to state whether and how they ensure the
+            reviews come from consumers who have actually used the service.
+            Claiming otherwise would be a misleading practice, and we would
+            rather tell you than claim it.
+          </p>
+
+          <h3>The legal basis</h3>
+          <p>
+            Your consent, under Article 6(1)(a) GDPR, given by the checkbox on
+            the form. You can withdraw it at any time, and withdrawing it does
+            not affect the lawfulness of what we did with it before you did.
+          </p>
+
+          <h3>Having a review removed</h3>
+          <p>
+            Email <a href="#" data-ev="privacyEmailLink"><span data-ev="privacyEmail"></span></a>
+            with roughly when you left it and we will take it down. You do not
+            have to give a reason, and we will not ask for one. This is the
+            same right to erasure described in §11; it is repeated here because
+            a review is the one thing on this site you can publish yourself,
+            and you should not have to hunt for how to unpublish it.
+          </p>
+
+          <h3>Who else sees it</h3>
+          <p>
+            Everyone — it is on a public web page, and search engines will
+            index it. Reviews are stored by our database provider, described in
+            §7 among the other processors. We do not pass them to review
+            aggregators or advertising networks.
+          </p>
+
+          <h3>How long we keep it</h3>
+          <p>
+            Until you ask us to remove it, or until we take the review section
+            down. Unlike the booking records in §10 there is no accounting
+            period forcing us to keep it.
+          </p>
+        </section>
+
       </div>
     </div>
   </div>
@@ -735,8 +826,8 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826d"></script>
-<script src="js/main.js?v=260826d"></script>
-<script src="js/consent.js?v=260826d"></script>
+<script src="js/data.js?v=260826e"></script>
+<script src="js/main.js?v=260826e"></script>
+<script src="js/consent.js?v=260826e"></script>
 </body>
 </html>

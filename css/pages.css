@@ -151,17 +151,6 @@
 .reveal-block.is-shown { display: block; animation: stepIn 0.45s var(--ease) both; }
 
 /* ---- Nav between steps ---- */
-.step-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  margin-top: clamp(2rem, 5vw, 3rem);
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--line);
-}
-.step-nav .btn { flex: 1 1 auto; }
-@media (min-width: 560px) { .step-nav .btn { flex: 0 0 auto; } }
-.step-nav__spacer { flex: 1 1 auto; }
 
 /* ---- Summary ---- */
 .summary {
@@ -544,15 +533,6 @@ a.line:hover { color: var(--accent-ink); }
 
 /* An editor's note, visible on the page on purpose while the details are
    still placeholders. Delete the markup once they are real. */
-.todo {
-  margin: 2rem 0;
-  padding: 1.15rem 1.35rem;
-  border: 1px dashed var(--alarm);
-  background: color-mix(in srgb, var(--alarm) 7%, transparent);
-  font-size: var(--step--1);
-  line-height: 1.65;
-}
-.todo b { color: var(--alarm); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.63rem; display: block; margin-bottom: 0.4rem; }
 
 /* --------------------------------------------------------------------------
    4. 404
@@ -999,12 +979,6 @@ a.line:hover { color: var(--accent-ink); }
   }
 }
 
-@keyframes calFade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes calRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes calPop {
-  from { opacity: 0; transform: translate(-50%, -48%) scale(0.985); }
-  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
 @media (prefers-reduced-motion: reduce) {
   .cal__scrim, .cal__panel { animation: none; }
 }

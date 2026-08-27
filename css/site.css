@@ -805,16 +805,57 @@ body.menu-open .menu__foot { opacity: 1; }
 /* --------------------------------------------------------------------------
    7. Testimonials
    -------------------------------------------------------------------------- */
-.quotes { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); }
-@media (min-width: 860px) { .quotes { grid-template-columns: repeat(3, 1fr); } }
-.quote {
+/* --------------------------------------------------------------------------
+   7. Reviews
+   --------------------------------------------------------------------------
+   Four cards, newest first, rendered by js/reviews.js. The old three-quote
+   grid became a 2x2 so a quote still has room to be a quote — four across
+   makes columns too narrow to read at a glance, which is the only thing this
+   section is for.
+   -------------------------------------------------------------------------- */
+.reviews__head { align-items: end; }
+@media (min-width: 900px) {
+  /* Score and button sit out to the right of the heading rather than stacking
+     under it, so the invitation is level with the thing it is inviting you to
+     do instead of floating in the space above the cards. */
+  .reviews__head { grid-template-columns: minmax(0, 1fr) auto; }
+  .reviews__aside { justify-content: flex-end; }
+}
+.reviews__aside {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+
+.review-score { display: flex; align-items: center; gap: 0.7rem; }
+.review-score[hidden] { display: none; }
+.review-score__text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
+.reviews__list {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border-block: 1px solid var(--line);
+}
+@media (min-width: 780px) { .reviews__list { grid-template-columns: 1fr 1fr; } }
+
+.review {
   background: var(--surface);
   padding: clamp(1.75rem, 4vw, 2.75rem);
   display: flex;
   flex-direction: column;
-  gap: 1.35rem;
+  gap: 1.1rem;
 }
-.quote blockquote {
+.review__head { display: flex; align-items: center; gap: 0.75rem; }
+.review blockquote {
   font-family: var(--font-display);
   font-weight: 300;
   font-variation-settings: 'opsz' 72;
@@ -823,7 +864,12 @@ body.menu-open .menu__foot { opacity: 1; }
   letter-spacing: -0.012em;
   text-wrap: pretty;
 }
-.quote figcaption {
+/* Real quotation marks, added in CSS so the text itself stays clean and a
+   review typed with its own quotes does not end up wearing two sets. */
+.review blockquote::before { content: "\201C"; }
+.review blockquote::after  { content: "\201D"; }
+
+.review figcaption {
   margin-top: auto;
   font-size: 0.65rem;
   font-weight: 500;
@@ -831,7 +877,182 @@ body.menu-open .menu__foot { opacity: 1; }
   text-transform: uppercase;
   color: var(--fg-muted);
 }
-.quote figcaption b { display: block; color: var(--accent-ink); margin-bottom: 0.3rem; }
+.review figcaption b { display: block; color: var(--accent-ink); margin-bottom: 0.3rem; }
+
+.reviews__status {
+  margin-top: 1.25rem;
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  min-height: 1.4em;          /* reserved, so publishing shifts nothing */
+}
+.reviews__status.is-bad { color: var(--alarm); }
+
+/* ---- Stars ----
+   Two rows of five, one stacked exactly on the other: an outline row and a
+   filled row clipped to the rating. The sweep is a single scaleX on one
+   element per card, so it composites on the GPU and costs nothing on a phone
+   even with four cards animating at once. */
+.stars { position: relative; display: inline-block; line-height: 0; }
+.stars__row { display: flex; gap: 2px; }
+.stars__row svg { width: 15px; height: 15px; display: block; }
+.stars__row--track { fill: var(--line); }
+.stars__row--fill {
+  position: absolute;
+  inset: 0;
+  fill: var(--accent);
+  transform-origin: left center;
+  /* Clipped to the rating. --fill is 0..1. */
+  clip-path: inset(0 calc((1 - var(--fill, 1)) * 100%) 0 0);
+}
+/* Held at nothing until the card is scrolled to, then swept open. Animating
+   the transform rather than the clip keeps it off the main thread. */
+.stars__row--fill.is-sweeping { transform: scaleX(0); }
+.stars__row--fill.is-sweeping.is-full {
+  transform: scaleX(1);
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* A review that has just been published eases in at the front. */
+@keyframes reviewIn {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.review.is-new { animation: reviewIn 0.6s var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stars__row--fill.is-sweeping { transform: none; transition: none; }
+  .review.is-new { animation: none; }
+}
+
+/* ---- The rating input ---- */
+.rate { display: flex; gap: 0.35rem; }
+.rate__star {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;      /* a comfortable target, not a 15px star */
+  cursor: pointer;
+  color: var(--line);
+  transition: color 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.rate__star input {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.rate__star svg { width: 26px; height: 26px; fill: currentColor; }
+
+/* Hovering or focusing a star fills it and everything before it, which is how
+   every rating control anybody has used behaves. :has does the work that would
+   otherwise need a mouseover handler per star. */
+.rate:hover .rate__star { color: var(--accent); }
+.rate__star:hover ~ .rate__star { color: var(--line); }
+.rate:has(input:checked) .rate__star { color: var(--accent); }
+.rate__star:has(input:checked) ~ .rate__star { color: var(--line); }
+.rate:hover .rate__star:hover { transform: scale(1.08); }
+.rate__star:has(input:focus-visible) {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: -4px;
+  border-radius: var(--radius);
+}
+.field.has-error .rate__star { color: var(--alarm); }
+
+/* --------------------------------------------------------------------------
+   7b. Leave a review
+   --------------------------------------------------------------------------
+   Same modal shape as the booking calendar: a sheet on a phone, a centred
+   panel on a wide screen, one focus path for both.
+   -------------------------------------------------------------------------- */
+.rvdialog { position: fixed; inset: 0; z-index: 300; }
+.rvdialog[hidden] { display: none; }
+.rvdialog__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 9, 0.55);
+  backdrop-filter: blur(3px);
+  animation: calFade 0.3s var(--ease) both;
+}
+.rvdialog__panel {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 94dvh;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+  animation: calRise 0.42s var(--ease) both;
+}
+@media (min-width: 760px) {
+  .rvdialog__panel {
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    width: min(38rem, calc(100vw - 3rem));
+    max-height: min(46rem, calc(100dvh - 3rem));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    animation: calPop 0.34s var(--ease) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rvdialog__scrim, .rvdialog__panel { animation: none; }
+}
+
+.rvdialog__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem clamp(1.25rem, 4vw, 2rem) 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+.rvdialog__close {
+  flex: none;
+  width: 40px; height: 40px;
+  display: grid;
+  place-items: center;
+  margin: -0.35rem -0.5rem 0 0;
+  color: var(--fg-muted);
+  transition: color 0.25s var(--ease);
+}
+.rvdialog__close:hover, .rvdialog__close:focus-visible { color: var(--fg); }
+.rvdialog__close svg { width: 18px; height: 18px; }
+
+/* The form is the flex column; the fields scroll inside it and the buttons
+   stay put underneath. Putting the whole thing in one scrolling box pushes
+   "Publish" off the bottom on a laptop, which is the one control that must
+   never need hunting for. */
+.rvdialog__form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+.rvdialog__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+.rvdialog__body .field + .field { margin-top: 1.5rem; }
+.rvdialog__body .check { margin-top: 1.5rem; }
+
+.rvdialog__foot {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  padding: 1.1rem clamp(1.25rem, 4vw, 2rem);
+  padding-bottom: max(1.1rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+.rvdialog__foot .btn { flex: 1 1 auto; }
+@media (min-width: 520px) { .rvdialog__foot .btn { flex: 0 0 auto; } }
 
 /* --------------------------------------------------------------------------
    8. FAQ
