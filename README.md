@@ -55,7 +55,7 @@ any real review arrives, and real ones push them off one at a time as they come
 in — so they are a floor, not a fixture. Replace them with real, attributable
 quotes with the guest's permission, or empty the array and let the section fill
 up on its own. They are excluded from the average and the review count either
-way, so they can never inflate your score. See step 11 for the rest of it.
+way, so they can never inflate your score. See step 12 for the rest of it.
 
 ### 5. Finish the privacy policy — `privacy.html`
 
@@ -150,7 +150,41 @@ social: {
 }
 ```
 
-### 10. Date the legal documents when you finalise them
+### 10. Check the arrival points — `js/travel.js`
+
+The booking form's arrival step no longer has any free text in it. "Picking up
+from" and "Flight or crossing" used to be two empty boxes, and an empty box
+accepts `jtyi45oy4` as readily as `Paros Airport` — which is what came through
+it. Now the airport, the port, the airline and the ferry line are all chosen
+from lists in `js/travel.js`, and the only thing typed is the flight's number,
+which takes digits and nothing else.
+
+**What needs checking before launch:** `ARRIVAL_POINTS` is keyed by estate id,
+and the entries were chosen to suit the *placeholder* locations in `data.js`. The
+airports and ports themselves are real, but when the four houses become real
+ones, go through the lists and make sure every entry is somewhere a driver would
+genuinely be sent — and that the drive times in the `sub` line are true.
+
+```js
+anemos: [
+  { id: 'pas', kind: 'air', code: 'PAS', name: 'Paros Airport', sub: 'Alyki — 25m by road' },
+  …
+]
+```
+
+`kind` is `air` or `sea`, and decides which list a guest is shown once they say
+how they are travelling. `AIRLINES` and `FERRY_LINES` are working lists of real
+operators serving Greece — extend them freely; anyone flying with a carrier not
+on the list is told to say so in the notes, which reaches you just the same.
+
+**What this does *not* do:** choosing from these lists proves the airport is an
+airport, the airline is an airline, and that `A3 352` is a well-formed flight
+designator. It does **not** prove that A3 352 flies on the day in question. That
+needs a live schedules feed from a commercial flight-data provider — a paid
+subscription, and a new processor to name in `privacy.html` §7. Until then, treat
+a flight number as *the guest says so*, like everything else they tell you.
+
+### 11. Date the legal documents when you finalise them
 
 `privacy.html` and `terms.html` each carry a hard-coded in-force date in their
 `.legal__meta` block:
@@ -166,7 +200,7 @@ the CSS silently re-dated your privacy policy — a date that moves on its own i
 worse than no date at all, and under Article 12 GDPR you need to be able to say
 what was in force when.
 
-### 11. Guest reviews — connect the backend
+### 12. Guest reviews — connect the backend
 
 The homepage shows the four most recent reviews and has a **Leave a review**
 button. Until `js/data.js` → `REVIEWS` has a URL and a key it runs in **preview

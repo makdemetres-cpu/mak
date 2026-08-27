@@ -269,6 +269,163 @@
   });
 
   /* ------------------------------------------------------------------
+     Arrival
+     ------------------------------------------------------------------
+     A driver has to be sent somewhere real, at a time, to meet a named
+     flight or boat. This used to be two empty text boxes, and an empty text
+     box takes "jtyi45oy4" as readily as "Paros Airport" — which is exactly
+     what came through. So nothing here is typed except the flight's number,
+     and that is digits.
+
+     What the lists prove: the airport is an airport, the airline is an
+     airline, and "A3 352" is a well-formed designator. What they cannot
+     prove is that A3 352 flies that day — see js/travel.js.
+     ------------------------------------------------------------------ */
+  const TRAVEL   = (window.EV && window.EV.travel) || null;
+  const AIRLINES = (window.EV && window.EV.AIRLINES) || [];
+  const FERRIES  = (window.EV && window.EV.FERRY_LINES) || [];
+
+  const MODES = [
+    { id: 'plane', label: 'By plane', kind: 'air' },
+    { id: 'ferry', label: 'By boat',  kind: 'sea' },
+    { id: 'own',   label: 'We are making our own way', kind: '' }
+  ];
+
+  const modePicks  = el('modePicks');
+  const pointPicks = el('pointPicks');
+  const ferryPicks = el('ferryPicks');
+  let airlinePicker = null;
+
+  if (modePicks) {
+    modePicks.innerHTML = MODES.map((m) => `
+      <label class="chip">
+        <input type="radio" name="arriveBy" value="${m.id}">
+        <span>${m.label}</span>
+      </label>`).join('');
+  }
+
+  if (ferryPicks) {
+    ferryPicks.innerHTML = FERRIES.map((f) => `
+      <label class="chip">
+        <input type="radio" name="ferryLine" value="${f.id}">
+        <span>${f.name}</span>
+      </label>`).join('');
+  }
+
+  const getMode  = () => { const i = form.querySelector('input[name="arriveBy"]:checked'); return i ? i.value : ''; };
+  const getPoint = () => { const i = form.querySelector('input[name="arrivalPoint"]:checked'); return i ? i.value : ''; };
+  const getFerry = () => { const i = form.querySelector('input[name="ferryLine"]:checked'); return i ? i.value : ''; };
+  const modeById = (id) => MODES.filter((m) => m.id === id)[0] || null;
+
+  /* The points on offer depend on both the house and the mode: a guest
+     arriving at Villa Kyma is never shown a Cretan port, and someone flying
+     is never shown a harbour. Rebuilt whenever either changes, keeping the
+     current choice if it survives the new list. */
+  function paintPoints() {
+    if (!pointPicks || !TRAVEL) return;
+    const mode = modeById(getMode());
+    const kind = mode ? mode.kind : '';
+    if (!kind) { pointPicks.innerHTML = ''; return; }
+
+    const keep = getPoint();
+    const list = TRAVEL.pointsFor(getEstate()).filter((p) => p.kind === kind);
+
+    pointPicks.innerHTML = list.map((p) => `
+      <label class="chip chip--two">
+        <input type="radio" name="arrivalPoint" value="${p.id}"${p.id === keep ? ' checked' : ''}>
+        <span>
+          <b>${p.name}${p.code ? ` <i>${p.code}</i>` : ''}</b>
+          <small>${p.sub}</small>
+        </span>
+      </label>`).join('');
+
+    el('pointLegend').textContent = kind === 'air'
+      ? 'Which airport are you landing at?'
+      : 'Which port are you docking at?';
+    el('timeField').querySelector('.field-label').textContent = kind === 'air'
+      ? 'What time do you land?'
+      : 'What time do you dock?';
+  }
+
+  /* Show only the parts that the chosen mode actually needs. Everything is
+     hidden outright rather than disabled, so nothing half-relevant is left on
+     screen for someone to wonder about. */
+  function paintArrival() {
+    const mode = getMode();
+    const kind = (modeById(mode) || {}).kind || '';
+    const on = (id, show) => { const n = el(id); if (n) n.hidden = !show; };
+
+    on('pointField', !!kind);
+    on('airField',  mode === 'plane');
+    on('seaField',  mode === 'ferry');
+    on('timeField', !!kind);
+
+    const a = airlinePicker && airlinePicker.item;
+    el('airlineValue').textContent = a ? `${a.label} (${a.badge})` : 'Choose your airline';
+    el('airlineValue').classList.toggle('is-empty', !a);
+    el('flightPrefix').textContent = a ? a.badge : '—';
+  }
+
+  if (el('airlineTrigger') && window.EV.createPicker && AIRLINES.length) {
+    airlinePicker = window.EV.createPicker({
+      trigger: el('airlineTrigger'),
+      eyebrow: 'Your flight',
+      title: 'Which airline?',
+      hint: 'Name or code — "aegean", "A3"',
+      empty: 'No airline of that name here. Tell us in the notes on the next step and it reaches us just the same.',
+      items: AIRLINES.map((a) => ({ id: a.code, label: a.name, badge: a.code, group: a.group })),
+      onChange() { paintArrival(); update(); }
+    });
+  }
+
+  /* The flight number is digits, so the field only ever holds digits — a
+     wrong character is refused at the keystroke rather than argued about at
+     the end of the form.
+
+     With one courtesy: almost nobody reads "A3 352" off a booking
+     confirmation and then retypes half of it. Paste the whole designator and
+     if the front of it is an airline we know, that airline is selected and
+     the digits stay. Anything else falls through to "keep the digits". */
+  if (el('flightNo')) {
+    el('flightNo').addEventListener('input', (e) => {
+      const raw = e.target.value;
+      let out = raw.replace(/[^0-9]/g, '');
+
+      const whole = raw.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const m = whole.match(/^([A-Z][A-Z0-9]|[0-9][A-Z])([1-9][0-9]{0,3})$/);
+      if (m && airlinePicker && TRAVEL && TRAVEL.airlineByCode(m[1])) {
+        airlinePicker.set(m[1]);
+        paintArrival();
+        out = m[2];
+      }
+
+      out = out.slice(0, 4);
+      if (out !== raw) e.target.value = out;
+    });
+  }
+
+  /* The arrival time, formatted as it is typed: digits only, a colon put in
+     after the second one, and hours and minutes each held to what a clock can
+     actually show. 24-hour, because "9:40" without a PM is how a driver ends
+     up at the airport twelve hours early. */
+  if (el('arriveTime')) {
+    el('arriveTime').addEventListener('input', (e) => {
+      const digits = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
+      let out = digits;
+      if (digits.length >= 3) {
+        let h = digits.slice(0, 2);
+        let m = digits.slice(2);
+        if (Number(h) > 23) h = '23';
+        if (m.length === 2 && Number(m) > 59) m = '59';
+        out = h + ':' + m;
+      } else if (digits.length === 2 && Number(digits) > 23) {
+        out = '23';
+      }
+      if (out !== e.target.value) e.target.value = out;
+    });
+  }
+
+  /* ------------------------------------------------------------------
      Draft: keep what has been typed if the page is reloaded mid-form.
      sessionStorage, cleared on submit — this is the "strictly necessary"
      storage the consent banner describes, so it needs no opt-in.
@@ -283,7 +440,7 @@
     let d;
     try { d = JSON.parse(sessionStorage.getItem(DRAFT_KEY) || 'null'); } catch (e) { return; }
     if (!d) return;
-    ['adults', 'children', 'pickup', 'flight',
+    ['adults', 'children', 'flightNo', 'arriveTime',
      'name', 'country', 'email', 'phone', 'notes'].forEach((k) => {
       if (el(k) && d[k]) el(k).value = d[k];
     });
@@ -313,6 +470,27 @@
       const c = form.querySelector(`input[name="car"][value="${d.car}"]`);
       if (c) c.checked = true;
     }
+
+    /* The arrival, in the order the fields depend on each other: the mode
+       decides which points exist, so it has to be restored before the point
+       can be. An airline that has since been dropped from the list, or a
+       point that does not serve the house any more, simply does not come
+       back — better an empty field than a stale one. */
+    if (d.arriveBy) {
+      const m = form.querySelector(`input[name="arriveBy"][value="${d.arriveBy}"]`);
+      if (m) m.checked = true;
+    }
+    paintPoints();
+    if (d.point) {
+      const p = form.querySelector(`input[name="arrivalPoint"][value="${d.point}"]`);
+      if (p) p.checked = true;
+    }
+    if (d.ferryLine) {
+      const f = form.querySelector(`input[name="ferryLine"][value="${d.ferryLine}"]`);
+      if (f) f.checked = true;
+    }
+    if (d.airline && airlinePicker) airlinePicker.set(d.airline);
+    paintArrival();
   }
 
   /* ------------------------------------------------------------------
@@ -330,8 +508,12 @@
       children: el('children').value,
       services: services,
       car: car ? car.value : '',
-      pickup: el('pickup').value.trim(),
-      flight: el('flight').value.trim(),
+      arriveBy: getMode(),
+      point: getPoint(),
+      airline: airlinePicker ? airlinePicker.value : '',
+      flightNo: el('flightNo').value.trim(),
+      ferryLine: getFerry(),
+      arriveTime: el('arriveTime').value.trim(),
       name: el('name').value.trim(),
       country: el('country').value.trim(),
       email: el('email').value.trim(),
@@ -357,6 +539,34 @@
     if (!iso) return '';
     return new Date(iso + 'T00:00:00').toLocaleDateString('en-GB',
       { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  /* How the arrival reads on both dockets. One function so the panel you
+     check before sending and the record you are left with afterwards can
+     never word the same thing two different ways. */
+  function arrivalRows(d) {
+    const rows = [];
+    if (!TRAVEL || d.services.indexOf('transfer') === -1) return rows;
+
+    const kind = (modeById(d.arriveBy) || {}).kind || '';
+    if (d.arriveBy === 'own') { rows.push(['Arriving', 'Making their own way']); return rows; }
+
+    const pt = d.point ? TRAVEL.pointById(d.estate, d.point) : null;
+    if (pt) rows.push(['Meeting you at', pt.code ? `${pt.name} (${pt.code})` : pt.name]);
+
+    if (kind === 'air') {
+      const air = d.airline ? TRAVEL.airlineByCode(d.airline) : null;
+      if (air && d.flightNo) rows.push(['Flight', `${air.code} ${d.flightNo} · ${air.name}`]);
+      else if (air) rows.push(['Airline', air.name]);
+    }
+    if (kind === 'sea') {
+      const line = d.ferryLine ? TRAVEL.ferryById(d.ferryLine) : null;
+      if (line) rows.push(['Crossing', line.name]);
+    }
+    if (kind && d.arriveTime) {
+      rows.push([kind === 'air' ? 'Landing at' : 'Docking at', d.arriveTime]);
+    }
+    return rows;
   }
 
   /* ------------------------------------------------------------------
@@ -391,9 +601,9 @@
       const c = carById(d.car);
       if (c) rows.push(['Car', c.name]);
     }
+    arrivalRows(d).forEach((r) => rows.push(r));
 
-    el('sumRows').innerHTML = rows.map(([k, v]) =>
-      `<div class="sent__row"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+    paintRows(el('sumRows'), rows);
 
     const total = est && nights ? est.from * nights : 0;
     el('sumTotal').textContent = total ? euro(total) : '—';
@@ -408,6 +618,12 @@
       const wantsTransfer = form.querySelector('input[name="service"][value="transfer"]');
       transferBlock.classList.toggle('is-shown', !!(wantsTransfer && wantsTransfer.checked));
     }
+    // The house decides which airports and ports exist, and the mode decides
+    // whether they are airports or ports. Either changing rebuilds the list.
+    if (e.target.name === 'arriveBy' || e.target.name === 'estate') {
+      paintPoints();
+      paintArrival();
+    }
     update();
   });
 
@@ -421,6 +637,8 @@
   function fieldFor(id) {
     if (id === 'estate') return el('estateField');
     if (id === 'arrive' || id === 'depart') return el('datesField');
+    if (id === 'point')   return el('pointField');
+    if (id === 'airline') return el('airlineTrigger').closest('.field');
     const input = el(id);
     return input ? input.closest('.field') : null;
   }
@@ -431,6 +649,11 @@
              form.querySelector('input[name="estate"]');
     }
     if (id === 'arrive' || id === 'depart') return dateTrigger;
+    if (id === 'point') {
+      return form.querySelector('input[name="arrivalPoint"]:checked') ||
+             form.querySelector('input[name="arrivalPoint"]');
+    }
+    if (id === 'airline') return el('airlineTrigger');
     return el(id);
   }
 
@@ -465,6 +688,24 @@
       if (badDates) fail('arrive');
 
       if (!(parseInt(d.adults, 10) >= 1)) fail('adults');
+    }
+
+    /* Step two is all optional — right up until somebody asks to be met.
+       Then it stops being decoration: a car, a driver and an hour of someone's
+       day get committed against whatever is in these fields, so they have to
+       describe a place that exists and a flight that is at least shaped like
+       one. Everything is chosen from a list except the flight's number. */
+    if (n === 2) {
+      setError('point', false); setError('airline', false);
+      setError('flightNo', false); setError('arriveTime', false);
+
+      const wantsTransfer = d.services.indexOf('transfer') !== -1;
+      const kind = (modeById(d.arriveBy) || {}).kind || '';
+
+      if (wantsTransfer && kind && !d.point) fail('point');
+      if (d.flightNo && !d.airline) fail('airline');
+      if (d.flightNo && TRAVEL && !TRAVEL.validFlightNumber(d.flightNo)) fail('flightNo');
+      if (TRAVEL && !TRAVEL.validTime(d.arriveTime)) fail('arriveTime');
     }
 
     if (n === 3) {
@@ -541,15 +782,19 @@
   /* ------------------------------------------------------------------
      Review
      ------------------------------------------------------------------ */
-  function reviewRows() {
+  /* `full` is for the email, which has no docket around it and so has to
+     carry the house and the price in the list itself. On screen those two
+     are the docket's masthead and its footing, and repeating them in the
+     rows is how a clean document starts looking like a spreadsheet. */
+  function reviewRows(full) {
     const d = collect();
     const est = estateById(d.estate);
     const nights = nightsBetween(d.arrive, d.depart);
-    const rows = [
-      ['The house', est ? `${est.name}, ${est.place}` : '—'],
-      ['Dates', `${prettyDate(d.arrive)} → ${prettyDate(d.depart)} · ${nights} nights`],
-      ['Guests', d.children > 0 ? `${d.adults} adults, ${d.children} children` : `${d.adults} adults`]
-    ];
+    const rows = [];
+
+    if (full) rows.push(['The house', est ? `${est.name}, ${est.place}` : '—']);
+    rows.push(['Dates', `${prettyDate(d.arrive)} → ${prettyDate(d.depart)} · ${nights} nights`]);
+    rows.push(['Guests', d.children > 0 ? `${d.adults} adults, ${d.children} children` : `${d.adults} adults`]);
 
     const svcLabels = d.services.map((s) => (serviceById(s) || {}).label).filter(Boolean);
     rows.push(['Extras', svcLabels.length ? svcLabels.join(' · ') : 'None beyond the concierge line']);
@@ -557,8 +802,7 @@
     if (d.services.indexOf('transfer') !== -1) {
       const c = carById(d.car);
       rows.push(['Car', c ? c.name : '—']);
-      if (d.pickup) rows.push(['Picking up from', d.pickup]);
-      if (d.flight) rows.push(['Flight or crossing', d.flight]);
+      arrivalRows(d).forEach((r) => rows.push(r));
     }
 
     rows.push(['Name', d.name]);
@@ -566,13 +810,33 @@
     rows.push(['Phone', d.phone]);
     if (d.country) rows.push(['Travelling from', d.country]);
     if (d.notes) rows.push(['Notes', d.notes]);
-    if (est && nights) rows.push(['Indicative', `${euro(est.from * nights)} — accommodation only, before tax`]);
+    if (full && est && nights) rows.push(['Indicative', `${euro(est.from * nights)} — accommodation only, before tax`]);
     return rows;
   }
 
   function buildReview() {
-    review.innerHTML = reviewRows().map(([k, v]) =>
-      `<div class="review__row"><dt>${k}</dt><dd>${escapeHtml(String(v))}</dd></div>`).join('');
+    const d = collect();
+    const est = estateById(d.estate);
+    const nights = nightsBetween(d.arrive, d.depart);
+
+    el('revEstate').textContent = est ? est.name : 'No house chosen';
+    el('revPlace').textContent  = est ? est.place : 'Four to choose from';
+    const total = est && nights ? est.from * nights : 0;
+    el('revTotal').textContent = total ? euro(total) : '—';
+
+    paintRows(review, reviewRows(false));
+  }
+
+  /* One row writer for both dockets. --i drives the stagger: each row is one
+     step further into the same animation, which is transform and opacity
+     only — compositor work, no layout, nothing that can make the scroll
+     stutter on a phone. */
+  function paintRows(target, rows) {
+    target.innerHTML = rows.map(([k, v], i) =>
+      `<div class="docket__row" style="--i:${i}">` +
+        `<dt>${escapeHtml(String(k))}</dt>` +
+        `<dd>${escapeHtml(String(v))}</dd>` +
+      `</div>`).join('');
   }
 
   function escapeHtml(s) {
@@ -624,6 +888,7 @@
     // step that actually failed — being bounced to step 1 to fix a missing
     // phone number on step 3 is how a form loses someone at the last hurdle.
     if (!validateStep(1)) { show(1); return; }
+    if (!validateStep(2)) { show(2); return; }
     if (!validateStep(3)) { show(3); return; }
 
     const ref = reference();
@@ -652,7 +917,7 @@
   });
 
   function openMail(ref) {
-    const lines = reviewRows().map(([k, v]) => `${k}: ${v}`);
+    const lines = reviewRows(true).map(([k, v]) => `${k}: ${v}`);
     lines.unshift(`Reference: ${ref}`, '');
     if (collect().news) lines.push('', 'Happy to hear about dates opening up: yes');
     const from = window.EV.campaignLine && window.EV.campaignLine();
@@ -732,5 +997,7 @@
   const t = form.querySelector('input[name="service"][value="transfer"]');
   if (t && t.checked) transferBlock.classList.add('is-shown');
   paintDates();
+  paintPoints();
+  paintArrival();
   update();
 })();

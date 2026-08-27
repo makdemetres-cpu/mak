@@ -154,49 +154,74 @@
 
 /* ---- Nav between steps ---- */
 
-/* ---- What you sent us ----
-   This used to be a running panel beside the form and a docked total bar on
-   phones. Both are gone: the review step already lists everything before you
-   send, so a third running copy of it was furniture, and taking it out gives
-   the calendar and the estate card the room they wanted on a small screen.
+/* ---- The docket ----
+   The panel that lists an enquiry back to the person making it. Used twice:
+   on the review step, before it is sent, and on the confirmation, as a record
+   of what was. One component for both, because they describe the same thing
+   and two components would eventually word it two ways.
 
-   What is left is a record on the confirmation, of what was actually sent.
+   It is paper, and deliberately not a receipt — the word is nowhere on it,
+   and neither is any styling that implies one. No money has changed hands and
+   no contract exists at either point. A panel that reads as a confirmation
+   tells a guest their booking is secured when it is not, which under Law
+   2251/1994 is a misleading action and, more to the point, is how somebody
+   ends up buying flights for a week that is already taken. Hence the wording,
+   and hence the line about nothing being charged sitting inside the block
+   rather than further down the page.
 
-   It is deliberately not styled or worded as a receipt. No money has changed
-   hands and no contract exists at this point — a panel that looks like a
-   confirmation tells a guest their booking is secured when it is not, which
-   under Law 2251/1994 is a misleading action and, more to the point, is how
-   somebody ends up buying flights for a week that is already taken. Hence the
-   heading, and hence the line about nothing being charged sitting inside the
-   block rather than somewhere further down the page. */
-.sent {
+   The torn edge is two radial-gradient masks intersected — bites taken out of
+   the top and the bottom. No image, no shadow, and the sides stay perfectly
+   square, so it belongs to a palette where --radius is 2px. Browsers without
+   mask-composite get a flat rectangle, which is simply the same panel without
+   the perforation. */
+.docket {
+  --tooth: 15px;                    /* width of one scallop */
+  --bite: 6px;                      /* how deep it cuts */
+  position: relative;
   margin-top: clamp(2rem, 5vw, 3rem);
-  padding: clamp(1.5rem, 3vw, 2rem);
-  border: 1px solid var(--line);
-  background: var(--surface-2);
-  text-align: left;                 /* the .done block above it is centred */
-  max-width: 34rem;
   margin-inline: auto;
+  max-width: 38rem;
+  padding: calc(var(--bite) + clamp(1.6rem, 4vw, 2.4rem)) clamp(1.4rem, 4vw, 2.4rem);
+  background: var(--surface-2);
+  color: var(--fg);
+  text-align: left;                 /* .done centres everything above it */
+  font-variant-numeric: tabular-nums;
+  -webkit-mask:
+    radial-gradient(var(--bite) at 50% 0, #0000 98%, #000) 0 0 / var(--tooth) 100%,
+    radial-gradient(var(--bite) at 50% 100%, #0000 98%, #000) 0 0 / var(--tooth) 100%;
+  mask:
+    radial-gradient(var(--bite) at 50% 0, #0000 98%, #000) 0 0 / var(--tooth) 100%,
+    radial-gradient(var(--bite) at 50% 100%, #0000 98%, #000) 0 0 / var(--tooth) 100%;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
-/* The confirmation centres its paragraphs and caps their measure — right for
-   the message above, wrong inside a record, where it indents the place and
-   the small print by a floating margin and leaves them not lining up with the
-   rows between them.
+.docket + .docket { margin-top: 1.5rem; }
 
-   Scoped through .done rather than written as `.sent p`, which ties with
+/* The review step is not centred, so the docket sits where the rest of the
+   step does rather than floating in the middle of it. */
+.step .docket { margin-inline: 0; margin-bottom: 2rem; max-width: none; }
+
+/* The confirmation centres its paragraphs and caps their measure — right for
+   the message above, wrong inside the docket, where it would indent the place
+   and the small print by a floating margin and leave them not lining up with
+   the rows between them.
+
+   Scoped through .done rather than written as `.docket p`, which ties with
    `.done p` on specificity and then loses to it for being earlier in the
    file. */
-.done .sent p { max-width: none; margin-inline: 0; }
-.sent__head {
+.done .docket p { max-width: none; margin-inline: 0; }
+
+.docket__head { margin-bottom: 1.4rem; }
+.docket__eyebrow {
   font-family: var(--font-text);
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--fg-muted);
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.1rem;
 }
-.sent__estate {
+.docket__estate {
   font-family: var(--font-display);
   font-weight: 300;
   font-variation-settings: 'opsz' 72;
@@ -205,73 +230,87 @@
   letter-spacing: -0.015em;
   margin-bottom: 0.35rem;
 }
-.sent__place {
+.docket__place {
   font-size: 0.63rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg-muted);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
-.sent__rows { display: grid; }
-.sent__row {
+
+/* ---- The rows ----
+   Label left in small caps, value right. On anything wider than a phone the
+   label gets a fixed column so every value starts on the same line, which is
+   the whole difference between a printed document and a list. */
+.docket__rows { display: grid; border-top: 1px solid var(--line); }
+.docket__row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
-  padding: 0.8rem 0;
-  border-top: 1px solid var(--line);
+  gap: 0.3rem 1.5rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
   font-size: var(--step--1);
+  /* Each row one step further into the same animation. Transform and opacity
+     only: compositor work, no layout, nothing that can stutter a scroll. */
+  animation: docketRow 0.5s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
 }
-.sent__row dt { color: var(--fg-muted); }
-.sent__row dd { margin: 0; text-align: right; font-weight: 500; }
-.sent__total {
+/* The footing draws its own rule, so the last row must not draw one too —
+   two hairlines a gap apart read as a mistake rather than a divider. */
+.docket__row:last-child { border-bottom: 0; }
+@media (min-width: 560px) {
+  .docket__row { grid-template-columns: 10.5rem minmax(0, 1fr); align-items: baseline; }
+}
+.docket__row dt {
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+.docket__row dd { margin: 0; text-wrap: pretty; }
+
+@keyframes docketRow {
+  from { opacity: 0; transform: translateY(9px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .docket__row { animation: none; }
+}
+
+/* ---- The footing ----
+   A brass hairline, because this is the only number on the panel and it is
+   the one thing a guest looks for. */
+.docket__total {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 1.35rem;
-  padding-top: 1.35rem;
-  border-top: 1px solid var(--fg-muted);
+  margin-top: 1.4rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--accent);
 }
-.sent__total span {
+.docket__total span {
   font-size: 0.63rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg-muted);
 }
-.sent__total b {
+.docket__total b {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--step-2);
   letter-spacing: -0.015em;
 }
-.sent__note {
+.docket__note {
   margin-top: 1.1rem;
   font-size: var(--step--1);
   line-height: 1.6;
   color: var(--fg-muted);
-  max-width: none;                  /* .done p caps the measure; not here */
 }
-.sent__note b { color: var(--fg); font-weight: 500; }
-
-/* ---- Review list ---- */
-.review { border-top: 1px solid var(--line); margin-bottom: 2rem; }
-.review__row {
-  display: grid;
-  gap: 0.35rem 1.5rem;
-  padding: 1.05rem 0;
-  border-bottom: 1px solid var(--line);
-}
-@media (min-width: 620px) { .review__row { grid-template-columns: 12rem minmax(0, 1fr); } }
-.review__row dt {
-  font-size: 0.63rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-}
-.review__row dd { margin: 0; }
+.docket__note b { color: var(--fg); font-weight: 500; }
 
 /* ---- Confirmation ---- */
 .done { display: none; text-align: center; padding-block: clamp(2rem, 6vw, 4rem); }
@@ -1282,3 +1321,252 @@ a.line:hover { color: var(--accent-ink); }
 .stepper__value:focus { outline: none; }
 
 .field.has-error .stepper { border-color: var(--alarm); }
+
+/* --------------------------------------------------------------------------
+   Arrival
+   --------------------------------------------------------------------------
+   Two empty text boxes became five controls that cannot be filled in wrong.
+   The mode, the airport or port, the airline and the ferry line are all
+   chosen; the only thing typed is the flight's number, and that field takes
+   digits and nothing else. See js/travel.js for why.
+   -------------------------------------------------------------------------- */
+.arrival { display: grid; gap: clamp(1.6rem, 3.5vw, 2.1rem); margin-top: 1.5rem; }
+/* The grid gap already spaces these; the generic sibling margin would double it. */
+.arrival .fieldset + .fieldset { margin-top: 0; }
+.arrival__part { animation: stepIn 0.4s var(--ease) both; }
+.arrival__part[hidden] { display: none; }
+.arrival__part--narrow { max-width: 22rem; }
+@media (prefers-reduced-motion: reduce) { .arrival__part { animation: none; } }
+
+/* The arrival points carry a second line — which terminal, how far from the
+   house — so they need a taller chip than a one-word topic does. */
+.chips--stack { display: grid; gap: 0.6rem; }
+@media (min-width: 640px) { .chips--stack { grid-template-columns: 1fr 1fr; } }
+
+.chip--two { display: block; }
+.chip--two > span {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  white-space: normal;
+  line-height: 1.4;
+}
+.chip--two b {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--fg);
+}
+/* The IATA code, set apart from the name the way it is on a boarding pass. */
+.chip--two b i {
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--accent-ink);
+  margin-left: 0.4em;
+}
+.chip--two small {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+}
+.chip--two input:checked + span b { color: var(--accent-ink); }
+
+/* A button that has to sit in a row of text inputs without looking like a
+   button. Same height, same border, same focus ring — the only difference is
+   the chevron saying it opens something. */
+.fauxfield {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.fauxfield:hover { border-color: var(--fg-muted); }
+.fauxfield:focus-visible {
+  outline: none;
+  border-color: var(--accent-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ink) 18%, transparent);
+}
+.fauxfield[aria-expanded="true"] { border-color: var(--accent-ink); background: var(--surface-2); }
+.fauxfield svg { width: 18px; height: 18px; flex: none; color: var(--fg-muted); }
+.fauxfield__value { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fauxfield__value.is-empty { color: var(--fg-muted); }
+.field.has-error .fauxfield { border-color: var(--alarm); }
+
+/* The airline's code printed in front of the number, so what is being typed
+   reads as the designator it will become: A3 · 352. */
+.prefixed { display: flex; align-items: stretch; }
+.prefixed__tag {
+  display: grid;
+  place-items: center;
+  min-width: 3.6rem;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--line);
+  border-right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+  background: var(--surface-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent-ink);
+}
+.prefixed .input { border-radius: 0 var(--radius) var(--radius) 0; min-width: 0; }
+
+/* --------------------------------------------------------------------------
+   The picker
+   --------------------------------------------------------------------------
+   Same sheet as the calendar — a full-width panel on a phone, a centred one
+   on a desktop — because they are the same kind of thing and should not
+   arrive two different ways. See js/picker.js.
+   -------------------------------------------------------------------------- */
+.picker { position: fixed; inset: 0; z-index: 300; }
+.picker[hidden] { display: none; }
+.picker__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 9, 0.55);
+  backdrop-filter: blur(3px);
+  animation: calFade 0.3s var(--ease) both;
+}
+.picker__panel {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 88dvh;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+  animation: calRise 0.42s var(--ease) both;
+}
+@media (min-width: 760px) {
+  .picker__panel {
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    width: min(30rem, calc(100vw - 3rem));
+    max-height: min(38rem, calc(100dvh - 3rem));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    animation: calPop 0.34s var(--ease) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .picker__scrim, .picker__panel { animation: none; }
+}
+
+.picker__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem clamp(1.25rem, 4vw, 1.9rem) 1.1rem;
+}
+.picker__eyebrow {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.4rem;
+}
+.picker__title {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.25;
+}
+.picker__close {
+  flex: none;
+  width: 40px; height: 40px;
+  display: grid;
+  place-items: center;
+  margin: -0.35rem -0.5rem 0 0;
+  border-radius: var(--radius);
+  color: var(--fg-muted);
+  transition: color 0.25s var(--ease);
+}
+.picker__close:hover, .picker__close:focus-visible { color: var(--fg); }
+.picker__close svg { width: 18px; height: 18px; }
+
+.picker__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 clamp(1.25rem, 4vw, 1.9rem);
+  padding: 0 0 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+.picker__search svg { width: 18px; height: 18px; flex: none; color: var(--fg-muted); }
+.picker__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  padding: 0.5rem 0;
+  font-size: var(--step-0);
+  color: var(--fg);
+}
+.picker__input:focus { outline: none; }
+.picker__input::placeholder { color: var(--fg-muted); }
+
+.picker__list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem clamp(0.75rem, 3vw, 1.4rem) 1.25rem;
+}
+.picker__group {
+  padding: 1.1rem 0.6rem 0.5rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.picker__opt {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding: 0.7rem 0.6rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+/* One highlight, driven by the keyboard and followed by the pointer, so the
+   two never disagree about which row Enter would take. */
+.picker__opt.is-active { background: var(--surface-2); }
+.picker__opt[aria-selected="true"] .picker__label { color: var(--accent-ink); font-weight: 500; }
+.picker__badge {
+  flex: none;
+  min-width: 2.2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent-ink);
+}
+.picker__label { flex: 1; min-width: 0; font-size: var(--step--1); }
+.picker__sub { font-size: 0.75rem; color: var(--fg-muted); }
+.picker__empty {
+  padding: 1rem clamp(1.25rem, 4vw, 1.9rem) 2rem;
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--fg-muted);
+}
+
+/* A time is four figures and a colon; it never needs the width of a name. */
+.input--time { max-width: 9rem; font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }

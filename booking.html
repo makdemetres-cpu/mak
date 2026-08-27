@@ -32,11 +32,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260827b">
-<link rel="stylesheet" href="css/base.css?v=260827b">
-<link rel="stylesheet" href="css/site.css?v=260827b">
-<link rel="stylesheet" href="css/pages.css?v=260827b">
-<link rel="stylesheet" href="css/print.css?v=260827b" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260827c">
+<link rel="stylesheet" href="css/base.css?v=260827c">
+<link rel="stylesheet" href="css/site.css?v=260827c">
+<link rel="stylesheet" href="css/pages.css?v=260827c">
+<link rel="stylesheet" href="css/print.css?v=260827c" media="print">
 </head>
 <body>
 
@@ -235,15 +235,74 @@
                 <div class="picks" id="carPicks"></div>
               </fieldset>
 
-              <div class="field-row field-row--2" style="margin-top:1.5rem">
-                <div class="field">
-                  <label class="field-label" for="pickup">Picking up from</label>
-                  <input class="input" type="text" id="pickup" name="pickup" placeholder="Airport, port or station" autocomplete="off">
+              <!-- Arrival.
+                   Nothing here is a free text box any more. A driver has to be
+                   sent somewhere real at a real time, and an empty text field
+                   accepts "jtyi45oy4" as happily as "Paros Airport". The
+                   airport, the port, the airline and the ferry line are all
+                   chosen from js/travel.js; the only thing typed is the
+                   flight's number, which is digits. -->
+              <div class="arrival" id="arrivalBlock">
+                <fieldset class="fieldset" id="modeField">
+                  <legend>How are you arriving?</legend>
+                  <div class="chips" id="modePicks" role="radiogroup" aria-label="How are you arriving"></div>
+                </fieldset>
+
+                <fieldset class="fieldset arrival__part" id="pointField" hidden>
+                  <legend id="pointLegend">Where shall we meet you?</legend>
+                  <div class="chips chips--stack" id="pointPicks" role="radiogroup" aria-labelledby="pointLegend"></div>
+                  <span class="field-error" id="pointError">Please choose where we should meet you.</span>
+                </fieldset>
+
+                <!-- By air: airline from the list, number in digits. -->
+                <div class="arrival__part" id="airField" hidden>
+                  <div class="field-row field-row--2">
+                    <div class="field">
+                      <span class="field-label" id="airlineLabel">Airline</span>
+                      <button class="fauxfield" type="button" id="airlineTrigger" aria-labelledby="airlineLabel airlineValue">
+                        <span class="fauxfield__value" id="airlineValue">Choose your airline</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                      </button>
+                      <span class="field-hint">Flying with someone not on the list? Say so in the notes on the next step.</span>
+                    </div>
+                    <div class="field">
+                      <label class="field-label" for="flightNo">Flight number</label>
+                      <div class="prefixed">
+                        <span class="prefixed__tag" id="flightPrefix" aria-hidden="true">—</span>
+                        <!-- No maxlength: it would truncate a pasted "A3 352"
+                             to "A3 3" before the digits could be read out of
+                             it. js/booking.js caps the field at four digits
+                             once it has understood what was pasted. -->
+                        <input class="input" type="text" id="flightNo" name="flightNo" inputmode="numeric"
+                               autocomplete="off" placeholder="352"
+                               aria-describedby="flightNoHint">
+                      </div>
+                      <span class="field-hint" id="flightNoHint">The digits after the airline's code — 352, not A3 352.</span>
+                      <span class="field-error" data-error-for="flightNo">A flight number is one to four digits.</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="field">
-                  <label class="field-label" for="flight">Flight or crossing</label>
-                  <input class="input" type="text" id="flight" name="flight" placeholder="e.g. A3 352, 21:40" autocomplete="off">
-                  <span class="field-hint">We track it, so a delay changes nothing.</span>
+
+                <!-- By sea: the line, because a crossing has no number a guest reliably knows. -->
+                <fieldset class="fieldset arrival__part" id="seaField" hidden>
+                  <legend id="ferryLegend">Which line?</legend>
+                  <div class="chips" id="ferryPicks" role="radiogroup" aria-labelledby="ferryLegend"></div>
+                </fieldset>
+
+                <div class="field arrival__part arrival__part--narrow" id="timeField" hidden>
+                  <label class="field-label" for="arriveTime">What time do you land or dock?</label>
+                  <!-- Not <input type="time">: that draws the operating
+                       system's clock, complete with an AM/PM box on some
+                       locales, and it is the same borrowed control the native
+                       date picker was replaced for. This is a plain field that
+                       formats itself as you type and refuses anything that is
+                       not a time. -->
+                  <input class="input input--time" type="text" id="arriveTime" name="arriveTime"
+                         inputmode="numeric" autocomplete="off" maxlength="5" placeholder="21:40"
+                         aria-describedby="arriveTimeHint">
+                  <span class="field-hint" id="arriveTimeHint">Leave it if you do not know yet. We track the flight, so a delay changes nothing.</span>
+                  <span class="field-error" data-error-for="arriveTime">Please give the time as hours and minutes, or leave it empty.</span>
                 </div>
               </div>
             </div>
@@ -303,7 +362,28 @@
             <h2 class="t-h3">Review</h2>
             <p class="lede">Check it over. Nothing is committed and nothing is charged by sending this.</p>
 
-            <dl class="review" id="review"></dl>
+            <!-- The docket. Paper, deliberately not a receipt: nothing has
+                 been sent yet, let alone paid for. Same component on the
+                 confirmation below, so what you check and what you are left
+                 holding are visibly the same document. -->
+            <div class="docket" id="reviewDocket">
+              <div class="docket__head">
+                <p class="docket__eyebrow">Your enquiry</p>
+                <p class="docket__estate" id="revEstate">No house chosen</p>
+                <p class="docket__place" id="revPlace">Four to choose from</p>
+              </div>
+              <dl class="docket__rows" id="review"></dl>
+              <div class="docket__total">
+                <span>Indicative</span>
+                <b id="revTotal">—</b>
+              </div>
+              <p class="docket__note">
+                Accommodation only, at the published nightly rate, before seasonal
+                adjustment and the taxes set by the state. <b>Sending this charges
+                nothing and commits you to nothing</b> — the written quote we send
+                back is the price that counts.
+              </p>
+            </div>
 
             <label class="check" style="margin-bottom:1rem">
               <!-- Named bookingConsent, not consent: the cookie banner owns that
@@ -361,16 +441,18 @@
                document that looks like a confirmation tells a guest their
                booking is secured when it is not. See README -> "The
                confirmation is not a receipt". -->
-          <div class="sent" id="sentRecord">
-            <h3 class="sent__head">What you sent us</h3>
-            <p class="sent__estate" id="sumEstate">No house chosen</p>
-            <p class="sent__place" id="sumPlace">Four to choose from</p>
-            <dl class="sent__rows" id="sumRows"></dl>
-            <div class="sent__total">
+          <div class="docket" id="sentRecord">
+            <div class="docket__head">
+              <p class="docket__eyebrow">What you sent us</p>
+              <p class="docket__estate" id="sumEstate">No house chosen</p>
+              <p class="docket__place" id="sumPlace">Four to choose from</p>
+            </div>
+            <dl class="docket__rows" id="sumRows"></dl>
+            <div class="docket__total">
               <span>Indicative</span>
               <b id="sumTotal">—</b>
             </div>
-            <p class="sent__note">
+            <p class="docket__note">
               Accommodation only, at the published nightly rate, before seasonal
               adjustment and the taxes set by the state. Chef, cars and excursions
               are quoted separately. <b>Nothing has been charged and nothing is
@@ -469,10 +551,12 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260827b"></script>
-<script src="js/main.js?v=260827b"></script>
-<script src="js/consent.js?v=260827b"></script>
-<script src="js/calendar.js?v=260827b"></script>
-<script src="js/booking.js?v=260827b"></script>
+<script src="js/data.js?v=260827c"></script>
+<script src="js/main.js?v=260827c"></script>
+<script src="js/consent.js?v=260827c"></script>
+<script src="js/calendar.js?v=260827c"></script>
+<script src="js/picker.js?v=260827c"></script>
+<script src="js/travel.js?v=260827c"></script>
+<script src="js/booking.js?v=260827c"></script>
 </body>
 </html>
