@@ -1,6 +1,21 @@
 /* ==========================================================================
    Ermis' Villas — the photographs in the hero
    --------------------------------------------------------------------------
+   ⚠️  NOT CURRENTLY LOADED. The owner asked for the code-drawn geometry back,
+   so js/hero/index.js no longer imports this module and no page requests a
+   single byte of it. It is kept, working and intact, because the photographs
+   are meant to be replaced with real ones later.
+
+   To switch it back on, three lines in js/hero/index.js:
+
+     import { buildPhotos } from './photos.js?v=YYMMDD';        // with the others
+     const photos = buildPhotos(scene, camera, () => wake());   // after buildVilla
+     villa.visible = !photos.update(smooth, view.fovScale);     // in draw()
+
+   The third needs `const { root: villa, doorPivot } = buildVilla(…)` rather
+   than `const { doorPivot } = …`. The flat fallback's photographs are a
+   separate switch, in css/site.css — see README → "The photographs".
+   --------------------------------------------------------------------------
    Seven photographs, one per chapter of the camera move, standing in for the
    code-drawn surfaces of the villa.
 
@@ -59,8 +74,8 @@
    ========================================================================== */
 
 import { Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, Texture, Vector3 }
-  from '../vendor/three.slim.js?v=260827c';
-import { CHAPTERS, clamp01 } from './path.js?v=260827c';
+  from '../vendor/three.slim.js?v=260827d';
+import { CHAPTERS, clamp01 } from './path.js?v=260827d';
 
 /* --------------------------------------------------------------------------
    The photographs, in the order the camera meets them.

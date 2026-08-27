@@ -20,11 +20,16 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.slim.js?v=260827c';
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260827c';
-import { buildVilla, makeMaterials } from './villa.js?v=260827c';
-import { buildPhotos } from './photos.js?v=260827c';
-import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260827c';
+import { Vector3 } from '../vendor/three.slim.js?v=260827d';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260827d';
+import { buildVilla, makeMaterials } from './villa.js?v=260827d';
+import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260827d';
+
+/* photos.js is still in this folder but is deliberately not imported. It put
+   seven photographs on planes in front of the model, and the model is what the
+   owner wants back. To switch them on again: import buildPhotos from
+   './photos.js', build it after the villa, and swap the villa.visible line in
+   draw() back. Nothing else changed. See README → "The photographs". */
 
 const hero    = document.getElementById('hero');
 const stage   = document.getElementById('heroStage');
@@ -61,17 +66,12 @@ function boot() {
 
   const { renderer, scene, camera, settings } = rig;
   const mats = makeMaterials();
-  const { root: villa, doorPivot } = buildVilla(scene, mats, settings);
+  const { doorPivot } = buildVilla(scene, mats, settings);
 
   // Shared between the resizer (which decides how much wider a tall screen
   // needs to be) and the draw loop (which applies it to each shot's fov).
   const view = { fovScale: 1, portrait: false };
   const resize = makeResizer(renderer, camera, settings, view);
-
-  // The seven photographs. They arrive one at a time as the visitor scrolls
-  // toward them, and each arrival has to wake a loop that has almost
-  // certainly already shut itself down.
-  const photos = buildPhotos(scene, camera, () => wake());
 
   const pos = new Vector3();
   const look = new Vector3();
@@ -155,15 +155,6 @@ function boot() {
       const fade = 1 - clamp01(smooth / 0.6);
       if (fade > 0) camera.rotateX(-0.14 * fade);
     }
-
-    // After the camera is placed, aimed and tilted, so the photographs solve
-    // their cover against the frame that will actually be drawn.
-    //
-    // When one of them is covering the frame outright there is nothing to be
-    // gained by drawing the villa underneath it: forty-one draw calls and
-    // four thousand triangles that cannot reach a single pixel. It comes back
-    // by itself the moment a photograph is missing or mid-dissolve.
-    villa.visible = !photos.update(smooth, view.fovScale);
 
     doorPivot.rotation.y = doorAngle(smooth);
     renderer.render(scene, camera);

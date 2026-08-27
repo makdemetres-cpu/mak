@@ -415,12 +415,39 @@ background, the image-based lighting and the reflections.
 | `photos.js` | The seven photographs, and the maths that makes each one fill the frame |
 | `index.js` | Binds scroll to the camera, drives the panels, handles fallbacks |
 
-### The photographs
+### The photographs — currently switched off
 
-Seven photographs stand in for the modelled surfaces, one per chapter, in the
+**The hero draws the modelled villa, not photographs.** Seven photographs were
+put in front of the model for a while and then taken back out at the owner's
+request; everything they need is still in the repository, working and intact,
+because they are meant to be replaced with real photographs later. Nothing
+loads them today — no page requests `js/hero/photos.js`, and no visitor
+downloads a single image from `assets/img/hero/`.
+
+**To switch them back on**, three lines in `js/hero/index.js`:
+
+```js
+import { buildPhotos } from './photos.js?v=YYMMDD';        // with the other imports
+const photos = buildPhotos(scene, camera, () => wake());   // just after buildVilla
+villa.visible = !photos.update(smooth, view.fovScale);     // in draw(), before the door
+```
+
+The third line needs `const { root: villa, doorPivot } = buildVilla(…)` rather
+than `const { doorPivot } = …`. The flat fallback's photographs are a separate
+switch — the `.hero--static .hero-panel[data-chapter=…]` background rules in
+`css/site.css`, removed at the same time. Two other things were tuned for the
+photographs and put back with the geometry: the film grain (`.hero__grain`,
+0.32 with the model, 0.16 with photographs in front of it) and the extra top
+and right-hand bands on `.hero__veil`, which existed so bone-white navigation
+stayed readable over pale photography.
+
+The rest of this section describes how they worked, for whoever turns them
+back on.
+
+Seven photographs stood in for the modelled surfaces, one per chapter, in the
 order the camera meets them: the house across the pool, the approach at dusk,
 the front door, the great room, the kitchen, the fire, and a bedroom over the
-water. The camera move underneath is unchanged — same keyframes, same door,
+water. The camera move underneath was unchanged — same keyframes, same door,
 same scroll binding.
 
 Each one is a plane placed on the camera's own view axis and sized, every
@@ -597,12 +624,14 @@ never as a `<script>` in the page, or the consent gate becomes decorative.
 
 ## Photography
 
-Seven photographs, in the hero only — see **The 3D hero → The photographs**.
-Everywhere else the site is still drawn or built in code: the estates are
-hairline drawings of their settings, and the contact page's map of the four
-locations is a drawing rather than a map service.
+**None, currently.** The site is drawn or built in code throughout: the hero is
+the modelled villa, the estates are hairline drawings of their settings, and
+the contact page's map of the four locations is a drawing rather than a map
+service. Seven photographs were in the hero for a while and have been taken
+back out — see **The 3D hero → The photographs** for what they were and how to
+switch them on again.
 
-### ⚠️ These seven need their rights sorted out
+### ⚠️ If you switch them back on, these seven need their rights sorted out
 
 They were supplied as uploads, and two of them arrived carrying somebody
 else's mark:
@@ -612,13 +641,14 @@ else's mark:
 | `assets/Ermis Villas hero no 1.jpg` | a `TheBrainAndTheBrawn.com` copyright line across the bottom |
 | `assets/ermis villas hero no 6.jpg` | a Pinterest `FOLLOW MMV_TRADES` overlay |
 
-Both marks have been trimmed off the versions the site loads, on request. **A
-trimmed watermark is not a licence.** Removing it changes what the picture
-looks like and nothing about who owns it, and a visible credit is usually
-evidence that somebody expected to be credited. Before this site takes a
-booking, either establish that you hold the rights to all seven, or replace
-them — `tools/hero-photos.py` regenerates everything from whatever is in
-`assets/`, so swapping the originals and re-running is the whole job.
+Both marks were trimmed off the processed versions, on request. **A trimmed
+watermark is not a licence.** Removing it changes what the picture looks like
+and nothing about who owns it, and a visible credit is usually evidence that
+somebody expected to be credited. Nothing on the live site loads these today,
+so the question is not urgent — but before any of them goes back into the
+hero, either establish that you hold the rights to all seven, or replace them.
+`tools/hero-photos.py` regenerates everything from whatever is in `assets/`,
+so swapping the originals and re-running is the whole job.
 
 Worth knowing as well: they are seven different houses, not seven rooms of one.
 The front door in photographs 2 and 3 carries a street number, `28`, that

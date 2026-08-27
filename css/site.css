@@ -236,55 +236,42 @@ body.menu-open .menu__foot { opacity: 1; }
 /* Scrim. On desktop it darkens the left third so the copy sits on something;
    on mobile it darkens the bottom instead, because that is where the copy
    goes. Two different designs, not one design scaled. */
-/* The scrim the hero's own type sits on. The top band is not decorative: the
-   site header is transparent over the hero and its links are bone-white, and
-   several of the photographs are pale cream across the top of frame. Without
-   it the navigation disappears into a kitchen ceiling. It is kept shallow and
-   soft so it reads as the top of the frame darkening, not as a bar. */
+/* The top and right-hand bands that used to be here went in for the
+   photographs: several of them were pale cream across the top of frame and the
+   bone-white navigation was disappearing into a kitchen ceiling. The modelled
+   villa never needed them — it is a dark scene — and they only dimmed the
+   frame, so they came out with the photographs. */
 .hero__veil {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(to bottom, rgba(10, 12, 9, 0.62) 0%, rgba(10, 12, 9, 0.3) 8%,
-                               rgba(10, 12, 9, 0) 19%),
-    /* The phone lays the copy across the bottom half of the frame rather than
-       down one side, so that half has to carry it. Deep, and released early
-       enough that the top of every photograph — which on a portrait frame is
-       where the subject is — stays untouched. */
-    linear-gradient(to top, rgba(10, 12, 9, 0.95) 0%, rgba(10, 12, 9, 0.86) 18%,
-                            rgba(10, 12, 9, 0.66) 34%, rgba(10, 12, 9, 0.34) 50%,
-                            rgba(10, 12, 9, 0.08) 66%, rgba(10, 12, 9, 0) 80%),
+    linear-gradient(to top, rgba(10, 12, 9, 0.88) 0%, rgba(10, 12, 9, 0.4) 30%, rgba(10, 12, 9, 0) 58%),
     radial-gradient(130% 95% at 50% 42%, rgba(10, 12, 9, 0) 55%, rgba(10, 12, 9, 0.4) 100%);
 }
 @media (min-width: 900px) {
   /* Weighted to the left so the copy has ground to sit on, and kept off the
-     centre of frame — a full-width scrim turns golden hour into brown soup.
-     The right-hand band is for the chapter rail, which is small brass type
-     and was being lost against bright glazing. */
+     centre of frame — a full-width scrim turns golden hour into brown soup. */
   .hero__veil {
     background:
-      linear-gradient(to bottom, rgba(10, 12, 9, 0.58) 0%, rgba(10, 12, 9, 0.26) 9%,
-                                 rgba(10, 12, 9, 0) 21%),
-      linear-gradient(to left, rgba(10, 12, 9, 0.5) 0%, rgba(10, 12, 9, 0.16) 7%,
-                               rgba(10, 12, 9, 0) 15%),
       linear-gradient(100deg, rgba(10, 12, 9, 0.9) 0%, rgba(10, 12, 9, 0.62) 22%,
                               rgba(10, 12, 9, 0.12) 46%, rgba(10, 12, 9, 0) 62%),
       radial-gradient(130% 100% at 58% 45%, rgba(10, 12, 9, 0) 58%, rgba(10, 12, 9, 0.34) 100%);
   }
 }
 
-/* A very fine grain over the whole frame. It began as a way to stop the
-   flat-shaded 3D reading as plastic; with photographs in front of the model it
-   does a second job, breaking up the softness of an upscaled source the way
-   film grain always has. Dialled well back from where it was, though — at the
-   old strength it was sanding detail off a real photograph. Pure CSS, no
-   image request. */
+/* A very fine grain over the whole frame. Flat-shaded 3D can look plasticky;
+   a little noise puts a film grain over it and ties it to the photography-free
+   look of the rest of the site. Pure CSS, no image request.
+
+   Back at full strength. It was dialled down to 0.16 while there were
+   photographs in front of the model, where it was sanding detail off a real
+   photograph. With the geometry back it is doing the job it was put there for. */
 .hero__grain {
   position: absolute;
   inset: -50%;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.32;
   background-image: repeating-conic-gradient(
     rgba(255,255,255,0.03) 0% 25%, rgba(0,0,0,0.03) 0% 50%);
   background-size: 3px 3px;
@@ -535,62 +522,18 @@ body.menu-open .menu__foot { opacity: 1; }
 .no-js .hero__panels { max-width: none; min-height: 0; }
 .hero--static .hero-panel,
 .no-js .hero-panel {
-  position: relative;
-  isolation: isolate;
+  position: static;
   opacity: 1;
   visibility: visible;
   transform: none;
-  max-width: 56rem;
-  /* Tall enough that a portrait photograph is a picture rather than a sliver
-     of one. Cover crops it either way; this decides how much survives. */
-  min-height: clamp(22rem, 34vw, 29rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: clamp(2rem, 5vw, 3.25rem);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background-color: var(--ink-raised);
-  background-size: cover;
-  background-position: center 45%;
-}
-.hero--static .hero-panel::before,
-.no-js .hero-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(to top, rgba(10, 12, 9, 0.95) 0%,
-                                      rgba(10, 12, 9, 0.78) 46%,
-                                      rgba(10, 12, 9, 0.5) 100%);
+  max-width: 40rem;
 }
 .hero--static .hero-panel + .hero-panel,
-.no-js .hero-panel + .hero-panel { margin-top: 1.25rem; }
-
-/* The same seven photographs the 3D hero flies through, in the same order,
-   for anyone who is not getting the 3D hero: no WebGL, reduced motion asked
-   for, or JavaScript off altogether.
-
-   Declared here and nowhere else on purpose. A CSS background image is only
-   fetched when it lands on an element that actually renders, so a visitor who
-   gets the real hero never requests a single one of these — which is why they
-   are backgrounds rather than <img> tags, since a hidden <img> would be
-   downloaded by everybody. Plain JPEG, not WebP: this is the path that exists
-   for browsers that cannot do things, so it is the wrong place to be clever. */
-.hero--static .hero-panel[data-chapter="brand"],
-.no-js .hero-panel[data-chapter="brand"]        { background-image: url(../assets/img/hero/01-sm.jpg); }
-.hero--static .hero-panel[data-chapter="booking"],
-.no-js .hero-panel[data-chapter="booking"]      { background-image: url(../assets/img/hero/02-sm.jpg); }
-.hero--static .hero-panel[data-chapter="estates"],
-.no-js .hero-panel[data-chapter="estates"]      { background-image: url(../assets/img/hero/03-sm.jpg); }
-.hero--static .hero-panel[data-chapter="arrival"],
-.no-js .hero-panel[data-chapter="arrival"]      { background-image: url(../assets/img/hero/04-sm.jpg); }
-.hero--static .hero-panel[data-chapter="chef"],
-.no-js .hero-panel[data-chapter="chef"]         { background-image: url(../assets/img/hero/06-sm.jpg); }
-.hero--static .hero-panel[data-chapter="experience"],
-.no-js .hero-panel[data-chapter="experience"]   { background-image: url(../assets/img/hero/05-sm.jpg); }
-.hero--static .hero-panel[data-chapter="concierge"],
-.no-js .hero-panel[data-chapter="concierge"]    { background-image: url(../assets/img/hero/07-sm.jpg); }
+.no-js .hero-panel + .hero-panel {
+  margin-top: 3.25rem;
+  padding-top: 3.25rem;
+  border-top: 1px solid var(--ink-line);
+}
 
 /* --------------------------------------------------------------------------
    4. Story
