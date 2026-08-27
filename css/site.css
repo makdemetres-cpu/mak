@@ -384,78 +384,6 @@ body.menu-open .menu__foot { opacity: 1; }
   color: rgba(243, 240, 232, 0.55);
 }
 
-/* ---- Chapter rail ---- */
-.hero__rail {
-  position: absolute;
-  z-index: 3;
-  pointer-events: none;
-  display: flex;
-}
-/* Mobile: a row of dashes above the copy card. */
-.hero__rail {
-  left: var(--gutter);
-  right: var(--gutter);
-  bottom: calc(max(1.75rem, env(safe-area-inset-bottom)) + 21.5rem);
-  gap: 5px;
-}
-.hero__rail li {
-  flex: 1;
-  height: 2px;
-  background: rgba(243, 240, 232, 0.22);
-  position: relative;
-  overflow: hidden;
-}
-.hero__rail li::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--brass-lit);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s var(--ease);
-}
-.hero__rail li.is-on::after { transform: scaleX(1); }
-
-/* Desktop: a vertical index down the right-hand edge, with labels. */
-@media (min-width: 900px) {
-  .hero__rail {
-    left: auto; bottom: auto;
-    right: max(1.75rem, calc((100vw - var(--container)) / 2 + 1rem));
-    top: 50%;
-    transform: translateY(-50%);
-    flex-direction: column;
-    gap: 0;
-    text-align: right;
-  }
-  .hero__rail li {
-    flex: none;
-    height: auto;
-    background: none;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.85rem;
-    padding: 0.52rem 0;
-    font-size: 0.6rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(243, 240, 232, 0.4);
-    transition: color 0.4s var(--ease);
-    overflow: visible;
-  }
-  .hero__rail li::after { display: none; }
-  .hero__rail li b {
-    display: block;
-    width: 20px; height: 1px;
-    background: currentColor;
-    transition: width 0.5s var(--ease), background-color 0.4s var(--ease);
-    flex: none;
-  }
-  .hero__rail li.is-on { color: var(--brass-lit); }
-  .hero__rail li.is-on b { width: 42px; }
-}
-
 /* ---- Scroll cue ---- */
 .hero__cue {
   position: absolute;
@@ -502,10 +430,8 @@ body.menu-open .menu__foot { opacity: 1; }
 .hero--static .hero__sticky,
 .no-js .hero__sticky { position: static; height: auto; }
 .hero--static .hero__canvas,
-.hero--static .hero__rail,
 .hero--static .hero__cue,
 .no-js .hero__canvas,
-.no-js .hero__rail,
 .no-js .hero__cue { display: none; }
 .hero--static .hero__sticky,
 .no-js .hero__sticky {

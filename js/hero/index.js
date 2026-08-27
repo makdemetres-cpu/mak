@@ -20,10 +20,10 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.slim.js?v=260827f';
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260827f';
-import { buildVilla, makeMaterials } from './villa.js?v=260827f';
-import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260827f';
+import { Vector3 } from '../vendor/three.slim.js?v=260827g';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260827g';
+import { buildVilla, makeMaterials } from './villa.js?v=260827g';
+import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260827g';
 
 /* photos.js is still in this folder but is deliberately not imported. It put
    seven photographs on planes in front of the model, and the model is what the
@@ -34,9 +34,7 @@ import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=2
 const hero    = document.getElementById('hero');
 const stage   = document.getElementById('heroStage');
 const canvas  = document.getElementById('heroCanvas');
-const railEl  = document.getElementById('heroRail');
 const panelEls = Array.from(document.querySelectorAll('[data-chapter]'));
-const railEls  = Array.from(document.querySelectorAll('[data-rail]'));
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -80,7 +78,6 @@ function boot() {
   let target = 0;       // where the scroll says we should be
   let smooth = 0;       // where the camera actually is
   let lastChapter = -1;
-  let lastRail = -1;
   let running = false;
   let visible = true;
   let lastTime = 0;
@@ -169,9 +166,15 @@ function boot() {
 
   /* ---- UI in the left column ----
      Written only when something actually changes. Per-frame DOM writes are
-     what make scroll-driven pages feel gummy, so we do none. ---- */
+     what make scroll-driven pages feel gummy, so we do none.
+
+     There used to be a chapter rail here as well — seven dashes on a phone, a
+     labelled index down the right on a desktop — tracking progress through the
+     tour. Removed at the owner's request; the panels and the scroll cue are
+     what say where you are now. `local` from chapterAt() was only ever used to
+     move its marker, so it is no longer read. ---- */
   function syncUI(t) {
-    const { index, local } = chapterAt(t);
+    const { index } = chapterAt(t);
 
     if (index !== lastChapter) {
       lastChapter = index;
@@ -180,20 +183,6 @@ function boot() {
         el.classList.toggle('is-active', el.dataset.chapter === id);
       }
       hero.dataset.chapter = id;
-    }
-
-    // The rail marker moves continuously, but it's one custom property on one
-    // element — a compositor-only change, no layout.
-    if (railEl) {
-      const p = (index + local) / CHAPTERS.length;
-      const rounded = Math.round(p * 500) / 500;
-      if (rounded !== lastRail) {
-        lastRail = rounded;
-        railEl.style.setProperty('--rail', rounded);
-      }
-      for (let i = 0; i < railEls.length; i++) {
-        railEls[i].classList.toggle('is-on', i === index);
-      }
     }
 
     hero.classList.toggle('is-moving', t > 0.015);
