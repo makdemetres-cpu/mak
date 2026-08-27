@@ -1436,7 +1436,7 @@ body.menu-open .menu__foot { opacity: 1; }
 }
 /* The booking page docks a summary bar along the bottom on small screens. */
 @media (max-width: 999px) {
-  .booking ~ .to-top, body:has(.summary-bar) .to-top { bottom: 5.5rem; }
+  .booking ~ .to-top { bottom: 5.5rem; }
 }
 
 /* --------------------------------------------------------------------------

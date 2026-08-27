@@ -393,14 +393,10 @@
     }
 
     el('sumRows').innerHTML = rows.map(([k, v]) =>
-      `<div class="summary__row"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+      `<div class="sent__row"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 
     const total = est && nights ? est.from * nights : 0;
     el('sumTotal').textContent = total ? euro(total) : '—';
-    el('barTotal').textContent = total ? euro(total) : '—';
-    el('barLine').textContent = est
-      ? (nights ? `${est.name} · ${nights} nights` : `${est.name} · choose your dates`)
-      : 'Choose a house and your dates';
 
     paintSteppers();
     saveDraft();

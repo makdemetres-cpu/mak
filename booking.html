@@ -32,11 +32,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260826g">
-<link rel="stylesheet" href="css/base.css?v=260826g">
-<link rel="stylesheet" href="css/site.css?v=260826g">
-<link rel="stylesheet" href="css/pages.css?v=260826g">
-<link rel="stylesheet" href="css/print.css?v=260826g" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260827a">
+<link rel="stylesheet" href="css/base.css?v=260827a">
+<link rel="stylesheet" href="css/site.css?v=260827a">
+<link rel="stylesheet" href="css/pages.css?v=260827a">
+<link rel="stylesheet" href="css/print.css?v=260827a" media="print">
 </head>
 <body>
 
@@ -355,6 +355,29 @@
           </div>
           <!-- Announces the result of the copy without moving anything. -->
           <p class="refcopy__status" id="refCopyStatus" role="status" aria-live="polite"></p>
+
+          <!-- The record of what was sent. Deliberately NOT called a receipt:
+               no money has changed hands and no contract exists yet, and a
+               document that looks like a confirmation tells a guest their
+               booking is secured when it is not. See README -> "The
+               confirmation is not a receipt". -->
+          <div class="sent" id="sentRecord">
+            <h3 class="sent__head">What you sent us</h3>
+            <p class="sent__estate" id="sumEstate">No house chosen</p>
+            <p class="sent__place" id="sumPlace">Four to choose from</p>
+            <dl class="sent__rows" id="sumRows"></dl>
+            <div class="sent__total">
+              <span>Indicative</span>
+              <b id="sumTotal">—</b>
+            </div>
+            <p class="sent__note">
+              Accommodation only, at the published nightly rate, before seasonal
+              adjustment and the taxes set by the state. Chef, cars and excursions
+              are quoted separately. <b>Nothing has been charged and nothing is
+              confirmed until we reply</b> — your written quote is the price that
+              counts.
+            </p>
+          </div>
           <div class="cta__row">
             <a class="btn btn--ghost" href="#" data-ev="phoneLink">Call us instead</a>
             <a class="btn btn--ghost" href="index.html">Back to the estates</a>
@@ -369,34 +392,12 @@
         </div>
       </div>
 
-      <!-- ============ Summary ============ -->
-      <aside class="summary" aria-label="Your booking so far">
-        <h2>Your stay so far</h2>
-        <p class="summary__estate" id="sumEstate">No house chosen</p>
-        <p class="summary__place" id="sumPlace">Four to choose from</p>
-        <dl class="summary__rows" id="sumRows"></dl>
-        <div class="summary__total">
-          <span>Indicative</span>
-          <b id="sumTotal">—</b>
-        </div>
-        <p class="summary__note">
-          Accommodation only, at the published nightly rate, before seasonal
-          adjustment and the taxes set by the state. Chef, cars and excursions are
-          quoted separately. Your written quote is the price that counts.
-        </p>
-      </aside>
     </div>
   </div>
 </section>
 
 </main>
 
-<div class="summary-bar" id="summaryBar" aria-hidden="true">
-  <div>
-    <b id="barTotal">—</b>
-    <span id="barLine">Choose a house and your dates</span>
-  </div>
-</div>
 
 <footer class="footer">
   <div class="container">
@@ -468,10 +469,10 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826g"></script>
-<script src="js/main.js?v=260826g"></script>
-<script src="js/consent.js?v=260826g"></script>
-<script src="js/calendar.js?v=260826g"></script>
-<script src="js/booking.js?v=260826g"></script>
+<script src="js/data.js?v=260827a"></script>
+<script src="js/main.js?v=260827a"></script>
+<script src="js/consent.js?v=260827a"></script>
+<script src="js/calendar.js?v=260827a"></script>
+<script src="js/booking.js?v=260827a"></script>
 </body>
 </html>
