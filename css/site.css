@@ -330,20 +330,32 @@ body.menu-open .menu__foot { opacity: 1; }
 @media (min-width: 900px) { .hero-panel { inset: 0 0 auto; } }
 .hero-panel.is-active { opacity: 1; visibility: visible; transform: none; }
 
+/* Sized up a step from where these started. The last panel of the tour lost
+   its link — it ends on a statement rather than another instruction — and the
+   panel well reserves the height of the tallest one, so without a little more
+   type that panel finished on a hole. Applied to all six rather than just the
+   one: six panels that swap between two sizes reads as a mistake, and the
+   copy carries the extra weight well.
+
+   Both are still bounded by clamp, so the phone end barely moves. Check the
+   longest panel (05, "The town, by someone who lives in it") at 390px after
+   any further increase — that is the one that runs out of room first. */
 .hero-panel .eyebrow { color: var(--brass-lit); margin-bottom: 1rem; }
 .hero-panel h2 {
-  font-size: clamp(1.9rem, 6.4vw, 3.1rem);
+  font-size: clamp(2rem, 6.6vw, 3.45rem);
   line-height: 1.04;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.95rem;
 }
 .hero-panel p {
-  color: rgba(243, 240, 232, 0.76);
-  font-size: var(--step-0);
-  line-height: 1.6;
-  max-width: 34ch;
+  color: rgba(243, 240, 232, 0.78);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.19rem);
+  line-height: 1.55;
+  max-width: 36ch;
   margin-bottom: 1.5rem;
   text-wrap: pretty;
 }
+/* The panel with no link needs no trailing gap under its last paragraph. */
+.hero-panel p:last-child { margin-bottom: 0; }
 .hero-panel .link { color: var(--brass-lit); }
 
 /* Panel 0 — the brand plate. Bigger type, no body copy, a stat strip. */

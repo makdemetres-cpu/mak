@@ -31,11 +31,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260826e">
-<link rel="stylesheet" href="css/base.css?v=260826e">
-<link rel="stylesheet" href="css/site.css?v=260826e">
-<link rel="stylesheet" href="css/pages.css?v=260826e">
-<link rel="stylesheet" href="css/print.css?v=260826e" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260826f">
+<link rel="stylesheet" href="css/base.css?v=260826f">
+<link rel="stylesheet" href="css/site.css?v=260826f">
+<link rel="stylesheet" href="css/pages.css?v=260826f">
+<link rel="stylesheet" href="css/print.css?v=260826f" media="print">
 </head>
 <body>
 
@@ -240,24 +240,43 @@
             </div>
           </div>
 
-          <div class="field-row field-row--2">
-            <div class="field">
-              <label class="field-label" for="cPhone">Phone</label>
-              <input class="input" type="tel" id="cPhone" name="phone" autocomplete="tel" inputmode="tel">
-              <span class="field-hint">Only if you would rather we called.</span>
-            </div>
-            <div class="field">
-              <label class="field-label" for="cTopic">What is it about?</label>
-              <div class="select-wrap">
-                <select class="select" id="cTopic" name="topic">
-                  <option value="general">A general question</option>
-                  <option value="estate">One of the houses</option>
-                  <option value="dates">Dates and availability</option>
-                  <option value="services">Chef, cars or experiences</option>
-                  <option value="existing">An existing booking</option>
-                  <option value="privacy">My personal data</option>
-                </select>
-              </div>
+          <div class="field">
+            <label class="field-label" for="cPhone">Phone</label>
+            <input class="input" type="tel" id="cPhone" name="phone" autocomplete="tel" inputmode="tel">
+            <span class="field-hint">Only if you would rather we called.</span>
+          </div>
+
+          <!-- Six short answers, so all six are on the page rather than behind
+               a click. Real radios: arrow keys, the correct announcement and
+               the value still submits if the styling never arrives. This was
+               the last native <select> on the site. -->
+          <div class="field" id="topicField">
+            <span class="field-label" id="cTopicLabel">What is it about?</span>
+            <div class="chips" role="radiogroup" aria-labelledby="cTopicLabel">
+              <label class="chip">
+                <input type="radio" name="topic" value="general" checked>
+                <span>A general question</span>
+              </label>
+              <label class="chip">
+                <input type="radio" name="topic" value="estate">
+                <span>One of the houses</span>
+              </label>
+              <label class="chip">
+                <input type="radio" name="topic" value="dates">
+                <span>Dates and availability</span>
+              </label>
+              <label class="chip">
+                <input type="radio" name="topic" value="services">
+                <span>Chef, cars or experiences</span>
+              </label>
+              <label class="chip">
+                <input type="radio" name="topic" value="existing">
+                <span>An existing booking</span>
+              </label>
+              <label class="chip">
+                <input type="radio" name="topic" value="privacy">
+                <span>My personal data</span>
+              </label>
             </div>
           </div>
 
@@ -378,9 +397,9 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826e"></script>
-<script src="js/main.js?v=260826e"></script>
-<script src="js/consent.js?v=260826e"></script>
-<script src="js/contact.js?v=260826e"></script>
+<script src="js/data.js?v=260826f"></script>
+<script src="js/main.js?v=260826f"></script>
+<script src="js/consent.js?v=260826f"></script>
+<script src="js/contact.js?v=260826f"></script>
 </body>
 </html>

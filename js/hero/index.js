@@ -20,11 +20,11 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.slim.js?v=260826e';
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260826e';
-import { buildVilla, makeMaterials } from './villa.js?v=260826e';
-import { buildPhotos } from './photos.js?v=260826e';
-import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260826e';
+import { Vector3 } from '../vendor/three.slim.js?v=260826f';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260826f';
+import { buildVilla, makeMaterials } from './villa.js?v=260826f';
+import { buildPhotos } from './photos.js?v=260826f';
+import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260826f';
 
 const hero    = document.getElementById('hero');
 const stage   = document.getElementById('heroStage');

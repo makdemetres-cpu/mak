@@ -24,6 +24,16 @@
     privacy: 'My personal data'
   };
 
+  /* The topic is a group of radios rather than a select, so it is read by
+     name. One is checked in the markup, so this always has an answer — but it
+     falls back to the general case rather than sending an empty subject line
+     if that ever stops being true. */
+  function topicLabel() {
+    const hit = form.querySelector('input[name="topic"]:checked');
+    const key = hit ? hit.value : 'general';
+    return TOPICS[key] || key;
+  }
+
   function setError(id, on) {
     const input = el(id);
     const field = input.closest('.field');
@@ -69,7 +79,7 @@
       name: el('cName').value.trim(),
       email: el('cEmail').value.trim(),
       phone: el('cPhone').value.trim(),
-      topic: TOPICS[el('cTopic').value] || el('cTopic').value,
+      topic: topicLabel(),
       message: el('cMessage').value.trim()
     };
 

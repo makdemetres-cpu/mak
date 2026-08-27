@@ -45,11 +45,11 @@
      stops the headline reflowing a beat after paint. -->
 <link rel="preload" href="assets/fonts/Fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/HankenGrotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/fonts.css?v=260826e">
-<link rel="stylesheet" href="css/base.css?v=260826e">
-<link rel="stylesheet" href="css/site.css?v=260826e">
-<link rel="stylesheet" href="css/print.css?v=260826e" media="print">
-<link rel="modulepreload" href="js/vendor/three.slim.js?v=260826e">
+<link rel="stylesheet" href="css/fonts.css?v=260826f">
+<link rel="stylesheet" href="css/base.css?v=260826f">
+<link rel="stylesheet" href="css/site.css?v=260826f">
+<link rel="stylesheet" href="css/print.css?v=260826f" media="print">
+<link rel="modulepreload" href="js/vendor/three.slim.js?v=260826f">
 
 <!-- Structured data. Every absolute URL below uses the placeholder domain
      https://example.com — replace it once there is a real one:
@@ -301,9 +301,10 @@
               <p class="eyebrow">06 — Every hour of it</p>
               <h2 class="t-h2">One number.<br>One of us on it.</h2>
               <p>For the whole of your stay you have Ermis or one of his sons on a direct line. At nine in the morning, and at three in the morning.</p>
-              <a class="link" href="contact.html">Talk to us
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg>
-              </a>
+              <!-- No link, deliberately. This is the last panel of the tour and
+                   the point of it is that you already have the number — ending
+                   on an instruction would undercut that. Contact is reached
+                   from the Questions section, the header and the footer. -->
             </article>
 
           </div>
@@ -889,8 +890,9 @@
     <h2 class="t-h1">Tell us when, and who with.</h2>
     <p>An answer within four hours in season, written by one of the three people who own the houses.</p>
     <div class="cta__row">
+      <!-- One button. "Ask a question first" used to sit alongside and went to
+           exactly where the Questions section above already sends you. -->
       <a class="btn" href="booking.html">Begin a booking</a>
-      <a class="btn btn--ghost" href="contact.html">Ask a question first</a>
     </div>
   </div>
 </section>
@@ -1035,10 +1037,10 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260826e"></script>
-<script src="js/main.js?v=260826e"></script>
-<script src="js/consent.js?v=260826e"></script>
-<script src="js/reviews.js?v=260826e"></script>
+<script src="js/data.js?v=260826f"></script>
+<script src="js/main.js?v=260826f"></script>
+<script src="js/consent.js?v=260826f"></script>
+<script src="js/reviews.js?v=260826f"></script>
 
 <!-- A deadline for the hero.
      js/hero/index.js sets its own fallback when WebGL is missing or the visitor
@@ -1059,6 +1061,6 @@
   }, 2500);
 })();
 </script>
-<script type="module" src="js/hero/index.js?v=260826e"></script>
+<script type="module" src="js/hero/index.js?v=260826f"></script>
 </body>
 </html>
