@@ -1375,8 +1375,17 @@ body.menu-open .menu__foot { opacity: 1; }
    15. Back to top
    --------------------------------------------------------------------------
    Only added by JS where the page is over three viewports tall, and only
-   revealed two viewports down. A hairline square with a label, not a filled
+   revealed two viewports down. A hairline slab with a label, not a filled
    floating circle — the circle is the tell that says "template".
+
+   Three things carry it rather than one, which is the difference between a
+   control and a considered one: the panel is translucent ink over a blur, so
+   the page moves underneath it instead of it sitting on top as a hard block; a
+   brass hairline draws itself across the top edge on approach, the same
+   gesture as the underline under every link on the site; and the arrow leaves
+   through the top while its twin arrives from below, so the button performs
+   the movement it is about to make. Transform and opacity throughout — no
+   layout, nothing that can stutter a scroll.
    -------------------------------------------------------------------------- */
 .to-top {
   position: fixed;
@@ -1386,30 +1395,72 @@ body.menu-open .menu__foot { opacity: 1; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
-  width: 54px;
-  padding: 0.55rem 0 0.5rem;
-  background: var(--ink);
+  gap: 0.4rem;
+  width: 58px;
+  padding: 0.8rem 0 0.65rem;
+  /* Translucent rather than solid, so the section behind it reads through.
+     The blur is what stops that becoming a smear; without support the panel
+     is simply a little darker, which is a perfectly good button. */
+  background: color-mix(in srgb, var(--ink) 84%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  backdrop-filter: blur(10px) saturate(120%);
   color: var(--bone);
   border: 1px solid var(--ink-line);
   border-radius: var(--radius);
+  overflow: hidden;          /* holds the hairline and the arrows to the edge */
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease),
-              visibility 0.4s, border-color 0.3s var(--ease), color 0.3s var(--ease);
+  transform: translateY(12px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease),
+              visibility 0.5s, border-color 0.35s var(--ease), color 0.35s var(--ease);
 }
 .to-top.is-shown { opacity: 1; visibility: visible; transform: none; }
-.to-top svg { width: 17px; height: 17px; }
-.to-top span {
+
+/* The same 3px lift as the estate links, so the two answer a cursor the same
+   way. Kept off touch, where :hover sticks after a tap. */
+@media (hover: hover) {
+  .to-top.is-shown:hover { transform: translateY(-3px); }
+}
+.to-top.is-shown:focus-visible { transform: translateY(-3px); }
+
+.to-top:hover, .to-top:focus-visible {
+  color: var(--brass-lit);
+  border-color: var(--brass-lit);
+}
+
+/* The brass hairline along the top edge. */
+.to-top__rule {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--brass-lit);
+  transform: scaleX(0);
+  transition: transform 0.5s var(--ease);
+}
+.to-top:hover .to-top__rule,
+.to-top:focus-visible .to-top__rule { transform: scaleX(1); }
+
+/* A window exactly one arrow tall, with two arrows inside it. */
+.to-top__icon { display: block; width: 17px; height: 17px; overflow: hidden; }
+.to-top__arrows { display: block; transition: transform 0.5s var(--ease); }
+.to-top__arrows svg { display: block; width: 17px; height: 17px; }
+.to-top:hover .to-top__arrows,
+.to-top:focus-visible .to-top__arrows { transform: translateY(-50%); }
+
+.to-top__label {
   font-size: 0.53rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
-.to-top:hover, .to-top:focus-visible {
-  color: var(--brass-lit);
-  border-color: var(--brass-lit);
+
+/* Reduced motion keeps the colour change and the hairline, which are not
+   movement, and drops the two things that are. */
+@media (prefers-reduced-motion: reduce) {
+  .to-top.is-shown:hover,
+  .to-top.is-shown:focus-visible { transform: none; }
+  .to-top:hover .to-top__arrows,
+  .to-top:focus-visible .to-top__arrows { transform: none; }
 }
 /* The booking page docks a summary bar along the bottom on small screens. */
 @media (max-width: 999px) {

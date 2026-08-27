@@ -222,9 +222,21 @@
     btn.type = 'button';
     btn.className = 'to-top';
     btn.setAttribute('aria-label', 'Back to the top of the page');
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
-      'stroke-width="1.4" aria-hidden="true"><path d="M12 19V6m0 0-5.5 5.5M12 6l5.5 5.5"/></svg>' +
-      '<span>Top</span>';
+    /* Two arrows, stacked inside a window one arrow tall. On hover the pair
+       travels up: the first leaves through the top and the second arrives from
+       below, so the button performs the movement it is about to make. The
+       hairline above them is brass and draws itself across — the same gesture
+       as the underline under every link on this site. */
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" ' +
+      'aria-hidden="true"><path d="M12 19V6m0 0-5.5 5.5M12 6l5.5 5.5"/></svg>';
+
+    btn.innerHTML =
+      '<span class="to-top__rule" aria-hidden="true"></span>' +
+      '<span class="to-top__icon" aria-hidden="true">' +
+        '<span class="to-top__arrows">' + arrow + arrow + '</span>' +
+      '</span>' +
+      '<span class="to-top__label">Top</span>';
     document.body.appendChild(btn);
 
     btn.addEventListener('click', () => {
