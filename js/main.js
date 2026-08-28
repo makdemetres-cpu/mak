@@ -218,6 +218,16 @@
   function initBackToTop() {
     if (document.documentElement.scrollHeight < window.innerHeight * 3) return;
 
+    /* Not on a touch screen. The services list and the FAQ are rows that are
+       buttons for their whole width, with the + at the right-hand end — which
+       is exactly where a floating corner button lands on a 390px phone. It
+       covered the + of all four services and eight of the nine questions, so
+       tapping the obvious place threw you to the top of the page instead of
+       opening the row. There is no corner to move it to: the rows span the
+       full width, so anything floating over the list is over a control.
+       A thumb has its own way back up; a mouse does not. */
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'to-top';
