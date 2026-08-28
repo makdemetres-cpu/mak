@@ -79,8 +79,29 @@
   :root { --header-h: 64px; }
 }
 
-/* Dark surfaces flip the tokens rather than restating every colour. */
-.on-dark {
+/* Dark surfaces flip the tokens rather than restating every colour.
+   --------------------------------------------------------------------------
+   Every block that paints itself ink belongs in this list. Four of them used
+   to keep a hand-copied version instead, and each copy forgot something
+   different:
+
+     • .footer kept only --surface and --surface-2, so --fg-muted stayed
+       --stone, the token for text on a *light* background: the blurb, the
+       column headings, the copyright and the company line were all running at
+       3.3:1 instead of 6.7:1, and --line stayed the light hairline. Hovering a
+       footer link turned it --accent-ink — dark brass on near-black, 2.9:1 —
+       so hovering made it harder to read rather than easier.
+     • .page-head and .lost forgot --accent-ink, so every eyebrow on an inner
+       page ("Legal", "Reserve", "Estate 01 of 04") was the dark brass meant
+       for bone, at 2.9:1 — visibly dimmer than the brass rule drawn next to it.
+     • .consent__card forgot it too.
+
+   Copying a token set by hand is what caused all four. One list, one flip. */
+.on-dark,
+.page-head,
+.footer,
+.lost,
+.consent__card {
   --surface:   var(--ink);
   --surface-2: var(--ink-raised);
   --fg:        var(--bone);

@@ -88,8 +88,12 @@
         '<div class="picker__search">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" ' +
                'stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>' +
+          /* aria-label, not just a placeholder: a placeholder is not an
+             accessible name, and a combobox announced as "edit, blank" tells
+             a screen-reader user nothing about what it filters. */
           '<input class="picker__input" type="text" role="combobox" autocomplete="off" ' +
                  'aria-expanded="true" aria-autocomplete="list" spellcheck="false" ' +
+                 'aria-label="' + esc(opts.title || 'Search the list') + '" ' +
                  'aria-controls="' + uid + '-list" id="' + uid + '-input" ' +
                  'placeholder="' + esc(opts.hint || 'Type to search') + '">' +
         '</div>' +

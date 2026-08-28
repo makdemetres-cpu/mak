@@ -577,11 +577,7 @@ a.line:hover { color: var(--accent-ink); }
    4. 404
    -------------------------------------------------------------------------- */
 .lost {
-  --surface: var(--ink);
-  --fg: var(--bone);
-  --fg-muted: var(--mist);
-  --line: var(--ink-line);
-  --accent: var(--brass-lit);
+  /* Dark tokens come from the shared flip in base.css — see the note there. */
   background: var(--surface);
   color: var(--fg);
   min-height: 100vh;

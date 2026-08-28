@@ -20,10 +20,10 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.slim.js?v=260828a';
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260828a';
-import { buildVilla, makeMaterials } from './villa.js?v=260828a';
-import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260828a';
+import { Vector3 } from '../vendor/three.slim.js?v=260828b';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260828b';
+import { buildVilla, makeMaterials } from './villa.js?v=260828b';
+import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260828b';
 
 /* photos.js is still in this folder but is deliberately not imported. It put
    seven photographs on planes in front of the model, and the model is what the

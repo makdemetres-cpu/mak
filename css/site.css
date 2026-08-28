@@ -1022,8 +1022,7 @@ body.menu-open .menu__foot { opacity: 1; }
    10. Footer
    -------------------------------------------------------------------------- */
 .footer {
-  --surface: var(--ink);
-  --surface-2: var(--ink-raised);
+  /* Dark tokens come from the shared flip in base.css — see the note there. */
   background: var(--surface);
   color: var(--fg);
   padding-block: clamp(3.5rem, 8vw, 6rem) 2rem;
@@ -1071,6 +1070,25 @@ body.menu-open .menu__foot { opacity: 1; }
 .footer__legal { display: flex; flex-wrap: wrap; gap: 1rem 1.75rem; }
 .footer__legal a { transition: color 0.3s var(--ease); }
 .footer__legal a:hover { color: var(--accent-ink); }
+
+/* ---- Thumbs ----
+   Measured at 360px: the footer's links were 18px tall and the estate links
+   26px, against the 24px minimum WCAG 2.2 asks for and a good deal less than
+   a thumb actually is. The type is not the problem — it is set at the size the
+   design wants — so the hit area grows around it rather than the text growing.
+   Only where the pointer is coarse: on a mouse these are comfortable already,
+   and padding them out would loosen a footer that is meant to be tight. */
+@media (pointer: coarse) {
+  .footer__links a,
+  .footer__legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+  /* .link draws its underline on the bottom of its own padding box, so the
+     room is added above the text — the rule stays exactly where it was. */
+  .link { padding-top: 0.5em; }
+}
 .footer__reg {
   margin-top: 1rem;
   font-size: 0.68rem;
@@ -1176,11 +1194,7 @@ body.menu-open .menu__foot { opacity: 1; }
    12. Page header (inner pages)
    -------------------------------------------------------------------------- */
 .page-head {
-  --surface: var(--ink);
-  --fg: var(--bone);
-  --fg-muted: var(--mist);
-  --line: var(--ink-line);
-  --accent: var(--brass-lit);
+  /* Dark tokens come from the shared flip in base.css — see the note there. */
   background: var(--surface);
   color: var(--fg);
   padding-block: calc(var(--header-h) + clamp(3.5rem, 9vh, 6.5rem)) clamp(3.5rem, 9vh, 6.5rem);

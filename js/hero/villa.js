@@ -29,7 +29,7 @@ import {
   BoxGeometry, CylinderGeometry, DoubleSide, Group, IcosahedronGeometry,
   InstancedMesh, Mesh, MeshBasicMaterial, MeshStandardMaterial, Object3D,
   PlaneGeometry, SphereGeometry
-} from '../vendor/three.slim.js?v=260828a';
+} from '../vendor/three.slim.js?v=260828b';
 
 /* --------------------------------------------------------------------------
    Materials — defined once, shared everywhere.

@@ -32,11 +32,11 @@
 <meta name="twitter:image" content="assets/img/share-card.jpg">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/fonts.css?v=260828a">
-<link rel="stylesheet" href="css/base.css?v=260828a">
-<link rel="stylesheet" href="css/site.css?v=260828a">
-<link rel="stylesheet" href="css/pages.css?v=260828a">
-<link rel="stylesheet" href="css/print.css?v=260828a" media="print">
+<link rel="stylesheet" href="css/fonts.css?v=260828b">
+<link rel="stylesheet" href="css/base.css?v=260828b">
+<link rel="stylesheet" href="css/site.css?v=260828b">
+<link rel="stylesheet" href="css/pages.css?v=260828b">
+<link rel="stylesheet" href="css/print.css?v=260828b" media="print">
 </head>
 <body>
 
@@ -53,13 +53,44 @@
       <span class="brand__name">ERMIS<em>'</em> VILLAS</span>
     </a>
     <nav class="nav" aria-label="Primary">
+      <a class="nav__link" href="index.html#story">The family</a>
       <a class="nav__link" href="index.html#estates">Estates</a>
       <a class="nav__link" href="index.html#services">Services</a>
+      <a class="nav__link" href="index.html#faq">Questions</a>
       <a class="nav__link" href="contact.html">Contact</a>
     </nav>
     <a class="btn header__cta" href="booking.html">Reserve</a>
+
+    <a class="header__call" href="#" data-ev="phoneLink" aria-label="Call us">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+    </a>
+    <button class="menu-btn" id="menuBtn" type="button"
+            aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
   </div>
 </header>
+
+<!-- The 404 used to have a three-item desktop nav and no mobile menu at all,
+     so a visitor who mistyped a URL on a phone had no navigation in the header
+     whatsoever. Same menu as every other page now. -->
+<div class="menu" id="menu">
+  <nav class="menu__list" aria-label="Mobile">
+    <a class="menu__item" href="index.html#story"><span class="menu__num">01</span> The family</a>
+    <a class="menu__item" href="index.html#estates"><span class="menu__num">02</span> Estates</a>
+    <a class="menu__item" href="index.html#services"><span class="menu__num">03</span> Services</a>
+    <a class="menu__item" href="index.html#faq"><span class="menu__num">04</span> Questions</a>
+    <a class="menu__item" href="booking.html"><span class="menu__num">05</span> Reserve</a>
+    <a class="menu__item" href="contact.html"><span class="menu__num">06</span> Contact</a>
+  </nav>
+  <div class="menu__foot">
+    <a href="#" data-ev="phoneLink"><span>Call</span> <span data-ev="phone"></span></a>
+    <a href="#" data-ev="whatsappLink"><span>WhatsApp</span> <span data-ev="whatsapp"></span></a>
+  </div>
+</div>
 
 <main id="main" class="lost" data-header-watch tabindex="-1">
   <div class="container">
@@ -117,7 +148,7 @@
   </div>
 </main>
 
-<script src="js/data.js?v=260828a"></script>
-<script src="js/main.js?v=260828a"></script>
+<script src="js/data.js?v=260828b"></script>
+<script src="js/main.js?v=260828b"></script>
 </body>
 </html>
