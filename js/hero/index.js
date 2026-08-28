@@ -20,9 +20,9 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260828e';
-import { buildWalk } from './walk.js?v=260828e';
-import { CHAPTERS, chapterAt, clamp01 } from './path.js?v=260828e';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260828f';
+import { buildWalk } from './walk.js?v=260828f';
+import { CHAPTERS, chapterAt, clamp01 } from './path.js?v=260828f';
 
 /* The hero is now a walk through seven photographs of one house — see
    walk.js. The modelled villa it used to fly through is still in this folder

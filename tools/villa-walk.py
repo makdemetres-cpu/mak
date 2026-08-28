@@ -65,7 +65,15 @@ PHOTOS = [
     ("07", "villa_682_20116.1920.jpg"),   # the bedroom
 ]
 
-WIDTHS = {"": 1600, "-sm": 900}
+# The small set is for phones, and it is 1200 rather than the 900 it started
+# at because of what a portrait frame does to a 16:9 photograph. The hero fits
+# each picture to the frame by height, so a phone held upright sees only about
+# a quarter of the picture's width — and then the walk magnifies that by two
+# again by the end of a chapter. At 900 the last room arrived as a blur. 1200
+# costs about 23MB of video memory across all seven, against 13MB at 900,
+# which is a fair trade on any phone made this decade; 1600 would be 40MB and
+# is not.
+WIDTHS = {"": 1600, "-sm": 1200}
 JPEG_Q = 86
 WEBP_Q = 82
 

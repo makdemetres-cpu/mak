@@ -436,43 +436,84 @@ than dissolving to it.
 
 ### How the walk is built
 
-The whole thing is three ideas.
+The whole thing is four ideas, and the first of them is the one that took
+three attempts to get right.
 
-**One: every photograph is sized to cover the frame.** A plane at distance *d*
-from a camera with vertical field of view *θ* spans `2·d·tan(θ/2)`, so the
-plane is scaled from the live aspect ratio and fov every time the frame shape
-changes. That is `object-fit: cover` done in three dimensions, and it means no
+**One: a photograph is not a flat card.** Moving a camera at a flat card does
+not look like walking, it looks like zooming, because every part of the
+picture grows at exactly the same rate. What the eye reads as movement through
+a space is *parallax* — near things sliding past faster than far things — and
+a flat card has none of it, which is why the first two versions of this hero
+read as a slideshow however cleverly the transitions were timed.
+
+So each photograph is projected onto a shallow open box: a floor running away
+to the horizon, a wall down either side, a ceiling where the picture has one.
+The camera moves into that box and everything parallaxes correctly, because
+the geometry is correct. In the opening shot the stone wall on the right
+genuinely sweeps past the lens while the house barely grows, which is what
+walking down that terrace would actually do to your eyes.
+
+The obvious alternative — cutting each photograph into three or four flat
+layers at different depths — is what produces the cardboard-cutout look, since
+the cuts are real discontinuities and the eye finds them immediately. There is
+not one cut in this surface. It is a single continuous displaced grid, so
+there is no edge to catch on. What shapes it is five numbers per photograph in
+the `SHOTS` table, each a judgement about what is actually in that picture:
+where the horizon is, how near the floor comes, how near each side wall comes,
+and how much ceiling there is. They are not symmetric, deliberately — see the
+note on `wall` in the table.
+
+**Two: every photograph is sized to cover the frame.** A plane at distance *d*
+from a camera with vertical field of view *θ* spans `2·d·tan(θ/2)`, so it is
+scaled from the live aspect ratio and fov whenever the frame shape changes.
+That is `object-fit: cover` done in three dimensions, and it means no
 photograph is ever cropped on disk for framing — whatever a screen shape
-cannot fit falls outside the frustum. A phone held upright sees nearly the
-whole picture; a wide laptop sees a band through the middle.
+cannot fit falls outside the frustum. Sizing is measured on the *flat* plane
+at the furthest distance the picture is ever seen from; since the surface is
+displaced only toward the camera and never away, that is a safe bound for
+every point on it.
 
-They are sized at the **furthest** distance each is ever seen from, not at the
-distance it arrives at. Size for the arrival instead and there is a sliver of
-empty frame around the incoming photograph for exactly as long as the cut
-lasts — which is precisely when it is most visible.
+**Three: the camera walks at one speed and never stops.**
+`camera.position.z = ARRIVE − (chapter + advance) · SPACING`. One line, no
+easing of its own; the damping in `index.js` is what makes it feel operated
+rather than dragged. `SPACING` sets the magnification as well as the distance:
+12 / (12 − 6.6) = **2.2× by the end of a chapter**.
 
-**Two: the camera walks at one speed and never stops.** `camera.position.z =
-ARRIVE − (chapter + local) · SPACING`. One line, no easing of its own; the
-damping in `index.js` is what makes it feel operated rather than dragged, and
-easing it twice only makes it soggy. `SPACING` sets the magnification as well
-as the distance: 12 / (12 − 6.6) = **2.2× by the end of a chapter**. Larger and
-the outgoing photograph is a crop of a crop; smaller and it stops feeling like
-walking and starts feeling like leaning.
+The single exception is the last chapter, which walks a little over half as
+far and decelerates to rest, because it is the one chapter with nothing to
+hand over to. At full stride it ended with the bedroom enlarged past 200% and
+softening into a blur — flying into a wall, as the last thing anyone sees of
+the house.
 
-**Three: the outgoing photograph leaves rather than fades.** This is the whole
-difference between a walk and a slideshow, and it took a double exposure on
-screen to see why. Fading one photograph over another is a crossfade whichever
-one you fade — at fifty percent it is simply two rooms on top of each other.
-So over the last tenth of a chapter the outgoing frame *races the camera*,
-roughly two and a half times its size again, and its edges fly out past the
-frame while it goes. What is left is the next room, already whole, seen through
-the last of the one you are walking out of. The blend reads as the blur of
-moving rather than as a fade.
+**Four: the room opens rather than dissolving.** Pushing a camera into a
+photograph does not get you out of it: the far wall is a picture of a far
+wall, and walking at it just makes it a bigger picture of a far wall. So over
+the handover two things happen at once, and neither is a fade.
 
-Depth testing is off, so the planes are drawn strictly in the order given and
+- An **aperture** grows outward from the point being walked toward. What is
+  straight ahead gives way first and the next room shows through it. This is
+  per-vertex alpha, animated on the CPU over ~1,300 vertices for the tenth of
+  a chapter a handover lasts, which costs nothing.
+- The outgoing surface **races the camera** (`EXIT`), so its near floor and
+  walls cross the near plane and are clipped away. They leave by passing you.
+
+Between the two there is nothing left to dissolve, and `material.opacity`
+never moves off 1 for the whole walk.
+
+The aperture is measured against **what is on screen**, not against the
+photograph, and that distinction cost a build. By the handover the camera is
+close enough that the visible part of the picture is only its middle sixth or
+so; an aperture sized against the photograph therefore has its entire soft
+edge spread across the whole screen — which is a crossfade, arrived at from a
+completely different direction. `openTo()` takes the on-screen radius as an
+argument for this reason.
+
+Depth testing is off, so the surfaces draw strictly in the order given, and
 that order runs from the back of the corridor forward — nearest last, on top.
 Get it the other way round and the room you are walking *towards* paints over
-the one you are still inside.
+the one you are still inside. It stays off now that the surfaces have real
+depth: within one surface nothing overlaps itself in screen space, and between
+surfaces the order is exactly the walking order.
 
 ### The route
 
@@ -572,11 +613,13 @@ fast.
 - **Rendering is strictly on demand.** When the camera has settled, the render
   loop shuts down entirely — measured at **0 draw calls** while a visitor sits
   still. A parked page costs no GPU and no battery.
-- **The scene is two textured quads.** At most one chapter and the one behind
-  it are on screen, so the geometry cost is **two draw calls and four
-  triangles** — against roughly forty-three draw calls for the modelled villa
-  this replaced. There are no lights, no shadows, no environment map and no
-  fog; a `MeshBasicMaterial` does not shade.
+- **The scene is two textured surfaces.** At most one chapter and the one
+  behind it are on screen, so the geometry cost is **two draw calls** and
+  about 5,000 triangles — against roughly forty-three draw calls for the
+  modelled villa this replaced. There are no lights, no shadows, no
+  environment map and no fog; a `MeshBasicMaterial` does not shade. The
+  displacement that gives each photograph its depth is computed once when the
+  image loads, not per frame.
 - **Photographs are fetched one chapter ahead**, never all seven, and never at
   the desktop size on a phone. Video memory is the real constraint here:
   a texture costs width × height × 4 bytes whatever the file weighed.
@@ -631,14 +674,25 @@ be downloaded by everybody. All three paths are tested.
 
 ### Editing the walk
 
-Four dials, all at the top of `walk.js`, and one table.
+One table and a handful of dials, all at the top of `walk.js`.
+
+`SHOTS` is the route, and the thing to edit first. One row per chapter: which
+photograph, the `aim` point the camera walks toward in it, the shape of the
+space (`horizon`, `floor`, `wall`, `ceil`) and an optional `pan` for narrow
+screens. Every field is documented in place above the table, because every one
+of them is a claim about what is in that particular picture.
+
+The dials below it:
 
 | | |
 |---|---|
-| `SHOTS` | The route. One row per chapter: which photograph, and the `aim` point the camera walks toward in it. |
 | `SPACING` | How far the camera walks per chapter — so also the magnification. 6.6 of a 12 arrival distance is 2.2×. |
-| `HANDOVER` | How much of a chapter the cut occupies, as a fraction. 0.10. Short on purpose: this is a cut made at speed, not a dissolve. |
-| `EXIT` | How hard the outgoing photograph races the camera as it leaves. Turn this to 0 and the walk becomes a crossfade — which is exactly what it is there to prevent. |
+| `FLOOR_DEPTH`, `WALL_DEPTH`, `CEIL_DEPTH` | How deep the box is, in world units at the nominal frame. Most of the parallax is the floor. Push these much further and the picture smears: a photographed floor stretched to near-vertical on screen is being asked for detail it never recorded. |
+| `HANDOVER` | How much of a chapter the cut occupies. 0.10. Short on purpose: this is a cut made at speed. |
+| `EXIT` | How hard the outgoing photograph races the camera as it leaves. |
+| `DOOR_SOFT`, `DOOR_OVERRUN` | The aperture's edge and how far past the corners it travels. `DOOR_SOFT` is a fraction of the *screen* radius, not of the picture — see above. |
+| `LAST_WALK` | How much of a normal chapter's walk the final chapter covers, since it has nothing to hand over to. |
+| `SEG_X`, `SEG_Y` | Grid resolution of the surface. Only has to be fine enough that the crease where floor meets wall is not faceted. |
 
 **`CHAPTERS` in `path.js` is the one source of truth for which chapter a given
 scroll position is in**, and `walk.js` asks it rather than working it out. That
