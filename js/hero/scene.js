@@ -10,16 +10,21 @@
       camera is moving and at no other time — and bake the shadow map exactly
       once instead of every frame. A parked visitor costs zero GPU.
 
-   2. Quality is tiered at boot, not adapted at runtime. Runtime adaptation
-      means a visible pop the first time a phone thermal-throttles; picking a
-      sensible tier up front and staying there is calmer.
+   2. Quality is tiered at boot from what the device says about itself, and
+      then checked against what it actually does. The tier below sets a
+      starting ceiling; the governor in index.js measures real frame times and
+      steps the resolution down if the machine cannot hold them.
+
+      It steps down only, never back up. Adapting in both directions is what
+      makes a hero visibly pop between sharp and soft the first time a phone
+      thermal-throttles; going one way means it settles once and stays there.
    ========================================================================== */
 
 import {
   ACESFilmicToneMapping, Color, EquirectangularReflectionMapping, Fog,
   HemisphereLight, DirectionalLight, PerspectiveCamera, PMREMGenerator,
   Scene, SRGBColorSpace, Texture, WebGLRenderer
-} from '../vendor/three.slim.js?v=260827g';
+} from '../vendor/three.slim.js?v=260828a';
 
 /* --------------------------------------------------------------------------
    Quality tiers
@@ -32,9 +37,15 @@ export function detectTier() {
   return lowPower ? 'low' : 'high';
 }
 
+/* `dpr` is a starting ceiling, not a promise: the quality governor in
+   js/hero/index.js watches real frames and scales it down if the device
+   cannot hold the budget. The high tier used to sit at 2.0, which on a
+   1440×900 retina window is 5.2 million pixels shaded every frame; 1.75 is
+   23% fewer for a scene that is flat-shaded and carries no fine texture
+   detail to lose. */
 const TIERS = {
-  low:  { dpr: 1.5, shadows: false, antialias: true,  trees: 26, shrubs: 34, slatStep: 0.42 },
-  high: { dpr: 2.0, shadows: true,  antialias: true,  trees: 46, shrubs: 62, slatStep: 0.30 }
+  low:  { dpr: 1.5,  shadows: false, antialias: true,  trees: 26, shrubs: 34, slatStep: 0.42 },
+  high: { dpr: 1.75, shadows: true,  antialias: true,  trees: 46, shrubs: 62, slatStep: 0.30 }
 };
 
 export function tierSettings(tier) { return TIERS[tier] || TIERS.low; }
@@ -204,7 +215,10 @@ export function makeResizer(renderer, camera, settings, view) {
     if (!force && widthSame && heightNudge) return false;
 
     lastW = w; lastH = h;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, settings.dpr));
+    // view.dprScale is the quality governor's dial — 1 until it decides this
+    // device cannot afford full resolution. See js/hero/index.js.
+    const cap = settings.dpr * (view.dprScale || 1);
+    renderer.setPixelRatio(Math.max(0.75, Math.min(window.devicePixelRatio || 1, cap)));
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
 

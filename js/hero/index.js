@@ -20,10 +20,10 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.slim.js?v=260827g';
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260827g';
-import { buildVilla, makeMaterials } from './villa.js?v=260827g';
-import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260827g';
+import { Vector3 } from '../vendor/three.slim.js?v=260828a';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260828a';
+import { buildVilla, makeMaterials } from './villa.js?v=260828a';
+import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260828a';
 
 /* photos.js is still in this folder but is deliberately not imported. It put
    seven photographs on planes in front of the model, and the model is what the
@@ -68,7 +68,8 @@ function boot() {
 
   // Shared between the resizer (which decides how much wider a tall screen
   // needs to be) and the draw loop (which applies it to each shot's fov).
-  const view = { fovScale: 1, portrait: false };
+  // dprScale is the quality governor's dial — see below.
+  const view = { fovScale: 1, portrait: false, dprScale: 1 };
   const resize = makeResizer(renderer, camera, settings, view);
 
   const pos = new Vector3();
@@ -78,6 +79,7 @@ function boot() {
   let target = 0;       // where the scroll says we should be
   let smooth = 0;       // where the camera actually is
   let lastChapter = -1;
+  let lastMoving = null, lastInside = null;
   let running = false;
   let visible = true;
   let lastTime = 0;
@@ -106,7 +108,8 @@ function boot() {
   }
 
   function frame(now) {
-    const dt = Math.min(0.05, (now - lastTime) / 1000) || 0.016;
+    const raw = (now - lastTime) / 1000;
+    const dt = Math.min(0.05, raw) || 0.016;
     lastTime = now;
 
     const gap = target - smooth;
@@ -118,12 +121,77 @@ function boot() {
       return;
     }
 
-    // Frame-rate independent damping. 11 ≈ 90ms to close most of the gap:
-    // enough to take the stutter out of a mouse wheel, not enough to feel
-    // like the camera is lagging behind the finger on a trackpad.
-    smooth += gap * (1 - Math.exp(-11 * dt));
+    // Frame-rate independent damping. Lower means a longer, softer glide: at
+    // 7 the camera takes about 140ms to close most of the gap, against 90ms
+    // at the 11 this used to run at. That is the difference between the move
+    // stopping when the wheel stops and it coming to rest.
+    //
+    // There is a floor to how low this can go. Much under 6 and the camera is
+    // visibly behind the finger on a trackpad, which reads as lag rather than
+    // as smoothness — the opposite of the point. One number, easy to try.
+    smooth += gap * (1 - Math.exp(-7 * dt));
     draw();
+    judge(raw);
     requestAnimationFrame(frame);
+  }
+
+  /* ---- Quality governor ----
+     The tier chosen at boot is a guess made from core count and pointer type,
+     and a guess is all it can be: a four-core desktop with a good GPU and a
+     twelve-core laptop throttling on battery both slip through it. So the
+     guess is checked against the only thing that actually matters — how long
+     real frames are taking while the camera is moving.
+
+     It only ever steps down. A hero that oscillates between sharp and soft as
+     the load changes is worse than one that is quietly a little softer, and
+     stepping back up would guarantee that oscillation on any device sitting
+     near the threshold.
+
+     Resolution goes first because it is the whole cost: this scene shades
+     millions of pixels a frame and its geometry is trivial by comparison. The
+     film grain goes second — a full-screen blend the compositor redoes every
+     time the canvas under it redraws, and the only thing here that can be
+     given up without changing the composition.
+
+     Shadows are deliberately NOT on this list. They look like an obvious
+     saving and are not: the shadow map is baked exactly once (see scene.js,
+     shadowMap.autoUpdate = false), so per frame they cost one texture lookup,
+     while switching them off mid-scroll forces every material to recompile —
+     a visible stall, to fix a stall. ---- */
+  const STEPS = [
+    { dpr: 1,    grain: true  },   // as shipped
+    { dpr: 0.78, grain: true  },   // ~40% fewer pixels
+    { dpr: 0.62, grain: false }    // ~60% fewer, and no blend layer
+  ];
+  const BUDGET_MS = 20;            // slower than ~50fps is not good enough
+  const SAMPLE = 45;               // frames of real movement before judging
+  const WARMUP = 25;               // first frames are compile and upload, not steady state
+
+  let step = 0;
+  let warm = 0;
+  let samples = [];
+
+  function judge(seconds) {
+    if (step >= STEPS.length - 1) return;      // nothing left to give up
+    if (warm < WARMUP) { warm++; return; }
+    if (!(seconds > 0) || seconds > 0.5) return;   // a tab-switch is not a slow frame
+
+    samples.push(seconds * 1000);
+    if (samples.length < SAMPLE) return;
+
+    samples.sort((a, b) => a - b);
+    const median = samples[samples.length >> 1];
+    samples.length = 0;
+    if (median <= BUDGET_MS) return;
+
+    step++;
+    view.dprScale = STEPS[step].dpr;
+    hero.classList.toggle('is-plain', !STEPS[step].grain);
+    resize(true);
+    // Deliberately not re-baking the shadow map here. It is rendered in the
+    // light's space, not the canvas's, so the buffer changing size does not
+    // invalidate it — and re-baking would spend a full shadow pass on the one
+    // device that has just told us it has nothing to spare.
   }
 
   function draw() {
@@ -185,8 +253,15 @@ function boot() {
       hero.dataset.chapter = id;
     }
 
-    hero.classList.toggle('is-moving', t > 0.015);
-    hero.classList.toggle('is-inside', t > 0.55);
+    // Both of these were written on every single frame. classList.toggle with
+    // an unchanged value still touches the element, and touching an element
+    // that an ancestor of the canvas is composited with invites style work in
+    // the middle of the frame. Written only when they actually flip now.
+    const moving = t > 0.015;
+    if (moving !== lastMoving) { lastMoving = moving; hero.classList.toggle('is-moving', moving); }
+
+    const inside = t > 0.55;
+    if (inside !== lastInside) { lastInside = inside; hero.classList.toggle('is-inside', inside); }
   }
 
   /* ---- Wiring ---- */

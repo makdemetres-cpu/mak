@@ -524,9 +524,41 @@ fast.
   scene moves except the front door.
 - **Repeated geometry is instanced** — slats, stair treads, bottles, mullions,
   trees, shrubs are one draw call each rather than hundreds.
-- **Quality is tiered at boot**, not adapted at runtime, so a phone never
-  visibly "pops" down a level when it warms up.
 - Measured on the mobile tier: **~43 draw calls and ~4k triangles per frame.**
+
+**Quality is tiered at boot and then checked.** `detectTier()` in
+`js/hero/scene.js` guesses from core count and pointer type, which is all a
+guess can do — a four-core desktop with a good GPU and a twelve-core laptop
+throttling on battery both slip through it. So `js/hero/index.js` runs a
+governor: it samples real frame times while the camera is moving and, if the
+median is worse than 20ms, gives something up.
+
+```js
+const STEPS = [
+  { dpr: 1,    grain: true  },   // as shipped
+  { dpr: 0.78, grain: true  },   // ~40% fewer pixels
+  { dpr: 0.62, grain: false }    // ~60% fewer, and no blend layer
+];
+```
+
+It steps **down only**. Adapting in both directions is what makes a hero
+visibly pop between sharp and soft the first time a phone warms up; one
+direction means it settles once and stays there.
+
+Resolution goes first because it is the whole cost — this scene shades
+millions of pixels a frame and its geometry is trivial by comparison. The film
+grain goes second: `mix-blend-mode` over the full frame is re-composited every
+time the canvas under it redraws, which in a scroll-driven hero is every frame.
+
+**Shadows are deliberately not on that list**, despite looking like the obvious
+saving. The shadow map is baked exactly once, so per frame they cost one
+texture lookup — while switching them off mid-scroll forces every material to
+recompile, which is a visible stall spent to fix a stall.
+
+Two other things that were quietly expensive and are now not: the grain used to
+be `inset: -50%`, four times the area of the viewport to show one screen's
+worth; and `will-change` was declared on all seven hero panels, pinning seven
+full-size composited layers for the life of the page.
 
 ### Fallbacks
 

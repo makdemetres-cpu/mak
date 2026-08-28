@@ -45,11 +45,11 @@
      stops the headline reflowing a beat after paint. -->
 <link rel="preload" href="assets/fonts/Fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/HankenGrotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/fonts.css?v=260827g">
-<link rel="stylesheet" href="css/base.css?v=260827g">
-<link rel="stylesheet" href="css/site.css?v=260827g">
-<link rel="stylesheet" href="css/print.css?v=260827g" media="print">
-<link rel="modulepreload" href="js/vendor/three.slim.js?v=260827g">
+<link rel="stylesheet" href="css/fonts.css?v=260828a">
+<link rel="stylesheet" href="css/base.css?v=260828a">
+<link rel="stylesheet" href="css/site.css?v=260828a">
+<link rel="stylesheet" href="css/print.css?v=260828a" media="print">
+<link rel="modulepreload" href="js/vendor/three.slim.js?v=260828a">
 
 <!-- Structured data. Every absolute URL below uses the placeholder domain
      https://example.com — replace it once there is a real one:
@@ -502,7 +502,11 @@
 
       <!-- Arrival -->
       <div class="service" data-reveal>
-        <button class="service__head" type="button" aria-expanded="true" aria-controls="svc-1">
+        <!-- Ships closed, like the other three. It used to open by default to
+             show the section was expandable; the + on every row and the hover
+             state say that well enough, and a panel that is open before anyone
+             asked for it is just a wall of text you scroll past. -->
+        <button class="service__head" type="button" aria-expanded="false" aria-controls="svc-1">
           <span class="service__idx">01</span>
           <span class="service__title">Arrival, and the car it happens in</span>
           <span class="service__sign" aria-hidden="true"></span>
@@ -1027,10 +1031,10 @@
   </div>
 </div>
 
-<script src="js/data.js?v=260827g"></script>
-<script src="js/main.js?v=260827g"></script>
-<script src="js/consent.js?v=260827g"></script>
-<script src="js/reviews.js?v=260827g"></script>
+<script src="js/data.js?v=260828a"></script>
+<script src="js/main.js?v=260828a"></script>
+<script src="js/consent.js?v=260828a"></script>
+<script src="js/reviews.js?v=260828a"></script>
 
 <!-- A deadline for the hero.
      js/hero/index.js sets its own fallback when WebGL is missing or the visitor
@@ -1051,6 +1055,6 @@
   }, 2500);
 })();
 </script>
-<script type="module" src="js/hero/index.js?v=260827g"></script>
+<script type="module" src="js/hero/index.js?v=260828a"></script>
 </body>
 </html>
