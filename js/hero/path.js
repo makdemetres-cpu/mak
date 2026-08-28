@@ -61,15 +61,32 @@ const DOOR_START = 0.48;
 const DOOR_END   = 0.60;
 const DOOR_MAX   = 1.62;    // radians; positive swings the leaf inward
 
+/* Seven chapters over seven equal shares of the scroll.
+   ----------------------------------------------------------------------------
+   These used to be uneven — 0.12, 0.20, 0.18, 0.16, 0.16, 0.11, 0.08 — cut to
+   fit the beats of the camera spline above, which no longer drives anything.
+   The hero is seven photographs now, one per chapter, and the walk moves the
+   same distance through each of them. Leaving the bands uneven meant the room
+   on screen and the words beside it slid apart as you scrolled: by halfway
+   down, the panel still read "Four houses. All of them ours." over a
+   photograph of the living room, because the copy was a chapter and a half
+   behind the walk.
+
+   Equal shares fix that at the root rather than by nudging a threshold: the
+   panel and the photograph are now the same chapter by arithmetic, and the
+   camera keeps one speed the whole way instead of hurrying through the short
+   chapters. Anything that needs to know which room we are in asks chapterAt()
+   below — including js/hero/walk.js, which must never re-derive it. */
+const N = 7;
 export const CHAPTERS = [
-  { id: 'brand',     from: 0.00, to: 0.12 },
-  { id: 'booking',   from: 0.12, to: 0.32 },
-  { id: 'estates',   from: 0.32, to: 0.50 },
-  { id: 'arrival',   from: 0.50, to: 0.66 },
-  { id: 'chef',      from: 0.66, to: 0.82 },
-  { id: 'experience',from: 0.82, to: 0.93 },
-  { id: 'concierge', from: 0.93, to: 1.01 }
-];
+  'brand', 'booking', 'estates', 'arrival', 'chef', 'experience', 'concierge'
+].map((id, i) => ({
+  id,
+  from: i / N,
+  // The last chapter reaches just past 1 so that landing exactly on the end of
+  // the stage still falls inside a chapter rather than off the end of them.
+  to: i === N - 1 ? 1.01 : (i + 1) / N
+}));
 
 /* -------------------------------------------------------------------------- */
 

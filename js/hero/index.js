@@ -20,16 +20,16 @@
      speed rather than the iPad arriving twice as fast.
    ========================================================================== */
 
-import { Vector3 } from '../vendor/three.slim.js?v=260828c';
-import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260828c';
-import { buildVilla, makeMaterials } from './villa.js?v=260828c';
-import { CHAPTERS, chapterAt, clamp01, doorAngle, evaluate } from './path.js?v=260828c';
+import { createRig, detectTier, hasWebGL, makeResizer } from './scene.js?v=260828e';
+import { buildWalk } from './walk.js?v=260828e';
+import { CHAPTERS, chapterAt, clamp01 } from './path.js?v=260828e';
 
-/* photos.js is still in this folder but is deliberately not imported. It put
-   seven photographs on planes in front of the model, and the model is what the
-   owner wants back. To switch them on again: import buildPhotos from
-   './photos.js', build it after the villa, and swap the villa.visible line in
-   draw() back. Nothing else changed. See README → "The photographs". */
+/* The hero is now a walk through seven photographs of one house — see
+   walk.js. The modelled villa it used to fly through is still in this folder
+   (villa.js, path.js's camera keyframes, photos.js) and is not imported; the
+   camera choreography that drove it lives on only as the chapter boundaries
+   in path.js, which the walk uses to know which room it is in.
+   See README → "The hero". */
 
 const hero    = document.getElementById('hero');
 const stage   = document.getElementById('heroStage');
@@ -63,8 +63,17 @@ function boot() {
   }
 
   const { renderer, scene, camera, settings } = rig;
-  const mats = makeMaterials();
-  const { doorPivot } = buildVilla(scene, mats, settings);
+
+  // Nothing behind the photographs: they cover the frame, so a sky or a fog
+  // would only be a texture upload nobody ever sees.
+  scene.background = null;
+  scene.environment = null;
+  scene.fog = null;
+
+  // The walk. Photographs arrive one chapter ahead of where the visitor is,
+  // and each arrival has to wake a loop that has almost certainly already
+  // shut itself down.
+  const walk = buildWalk(scene, camera, () => wake());
 
   // Shared between the resizer (which decides how much wider a tall screen
   // needs to be) and the draw loop (which applies it to each shot's fov).
@@ -72,14 +81,12 @@ function boot() {
   const view = { fovScale: 1, portrait: false, dprScale: 1 };
   const resize = makeResizer(renderer, camera, settings, view);
 
-  const pos = new Vector3();
-  const look = new Vector3();
   let lastFov = 0;
 
   let target = 0;       // where the scroll says we should be
   let smooth = 0;       // where the camera actually is
   let lastChapter = -1;
-  let lastMoving = null, lastInside = null;
+  let lastMoving = null;
   let running = false;
   let visible = true;
   let lastTime = 0;
@@ -147,17 +154,17 @@ function boot() {
      stepping back up would guarantee that oscillation on any device sitting
      near the threshold.
 
-     Resolution goes first because it is the whole cost: this scene shades
-     millions of pixels a frame and its geometry is trivial by comparison. The
-     film grain goes second — a full-screen blend the compositor redoes every
-     time the canvas under it redraws, and the only thing here that can be
-     given up without changing the composition.
+     Resolution goes first because with the walk it is very nearly the only
+     cost: two textured quads shading several million pixels a frame, with no
+     lights and no shading model behind them. The film grain goes second — a
+     full-screen blend the compositor redoes every time the canvas under it
+     redraws, and the only other thing here that can be given up without
+     changing the composition.
 
-     Shadows are deliberately NOT on this list. They look like an obvious
-     saving and are not: the shadow map is baked exactly once (see scene.js,
-     shadowMap.autoUpdate = false), so per frame they cost one texture lookup,
-     while switching them off mid-scroll forces every material to recompile —
-     a visible stall, to fix a stall. ---- */
+     Texture size is deliberately NOT on this list. Dropping to the smaller
+     set mid-scroll would mean re-fetching and re-uploading every photograph
+     already seen: network, plus a GPU stall, spent to fix a stall. That
+     choice is made once at boot from the pointing device. ---- */
   const STEPS = [
     { dpr: 1,    grain: true  },   // as shipped
     { dpr: 0.78, grain: true  },   // ~40% fewer pixels
@@ -195,33 +202,25 @@ function boot() {
   }
 
   function draw() {
-    // Rebuilding the projection matrix on every frame for a hundredth of a
-    // degree is waste, so the focal length is quantised to 0.01° and only
-    // written when that lands on a new value.
-    //
-    // Quantised, and not compared against the last value with a tolerance:
-    // a tolerance is hysteresis, and hysteresis means the focal length at a
-    // given scroll position depends on which direction you arrived from. The
-    // difference is far too small to see, but "reverses exactly" is the whole
-    // premise of this hero, and rounding costs nothing.
-    const fov = Math.round(evaluate(smooth, pos, look) * view.fovScale * 100) / 100;
+    /* One focal length for the whole walk. The old hero changed it shot by
+       shot because it was composing a modelled scene; a photograph already
+       has the lens the photographer used baked into it, and changing ours on
+       top of that only distorts what they framed.
+
+       Still quantised and only written on a change: a tolerance would be
+       hysteresis, and hysteresis means the frame at a given scroll position
+       depends on which way you arrived. Far too small to see, but "reverses
+       exactly" is the premise of this hero and rounding costs nothing. */
+    const fov = Math.round(42 * view.fovScale * 100) / 100;
     if (fov !== lastFov) {
       lastFov = camera.fov = fov;
       camera.updateProjectionMatrix();
     }
-    camera.position.copy(pos);
-    camera.lookAt(look);
 
-    // Portrait framing: on the approach shots a phone's tall frame is nearly
-    // half empty sky, so the camera is tipped down a few degrees to bring the
-    // house up out of it. The tilt fades to nothing by the time we are through
-    // the door — indoors it would only buy us more floor.
-    if (view.portrait) {
-      const fade = 1 - clamp01(smooth / 0.6);
-      if (fade > 0) camera.rotateX(-0.14 * fade);
-    }
+    // The walk places the camera itself: it is the one thing that knows how
+    // far down the corridor a given scroll position is.
+    walk.update(smooth);
 
-    doorPivot.rotation.y = doorAngle(smooth);
     renderer.render(scene, camera);
     syncUI(smooth);
 
@@ -253,15 +252,17 @@ function boot() {
       hero.dataset.chapter = id;
     }
 
-    // Both of these were written on every single frame. classList.toggle with
-    // an unchanged value still touches the element, and touching an element
-    // that an ancestor of the canvas is composited with invites style work in
-    // the middle of the frame. Written only when they actually flip now.
+    /* This was written on every single frame. classList.toggle with an
+       unchanged value still touches the element, and touching an element that
+       an ancestor of the canvas is composited with invites style work in the
+       middle of the frame. Written only when it actually flips now.
+
+       There was a second flag beside it, `is-inside`, set when the old camera
+       crossed the front door at t > 0.55. Nothing has read it since that
+       camera was replaced by the walk — no stylesheet, no script — so it was
+       a class toggle and a comparison per scroll for nobody. Removed. */
     const moving = t > 0.015;
     if (moving !== lastMoving) { lastMoving = moving; hero.classList.toggle('is-moving', moving); }
-
-    const inside = t > 0.55;
-    if (inside !== lastInside) { lastInside = inside; hero.classList.toggle('is-inside', inside); }
   }
 
   /* ---- Wiring ---- */
@@ -299,7 +300,6 @@ function boot() {
   measure();
   readScroll();
   smooth = target;                       // no fly-in on a restored scroll position
-  renderer.shadowMap.needsUpdate = true; // bake the one and only shadow pass
   draw();
 
   // A second measure once layout has fully settled catches late-loading CSS.

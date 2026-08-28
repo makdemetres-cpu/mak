@@ -4,10 +4,13 @@ A static marketing and enquiry site for **Ermis' Villas**, a family-run business
 letting four private estates on the Greek coast. Plain HTML, CSS and JavaScript —
 no framework, no build step, no `npm install` needed to run or deploy it.
 
-The hero is a **scroll-driven 3D tour**: the camera travels up the drive, the
-front door opens, and the tour continues through the house, entirely under the
-visitor's control. It moves only while they scroll, stops exactly where they
-stop, and reverses exactly on the way back up.
+The hero is a **scroll-driven walk through the house**: seven photographs of one
+villa, standing in 3D space, with the camera moving continuously forward
+through them — out of the terrace, in through the sliding doors, on to the
+kitchen and the table and the bedroom. It is not a slideshow; where one room
+gives onto the next, the camera passes through the opening. It is entirely
+under the visitor's control: it moves only while they scroll, stops exactly
+where they stop, and reverses exactly on the way back up.
 
 ---
 
@@ -272,6 +275,21 @@ that is a courtesy against accidents, not a defence against anyone determined
 — client-side limits are trivially bypassed. If reviews start attracting junk,
 add rate limiting at Supabase and turn moderation on.
 
+### 13. ⚠️ Clear the hero photographs — `assets/img/walk/`, `js/data.js`
+
+The seven photographs the hero walks through came from a listing or an agency
+site. **Nobody has established who holds the rights to them**, and nothing has
+confirmed that the house in them is the Villa Kyma the hero names in the sky on
+its opening frame.
+
+Two separate exposures: copyright, and — if the house is not that estate — a
+misleading action under Law 2251/1994, because a guest choosing a villa on the
+strength of its pictures is exactly the decision that provision is about.
+
+Licence them and confirm the house, or replace them, or at minimum set
+`HERO_TITLE` to `''` so the site stops naming an estate it may not be showing.
+The full write-up is in **Photography** below.
+
 ---
 
 ## ⚠️ One find-and-replace before launch: the domain
@@ -400,110 +418,144 @@ automatically by GitHub Pages, Netlify, Vercel and Cloudflare Pages.
 
 ---
 
-## The 3D hero
+## The hero — a walk through the house
 
-`js/hero/` — four files, no model or texture downloads at all. The villa, its
-interior, the pool, the terrace and the planting are all built from primitives in
-code, and the sky is painted into a 512×256 canvas at runtime and used for the
-background, the image-based lighting and the reflections.
+`js/hero/`. The hero is **seven photographs of one house, walked through** —
+not a slideshow of them. Each photograph is a plane standing in a corridor in
+3D space, the camera moves continuously forward down that corridor, and where
+one room gives onto the next the camera passes *through* the opening rather
+than dissolving to it.
 
 | File | |
 |---|---|
-| `scene.js` | Renderer, camera, lights, environment, quality tiers, resize |
-| `villa.js` | All the geometry — shell, glazing, interior, grounds |
-| `path.js` | The camera choreography: 16 keyframes of position, target and focal length |
-| `photos.js` | The seven photographs, and the maths that makes each one fill the frame |
-| `index.js` | Binds scroll to the camera, drives the panels, handles fallbacks |
+| `scene.js` | Renderer, camera, quality tiers, resize |
+| `walk.js` | **The walk** — the route, the planes, the handovers, the title |
+| `path.js` | The seven chapters, and which one a given scroll position is in |
+| `index.js` | Binds scroll to the walk, drives the panels, handles fallbacks |
+| `villa.js`, `photos.js` | **Unwired.** The code-drawn villa and the older photo layer that preceded the walk. Nothing imports either. Kept because the hero has been switched between them twice; delete them if you are sure. |
 
-### The photographs — currently switched off
+### How the walk is built
 
-**The hero draws the modelled villa, not photographs.** Seven photographs were
-put in front of the model for a while and then taken back out at the owner's
-request; everything they need is still in the repository, working and intact,
-because they are meant to be replaced with real photographs later. Nothing
-loads them today — no page requests `js/hero/photos.js`, and no visitor
-downloads a single image from `assets/img/hero/`.
+The whole thing is three ideas.
 
-**To switch them back on**, three lines in `js/hero/index.js`:
+**One: every photograph is sized to cover the frame.** A plane at distance *d*
+from a camera with vertical field of view *θ* spans `2·d·tan(θ/2)`, so the
+plane is scaled from the live aspect ratio and fov every time the frame shape
+changes. That is `object-fit: cover` done in three dimensions, and it means no
+photograph is ever cropped on disk for framing — whatever a screen shape
+cannot fit falls outside the frustum. A phone held upright sees nearly the
+whole picture; a wide laptop sees a band through the middle.
 
-```js
-import { buildPhotos } from './photos.js?v=YYMMDD';        // with the other imports
-const photos = buildPhotos(scene, camera, () => wake());   // just after buildVilla
-villa.visible = !photos.update(smooth, view.fovScale);     // in draw(), before the door
-```
+They are sized at the **furthest** distance each is ever seen from, not at the
+distance it arrives at. Size for the arrival instead and there is a sliver of
+empty frame around the incoming photograph for exactly as long as the cut
+lasts — which is precisely when it is most visible.
 
-The third line needs `const { root: villa, doorPivot } = buildVilla(…)` rather
-than `const { doorPivot } = …`. The flat fallback's photographs are a separate
-switch — the `.hero--static .hero-panel[data-chapter=…]` background rules in
-`css/site.css`, removed at the same time. Two other things were tuned for the
-photographs and put back with the geometry: the film grain (`.hero__grain`,
-0.32 with the model, 0.16 with photographs in front of it) and the extra top
-and right-hand bands on `.hero__veil`, which existed so bone-white navigation
-stayed readable over pale photography.
+**Two: the camera walks at one speed and never stops.** `camera.position.z =
+ARRIVE − (chapter + local) · SPACING`. One line, no easing of its own; the
+damping in `index.js` is what makes it feel operated rather than dragged, and
+easing it twice only makes it soggy. `SPACING` sets the magnification as well
+as the distance: 12 / (12 − 6.6) = **2.2× by the end of a chapter**. Larger and
+the outgoing photograph is a crop of a crop; smaller and it stops feeling like
+walking and starts feeling like leaning.
 
-The rest of this section describes how they worked, for whoever turns them
-back on.
+**Three: the outgoing photograph leaves rather than fades.** This is the whole
+difference between a walk and a slideshow, and it took a double exposure on
+screen to see why. Fading one photograph over another is a crossfade whichever
+one you fade — at fifty percent it is simply two rooms on top of each other.
+So over the last tenth of a chapter the outgoing frame *races the camera*,
+roughly two and a half times its size again, and its edges fly out past the
+frame while it goes. What is left is the next room, already whole, seen through
+the last of the one you are walking out of. The blend reads as the blur of
+moving rather than as a fade.
 
-Seven photographs stood in for the modelled surfaces, one per chapter, in the
-order the camera meets them: the house across the pool, the approach at dusk,
-the front door, the great room, the kitchen, the fire, and a bedroom over the
-water. The camera move underneath was unchanged — same keyframes, same door,
-same scroll binding.
+Depth testing is off, so the planes are drawn strictly in the order given and
+that order runs from the back of the corridor forward — nearest last, on top.
+Get it the other way round and the room you are walking *towards* paints over
+the one you are still inside.
 
-Each one is a plane placed on the camera's own view axis and sized, every
-frame, from the live field of view, aspect ratio and distance so that it
-covers the frame exactly. That is `object-fit: cover` done in three
-dimensions, and it has one consequence worth understanding:
+### The route
 
-> **No photograph is ever cropped on disk for framing.** Whatever a given
-> screen shape cannot fit simply falls outside the frustum. A phone held
-> upright sees very nearly the whole picture; a wide laptop sees a band
-> through the middle of it.
+`SHOTS` at the top of `walk.js`, in walking order, one per chapter. Each row
+carries an `aim`: the point in the frame the camera walks toward over that
+chapter, in units of half the plane. It is the one judgement call per
+photograph — where the doorway is — and each row says in a comment what it is
+aiming at.
 
-Which band is the `focus` value in the table at the top of `photos.js`. It
-slides the picture up the frame, so **positive shows more of the bottom of the
-photograph and negative shows more of the top**. Each value has a comment
-saying what it is protecting — the horizon in the bedroom, the pendants in the
-kitchen. Change one, reload, look.
+The order is **not** the order the files are numbered in. The kitchen (`06`)
+comes before the dining table (`05`), because the fifth chapter of the copy is
+"a chef in your kitchen, not ours" and the sixth is a long table. They adjoin
+in this house, so the route is no less true for it.
 
-Each photograph dissolves in **on top of** the one before it, which holds at
-full opacity underneath until it is completely covered. Fading one out while
-fading the other in would let a quarter of the model show through between
-them, and the join reads as a double exposure. While a photograph is covering
-the frame outright the villa behind it is switched off, taking the frame from
-about forty-three draw calls to two; it returns the instant anything could be
-seen through, so a photograph that fails to load leaves the modelled villa
-standing in its place.
+### The name behind the building
 
-### Replacing or re-cropping the photographs
+On the opening frame only, the name of the house is set into the sky **behind
+the building** — the roofline genuinely passes in front of the type — and fades
+as the visitor starts to walk.
 
-The originals live in `assets/` exactly as they were uploaded.
-`tools/hero-photos.py` is the only thing that writes to `assets/img/hero/` —
-edit it and re-run rather than hand-editing the output:
+There is no depth trick and no mask in the shader. `tools/villa-walk.py` writes
+one extra file, `01-cut.png`: the opening photograph with the sky knocked out
+to transparency. The hero then draws three layers in order — the photograph,
+the name on a canvas, and the cut-out on top. Anything the name overlaps that
+is *not* sky is painted back over it.
+
+The sky is found rather than hand-masked: it is the only large region that is
+strongly blue and bright (`b − r > 38` and `b > 110`). The pool passes that
+test too, so the mask is then run through `np.logical_and.accumulate` down each
+column, keeping only the run of sky that reaches the top of the frame.
+Everything below the roofline is excluded by construction rather than by
+another colour rule that could misfire.
+
+The name comes from `window.EV.HERO_TITLE` in `js/data.js`. **It must be the
+name of the house that is actually in the photographs** — see **Photography**
+below, because right now it is not established that it is. Set it to an empty
+string and no name is drawn.
+
+### The seven photographs — live, and not cleared
+
+They are in `assets/img/walk/`, written by `tools/villa-walk.py` from the
+originals in `assets/`:
 
 ```bash
-pip install Pillow
-python3 tools/hero-photos.py
+pip install Pillow numpy
+python3 tools/villa-walk.py
 ```
 
-It trims two watermarks (the crop boxes are measured, and commented with the
-row numbers), upscales, and writes WebP and JPEG at two sizes. **If you upload
-larger originals, set the scale factors in `SIZES` to 1** — the upscale exists
-only to compensate for 736px sources, and upscaling something already large
-just spends video memory.
+WebP and JPEG at two widths, 1600 and 900. Which set a visitor gets turns on
+the pointing device rather than the 3D quality tier: video memory is the
+constraint rather than bandwidth, because a texture costs width × height × 4
+bytes whatever the file weighed. Photographs load one chapter ahead of where
+the visitor is, so somebody who never scrolls never fetches six of them.
 
-Which set a visitor gets turns on the pointing device, not on the 3D quality
-tier next door: a mouse means a machine with the memory for seven 1288px
-textures at roughly 10MB each, a finger means a phone where that would be 70MB
-and a reloaded tab. Textures load one chapter ahead of where the visitor is,
-so somebody who never scrolls never downloads six of them.
+**⚠️ Their rights are not sorted out. See Photography below before launch.**
+
+### The older photo layer — switched off
+
+Before the walk there was a modelled villa built entirely from primitives in
+code, and then a layer that hung seven photographs of seven *different* houses
+in front of it. Both are still in the repository, working and intact —
+`js/hero/villa.js`, `js/hero/photos.js`, `path.js`'s `KEYS` camera spline, and
+their processed images in `assets/img/hero/` — and **nothing imports any of
+it.** No page requests them and no visitor downloads a byte of them.
+
+They are kept because this hero has now been switched between geometry and
+photographs twice, so having the other option one import away has been worth
+more than the 50KB of unreferenced JavaScript and 5MB of unreferenced images it
+costs. If you are certain the walk is the answer, deleting them is safe and
+`git log` remembers them. If you switch back to the modelled villa, note that
+`CHAPTERS` in `path.js` is no longer cut to the beats of that camera spline —
+it is seven equal shares now, for the walk — so the two would need re-matching.
+
+The old seven have a rights problem of their own, and they are seven different
+houses rather than seven rooms of one. See **Photography**.
+
 
 ### How the scroll binding works
 
 `.hero__stage` is a 640vh scroll track with a `position: sticky` viewport inside
 it. Progress through that track is a single number, `t`, from 0 to 1, and the
-camera is a pure function of `t` — interpolated along a Catmull-Rom spline
-through the keyframes in `path.js`.
+camera is a pure function of `t` — one multiplication in `walk.js`, with no
+timeline, no playhead and no autoplay anywhere in the file.
 
 Because it is a function rather than a timeline:
 
@@ -520,11 +572,16 @@ fast.
 - **Rendering is strictly on demand.** When the camera has settled, the render
   loop shuts down entirely — measured at **0 draw calls** while a visitor sits
   still. A parked page costs no GPU and no battery.
-- **The shadow map is baked once**, not every frame, because nothing in the
-  scene moves except the front door.
-- **Repeated geometry is instanced** — slats, stair treads, bottles, mullions,
-  trees, shrubs are one draw call each rather than hundreds.
-- Measured on the mobile tier: **~43 draw calls and ~4k triangles per frame.**
+- **The scene is two textured quads.** At most one chapter and the one behind
+  it are on screen, so the geometry cost is **two draw calls and four
+  triangles** — against roughly forty-three draw calls for the modelled villa
+  this replaced. There are no lights, no shadows, no environment map and no
+  fog; a `MeshBasicMaterial` does not shade.
+- **Photographs are fetched one chapter ahead**, never all seven, and never at
+  the desktop size on a phone. Video memory is the real constraint here:
+  a texture costs width × height × 4 bytes whatever the file weighed.
+- Mipmaps are off. These planes are only ever seen at or above 1:1, so a
+  mipmap chain would be built, uploaded, and never sampled.
 
 **Quality is tiered at boot and then checked.** `detectTier()` in
 `js/hero/scene.js` guesses from core count and pointer type, which is all a
@@ -545,15 +602,15 @@ It steps **down only**. Adapting in both directions is what makes a hero
 visibly pop between sharp and soft the first time a phone warms up; one
 direction means it settles once and stays there.
 
-Resolution goes first because it is the whole cost — this scene shades
-millions of pixels a frame and its geometry is trivial by comparison. The film
-grain goes second: `mix-blend-mode` over the full frame is re-composited every
-time the canvas under it redraws, which in a scroll-driven hero is every frame.
+Resolution goes first because with the walk it is very nearly the *only* cost:
+two quads shading several million pixels a frame. The film grain goes second:
+`mix-blend-mode` over the full frame is re-composited every time the canvas
+under it redraws, which in a scroll-driven hero is every frame.
 
-**Shadows are deliberately not on that list**, despite looking like the obvious
-saving. The shadow map is baked exactly once, so per frame they cost one
-texture lookup — while switching them off mid-scroll forces every material to
-recompile, which is a visible stall spent to fix a stall.
+**Texture size is deliberately not on that list.** Dropping to the smaller set
+mid-scroll would mean re-fetching and re-uploading every photograph the visitor
+has already seen — network and a GPU stall, spent to fix a stall. The choice is
+made once at boot, from the pointing device.
 
 Two other things that were quietly expensive and are now not: the grain used to
 be `inset: -50%`, four times the area of the viewport to show one screen's
@@ -572,18 +629,25 @@ image is only fetched when it lands on something that renders, so a visitor who
 gets the real hero never downloads one of them, whereas a hidden `<img>` would
 be downloaded by everybody. All three paths are tested.
 
-### Editing the tour
+### Editing the walk
 
-Everything about the move is the `KEYS` table at the top of `path.js` — one row
-per shot: `[t, posX, posY, posZ, lookX, lookY, lookZ, fov]`. Position and target
-are on separate splines so the camera can turn independently of where it is
-travelling. `CHAPTERS` below it maps ranges of `t` to the copy panels in
-`index.html`, matched by `data-chapter`.
+Four dials, all at the top of `walk.js`, and one table.
 
-Watch out for two things when moving keyframes: the camera must not pass through
-solid geometry (the stairwell void in `villa.js` exists precisely so it can climb
-to the landing), and the spline can overshoot slightly past a keyframe, so leave
-clearance.
+| | |
+|---|---|
+| `SHOTS` | The route. One row per chapter: which photograph, and the `aim` point the camera walks toward in it. |
+| `SPACING` | How far the camera walks per chapter — so also the magnification. 6.6 of a 12 arrival distance is 2.2×. |
+| `HANDOVER` | How much of a chapter the cut occupies, as a fraction. 0.10. Short on purpose: this is a cut made at speed, not a dissolve. |
+| `EXIT` | How hard the outgoing photograph races the camera as it leaves. Turn this to 0 and the walk becomes a crossfade — which is exactly what it is there to prevent. |
+
+**`CHAPTERS` in `path.js` is the one source of truth for which chapter a given
+scroll position is in**, and `walk.js` asks it rather than working it out. That
+matters: for one build they each had their own arithmetic — uneven bands in
+`path.js`, equal sevenths in `walk.js` — and the two silently drifted apart, so
+by halfway down the panel read *"Four houses. All of them ours."* over a
+photograph of the living room. If you change the number of chapters, change it
+there, add the matching `data-chapter` panel in `index.html`, add a row to
+`SHOTS`, and add a background rule for the flat fallback in `css/site.css`.
 
 ---
 
@@ -656,17 +720,62 @@ never as a `<script>` in the page, or the consent gate becomes decorative.
 
 ## Photography
 
-**None, currently.** The site is drawn or built in code throughout: the hero is
-the modelled villa, the estates are hairline drawings of their settings, and
-the contact page's map of the four locations is a drawing rather than a map
-service. Seven photographs were in the hero for a while and have been taken
-back out — see **The 3D hero → The photographs** for what they were and how to
-switch them on again.
+**⚠️ The photographs now in the hero are not cleared for publication. This is a
+launch blocker, not a nice-to-have.**
 
-### ⚠️ If you switch them back on, these seven need their rights sorted out
+The site is otherwise drawn or built in code: the estates are hairline drawings
+of their settings, and the contact page's map of the four locations is a drawing
+rather than a map service. The hero is the exception.
 
-They were supplied as uploads, and two of them arrived carrying somebody
-else's mark:
+### The seven in the hero — `assets/img/walk/`
+
+Seven photographs of what appears to be one house, supplied as uploads and
+described as **taken from a listing or an agency site**. Two things follow from
+that, and both need settling before this goes anywhere near a paying guest.
+
+**1. Nobody has established who owns them.** A photograph on a listing site
+belongs to whoever shot it — usually the agency's photographer, occasionally the
+owner, essentially never the person who downloaded it. That the pictures are
+publicly visible on a listing is not a licence to republish them on a competing
+commercial site, and "we found them online" is not a defence to a copyright
+claim. Either obtain written permission from whoever holds the rights, or
+commission your own. `tools/villa-walk.py` regenerates everything from whatever
+sits in `assets/`, so swapping the originals and re-running is the whole job.
+
+**2. The hero now names a specific house.** `window.EV.HERO_TITLE` in
+`js/data.js` is set to **Villa Kyma**, and that name is drawn into the sky
+behind the building on the opening frame. Nothing has confirmed that the house
+in these photographs *is* the Villa Kyma described elsewhere on this site — the
+one in Agios Lazaros with six bedrooms, a 60m pool and a screening room. If it
+is not, the homepage is showing one property under another property's name.
+
+Under Law 2251/1994 and the Unfair Commercial Practices Directive that is a
+**misleading action**: information that is factually false, or that deceives the
+average consumer about the main characteristics of the service, and causes them
+to take a decision they would not otherwise have taken. Booking a villa on the
+strength of its pictures is exactly that decision. It is also the practical
+problem — guests compare photographs to what they arrive at, and the AADE
+registry number on each listing is a promise about one specific property.
+
+So, before launch, one of:
+
+- **Confirm these are Villa Kyma, and licence them.** Everything then stands as
+  built, and the name behind the building is true.
+- **Licence them but they are a different house.** Then set `HERO_TITLE` to `''`
+  so no name is drawn, and make sure nothing else on the page implies the hero
+  is any particular estate.
+- **Replace them with photographs of an estate you actually let** — the real
+  answer, and the one that also fills the gaps below.
+
+When real photographs exist, the natural places for them beyond the hero are the
+estate rows on the homepage and a gallery on each estate's own page, which does
+not exist yet.
+
+### The older seven — `assets/img/hero/`, unused
+
+The set that preceded the walk. **Nothing on the live site loads these**, so the
+question is not urgent, but it is not resolved either. Two of them arrived
+carrying somebody else's mark:
 
 | | |
 |---|---|
@@ -676,22 +785,12 @@ else's mark:
 Both marks were trimmed off the processed versions, on request. **A trimmed
 watermark is not a licence.** Removing it changes what the picture looks like
 and nothing about who owns it, and a visible credit is usually evidence that
-somebody expected to be credited. Nothing on the live site loads these today,
-so the question is not urgent — but before any of them goes back into the
-hero, either establish that you hold the rights to all seven, or replace them.
-`tools/hero-photos.py` regenerates everything from whatever is in `assets/`,
-so swapping the originals and re-running is the whole job.
+somebody expected to be credited.
 
-Worth knowing as well: they are seven different houses, not seven rooms of one.
-The front door in photographs 2 and 3 carries a street number, `28`, that
-belongs to neither. Guests do compare photographs to what they arrive at, and
-the AADE registry number on each listing is a promise about a specific
-property. Photographs of the four estates you actually let are the real answer
-here; these are a good-looking placeholder.
-
-When those real photographs exist, the natural places for them beyond the hero
-are the estate rows on the homepage and a gallery on each estate's own page,
-which does not exist yet.
+They are also seven different houses rather than seven rooms of one — the front
+door in photographs 2 and 3 carries a street number, `28`, that belongs to
+neither. If they are never going back in, deleting `assets/img/hero/` and
+`tools/hero-photos.py` removes about 5MB and the question with it.
 
 ---
 

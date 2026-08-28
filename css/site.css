@@ -236,16 +236,22 @@ body.menu-open .menu__foot { opacity: 1; }
 /* Scrim. On desktop it darkens the left third so the copy sits on something;
    on mobile it darkens the bottom instead, because that is where the copy
    goes. Two different designs, not one design scaled. */
-/* The top and right-hand bands that used to be here went in for the
-   photographs: several of them were pale cream across the top of frame and the
-   bone-white navigation was disappearing into a kitchen ceiling. The modelled
-   villa never needed them — it is a dark scene — and they only dimmed the
-   frame, so they came out with the photographs. */
+/* The top band is back, because the photographs are. The header is
+   transparent over the hero and its links are bone-white, and this house is
+   white render under a bright sky — without it the navigation dissolves into
+   a wall. It went out when the modelled villa returned, which is a dark
+   scene that never needed it; it comes back with the photography.
+
+   Shallow and soft, so it reads as the top of the frame darkening rather
+   than as a bar, and it is also what gives the villa's name in the sky
+   something to sit against. */
 .hero__veil {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
+    linear-gradient(to bottom, rgba(10, 12, 9, 0.58) 0%, rgba(10, 12, 9, 0.26) 9%,
+                               rgba(10, 12, 9, 0) 22%),
     linear-gradient(to top, rgba(10, 12, 9, 0.88) 0%, rgba(10, 12, 9, 0.4) 30%, rgba(10, 12, 9, 0) 58%),
     radial-gradient(130% 95% at 50% 42%, rgba(10, 12, 9, 0) 55%, rgba(10, 12, 9, 0.4) 100%);
 }
@@ -474,6 +480,63 @@ body.menu-open .menu__foot { opacity: 1; }
   padding-top: 3.25rem;
   border-top: 1px solid var(--ink-line);
 }
+
+/* ---- The walk, for anyone not getting the walk ----
+   No WebGL, reduced motion asked for, or JavaScript off. The same seven
+   photographs in the same order, as a plain stack.
+
+   Declared here and nowhere else on purpose: a CSS background is only
+   fetched when it lands on an element that actually renders, so a visitor
+   who gets the real hero never requests one of these. That is why they are
+   backgrounds rather than <img> tags — a hidden <img> would be downloaded by
+   everybody. Plain JPEG, not WebP: this is the path that exists for browsers
+   that cannot do things, so it is the wrong place to be clever. */
+.hero--static .hero-panel,
+.no-js .hero-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--radius);
+  padding: clamp(1.75rem, 5vw, 3rem);
+  min-height: clamp(20rem, 32vw, 27rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-width: 54rem;
+  background-color: var(--ink-raised);
+  background-size: cover;
+  background-position: center 45%;
+}
+.hero--static .hero-panel::before,
+.no-js .hero-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(10, 12, 9, 0.94) 0%,
+                                      rgba(10, 12, 9, 0.76) 48%,
+                                      rgba(10, 12, 9, 0.46) 100%);
+}
+.hero--static .hero-panel + .hero-panel,
+.no-js .hero-panel + .hero-panel {
+  margin-top: 1.25rem;
+  padding-top: clamp(1.75rem, 5vw, 3rem);
+  border-top: 0;
+}
+.hero--static .hero-panel[data-chapter="brand"],
+.no-js .hero-panel[data-chapter="brand"]      { background-image: url(../assets/img/walk/01-sm.jpg); }
+.hero--static .hero-panel[data-chapter="booking"],
+.no-js .hero-panel[data-chapter="booking"]    { background-image: url(../assets/img/walk/02-sm.jpg); }
+.hero--static .hero-panel[data-chapter="estates"],
+.no-js .hero-panel[data-chapter="estates"]    { background-image: url(../assets/img/walk/03-sm.jpg); }
+.hero--static .hero-panel[data-chapter="arrival"],
+.no-js .hero-panel[data-chapter="arrival"]    { background-image: url(../assets/img/walk/04-sm.jpg); }
+.hero--static .hero-panel[data-chapter="chef"],
+.no-js .hero-panel[data-chapter="chef"]       { background-image: url(../assets/img/walk/06-sm.jpg); }
+.hero--static .hero-panel[data-chapter="experience"],
+.no-js .hero-panel[data-chapter="experience"] { background-image: url(../assets/img/walk/05-sm.jpg); }
+.hero--static .hero-panel[data-chapter="concierge"],
+.no-js .hero-panel[data-chapter="concierge"]  { background-image: url(../assets/img/walk/07-sm.jpg); }
 
 /* --------------------------------------------------------------------------
    4. Story

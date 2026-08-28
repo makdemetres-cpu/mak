@@ -215,3 +215,23 @@ window.EV.SEED_REVIEWS = [
    nothing is read or stored at all.
    -------------------------------------------------------------------------- */
 window.EV.TRACK_CAMPAIGN = true;
+
+/* --------------------------------------------------------------------------
+   The hero
+   --------------------------------------------------------------------------
+   The homepage hero is a walk through seven photographs of ONE house, and
+   this is the name that stands behind the building on the opening frame —
+   set into the sky, with the roofline passing in front of it, fading out as
+   the visitor scrolls on.
+
+   It must be the name of the house that is actually in the photographs.
+   Naming one estate and showing another is a misleading action under Law
+   2251/1994, and it is also how a guest arrives somewhere that does not
+   match the pictures. Empty string and no name is drawn.
+
+   ⚠️  The photographs currently in assets/img/walk/ came from a listing or
+   agency site and are NOT cleared for publication, and the house in them is
+   not necessarily the Villa Kyma described elsewhere on this site. See
+   README.md → "Photography" before this goes anywhere near a paying guest.
+   -------------------------------------------------------------------------- */
+window.EV.HERO_TITLE = 'Villa Kyma';
