@@ -611,15 +611,22 @@ fast.
 ### Why it doesn't lag
 
 - **Rendering is strictly on demand.** When the camera has settled, the render
-  loop shuts down entirely — measured at **0 draw calls** while a visitor sits
-  still. A parked page costs no GPU and no battery.
-- **The scene is two textured surfaces.** At most one chapter and the one
-  behind it are on screen, so the geometry cost is **two draw calls** and
-  about 5,000 triangles — against roughly forty-three draw calls for the
-  modelled villa this replaced. There are no lights, no shadows, no
-  environment map and no fog; a `MeshBasicMaterial` does not shade. The
-  displacement that gives each photograph its depth is computed once when the
-  image loads, not per frame.
+  loop shuts down entirely — instrumented and measured at **0 frames over 2.5
+  seconds** of sitting still, on both a desktop and a phone viewport. A parked
+  page costs no GPU and no battery. Worth re-checking if you ever add
+  something that mutates the scene, because it is the kind of guarantee that
+  is silently lost rather than loudly broken.
+- **The scene is one textured surface, briefly two.** Measured with
+  `renderer.info`: **1 draw call and 2,592 triangles** walking through a
+  chapter, doubling to 2 and 5,184 for the tenth of a chapter a handover
+  lasts — against roughly forty-three draw calls for the modelled villa this
+  replaced. There are no lights, no shadows, no environment map and no fog; a
+  `MeshBasicMaterial` does not shade. The displacement that gives each
+  photograph its depth is computed once when the image loads, not per frame.
+- **This scene is fill-rate bound, not geometry bound**, which is why the
+  governor gives up resolution first and why 2,592 triangles is not worth
+  optimising. Two textured quads shading a million-odd pixels a frame is the
+  entire cost.
 - **Photographs are fetched one chapter ahead**, never all seven, and never at
   the desktop size on a phone. Video memory is the real constraint here:
   a texture costs width × height × 4 bytes whatever the file weighed.
