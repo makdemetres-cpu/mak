@@ -4,13 +4,13 @@ A static marketing and enquiry site for **Ermis' Villas**, a family-run business
 letting four private estates on the Greek coast. Plain HTML, CSS and JavaScript —
 no framework, no build step, no `npm install` needed to run or deploy it.
 
-The hero is a **scroll-driven walk through the house**: seven photographs of one
-villa, standing in 3D space, with the camera moving continuously forward
-through them — out of the terrace, in through the sliding doors, on to the
-kitchen and the table and the bedroom. It is not a slideshow; where one room
-gives onto the next, the camera passes through the opening. It is entirely
-under the visitor's control: it moves only while they scroll, stops exactly
-where they stop, and reverses exactly on the way back up.
+The hero is a **scroll-driven flight through the villa**: the camera travels up
+the drive, out over the pool, the front door opens, and the tour continues
+through the house and up the stair. The villa is built entirely in code — and
+every surface on it is a patch cut from photographs of the real house, so the
+shapes are modelled and the substance is photographic. It is entirely under the
+visitor's control: it moves only while they scroll, stops exactly where they
+stop, and reverses exactly on the way back up.
 
 ---
 
@@ -418,178 +418,133 @@ automatically by GitHub Pages, Netlify, Vercel and Cloudflare Pages.
 
 ---
 
-## The hero — a walk through the house
+## The hero — the villa, wearing the photographs
 
-`js/hero/`. The hero is **seven photographs of one house, walked through** —
-not a slideshow of them. Each photograph is a plane standing in a corridor in
-3D space, the camera moves continuously forward down that corridor, and where
-one room gives onto the next the camera passes *through* the opening rather
-than dissolving to it.
+`js/hero/`. The hero is a **scroll-driven flight through a modelled villa**:
+up the drive, out over the pool, the front door swings open, through the
+threshold, past the table and the island, into the double-height room, and up
+the floating stair to look back out over the water. The house, its interior,
+the pool, the terrace and the planting are all built from primitives in code —
+no model files, no downloads.
+
+**Not one surface on it is a flat colour.** Every material the model wears is
+a patch cut out of the photographs of the real house: its render, its stone,
+its timber, its floors, its water, its planting. The shapes are the model's;
+the substance is photographic.
 
 | File | |
 |---|---|
-| `scene.js` | Renderer, camera, quality tiers, resize |
-| `walk.js` | **The walk** — the route, the planes, the handovers, the title |
-| `path.js` | The seven chapters, and which one a given scroll position is in |
-| `index.js` | Binds scroll to the walk, drives the panels, handles fallbacks |
-| `villa.js`, `photos.js` | **Unwired.** The code-drawn villa and the older photo layer that preceded the walk. Nothing imports either. Kept because the hero has been switched between them twice; delete them if you are sure. |
+| `scene.js` | Renderer, camera, sky, lighting, quality tiers, resize |
+| `villa.js` | All the geometry — shell, glazing, interior, grounds |
+| `path.js` | The camera choreography: 16 keyframes of position, target and focal length, plus the chapters |
+| `skin.js` | **The photographic surfaces** — which patch goes on which material, at what scale |
+| `index.js` | Binds scroll to the camera, drives the panels, handles fallbacks |
+| `photos.js`, `walk.js` | **Unwired.** Two earlier heroes that put the photographs on planes in front of the camera. Nothing imports either; kept because this hero has changed direction more than once. |
 
-### How the walk is built
+### Cutting the surfaces out of the photographs
 
-The whole thing is four ideas, and the first of them is the one that took
-three attempts to get right.
-
-**One: a photograph is not a flat card.** Moving a camera at a flat card does
-not look like walking, it looks like zooming, because every part of the
-picture grows at exactly the same rate. What the eye reads as movement through
-a space is *parallax* — near things sliding past faster than far things — and
-a flat card has none of it, which is why the first two versions of this hero
-read as a slideshow however cleverly the transitions were timed.
-
-So each photograph is projected onto a shallow open box: a floor running away
-to the horizon, a wall down either side, a ceiling where the picture has one.
-The camera moves into that box and everything parallaxes correctly, because
-the geometry is correct. In the opening shot the stone wall on the right
-genuinely sweeps past the lens while the house barely grows, which is what
-walking down that terrace would actually do to your eyes.
-
-The obvious alternative — cutting each photograph into three or four flat
-layers at different depths — is what produces the cardboard-cutout look, since
-the cuts are real discontinuities and the eye finds them immediately. There is
-not one cut in this surface. It is a single continuous displaced grid, so
-there is no edge to catch on. What shapes it is five numbers per photograph in
-the `SHOTS` table, each a judgement about what is actually in that picture:
-where the horizon is, how near the floor comes, how near each side wall comes,
-and how much ceiling there is. They are not symmetric, deliberately — see the
-note on `wall` in the table.
-
-**Two: every photograph is sized to cover the frame.** A plane at distance *d*
-from a camera with vertical field of view *θ* spans `2·d·tan(θ/2)`, so it is
-scaled from the live aspect ratio and fov whenever the frame shape changes.
-That is `object-fit: cover` done in three dimensions, and it means no
-photograph is ever cropped on disk for framing — whatever a screen shape
-cannot fit falls outside the frustum. Sizing is measured on the *flat* plane
-at the furthest distance the picture is ever seen from; since the surface is
-displaced only toward the camera and never away, that is a safe bound for
-every point on it.
-
-**Three: the camera walks at one speed and never stops.**
-`camera.position.z = ARRIVE − (chapter + advance) · SPACING`. One line, no
-easing of its own; the damping in `index.js` is what makes it feel operated
-rather than dragged. `SPACING` sets the magnification as well as the distance:
-12 / (12 − 6.6) = **2.2× by the end of a chapter**.
-
-The single exception is the last chapter, which walks a little over half as
-far and decelerates to rest, because it is the one chapter with nothing to
-hand over to. At full stride it ended with the bedroom enlarged past 200% and
-softening into a blur — flying into a wall, as the last thing anyone sees of
-the house.
-
-**Four: the room opens rather than dissolving.** Pushing a camera into a
-photograph does not get you out of it: the far wall is a picture of a far
-wall, and walking at it just makes it a bigger picture of a far wall. So over
-the handover two things happen at once, and neither is a fade.
-
-- An **aperture** grows outward from the point being walked toward. What is
-  straight ahead gives way first and the next room shows through it. This is
-  per-vertex alpha, animated on the CPU over ~1,300 vertices for the tenth of
-  a chapter a handover lasts, which costs nothing.
-- The outgoing surface **races the camera** (`EXIT`), so its near floor and
-  walls cross the near plane and are clipped away. They leave by passing you.
-
-Between the two there is nothing left to dissolve, and `material.opacity`
-never moves off 1 for the whole walk.
-
-The aperture is measured against **what is on screen**, not against the
-photograph, and that distinction cost a build. By the handover the camera is
-close enough that the visible part of the picture is only its middle sixth or
-so; an aperture sized against the photograph therefore has its entire soft
-edge spread across the whole screen — which is a crossfade, arrived at from a
-completely different direction. `openTo()` takes the on-screen radius as an
-argument for this reason.
-
-Depth testing is off, so the surfaces draw strictly in the order given, and
-that order runs from the back of the corridor forward — nearest last, on top.
-Get it the other way round and the room you are walking *towards* paints over
-the one you are still inside. It stays off now that the surfaces have real
-depth: within one surface nothing overlaps itself in screen space, and between
-surfaces the order is exactly the walking order.
-
-### The route
-
-`SHOTS` at the top of `walk.js`, in walking order, one per chapter. Each row
-carries an `aim`: the point in the frame the camera walks toward over that
-chapter, in units of half the plane. It is the one judgement call per
-photograph — where the doorway is — and each row says in a comment what it is
-aiming at.
-
-The order is **not** the order the files are numbered in. The kitchen (`06`)
-comes before the dining table (`05`), because the fifth chapter of the copy is
-"a chef in your kitchen, not ours" and the sixth is a long table. They adjoin
-in this house, so the route is no less true for it.
-
-### The name behind the building
-
-On the opening frame only, the name of the house is set into the sky **behind
-the building** — the roofline genuinely passes in front of the type — and fades
-as the visitor starts to walk.
-
-There is no depth trick and no mask in the shader. `tools/villa-walk.py` writes
-one extra file, `01-cut.png`: the opening photograph with the sky knocked out
-to transparency. The hero then draws three layers in order — the photograph,
-the name on a canvas, and the cut-out on top. Anything the name overlaps that
-is *not* sky is painted back over it.
-
-The sky is found rather than hand-masked: it is the only large region that is
-strongly blue and bright (`b − r > 38` and `b > 110`). The pool passes that
-test too, so the mask is then run through `np.logical_and.accumulate` down each
-column, keeping only the run of sky that reaches the top of the frame.
-Everything below the roofline is excluded by construction rather than by
-another colour rule that could misfire.
-
-The name comes from `window.EV.HERO_TITLE` in `js/data.js`. **It must be the
-name of the house that is actually in the photographs** — see **Photography**
-below, because right now it is not established that it is. Set it to an empty
-string and no name is drawn.
-
-### The seven photographs — live, and not cleared
-
-They are in `assets/img/walk/`, written by `tools/villa-walk.py` from the
-originals in `assets/`:
+`tools/villa-skin.py` writes fourteen tiles into `assets/img/skin/` — about
+300KB in total, and roughly 4MB of video memory across the whole villa.
 
 ```bash
-pip install Pillow numpy
-python3 tools/villa-walk.py
+pip install pillow numpy
+python3 tools/villa-skin.py
 ```
 
-WebP and JPEG at two widths, 1600 and 900. Which set a visitor gets turns on
-the pointing device rather than the 3D quality tier: video memory is the
-constraint rather than bandwidth, because a texture costs width × height × 4
-bytes whatever the file weighed. Photographs load one chapter ahead of where
-the visitor is, so somebody who never scrolls never fetches six of them.
+Each one is a crop of a photograph put through three steps, and every step is
+there because skipping it produced something visibly wrong on screen:
 
-**⚠️ Their rights are not sorted out. See Photography below before launch.**
+1. **Crop** a region that is only the material. The boxes are fractions of the
+   source, so they survive a re-export at a different size. A crop that
+   strays one percent into a window reveal puts a hard dark band in the tile,
+   and a hard band repeated across a wall is the most conspicuous thing in the
+   frame — so the tool measures the large-scale spread of each crop and warns
+   when it looks like it is straddling two different things. That check exists
+   because four bad tiles got through three rounds of judging them by eye.
 
-### The older photo layer — switched off
+2. **Flatten** the lighting out of it. A photograph of a wall in Mykonos at
+   midday has the sun baked into it, one edge bright and the other in shadow;
+   tile that and you get a repeating gradient that reads as corduroy. Each
+   patch is divided by a blurred copy of its own luminance — on luminance
+   only, so the colour survives — then pulled most of the way to its own mean
+   for the plain materials. **That second step is the difference between
+   plaster and wallpaper**, and there is more on why below.
 
-Before the walk there was a modelled villa built entirely from primitives in
-code, and then a layer that hung seven photographs of seven *different* houses
-in front of it. Both are still in the repository, working and intact —
-`js/hero/villa.js`, `js/hero/photos.js`, `path.js`'s `KEYS` camera spline, and
-their processed images in `assets/img/hero/` — and **nothing imports any of
-it.** No page requests them and no visitor downloads a byte of them.
+3. **Make it tile.** By wrapping the patch onto itself and cross-fading, not
+   by mirroring it.
 
-They are kept because this hero has now been switched between geometry and
-photographs twice, so having the other option one import away has been worth
-more than the 50KB of unreferenced JavaScript and 5MB of unreferenced images it
-costs. If you are certain the walk is the answer, deleting them is safe and
-`git log` remembers them. If you switch back to the modelled villa, note that
-`CHAPTERS` in `path.js` is no longer cut to the beats of that camera spline —
-it is seven equal shares now, for the walk — so the two would need re-matching.
+#### Why mirroring was wrong
 
-The old seven have a rights problem of their own, and they are seven different
-houses rather than seven rooms of one. See **Photography**.
+The obvious way to kill a seam is to mirror the patch into a 2×2 block, so
+every edge meets its own reflection. It works, it is two lines, and it was the
+first thing here.
 
+It also stamps a diamond of symmetry through the middle of every tile, and the
+eye finds regular symmetry faster than almost anything else. On screen the
+villa's ceilings and walls came out covered in repeating medallions — the
+interior looked like a room papered in a damask print, which sank the whole
+idea in one frame.
+
+So the patch is now rolled by half its width and blended with a raised cosine
+that falls to zero at the edges, then the same again vertically. Both edges of
+the result are the same 50/50 mixture of the same two neighbouring columns, so
+they match exactly, and nothing is reflected. The cost is a little softening
+where the fade is strongest, which on grain is invisible.
+
+### Scale, tint, and the two things that are not photographs
+
+**Repeat counts** are in `skin.js`, one per material. They are per material
+rather than per mesh, because a material is shared by every mesh that uses it,
+so each is a compromise chosen for the largest surface it lands on. Ground and
+sea get big numbers because those planes are 300 and 900 units across.
+
+**Tints are white** almost everywhere, because a `MeshStandardMaterial`
+multiplies its map by its colour and a map on a material that kept its old
+colour comes out doubly tinted and muddy. The exceptions are pairs the model
+needs to keep apart — dark timber from light, a shadowed stone wall from a
+sunlit one — and those are multiplied by a *neutral* grey, so they are the
+same photograph darker rather than the same photograph recoloured.
+
+Two deliberate departures, both documented in place:
+
+- **The planting** is the one place a tint is not neutral, and it needed the
+  saturation taken out of the pixels as well. The only greenery in the seven
+  photographs is a banana plant three feet from a window — a vivid, wet,
+  tropical green. An avenue of cypresses wearing it is a municipal park.
+- **Brass** has no source at all: every fitting in this house is stainless. The
+  door pull and the handrail wear the stainless patch under a warm multiplier.
+
+The emissive fittings — `glow`, `glowWarm`, `ember`, `wineGlow` — are
+deliberately left alone. They are not surfaces, they are light: a lit shade, a
+fire, a backlit bottle. There is no photograph of light.
+
+### The sky and the sun were rebuilt too
+
+This scene used to be composed for a golden hour: an amber horizon under a
+deep teal zenith, a low warm sun, warm haze. That flattered a modelled house.
+
+It is the wrong light for this one. The photographs were taken in hard Mykonos
+sun in the middle of the day, and lighting their surfaces with a sunset is the
+one thing guaranteed to make them look fake — white render against a `#3779B2`
+sky cannot be lit by an amber horizon and still read as the same wall. So the
+sky gradient, the ground bounce, the sun's colour and height, and the aerial
+haze are all now **sampled out of the photographs themselves**. The pool and
+the sea were also un-mirrored: built as near-mirrors they reflected the sky and
+showed almost none of their own map, so the pool came out the navy of the sky
+instead of the turquoise it is in every photograph.
+
+### What this does and does not look like
+
+It looks like the modelled villa, in the real house's materials, under the real
+house's sun. It does not look like a photograph of the house, and it cannot:
+the model is an invented building — a 27-metre facade, a double-height room, a
+floating stair — and the photographs are of a different, real house whose
+proportions do not correspond. Anything that maps a whole facade onto a
+modelled wall stretches it.
+
+That trade was made deliberately and with the owner's answer in hand: the
+camera flight is the one that was wanted, the photographs supply everything you
+see, and where the two disagree the photographs win.
 
 ### How the scroll binding works
 
@@ -610,28 +565,30 @@ fast.
 
 ### Why it doesn't lag
 
-- **Rendering is strictly on demand.** When the camera has settled, the render
-  loop shuts down entirely — instrumented and measured at **0 frames over 2.5
-  seconds** of sitting still, on both a desktop and a phone viewport. A parked
-  page costs no GPU and no battery. Worth re-checking if you ever add
-  something that mutates the scene, because it is the kind of guarantee that
-  is silently lost rather than loudly broken.
-- **The scene is one textured surface, briefly two.** Measured with
-  `renderer.info`: **1 draw call and 2,592 triangles** walking through a
-  chapter, doubling to 2 and 5,184 for the tenth of a chapter a handover
-  lasts — against roughly forty-three draw calls for the modelled villa this
-  replaced. There are no lights, no shadows, no environment map and no fog; a
-  `MeshBasicMaterial` does not shade. The displacement that gives each
-  photograph its depth is computed once when the image loads, not per frame.
-- **This scene is fill-rate bound, not geometry bound**, which is why the
-  governor gives up resolution first and why 2,592 triangles is not worth
-  optimising. Two textured quads shading a million-odd pixels a frame is the
-  entire cost.
-- **Photographs are fetched one chapter ahead**, never all seven, and never at
-  the desktop size on a phone. Video memory is the real constraint here:
-  a texture costs width × height × 4 bytes whatever the file weighed.
-- Mipmaps are off. These planes are only ever seen at or above 1:1, so a
-  mipmap chain would be built, uploaded, and never sampled.
+Measured on this build with `renderer.info` and an instrumented render loop,
+not estimated:
+
+- **Rendering is strictly on demand.** When the camera has settled the render
+  loop shuts down entirely — **0 frames over 8 seconds** of sitting still. A
+  parked page costs no GPU and no battery. Worth re-checking whenever you add
+  anything that mutates the scene, because it is the kind of guarantee that is
+  silently lost rather than loudly broken. (Measure it *after* the damping has
+  fully come to rest; catch it mid-settle and you will count the tail and
+  think it is broken.)
+- **Up to 138 draw calls and ~12,300 triangles** per frame on the desktop
+  tier, across **19 textures** — the fourteen surface patches, the sky, and
+  the environment map's mips. The patches are 256 and 512 square, about 300KB
+  on disk and roughly 4MB of video memory all told, which is less than one of
+  the hero photographs they were cut from.
+- **The shadow map is baked once**, not every frame, because nothing in the
+  scene moves except the front door.
+- **Repeated geometry is instanced** — slats, stair treads, bottles, mullions,
+  trees, shrubs are one draw call each rather than hundreds.
+- **Mipmaps are ON for the surface patches**, and they are the one place in
+  this project that needs them. A ground texture tiled forty-five times across
+  three hundred units is several texels per pixel at the far end of the drive;
+  without a mipmap chain that aliases into a crawling shimmer the moment the
+  camera moves.
 
 **Quality is tiered at boot and then checked.** `detectTier()` in
 `js/hero/scene.js` guesses from core count and pointer type, which is all a
@@ -652,15 +609,17 @@ It steps **down only**. Adapting in both directions is what makes a hero
 visibly pop between sharp and soft the first time a phone warms up; one
 direction means it settles once and stays there.
 
-Resolution goes first because with the walk it is very nearly the *only* cost:
-two quads shading several million pixels a frame. The film grain goes second:
-`mix-blend-mode` over the full frame is re-composited every time the canvas
-under it redraws, which in a scroll-driven hero is every frame.
+Resolution goes first because it is the whole cost: this scene shades millions
+of pixels a frame and its geometry is trivial by comparison. The film grain
+goes second — `mix-blend-mode` over the full frame is re-composited every time
+the canvas under it redraws, which in a scroll-driven hero is every frame.
 
-**Texture size is deliberately not on that list.** Dropping to the smaller set
-mid-scroll would mean re-fetching and re-uploading every photograph the visitor
-has already seen — network and a GPU stall, spent to fix a stall. The choice is
-made once at boot, from the pointing device.
+**Shadows are deliberately not on that list**, despite looking like the obvious
+saving. The shadow map is baked exactly once, so per frame they cost one
+texture lookup — while switching them off mid-scroll forces every material to
+recompile, which is a visible stall spent to fix a stall. The surface textures
+are not on it either: they are 4MB in total and dropping them would mean
+re-uploading the villa's entire appearance mid-flight.
 
 Two other things that were quietly expensive and are now not: the grain used to
 be `inset: -50%`, four times the area of the viewport to show one screen's
@@ -679,36 +638,31 @@ image is only fetched when it lands on something that renders, so a visitor who
 gets the real hero never downloads one of them, whereas a hidden `<img>` would
 be downloaded by everybody. All three paths are tested.
 
-### Editing the walk
+### Editing the flight
 
-One table and a handful of dials, all at the top of `walk.js`.
+Everything about the move is the `KEYS` table at the top of `path.js` — one row
+per shot: `[t, posX, posY, posZ, lookX, lookY, lookZ, fov]`. Position and target
+are on separate splines so the camera can turn independently of where it is
+travelling. `CHAPTERS` below it maps ranges of `t` to the copy panels in
+`index.html`, matched by `data-chapter`.
 
-`SHOTS` is the route, and the thing to edit first. One row per chapter: which
-photograph, the `aim` point the camera walks toward in it, the shape of the
-space (`horizon`, `floor`, `wall`, `ceil`) and an optional `pan` for narrow
-screens. Every field is documented in place above the table, because every one
-of them is a claim about what is in that particular picture.
+Watch out for two things when moving keyframes: the camera must not pass through
+solid geometry (the stairwell void in `villa.js` exists precisely so it can climb
+to the landing), and the spline can overshoot slightly past a keyframe, so leave
+clearance.
 
-The dials below it:
+### Editing the surfaces
 
-| | |
-|---|---|
-| `SPACING` | How far the camera walks per chapter — so also the magnification. 6.6 of a 12 arrival distance is 2.2×. |
-| `FLOOR_DEPTH`, `WALL_DEPTH`, `CEIL_DEPTH` | How deep the box is, in world units at the nominal frame. Most of the parallax is the floor. Push these much further and the picture smears: a photographed floor stretched to near-vertical on screen is being asked for detail it never recorded. |
-| `HANDOVER` | How much of a chapter the cut occupies. 0.10. Short on purpose: this is a cut made at speed. |
-| `EXIT` | How hard the outgoing photograph races the camera as it leaves. |
-| `DOOR_SOFT`, `DOOR_OVERRUN` | The aperture's edge and how far past the corners it travels. `DOOR_SOFT` is a fraction of the *screen* radius, not of the picture — see above. |
-| `LAST_WALK` | How much of a normal chapter's walk the final chapter covers, since it has nothing to hand over to. |
-| `SEG_X`, `SEG_Y` | Grid resolution of the surface. Only has to be fine enough that the crease where floor meets wall is not faceted. |
+Two files, and they are edited in this order:
 
-**`CHAPTERS` in `path.js` is the one source of truth for which chapter a given
-scroll position is in**, and `walk.js` asks it rather than working it out. That
-matters: for one build they each had their own arithmetic — uneven bands in
-`path.js`, equal sevenths in `walk.js` — and the two silently drifted apart, so
-by halfway down the panel read *"Four houses. All of them ours."* over a
-photograph of the living room. If you change the number of chapters, change it
-there, add the matching `data-chapter` panel in `index.html`, add a row to
-`SHOTS`, and add a background rule for the flat fallback in `css/site.css`.
+1. **`tools/villa-skin.py`** — the crop boxes. One row per texture: which
+   photograph, the box as fractions, the output size, and how hard to flatten,
+   soften and desaturate it. Re-run it after any change.
+   **Draw the boxes on the photographs before trusting them** — a five-line
+   script that outlines each box on its source and writes a contact sheet will
+   save you the three rounds of guessing this file took.
+2. **`js/hero/skin.js`** — which texture goes on which material, at what repeat,
+   under what tint. Every entry is commented with why.
 
 ---
 

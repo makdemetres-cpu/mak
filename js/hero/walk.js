@@ -3,6 +3,11 @@
    --------------------------------------------------------------------------
    Seven photographs of one house, walked rather than shown.
 
+   ⚠️  NOT IMPORTED. The hero is the modelled villa again, wearing surfaces
+   cut from these same photographs — see js/hero/skin.js. This file is kept
+   because the hero has changed direction more than once and this is a
+   complete, working alternative one import away. See README -> "The hero".
+
    The brief was specific: not a slideshow. So this is not seven pictures
    fading into one another — it is a camera moving forward, continuously,
    down a corridor of photographs standing at increasing depth, with the
@@ -66,15 +71,6 @@
    reads as standing behind the house rather than lying on top of it. It
    fades out over the first tenth of the scroll.
 
-   The name on the first frame
-   ---------------------------
-   The opening photograph is drawn three times: the photograph, then the
-   villa's name, then the same photograph again with the sky cut out
-   (assets/img/walk/01-cut.png, made by tools/villa-walk.py). The roofline
-   and the stone wall therefore pass in front of the type, which is why it
-   reads as standing behind the house rather than lying on top of it. It
-   fades out over the first tenth of the scroll.
-
    ⚠️  RIGHTS: these photographs came from a listing or agency site and are
    NOT cleared for publication. See README -> "Photography".
    ========================================================================== */
@@ -84,8 +80,8 @@
    is the LinearFilter that minFilter wants once mipmaps are off. Same setup
    photos.js used. */
 import { Mesh, MeshBasicMaterial, PlaneGeometry, SRGBColorSpace, Texture }
-  from '../vendor/three.slim.js?v=260828f';
-import { chapterAt, clamp01 } from './path.js?v=260828f';
+  from '../vendor/three.slim.js?v=260830a';
+import { chapterAt, clamp01 } from './path.js?v=260830a';
 
 /* --------------------------------------------------------------------------
    The route

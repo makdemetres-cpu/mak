@@ -24,7 +24,7 @@ import {
   ACESFilmicToneMapping, Color, EquirectangularReflectionMapping, Fog,
   HemisphereLight, DirectionalLight, PerspectiveCamera, PMREMGenerator,
   Scene, SRGBColorSpace, Texture, WebGLRenderer
-} from '../vendor/three.slim.js?v=260828f';
+} from '../vendor/three.slim.js?v=260830a';
 
 /* --------------------------------------------------------------------------
    Quality tiers
@@ -77,30 +77,44 @@ function makeSkyTexture() {
   cvs.width = w; cvs.height = h;
   const ctx = cvs.getContext('2d');
 
-  // Zenith → horizon gradient. Warm at the bottom, deep at the top.
+  /* Zenith → horizon gradient, and every stop in it is measured rather than
+     chosen. This used to be a golden hour: a warm amber horizon under a deep
+     teal zenith, composed to flatter a modelled house.
+
+     The house is not modelled any more — its surfaces are patches of a real
+     one, photographed in hard Mykonos sun in the middle of the day. Lighting
+     those with a sunset is the one thing guaranteed to make them look fake,
+     because every photograph in the set disagrees with it: white render
+     against a #3779B2 sky cannot be lit by an amber horizon and still read as
+     the same wall. So these are sampled straight out of the first
+     photograph — zenith, upper, mid and horizon, top to bottom. */
   const sky = ctx.createLinearGradient(0, 0, 0, h * 0.52);
-  sky.addColorStop(0.00, '#2E4A63');
-  sky.addColorStop(0.45, '#7C9CAC');
-  sky.addColorStop(0.80, '#D6C7AA');
-  sky.addColorStop(1.00, '#F0DCBA');
+  sky.addColorStop(0.00, '#2C6A9E');
+  sky.addColorStop(0.35, '#3779B2');
+  sky.addColorStop(0.75, '#5090C1');
+  sky.addColorStop(1.00, '#87B2D2');
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, w, h * 0.52);
 
-  // Ground half — foliage and warm earth bouncing light back up.
+  /* Ground half — what bounces back up. Pale terrace stone near the horizon
+     falling to the dry hillside behind it, both sampled from the same
+     photograph. It was a green lawn falling to near-black, which is a
+     northern European garden and not this island. */
   const ground = ctx.createLinearGradient(0, h * 0.5, 0, h);
-  ground.addColorStop(0.00, '#9E9270');
-  ground.addColorStop(0.35, '#5C6647');
-  ground.addColorStop(1.00, '#2C3324');
+  ground.addColorStop(0.00, '#E3D6CB');
+  ground.addColorStop(0.35, '#A79C8E');
+  ground.addColorStop(1.00, '#515456');
   ctx.fillStyle = ground;
   ctx.fillRect(0, h * 0.5, w, h * 0.5);
 
-  // The sun: a soft warm disc low on the horizon, front-left of the villa.
-  const sunX = w * 0.68, sunY = h * 0.40;
-  const glow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, h * 0.42);
-  glow.addColorStop(0.00, '#FFF6E2');
-  glow.addColorStop(0.12, '#FFE3B0');
-  glow.addColorStop(0.42, 'rgba(255, 204, 150, 0.35)');
-  glow.addColorStop(1.00, 'rgba(255, 204, 150, 0)');
+  // The sun: high and near-white, which is where it is in every one of the
+  // photographs — the shadows in them are short and hard, not long and warm.
+  const sunX = w * 0.68, sunY = h * 0.13;
+  const glow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, h * 0.36);
+  glow.addColorStop(0.00, '#FFFFFF');
+  glow.addColorStop(0.12, '#FBF6EC');
+  glow.addColorStop(0.42, 'rgba(240, 246, 255, 0.30)');
+  glow.addColorStop(1.00, 'rgba(240, 246, 255, 0)');
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, w, h);
 
@@ -163,15 +177,19 @@ export function createRig(canvas, tier) {
   pmrem.dispose();
 
   // Aerial haze. Starts well beyond the villa so interiors stay crisp.
-  scene.fog = new Fog(new Color(0xC8BCA2), 55, 190);
+  scene.fog = new Fog(new Color(0xBFCFDA), 70, 230);
 
   const camera = new PerspectiveCamera(38, 1, 0.1, 320);
 
   /* Lighting: one sun, one sky/bounce fill. Interior warmth comes from
      emissive materials rather than extra lights — far cheaper, and it can't
      blow out the exposure. */
-  const sun = new DirectionalLight(0xFFE0B4, 2.55);
-  sun.position.set(-34, 30, 40);
+  /* Sun and fill, both moved to match the photographs rather than the sunset
+     this scene used to be composed for: white light from high up, not amber
+     light from the side. The shadows in all seven photographs are short and
+     hard, which is what a sun at this height gives. */
+  const sun = new DirectionalLight(0xFFF6E8, 2.70);
+  sun.position.set(-26, 52, 30);
   if (s.shadows) {
     sun.castShadow = true;
     sun.shadow.mapSize.set(1536, 1536);
@@ -188,7 +206,7 @@ export function createRig(canvas, tier) {
   // Kept low on purpose. A bright fill flattens the interior into something
   // that reads as a showroom; letting the rooms fall away into shadow, lit by
   // the emissive fittings, is what makes them feel like evening.
-  const fill = new HemisphereLight(0xCFE0EA, 0x53593C, 0.78);
+  const fill = new HemisphereLight(0x6FA3CE, 0xB9AEA0, 1.05);
   scene.add(fill);
 
   return { renderer, scene, camera, sun, settings: s };
