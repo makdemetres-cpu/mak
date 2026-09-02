@@ -91,6 +91,12 @@
     // Never take over a card that is still playing its entrance.
     if (!el.classList.contains("is-settled")) return;
     el.classList.add("is-tilting");
+    // Apply straight away from the enter event's own coordinates. Waiting for
+    // the first pointermove looks broken whenever the cursor arrives without
+    // then moving — most obviously when the page is scrolled with the mouse
+    // held still, so cards slide underneath a stationary pointer and simply
+    // sit there doing nothing.
+    onMove(e);
   }
 
   function onLeave(e) {
