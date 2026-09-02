@@ -20,6 +20,7 @@ Nothing here is optional. The first three are legal requirements.
 | 3 | Confirm the Data Protection Authority's address is current | `privacy.html` §7 |
 | 4 | Replace `https://www.example.gr/` with the real domain | `index.html`, `sitemap.xml`, `robots.txt` |
 | 5 | Set the publication date on the three legal pages | `privacy.html`, `cookies.html`, `terms.html` |
+| 6 | Fill in real client quotes, **or delete the section** | `index.html` §06 |
 
 The placeholders are **deliberately highlighted in yellow** on the live page.
 That is intentional: an unfilled legal placeholder is the one thing that must
@@ -44,7 +45,9 @@ grep -rn "ΣΥΜΠΛΗΡΩΣΤΕ\|example\.gr\|\[ΑΦΜ\]\|\[ΕΠΩΝΥΜΙΑ\]"
 - How long photo archives are kept (`privacy.html` §3)
 - Delivery times for the first selection and the full gallery (`index.html`, §03)
 - Chronis' real story details: age when he started, year of the first wedding,
-  roughly how many weddings since (`index.html`, §02)
+  roughly how many weddings since (`index.html`, §03)
+- Real client quotes, with permission, for the client-words section — or
+  delete that section
 
 ---
 
@@ -78,6 +81,24 @@ Notes:
   loads — without them the page jumps around as it loads, which Google
   measures and penalises.
 
+### Sections on the page
+
+In order: hero, assurance row, portfolio, what I shoot, the story, the
+approach, packages, client words, contact. All on one scrolling page — the
+nav links jump to sections rather than loading new pages.
+
+**The client-words section is empty on purpose.** Fabricated reviews are a
+banned unfair commercial practice under the Omnibus Directive (EU) 2019/2161,
+transposed into Greek law in ν. 2251/1994 — it is on the blacklist, so there
+is no "reasonable in the circumstances" defence. Fill each slot with a real
+quote the couple has agreed you may publish, then delete the `.quotes-note`
+paragraph beneath them. If you would rather not chase quotes, delete the whole
+`<section id="words">` — the page closes up cleanly around it.
+
+Packages deliberately carry no prices, only "κατόπιν επικοινωνίας". Adding
+real figures commits him publicly; leaving them out keeps the conversation
+open.
+
 ### The grid animation
 
 Gallery items, the three approach steps and the services block all enter from
@@ -95,20 +116,30 @@ matching `data-filter` value — the JavaScript needs no changes.
 
 ---
 
-## Switching the palette
+## The palette
 
-The site ships in direction **04 "Μελάνι"** — paper, ink, one hairline, and no
-accent colour at all, so the only colour a visitor ever sees is in the
-photographs themselves.
+Dark ground with a warm gold accent, following the reference the client
+supplied. This is a **committed single theme** — it deliberately does not
+follow the visitor's system light/dark setting, because a light version of
+this look would be a different design rather than a variant of it.
 
-Three alternatives are pre-written at the top of `css/style.css`. Replace the
-five values in the `PALETTE` block and the whole site changes; nothing else in
+Retune it from the five values at the top of `css/style.css`. Nothing else in
 the stylesheet hard-codes a colour.
 
-- **01 Πέτρα** — Old Town limestone, Epirot moss. Warmest, most traditional.
-- **02 Παμβώτιδα** — mist over the lake. Cool and quiet.
-- **03 Ασήμι** — near-black and oxidised silver, after Ioannina's silversmithing
-  tradition. Dark; also swap the values inside the dark-theme blocks.
+```
+--paper    #0E0E10   ground
+--ink      #EFEDE8   headlines and primary text
+--ink-soft #A7A49C   secondary text
+--rule     #2A2A2E   hairlines
+--accent   #C2A05F   gold
+```
+
+Measured against the lightest surface: `--ink` 16.5:1, `--ink-soft` 6.7:1,
+gold 6.7:1, and dark text on a gold fill 7.8:1 — all clear of the WCAG AA
+4.5:1 minimum. **If you warm or lighten the gold, re-check it.**
+
+The earlier monochrome direction ("Μελάνι" — paper, ink, no accent) is
+preserved in git history at commit `2c065e4` if it is ever wanted back.
 
 ## Typography
 
