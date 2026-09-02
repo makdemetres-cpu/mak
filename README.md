@@ -78,6 +78,15 @@ Notes:
   loads — without them the page jumps around as it loads, which Google
   measures and penalises.
 
+### The grid animation
+
+Gallery items, the three approach steps and the services block all enter from
+the left and right edges, alternating by position. That alternation is applied
+in `js/main.js` to any container marked `data-reveal-sides`, rather than being
+hard-coded in the HTML, because the direction has to follow position in the
+group and filtering the gallery changes what is on screen without changing DOM
+order.
+
 ### Changing the categories
 
 Each grid item carries `data-cat="wedding|christening|event"`, which is what
@@ -251,6 +260,15 @@ Points worth knowing:
 - **The consent banner does not block the page.** Scrolling is never locked and
   nothing is stored before a choice, because consent must be freely given
   (Art. 4(11)). This was an explicit requirement and is verified by test.
+- **The banner appears every time someone opens the site.** Not once and then
+  never again: it reappears on each new browsing session. The visitor's saved
+  choice stays in force and is pre-filled in the Manage panel throughout, so
+  re-asking never quietly re-enables anything they turned off. Change this
+  with `REASK` at the top of `js/consent.js` — `"session"` (current),
+  `"remember"` (ask once, then quiet for 12 months), or `"always"` (every
+  single page load, including moving to the privacy policy and back). All
+  three are compliant; `"remember"` is the gentler one for returning
+  visitors if the current behaviour proves annoying.
 - **Accept and Decline are styled identically.** Making reject less prominent
   than accept is a sanctioned dark pattern. Do not make Accept the primary
   button.
@@ -316,6 +334,14 @@ Three things keep it from misbehaving, all of which are load-bearing:
 - `html { overflow-x: clip }` stops the sideways travel from creating a
   horizontal scrollbar. `clip` rather than `hidden`, because `hidden` silently
   breaks `position: sticky` on ancestors.
+- A rAF-throttled sweep backs the observer up. IntersectionObserver only
+  reports an element when its intersection ratio *crosses* a threshold, and a
+  hard fling on a long phone page can carry an element from below the fold to
+  above it between two samples — ratio 0 both times, no threshold crossed, no
+  callback, and that section stays invisible for good. Measured before the
+  sweep existed: a fast scroll left **17 of 21 sections blank**. The sweep is
+  passive, runs at most once per animation frame, only looks at elements not
+  yet revealed, and removes its own listeners once none are left.
 
 The horizontal travel is reduced on screens under 640px: a 34px slide reads as
 a jolt on a phone and is the usual cause of the jitter these effects get blamed
@@ -323,12 +349,28 @@ for. `prefers-reduced-motion` disables the animation entirely.
 
 ---
 
+## Accessibility
+
+The palette carries **two** text tones, not three. A paler third tone was
+tried (#9A9A98) and measured **2.51:1** against the tinted section background
+— far below the WCAG AA minimum of 4.5:1 for text at that size. It is gone,
+and there is a comment at the top of `css/style.css` saying so. Hierarchy
+below the secondary tone is carried by size and letter-spacing instead. If
+you lighten any text colour, re-check it: every text/background pair on the
+site currently clears 4.5:1 in both light and dark themes.
+
+Every non-inline interactive target meets the WCAG 2.2 SC 2.5.8 24px minimum.
+
 ## Verified
 
-Checked in Chromium at 320 / 360 / 390 / 430 / 1440px:
+Automated sweep across 5 pages × 9 widths (320 / 360 / 390 / 414 / 768 / 1024
+/ 1280 / 1440 / 1920), in both light and dark themes:
 
 - Zero horizontal overflow at every width, on every page
-- No console errors and no failed requests, on every page
+- No console errors, JS exceptions or failed requests, on any page at any width
+- No element overflows the viewport or clips its own text
+- Every text/background pair clears WCAG AA 4.5:1, light and dark
+- Heading order is sequential with exactly one `<h1>` per page
 - Consent: banner appears, page still scrolls before choosing, nothing stored
   before a choice, granular save works, choice is timestamped and versioned,
   banner stays away on return
@@ -337,7 +379,17 @@ Checked in Chromium at 320 / 360 / 390 / 430 / 1440px:
 - Lightbox: opens, navigates, closes on Escape, traps focus, swipes on touch
 - Renders correctly in dark mode, with reduced motion, and with JavaScript
   fully disabled
+- Survives `localStorage` and `sessionStorage` being blocked entirely — no
+  exceptions, and it still asks for consent rather than assuming it
 - All non-inline tap targets meet the WCAG 2.2 SC 2.5.8 24px minimum
+- The header fits, and the menu opens and closes, down to 320px
+- Back-to-top stays reachable and clear of the consent banner at every width
+- Every section enters from a side, and elements genuinely travel
+  horizontally (measured, not assumed)
+- **No section is ever left blank after a fast scroll.** Hard wheel-flings to
+  the bottom at 320 / 390 / 768 / 1440px, flings down then back up, instant
+  jumps to the bottom, and deep links to every section — nothing stuck
+  invisible in any of them
 
 Not yet checked, because this environment has no access to them: real Safari on
 iOS, and Firefox.

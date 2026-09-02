@@ -24,10 +24,16 @@
   --rule:      #D6D6D4;   /* hairlines, borders                             */
   --accent:    #0B0B0B;   /* Μελάνι has no accent — the photographs are it  */
 
-  /* Derived. These are computed from the five above; leave them alone. */
+  /* Derived. These are computed from the five above; leave them alone.
+
+     NOTE: there is deliberately no third, lighter text tone. One was tried
+     (#9A9A98) and measured 2.51:1 against --surface — well under the WCAG
+     AA minimum of 4.5:1 for text this size. On these grounds no tone lighter
+     than --ink-soft can pass, so hierarchy below --ink-soft is carried by
+     size and letter-spacing instead of by lightness. Do not reintroduce a
+     paler text colour. */
   --surface:      #F2F2F0;
   --surface-deep: #EDEDEB;
-  --ink-faint:    #9A9A98;
   --focus:        #0B0B0B;
   --shadow-lift:  0 1px 2px rgba(11,11,11,.04), 0 18px 40px -28px rgba(11,11,11,.32);
 }
@@ -41,7 +47,6 @@
     --accent:    #ECECEA;
     --surface:      #141413;
     --surface-deep: #1A1A19;
-    --ink-faint:    #6A6A68;
     --focus:        #ECECEA;
     --shadow-lift:  0 1px 2px rgba(0,0,0,.5), 0 18px 40px -28px rgba(0,0,0,.9);
   }
@@ -54,7 +59,6 @@
   --accent:    #ECECEA;
   --surface:      #141413;
   --surface-deep: #1A1A19;
-  --ink-faint:    #6A6A68;
   --focus:        #ECECEA;
   --shadow-lift:  0 1px 2px rgba(0,0,0,.5), 0 18px 40px -28px rgba(0,0,0,.9);
 }
@@ -287,6 +291,20 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-3px) rotate(-45deg); }
 
+/* Small phones (iPhone SE and similar, 320–380px). At 320px the wordmark,
+   the language toggle and the burger together overrun the bar and the burger
+   gets clipped off the right edge — invisible, because overflow-x is clipped
+   at the document level so no scrollbar appears to reveal it. Dropping the
+   sub-line and tightening the toggle buys back the ~40px needed. */
+@media (max-width: 380px) {
+  .wordmark { font-size: 1rem; }
+  .wordmark .wm-sub { display: none; }
+  .header-inner { gap: .5rem; }
+  .header-tools { gap: .15rem; }
+  .lang-toggle button { padding: 7px 8px; font-size: 10px; }
+  .burger { width: 40px; padding: 0 8px; margin-left: 0; }
+}
+
 /* Mobile drawer — a designed panel, not a shrunken desktop nav. */
 .nav-mobile {
   position: fixed; inset: 0; z-index: 95;
@@ -310,7 +328,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 }
 .nav-mobile .n-num {
   font-family: var(--font-body); font-size: 10px; letter-spacing: .16em;
-  color: var(--ink-faint); font-variant-numeric: tabular-nums;
+  color: var(--ink-soft); font-variant-numeric: tabular-nums;
   min-width: 2ch;
 }
 .nav-mobile-foot {
@@ -405,7 +423,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
    the sections genuinely read in order on a single scrolling page. */
 .sec-index {
   display: flex; align-items: center; gap: 1rem;
-  font-size: var(--t-xs); letter-spacing: .2em; color: var(--ink-faint);
+  font-size: var(--t-xs); letter-spacing: .2em; color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
 }
 .sec-index::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
@@ -527,7 +545,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 .split-media img { width: 100%; filter: grayscale(1); background: var(--surface-deep); }
 .split-media figcaption {
   margin-top: .85rem; font-size: var(--t-xs);
-  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint);
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft);
 }
 .split-body { display: flex; flex-direction: column; gap: 1.4rem; }
 .split-body h2 { font-size: var(--t-xl); }
@@ -559,7 +577,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
   .step + .step { padding-left: clamp(1.2rem, 2.4vw, 2rem); border-left: 1px solid var(--rule); }
 }
 .step-n {
-  font-size: var(--t-xs); letter-spacing: .2em; color: var(--ink-faint);
+  font-size: var(--t-xs); letter-spacing: .2em; color: var(--ink-soft);
   font-variant-numeric: tabular-nums;
 }
 .step h3 { font-size: var(--t-lg); }
@@ -584,7 +602,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 
 .contact-aside { display: flex; flex-direction: column; gap: 2rem; }
 .contact-block { display: flex; flex-direction: column; gap: .45rem; }
-.contact-block .eyebrow { color: var(--ink-faint); }
+.contact-block .eyebrow { color: var(--ink-soft); }
 .contact-block a, .contact-block p { font-size: var(--t-md); text-decoration: none; }
 .contact-block a { border-bottom: 1px solid var(--rule); align-self: flex-start; padding-bottom: 2px; transition: border-color .25s var(--ease); }
 .contact-block a:hover { border-color: var(--ink); }
@@ -676,7 +694,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 }
 @media (min-width: 760px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; } }
 .footer-col { display: flex; flex-direction: column; gap: .6rem; }
-.footer-col h3 { font-family: var(--font-body); font-size: var(--t-xs); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-faint); font-weight: 400; margin-bottom: .3rem; }
+.footer-col h3 { font-family: var(--font-body); font-size: var(--t-xs); letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); font-weight: 400; margin-bottom: .3rem; }
 .footer-col a {
   text-decoration: none; transition: color .2s var(--ease); align-self: flex-start;
   min-height: 24px; display: flex; align-items: center;
@@ -693,7 +711,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
   margin-top: clamp(2.2rem, 4vw, 3.2rem); padding-top: 1.5rem;
   border-top: 1px solid var(--rule);
   display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; justify-content: space-between;
-  font-size: var(--t-xs); color: var(--ink-faint);
+  font-size: var(--t-xs); color: var(--ink-soft);
 }
 
 /* ============================ BACK TO TOP ================================ */
@@ -714,8 +732,15 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 .to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); transition-delay: 0s; }
 .to-top:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .to-top svg { width: 15px; height: 15px; }
-/* Lift clear of the cookie banner while that is still on screen. */
-body.consent-open .to-top { transform: translateY(-4px); opacity: 0; visibility: hidden; }
+
+/* While the consent banner is on screen the button moves ABOVE it rather
+   than being hidden. Hiding it meant a visitor who scrolled without
+   answering the banner — which they are explicitly invited to do — had no
+   way back to the top at all. The banner's own height is published as
+   --consent-h by js/consent.js, so this tracks it at any width or language. */
+body.consent-open .to-top {
+  bottom: calc(var(--consent-h, 0px) + clamp(.9rem, 2.2vw, 1.75rem) + env(safe-area-inset-bottom));
+}
 
 /* ============================ REVEAL ANIMATION =========================== */
 /* Sections enter from alternating sides as they are scrolled past.
@@ -838,7 +863,7 @@ body.consent-open .to-top { transform: translateY(-4px); opacity: 0; visibility:
 .cat-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .cat-top h3 { font-family: var(--font-body); font-size: var(--t-base); font-weight: 500; }
 .cat p { font-size: var(--t-sm); color: var(--ink-soft); line-height: 1.6; }
-.cat-locked { font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.cat-locked { font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
 
 .switch { position: relative; display: inline-flex; flex: none; }
 .switch input {
@@ -868,7 +893,7 @@ body.consent-open .to-top { transform: translateY(-4px); opacity: 0; visibility:
 .legal { padding-block: calc(var(--header-h) + clamp(2.5rem, 5vw, 4.5rem)) var(--sec-y); }
 .legal-head { margin-bottom: clamp(2.5rem, 5vw, 4rem); display: flex; flex-direction: column; gap: .8rem; }
 .legal-head h1 { font-size: var(--t-xl); }
-.legal-updated { font-size: var(--t-xs); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); }
+.legal-updated { font-size: var(--t-xs); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
 
 .legal-body { max-width: 72ch; display: flex; flex-direction: column; gap: 2.4rem; }
 .legal-body section { display: flex; flex-direction: column; gap: .9rem; }
@@ -882,7 +907,7 @@ body.consent-open .to-top { transform: translateY(-4px); opacity: 0; visibility:
 .legal-body strong { color: var(--ink); font-weight: 500; }
 .legal-body a { color: var(--ink); text-underline-offset: 3px; }
 .legal-body ul { display: flex; flex-direction: column; gap: .55rem; padding-left: 1.15rem; list-style: disc; }
-.legal-body ul li::marker { color: var(--ink-faint); }
+.legal-body ul li::marker { color: var(--ink-soft); }
 
 /* Values the owner must fill in before publishing. Deliberately loud — an
    unfilled legal placeholder is the one thing that must never ship quietly. */
@@ -897,6 +922,23 @@ body.consent-open .to-top { transform: translateY(-4px); opacity: 0; visibility:
 @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .fill { background: #FFE8A3; color: #4A3B00; } }
 
 .legal-table-wrap { overflow-x: auto; border: 1px solid var(--rule); }
+
+/* On a phone these tables are wider than the screen and scroll inside their
+   own box. That works, but silently — nothing tells the reader the last two
+   columns exist. A one-line hint below the table, only where it can actually
+   overflow. Purely supplementary: the table itself is fully readable to a
+   screen reader without it. */
+@media (max-width: 620px) {
+  .legal-table-hint { display: block; }
+}
+.legal-table-hint {
+  display: none;
+  margin-top: .5rem;
+  font-size: var(--t-xs);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
 .legal-table { width: 100%; border-collapse: collapse; min-width: 560px; font-size: var(--t-sm); }
 .legal-table th, .legal-table td { text-align: left; padding: .8rem .9rem; border-bottom: 1px solid var(--rule); vertical-align: top; color: var(--ink-soft); }
 .legal-table th { color: var(--ink); font-weight: 500; font-size: var(--t-xs); letter-spacing: .12em; text-transform: uppercase; }

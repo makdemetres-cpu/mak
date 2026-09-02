@@ -155,22 +155,47 @@
       var kids = group.querySelectorAll(":scope > .reveal");
       var step = parseInt(group.dataset.revealGroup, 10);
       if (isNaN(step)) step = 70;
+
+      // Groups marked data-reveal-sides alternate their entry direction, so
+      // the items come in from the left and right edges rather than fading
+      // upward. Assigned here rather than in the HTML because the direction
+      // has to follow position in the group, and filtering the gallery
+      // changes which items are on screen without changing DOM order.
+      var sides = group.hasAttribute("data-reveal-sides");
+
       kids.forEach(function (el, i) {
         el.style.setProperty("--reveal-delay", (i * step) + "ms");
+        if (sides) {
+          el.classList.remove("reveal--up");
+          el.classList.add(i % 2 === 0 ? "reveal--left" : "reveal--right");
+        }
       });
     });
 
+    // Everything still waiting to be revealed. Shrinks to nothing as the
+    // visitor scrolls, at which point the safety net below unhooks itself.
+    var pending = new Set(revealables);
+
+    function reveal(el) {
+      if (!pending.has(el)) return;
+      pending.delete(el);
+      io.unobserve(el);
+      el.classList.add("is-in");
+      el.addEventListener("transitionend", function onEnd(ev) {
+        if (ev.propertyName !== "opacity") return;
+        el.classList.add("is-settled");
+        el.removeEventListener("transitionend", onEnd);
+      });
+    }
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        el.classList.add("is-in");
-        io.unobserve(el);
-        el.addEventListener("transitionend", function onEnd(ev) {
-          if (ev.propertyName !== "opacity") return;
-          el.classList.add("is-settled");
-          el.removeEventListener("transitionend", onEnd);
-        });
+        // Reveal on intersection, but ALSO if the element has already gone
+        // past the top of the screen — otherwise scrolling up to something
+        // that was skipped on the way down leaves it blank.
+        if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
+          reveal(entry.target);
+        }
       });
     }, {
       // Fires a little before the element's top edge reaches the viewport
@@ -181,6 +206,50 @@
     });
 
     revealables.forEach(function (el) { io.observe(el); });
+
+    /* ---- Safety net -------------------------------------------------------
+       IntersectionObserver only reports an element when its intersection
+       ratio CROSSES a threshold. Fling-scroll a long page on a phone and an
+       element can go from below the fold to above it between two samples:
+       the ratio reads 0 both times, no threshold is crossed, no callback
+       ever fires, and that section stays at opacity 0 permanently. Measured
+       here before this was added: a fast scroll from top to bottom and back
+       left 17 of 21 sections invisible.
+
+       So the observer handles the nice staggered entrance, and this sweep
+       guarantees correctness. It is passive, throttled to one animation
+       frame, only looks at elements that have not yet been revealed, and
+       removes itself entirely once none are left. */
+    var sweepQueued = false;
+
+    function sweep() {
+      sweepQueued = false;
+      if (!pending.size) {
+        window.removeEventListener("scroll", queueSweep);
+        window.removeEventListener("resize", queueSweep);
+        return;
+      }
+      var limit = window.innerHeight * 0.94;
+      // Copy first, because reveal() deletes from `pending` as it goes.
+      // Array.from, NOT Array.prototype.slice.call — a Set has no `length`,
+      // so slice would quietly hand back an empty array and this whole
+      // safety net would do nothing at all.
+      Array.from(pending).forEach(function (el) {
+        if (el.getBoundingClientRect().top < limit) reveal(el);
+      });
+    }
+
+    function queueSweep() {
+      if (sweepQueued) return;
+      sweepQueued = true;
+      requestAnimationFrame(sweep);
+    }
+
+    window.addEventListener("scroll", queueSweep, { passive: true });
+    window.addEventListener("resize", queueSweep, { passive: true });
+    // Once on load, so a deep link (index.html#contact) does not leave every
+    // section above the target stuck invisible.
+    queueSweep();
   }
 
   /* ======================================================================

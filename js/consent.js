@@ -35,8 +35,25 @@
   "use strict";
 
   var STORAGE_KEY = "xp_consent";
+  var SESSION_KEY = "xp_consent_asked";
   var CONSENT_VERSION = 1;
   var MAX_AGE_DAYS = 365;
+
+  /* HOW OFTEN THE BANNER APPEARS -------------------------------------------
+     "session"  – every time the visitor opens the site in a new browser
+                  session (a new tab after closing the site, a fresh visit
+                  the next day). Their saved preferences are still applied
+                  the whole time and are pre-filled in the Manage panel, so
+                  re-asking never quietly re-enables anything. This is the
+                  configured behaviour.
+     "remember" – ask once, then stay quiet for 12 months. The conventional
+                  choice, and the gentler one for returning visitors.
+     "always"   – on every single page load, including moving from this page
+                  to the privacy policy and back. Legal, but genuinely
+                  irritating; not recommended.
+     Both "session" and "remember" are compliant: nothing non-essential runs
+     until a choice is made, and no choice is ever assumed. ------------------ */
+  var REASK = "session";
 
   var CATEGORIES = ["necessary", "functional", "analytics", "marketing"];
 
@@ -108,14 +125,35 @@
   var panel = modal ? modal.querySelector(".cookie-modal-panel") : null;
   var lastFocus = null;
 
+  /* The banner's height is published as a CSS custom property so the
+     back-to-top button can sit above it instead of being hidden. Measured
+     rather than hard-coded, because it changes with viewport width and with
+     the language (the Greek copy runs longer). */
+  function publishHeight() {
+    if (!banner || banner.hidden) {
+      document.documentElement.style.setProperty("--consent-h", "0px");
+      return;
+    }
+    document.documentElement.style.setProperty(
+      "--consent-h", Math.round(banner.getBoundingClientRect().height) + "px");
+  }
+
+  if (banner && "ResizeObserver" in window) {
+    new ResizeObserver(publishHeight).observe(banner);
+  } else {
+    window.addEventListener("resize", publishHeight);
+  }
+
   function showBanner() {
     if (!banner) return;
     banner.hidden = false;
+    publishHeight();
     // Next frame, so the transform transition actually runs.
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         banner.classList.add("is-open");
         document.body.classList.add("consent-open");
+        publishHeight();
       });
     });
   }
@@ -124,7 +162,10 @@
     if (!banner) return;
     banner.classList.remove("is-open");
     document.body.classList.remove("consent-open");
-    window.setTimeout(function () { banner.hidden = true; }, 600);
+    window.setTimeout(function () {
+      banner.hidden = true;
+      publishHeight();
+    }, 600);
   }
 
   function openModal() {
@@ -171,6 +212,7 @@
   /* --------------------------------------------------------------- wiring */
   function decide(choice, message) {
     write(choice);
+    markAskedThisSession();
     hideBanner();
     closeModal();
     announce(message);
@@ -199,9 +241,11 @@
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Escape" || modal.hidden) return;
       closeModal();
-      // Escaping the panel without saving leaves the banner up — no choice
-      // has been recorded, so none may be assumed.
-      if (!read()) showBanner();
+      // Escaping the panel without saving leaves the banner up. "Answered"
+      // means answered in THIS session, not merely that an old choice sits
+      // in storage — otherwise, in "session" mode, escaping would dismiss
+      // the banner for the whole visit without the visitor deciding anything.
+      if (REASK === "remember" ? !read() : !askedThisSession()) showBanner();
     });
 
     // Focus trap for the preferences dialog.
@@ -216,10 +260,31 @@
   }
 
   /* ----------------------------------------------------------------- boot */
+  function askedThisSession() {
+    try { return sessionStorage.getItem(SESSION_KEY) === "1"; }
+    catch (e) { return false; }          // storage blocked — ask again, never assume
+  }
+  function markAskedThisSession() {
+    try { sessionStorage.setItem(SESSION_KEY, "1"); } catch (e) {}
+  }
+
   var existing = read();
-  if (existing) {
-    applyConsent(existing);
+
+  // A stored choice is applied immediately and always, even when the banner
+  // is about to be shown again. Re-asking must never silently re-enable
+  // something the visitor previously turned off.
+  if (existing) applyConsent(existing);
+
+  var shouldAsk;
+  if (REASK === "always") {
+    shouldAsk = true;
+  } else if (REASK === "session") {
+    shouldAsk = !askedThisSession();
   } else {
+    shouldAsk = !existing;
+  }
+
+  if (shouldAsk) {
     // Small delay so the banner slides in after the page has settled rather
     // than competing with the hero for attention on first paint.
     window.setTimeout(showBanner, 700);
