@@ -99,6 +99,33 @@ Packages deliberately carry no prices, only "κατόπιν επικοινωνί
 real figures commits him publicly; leaving them out keeps the conversation
 open.
 
+### Card interaction
+
+The assurance row, category cards, packages and testimonials lift and tip in
+3D toward the cursor, so the corner nearest the pointer presses away into the
+screen. `js/tilt.js` writes only four custom properties (`--rx`, `--ry`,
+`--lift`, `--tscale`); the transform itself lives in CSS. That matters: the
+scroll reveal animates the same `transform` property on the same elements, and
+if both wrote inline styles they would fight. The tilt is gated behind
+`.is-settled`, which `main.js` adds only once a card's entrance has finished.
+
+Three constraints hold it together:
+
+- **Throttled to one animation frame.** Pointer events fire far faster than
+  the screen refreshes, and `getBoundingClientRect()` forces a layout read, so
+  the measurement happens at most once per painted frame.
+- **Touch gets a different interaction, not a broken hover.** With no cursor
+  to track, cards dip under the finger and spring back, driven by
+  `pointerdown`/`pointerup`. `pointercancel` is handled too — a scroll that
+  starts on a card steals the gesture and no `pointerup` ever arrives, which
+  would otherwise leave the card stuck pressed. Cards also get roomier padding
+  and a wider 3:2 crop on phones.
+- **`prefers-reduced-motion` removes the tilt entirely,** leaving a colour
+  change. Cursor-tracked 3D motion is a genuine nausea trigger.
+
+The portfolio photographs deliberately do NOT tilt — they keep their slow
+zoom, so the effect does not compete with the images themselves.
+
 ### The grid animation
 
 Gallery items, the three approach steps and the services block all enter from
@@ -442,6 +469,10 @@ Automated sweep across 5 pages × 9 widths (320 / 360 / 390 / 414 / 768 / 1024
 - Back-to-top stays reachable and clear of the consent banner at every width
 - Every section enters from a side, and elements genuinely travel
   horizontally (measured, not assumed)
+- Card tilt verified by extracting the rotation back out of the computed
+  matrix: cursor bottom-right gives rotateX −4.8° / rotateY +4.8°, which is
+  that corner pressing away. All four corners correct, centre flat, 120
+  pointer moves with no long tasks recorded
 - **No section is ever left blank after a fast scroll.** Hard wheel-flings to
   the bottom at 320 / 390 / 768 / 1440px, flings down then back up, instant
   jumps to the bottom, and deep links to every section — nothing stuck

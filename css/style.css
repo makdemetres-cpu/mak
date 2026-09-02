@@ -382,6 +382,10 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 }
 .hero-meta .dot { width: 3px; height: 3px; background: currentColor; border-radius: 50%; }
 
+/* The scroll cue is retired. The assurance row now rides up into the bottom
+   of the hero, and cards half-visible above the fold say "there is more below"
+   far better than a label does — while the two together simply collided.
+   Kept (unused) in case the assurance row is ever removed. */
 .scroll-cue {
   display: none;
   position: absolute; left: 50%; bottom: 1.5rem; z-index: 3;
@@ -1194,3 +1198,121 @@ body.consent-open .to-top {
    its own. A class, not an inline style attribute — style="" is refused by
    this site's own Content-Security-Policy and silently does nothing. */
 .section--flush { padding-top: 0; }
+
+/* ==========================================================================
+   CARD INTERACTION — lift, cursor-tracked tilt, touch press
+   --------------------------------------------------------------------------
+   Driven by js/tilt.js, which only ever writes these four custom properties.
+   Keeping the transform itself in CSS means the scroll reveal and the tilt
+   never write the same inline style and fight each other.
+   ========================================================================== */
+
+.assure-item, .package, .quote, .cat-card {
+  --rx: 0deg; --ry: 0deg; --lift: 0px; --tscale: 1;
+}
+
+/* Gated on .is-settled. Until a card has finished its entrance the reveal
+   owns `transform`, and taking it over early would snap the animation. */
+.js .assure-item.is-settled,
+.js .package.is-settled,
+.js .quote.is-settled,
+.js .cat-card.is-settled {
+  transform:
+    perspective(900px)
+    translate3d(0, var(--lift), 0)
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    scale(var(--tscale));
+  transition:
+    transform .55s var(--ease-out),
+    box-shadow .4s var(--ease),
+    border-color .35s var(--ease);
+}
+
+/* While the pointer is actually over the card the transform must track it
+   frame for frame, so the transition is dropped. Restored the moment the
+   class comes off, which is what gives the spring back to rest. Placed
+   after the rule above so it wins on source order, not !important. */
+.js .assure-item.is-tilting,
+.js .package.is-tilting,
+.js .quote.is-tilting,
+.js .cat-card.is-tilting {
+  transition: box-shadow .3s var(--ease), border-color .3s var(--ease);
+  will-change: transform;
+  z-index: 2;
+}
+
+/* Hover lift is expressed as depth, not just movement. */
+.js .assure-item.is-tilting,
+.js .package.is-tilting,
+.js .quote.is-tilting {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--rule));
+  box-shadow: 0 2px 4px rgba(0,0,0,.4), 0 30px 60px -28px rgba(0,0,0,1);
+}
+.js .cat-card.is-tilting {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--rule));
+  box-shadow: 0 2px 4px rgba(0,0,0,.4), 0 30px 60px -28px rgba(0,0,0,1);
+}
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  .js .assure-item.is-tilting,
+  .js .package.is-tilting,
+  .js .quote.is-tilting,
+  .js .cat-card.is-tilting { border-color: #6A5836; }
+}
+
+/* Keyboard users get the lift without the tilt — there is no pointer to
+   track, and a card that only responds to a mouse is a card half-built. */
+.js .assure-item:focus-visible,
+.js .package:focus-visible,
+.js .quote:focus-visible,
+.js .cat-card:focus-visible {
+  --lift: -6px; --tscale: 1.012;
+  border-color: var(--accent);
+}
+
+/* ---- TOUCH: press in, spring back ----------------------------------------
+   A phone has no cursor, so it gets a response built for a finger instead of
+   a hover effect with its input taken away. The card dips, the border warms,
+   and the whole thing is driven by pointerdown/up in js/tilt.js — CSS :active
+   is unreliable on iOS for non-button elements. */
+@media (hover: none) {
+  .js .assure-item.is-pressed,
+  .js .package.is-pressed,
+  .js .quote.is-pressed,
+  .js .cat-card.is-pressed {
+    --tscale: .975;
+    --lift: 0px;
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--rule));
+    transition: transform .16s var(--ease), border-color .16s var(--ease);
+  }
+  @supports not (color: color-mix(in srgb, red 50%, transparent)) {
+    .js .assure-item.is-pressed, .js .package.is-pressed,
+    .js .quote.is-pressed, .js .cat-card.is-pressed { border-color: #6A5836; }
+  }
+  /* Springs back a touch slower than it presses, which is what makes it
+     feel physical rather than mechanical. */
+  .js .assure-item.is-settled,
+  .js .package.is-settled,
+  .js .quote.is-settled,
+  .js .cat-card.is-settled { transition: transform .34s var(--ease-out), border-color .3s var(--ease); }
+
+  /* Cards are the primary way through the page on a phone, so they are
+     given more room to breathe and a larger tap area than on desktop. */
+  .assure-item { padding: 1.35rem 1.25rem; }
+  .package { padding: 1.6rem 1.35rem; }
+  .quote { padding: 1.5rem 1.3rem; }
+  .cat-card { aspect-ratio: 3 / 2; }
+}
+
+/* Cursor-tracked 3D motion is a real nausea trigger, not a taste question.
+   Everything reduces to a colour change, which still confirms the tap. */
+@media (prefers-reduced-motion: reduce) {
+  .js .assure-item.is-settled,
+  .js .package.is-settled,
+  .js .quote.is-settled,
+  .js .cat-card.is-settled { transform: none; transition: border-color .2s linear; }
+  .js .assure-item.is-tilting,
+  .js .package.is-tilting,
+  .js .quote.is-tilting,
+  .js .cat-card.is-tilting { transform: none; }
+}
