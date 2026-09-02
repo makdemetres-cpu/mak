@@ -122,28 +122,74 @@ all** and would silently fall back to a system font on the first Greek word.
 
 ## The contact form
 
-Ships in **mailto mode**: submitting opens the visitor's own email client with
-everything filled in, and no data is transmitted to any third party. It works
-from the moment the site goes live and carries no processor liability.
-
-To send messages directly instead, open `js/contact.js` and set:
+Three delivery modes. Pick one with a single line at the top of `js/contact.js`:
 
 ```js
-var FORM_ENDPOINT_KEY = "your-web3forms-access-key";
+var FORM_MODE = "mailto";   // "mailto" | "php" | "web3forms"
 ```
 
-A key is free from [web3forms.com](https://web3forms.com) and arrives by email;
-no account is needed. **If you switch this on, you must also:**
+### `"mailto"` — ships enabled
 
-1. Name the provider as a processor in `privacy.html` §4 — the row is already
-   written and marked, it just needs completing.
-2. Check which country stores the submissions. If it is outside the EEA, state
-   the transfer safeguard too (GDPR Art. 44–49). An EU-hosted form service
-   avoids the question entirely.
+Opens the visitor's own email client with everything filled in. Nothing is
+transmitted anywhere, no processor exists, no server is needed. Works on any
+host from the moment the site goes live.
 
-The consent checkbox is required in both modes, is never pre-ticked, and blocks
-submission until ticked. Pre-ticked consent boxes are invalid (GDPR Recital 32;
-CJEU C-673/17 *Planet49*).
+The catch: some visitors have no mail client configured and will just abandon
+the enquiry. Fine as a launch default, worth upgrading later.
+
+### `"php"` — recommended once he is on a Greek host
+
+Posts to `contact.php` on this same domain, which emails him directly. **Still
+no third party** — nothing to declare under GDPR Art. 28, and no transfer
+question under Art. 44–49, because the data never leaves his own hosting. For a
+Greek business this is the cleanest option there is.
+
+Needs PHP with `mail()`: standard on Papaki, Top.host, IP.gr and any cPanel
+host. **Not** available on Netlify, Vercel or GitHub Pages, which serve static
+files only.
+
+To enable, set `FORM_MODE = "php"` and open `contact.php`:
+
+```php
+$TO   = 'xpegkas@gmail.com';
+$FROM = 'no-reply@example.gr';   // ← must be a real mailbox ON THIS DOMAIN
+```
+
+**`$FROM` is the one that catches people out.** It has to be an address on the
+site's own domain. Putting the visitor's address there makes the message fail
+SPF and DKIM at Gmail, which is precisely how contact-form mail ends up
+silently in spam. The visitor's address goes in `Reply-To`, so hitting reply
+still works normally.
+
+The handler validates every field, refuses submissions without the consent
+checkbox, blocks CR/LF header injection on the name and email, silently
+absorbs honeypot hits so bots learn nothing, and throttles to 8 messages per
+IP per hour. The throttle is keyed on a hash of the IP, never the IP itself,
+so the throttle files hold no personal data.
+
+### `"web3forms"` — easiest on a static host
+
+Posts to `api.web3forms.com`. Get a free key at
+[web3forms.com](https://web3forms.com) (no account; it arrives by email), set
+`FORM_MODE = "web3forms"` and paste it into `WEB3FORMS_KEY`.
+
+**If you switch this on you must also:**
+
+1. Name Web3Forms as a processor in `privacy.html` §4 — the row is written and
+   marked, it just needs completing.
+2. Confirm which country stores the submissions. If it is outside the EEA,
+   state the transfer safeguard as well (Art. 44–49). This is exactly the
+   question the `"php"` mode avoids having to answer.
+
+If this mode is selected but the key is empty, the form falls back to `mailto`
+and logs a warning rather than posting enquiries into a void.
+
+### In every mode
+
+The consent checkbox is required, is never pre-ticked, and blocks submission
+until ticked — pre-ticked consent boxes are invalid (GDPR Recital 32; CJEU
+C-673/17 *Planet49*). Validation messages appear in whichever language the
+visitor is reading.
 
 ---
 
@@ -228,6 +274,7 @@ privacy.html          GDPR privacy notice
 cookies.html          Cookie / local storage policy
 terms.html            Terms of use and copyright
 404.html              Custom not-found page
+contact.php           Optional self-hosted form handler (only used in "php" mode)
 
 css/fonts.css         Self-hosted @font-face declarations
 css/style.css         Everything else. Palette tokens are at the top.

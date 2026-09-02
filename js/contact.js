@@ -1,31 +1,53 @@
 /* ==========================================================================
    Χρόνης Πέγκας Photography — enquiry form
    --------------------------------------------------------------------------
-   Ships in mailto mode: with no endpoint configured the form composes the
-   message in the visitor's own email client and NOTHING is transmitted to
-   any third party. That is the zero-liability default, and it works the
-   moment the site goes live.
+   Three delivery modes. Set FORM_MODE below; nothing else needs changing.
 
-   TO SWITCH ON DIRECT SENDING, put your Web3Forms access key in
-   FORM_ENDPOINT_KEY below (free at https://web3forms.com, no account
-   required — the key is emailed to you). Then, before publishing:
+   "mailto"    (default, ships enabled)
+       Opens the visitor's own email client with everything filled in.
+       Nothing is transmitted anywhere, no processor exists, no server is
+       needed. Works on any host from the moment the site goes live.
+       Downside: some visitors have no mail client configured and will
+       simply abandon the enquiry.
 
-     1. Name Web3Forms as a processor in privacy.html §6 — the placeholder
-        row is already written and marked, it just needs confirming.
-     2. Check where that provider stores submissions. If it is outside the
-        EEA you must also state the transfer safeguard (Art. 44–49 GDPR).
-        An EU-hosted alternative avoids the question entirely.
+   "php"       RECOMMENDED once he is on a Greek host
+       Posts to contact.php on this same domain, which emails him directly.
+       Still no third party: nothing to declare under GDPR Art. 28 and no
+       transfer question under Art. 44-49, because the data never leaves
+       his own hosting. Requires PHP — fine on Papaki, Top.host, IP.gr and
+       any cPanel host; NOT available on Netlify, Vercel or GitHub Pages.
 
-   The consent checkbox is required either way. It is unticked by default
-   and the form will not submit without it: pre-ticked boxes are not valid
-   consent (GDPR Recital 32, and Planet49, CJEU C-673/17).
+   "web3forms" easiest on a static host
+       Posts to api.web3forms.com. Get a free key at https://web3forms.com
+       (no account; the key is emailed to you) and put it in WEB3FORMS_KEY.
+       Before switching this on you MUST also:
+         1. Name Web3Forms as a processor in privacy.html §4 — the row is
+            written and marked, it just needs completing.
+         2. Confirm which country stores the submissions. If it is outside
+            the EEA, state the transfer safeguard as well (Art. 44-49).
+
+   The consent checkbox is required in every mode. It is never pre-ticked
+   and the form will not submit without it: pre-ticked consent boxes are
+   invalid (GDPR Recital 32; CJEU C-673/17 Planet49).
    ========================================================================== */
 (function () {
   "use strict";
 
-  var FORM_ENDPOINT_KEY = "";                      // ← Web3Forms access key
-  var ENDPOINT = "https://api.web3forms.com/submit";
+  var FORM_MODE = "mailto";                 // "mailto" | "php" | "web3forms"
+
+  var PHP_ENDPOINT = "contact.php";
+  var WEB3FORMS_KEY = "";                   // ← paste the key here for "web3forms"
+  var WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
   var OWNER_EMAIL = "xpegkas@gmail.com";
+
+  /* A misconfiguration must never silently swallow an enquiry. If the chosen
+     mode cannot work, fall back to mailto rather than posting into a void. */
+  if (FORM_MODE === "web3forms" && !WEB3FORMS_KEY) {
+    if (window.console) {
+      console.warn("[contact] FORM_MODE is 'web3forms' but WEB3FORMS_KEY is empty — falling back to mailto. See js/contact.js.");
+    }
+    FORM_MODE = "mailto";
+  }
 
   var form = document.getElementById("contactForm");
   if (!form) return;
@@ -179,29 +201,46 @@
 
     setBusy(true);
 
-    if (!FORM_ENDPOINT_KEY) {
+    if (FORM_MODE === "mailto") {
       sendByMail(data);
       return;
     }
 
-    var payload = {
-      access_key: FORM_ENDPOINT_KEY,
-      subject: "Website enquiry — " + data.name,
-      from_name: "Πέγκας Photography website",
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      wedding_date: data.date,
-      enquiry_type: data.type,
-      message: data.message,
-      // Recorded alongside the message so the lawful basis for holding this
-      // enquiry can be evidenced later (GDPR Art. 7(1) — the controller must
-      // be able to demonstrate consent).
-      consent_given_at: new Date().toISOString(),
-      privacy_policy_version: "1.0"
-    };
+    var url, payload;
 
-    fetch(ENDPOINT, {
+    if (FORM_MODE === "php") {
+      url = PHP_ENDPOINT;
+      payload = {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        date: data.date,
+        type: data.type,
+        message: data.message,
+        consent: true,
+        website: ""            // honeypot, deliberately empty from a real person
+      };
+    } else {
+      url = WEB3FORMS_ENDPOINT;
+      payload = {
+        access_key: WEB3FORMS_KEY,
+        subject: "Website enquiry — " + data.name,
+        from_name: "Πέγκας Photography website",
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        wedding_date: data.date,
+        enquiry_type: data.type,
+        message: data.message,
+        // Recorded alongside the message so the lawful basis for holding this
+        // enquiry can be evidenced later (GDPR Art. 7(1) — the controller must
+        // be able to demonstrate consent).
+        consent_given_at: new Date().toISOString(),
+        privacy_policy_version: "1.0"
+      };
+    }
+
+    fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify(payload)
