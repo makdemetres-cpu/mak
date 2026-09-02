@@ -1316,3 +1316,74 @@ body.consent-open .to-top {
   .js .quote.is-tilting,
   .js .cat-card.is-tilting { transform: none; }
 }
+
+/* ==========================================================================
+   CARD HOVER — pure CSS, no JavaScript involved
+   --------------------------------------------------------------------------
+   The lift and the gold border are done here, NOT in js/tilt.js. That was the
+   original mistake: making the only visible feedback depend on JavaScript
+   meant any one of three things silently killed the whole effect —
+
+     · a touchscreen laptop, where (pointer: fine) reports false because
+       Windows calls the touch digitiser the PRIMARY pointer, so the script
+       never bound a single hover listener;
+     · .is-settled never arriving, because it hung on a transitionend that
+       is not guaranteed to fire;
+     · the visitor having animations turned off, which skipped binding
+       entirely and left cards completely inert.
+
+   CSS :hover has none of those dependencies. JavaScript now only adds the
+   cursor-tracked rotation on top of this.
+
+   any-hover rather than hover: on a hybrid laptop the primary pointer may be
+   touch while a mouse is also attached, and any-hover asks whether ANY input
+   can hover instead of only the primary one. Plain touch phones still get
+   nothing here, which is right — they get the press state instead. */
+@media (any-hover: hover) {
+  .assure-item:hover,
+  .package:hover,
+  .quote:hover,
+  .cat-card:hover {
+    --lift: -6px;
+    --tscale: 1.012;
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--rule));
+    box-shadow: 0 2px 4px rgba(0,0,0,.4), 0 30px 60px -28px rgba(0,0,0,1);
+  }
+  @supports not (color: color-mix(in srgb, red 50%, transparent)) {
+    .assure-item:hover, .package:hover,
+    .quote:hover, .cat-card:hover { border-color: #7A6640; }
+  }
+}
+
+/* The transform is no longer gated behind .is-settled. Cards carry their
+   rest values (0deg / 0px / 1) so this composes to an identity transform
+   until something changes them, which cannot disturb the entrance animation
+   — and it means the hover works even if the reveal never reports finishing. */
+.assure-item,
+.package,
+.quote,
+.cat-card {
+  transform:
+    perspective(900px)
+    translate3d(0, var(--lift), 0)
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    scale(var(--tscale));
+  transition:
+    transform .5s var(--ease-out),
+    box-shadow .4s var(--ease),
+    border-color .3s var(--ease);
+}
+
+/* Even with animations turned off, hovering must still confirm the card is
+   interactive — it just does it with colour instead of movement. */
+@media (prefers-reduced-motion: reduce) {
+  .assure-item, .package, .quote, .cat-card {
+    transform: none;
+    transition: border-color .15s linear, box-shadow .15s linear;
+  }
+  @media (any-hover: hover) {
+    .assure-item:hover, .package:hover,
+    .quote:hover, .cat-card:hover { transform: none; }
+  }
+}

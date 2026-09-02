@@ -30,26 +30,29 @@
   var SELECTOR = ".assure-item, .package, .quote, .cat-card";
 
   var MAX_TILT = 6;      // degrees at the very corner — "subtle"
-  var LIFT     = -6;     // px the whole card rises on hover
-  var SCALE    = 1.012;  // barely-there growth, sells the lift
+  // The lift and the scale live in css/style.css under "CARD HOVER", so they
+  // still happen when this file cannot run at all.
 
   var cards = document.querySelectorAll(SELECTOR);
   if (!cards.length) return;
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var fine   = window.matchMedia("(hover: hover) and (pointer: fine)");
+  var fine   = window.matchMedia("(any-hover: hover) and (any-pointer: fine)");
 
   /* ------------------------------------------------------------- helpers */
-  function setVars(el, rx, ry, lift, scale) {
+  function setVars(el, rx, ry) {
     el.style.setProperty("--rx", rx.toFixed(2) + "deg");
     el.style.setProperty("--ry", ry.toFixed(2) + "deg");
-    el.style.setProperty("--lift", lift + "px");
-    el.style.setProperty("--tscale", scale);
   }
 
   function rest(el) {
     el.classList.remove("is-tilting");
-    setVars(el, 0, 0, 0, 1);
+    // Remove, do not zero. An inline "--lift: 0px" beats the CSS :hover rule
+    // on specificity, so zeroing here would permanently disable the CSS
+    // fallback on every card the pointer had ever touched.
+    ["--rx", "--ry", "--lift", "--tscale"].forEach(function (v) {
+      el.style.removeProperty(v);
+    });
   }
 
   /* --------------------------------------------------------- mouse tilt */
@@ -78,7 +81,10 @@
        the right (px > 0) wants a positive rotateY.
        A positive rotateX pushes the card's TOP edge back, and py grows
        downward, so a cursor at the bottom wants a NEGATIVE rotateX. */
-    setVars(el, -py * MAX_TILT, px * MAX_TILT, LIFT, SCALE);
+    // Only the rotation. The lift and the scale belong to the CSS :hover
+    // rule, which works with no JavaScript at all; writing them here too
+    // would mean two owners for the same value.
+    setVars(el, -py * MAX_TILT, px * MAX_TILT);
   }
 
   function onMove(e) {

@@ -181,11 +181,24 @@
       pending.delete(el);
       io.unobserve(el);
       el.classList.add("is-in");
-      el.addEventListener("transitionend", function onEnd(ev) {
-        if (ev.propertyName !== "opacity") return;
+
+      function settle() {
         el.classList.add("is-settled");
         el.removeEventListener("transitionend", onEnd);
-      });
+      }
+      function onEnd(ev) {
+        if (ev.propertyName !== "opacity") return;
+        settle();
+      }
+      el.addEventListener("transitionend", onEnd);
+
+      /* transitionend is NOT guaranteed. It does not fire if the transition
+         is interrupted, if the tab is backgrounded across it, or if the
+         browser decides the property did not actually change. Card hover
+         styling is gated on .is-settled, so a missed event left those cards
+         permanently inert. This makes the class certain: 400ms past the
+         longest possible entrance (850ms transition + 520ms of stagger). */
+      window.setTimeout(settle, 1800);
     }
 
     var io = new IntersectionObserver(function (entries) {
