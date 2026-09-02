@@ -20,6 +20,7 @@ Nothing here is optional. The first three are legal requirements.
 | 3 | Confirm the Data Protection Authority's address is current | `privacy.html` §7 |
 | 4 | Replace `https://www.example.gr/` with the real domain | `index.html`, `sitemap.xml`, `robots.txt` |
 | 5 | Set the publication date on the three legal pages | `privacy.html`, `cookies.html`, `terms.html` |
+| 7 | Remove the `build-id` marker from the footer | all five `.html` files, and one rule in `css/style.css` |
 | 6 | Fill in real client quotes, **or delete the section** | `index.html` §06 |
 
 The placeholders are **deliberately highlighted in yellow** on the live page.
@@ -98,6 +99,14 @@ paragraph beneath them. If you would rather not chase quotes, delete the whole
 Packages deliberately carry no prices, only "κατόπιν επικοινωνίας". Adding
 real figures commits him publicly; leaving them out keeps the conversation
 open.
+
+### The footer build marker
+
+Every page shows a quiet `build N` in the footer. It exists so the question
+"am I looking at the latest version?" can be answered by reading the page,
+rather than by hunting for a visual difference — which cost several rounds
+during development. **Delete it before publishing:** search for `build-id`
+in the five HTML files and remove the one rule in `css/style.css`.
 
 ### Card interaction
 

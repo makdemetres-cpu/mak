@@ -1229,15 +1229,24 @@ body.consent-open .to-top {
     border-color .35s var(--ease);
 }
 
-/* While the pointer is actually over the card the transform must track it
-   frame for frame, so the transition is dropped. Restored the moment the
-   class comes off, which is what gives the spring back to rest. Placed
-   after the rule above so it wins on source order, not !important. */
+/* While the pointer is over the card the transform is only lightly smoothed,
+   so the tilt still tracks the cursor closely.
+
+   It is NOT dropped altogether, which is what it used to do. With no
+   transition at all the card snapped straight to its lifted, tilted state in
+   a single frame — and the eye catches movement, not static difference, so
+   an instant change is far EASIER to miss than a quick glide. That, not the
+   size of the effect, was why it read as nothing happening.
+
+   120ms is short enough to feel like tracking and long enough to be seen. */
 .js .assure-item.is-tilting,
 .js .package.is-tilting,
 .js .quote.is-tilting,
 .js .cat-card.is-tilting {
-  transition: box-shadow .3s var(--ease), border-color .3s var(--ease);
+  transition:
+    transform .12s linear,
+    box-shadow .3s var(--ease),
+    border-color .3s var(--ease);
   will-change: transform;
   z-index: 2;
 }
@@ -1518,3 +1527,9 @@ body.consent-open .to-top {
   .assure-item::before, .package::before,
   .quote::before, .cat-card::before { display: none; }
 }
+
+/* A version marker in the footer, so "am I looking at the latest version?"
+   can be answered by reading the page instead of guessing. Deliberately
+   quiet. REMOVE THIS before the site goes live — search for "build-id" in
+   the HTML and in this file. */
+.build-id { opacity: .55; letter-spacing: .1em; }
