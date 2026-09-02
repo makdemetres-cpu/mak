@@ -29,7 +29,7 @@
 
   var SELECTOR = ".assure-item, .package, .quote, .cat-card";
 
-  var MAX_TILT = 6;      // degrees at the very corner — "subtle"
+  var MAX_TILT = 11;     // degrees at the very corner
   // The lift and the scale live in css/style.css under "CARD HOVER", so they
   // still happen when this file cannot run at all.
 
@@ -45,12 +45,19 @@
     el.style.setProperty("--ry", ry.toFixed(2) + "deg");
   }
 
+  // Where the light falls, as a percentage across the card. Read by the
+  // ::before sheen in css/style.css.
+  function setLight(el, mx, my) {
+    el.style.setProperty("--mx", mx.toFixed(1) + "%");
+    el.style.setProperty("--my", my.toFixed(1) + "%");
+  }
+
   function rest(el) {
     el.classList.remove("is-tilting");
     // Remove, do not zero. An inline "--lift: 0px" beats the CSS :hover rule
     // on specificity, so zeroing here would permanently disable the CSS
     // fallback on every card the pointer had ever touched.
-    ["--rx", "--ry", "--lift", "--tscale"].forEach(function (v) {
+    ["--rx", "--ry", "--lift", "--tscale", "--mx", "--my"].forEach(function (v) {
       el.style.removeProperty(v);
     });
   }
@@ -85,6 +92,7 @@
     // rule, which works with no JavaScript at all; writing them here too
     // would mean two owners for the same value.
     setVars(el, -py * MAX_TILT, px * MAX_TILT);
+    setLight(el, ((x - r.left) / r.width) * 100, ((y - r.top) / r.height) * 100);
   }
 
   function onMove(e) {
@@ -112,7 +120,15 @@
   }
 
   /* --------------------------------------------------------- touch press */
-  function onDown(e) { e.currentTarget.classList.add("is-pressed"); }
+  function onDown(e) {
+    var el = e.currentTarget;
+    el.classList.add("is-pressed");
+    var r = el.getBoundingClientRect();
+    if (r.width && r.height) {
+      setLight(el, ((e.clientX - r.left) / r.width) * 100,
+                   ((e.clientY - r.top) / r.height) * 100);
+    }
+  }
   function onUp(e)   { e.currentTarget.classList.remove("is-pressed"); }
 
   /* ------------------------------------------------------------- binding */

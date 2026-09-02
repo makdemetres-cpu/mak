@@ -1387,3 +1387,134 @@ body.consent-open .to-top {
     .quote:hover, .cat-card:hover { transform: none; }
   }
 }
+
+/* ==========================================================================
+   CARD RESPONSE — bolder pass
+   --------------------------------------------------------------------------
+   The first attempt was calibrated for a light background and read as almost
+   nothing on this one. Movement roughly doubled, plus a highlight that
+   follows the cursor and a heading that warms to gold — on a dark ground the
+   eye needs a tonal change, not just displacement.
+   ========================================================================== */
+
+/* Leaving is slower than arriving. Arrival should feel instant; a slow
+   arrival reads as lag rather than elegance, while a slow departure reads
+   as weight. */
+.assure-item,
+.package,
+.quote,
+.cat-card {
+  position: relative;
+  transition:
+    transform .34s var(--ease-out),
+    box-shadow .34s var(--ease),
+    border-color .3s var(--ease);
+}
+
+@media (any-hover: hover) {
+  .assure-item:hover,
+  .package:hover,
+  .quote:hover,
+  .cat-card:hover {
+    --lift: -14px;
+    --tscale: 1.03;
+    transition:
+      transform .1s var(--ease),
+      box-shadow .1s var(--ease),
+      border-color .1s var(--ease);
+    box-shadow: 0 3px 6px rgba(0,0,0,.5), 0 40px 70px -30px rgba(0,0,0,1);
+  }
+
+  /* The heading warming to gold is the single most legible confirmation
+     that the card is live — colour registers faster than displacement. */
+  .assure-item:hover h3,
+  .package:hover h3,
+  .cat-card:hover h3 { color: var(--accent-bright); }
+  .quote:hover .quote-mark { color: var(--accent-bright); }
+  .quote:hover blockquote { color: var(--ink); }
+
+  /* Body copy lifts with the card. This is not decoration: the sheen
+     lightens the ground beneath it, so the text has to lift too or the
+     contrast falls as the highlight passes under it. At #BFBCB3 it measures
+     6.4:1 even at the brightest point of the light. */
+  .assure-item:hover p,
+  .package:hover > p,
+  .package:hover li { color: #BFBCB3; }
+  .assure-item p, .package > p, .package li { transition: color .12s var(--ease); }
+
+  .assure-item h3, .package h3, .cat-card h3,
+  .quote .quote-mark, .quote blockquote { transition: color .12s var(--ease); }
+}
+
+/* ---- the light catching the surface ------------------------------------
+   A soft warm highlight centred on the cursor, position fed in as --mx/--my
+   by js/tilt.js. Sits above the card's background but below its text.
+
+   The z-index is doing real work. These cards carry a transform, which
+   creates a stacking context, so z-index:-1 lands the sheen above the card's
+   own background and beneath its content. The category cards are different:
+   their content is a photograph, and the highlight has to be above the image
+   but below the caption — hence a positive index there and a raised caption. */
+.assure-item::before,
+.package::before,
+.quote::before,
+.cat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .16s var(--ease);
+  /* Peak alpha is .16, not .20. At .20 the lightened background pushed the
+     card's body text to 4.44:1 — under the 4.5:1 AA minimum — precisely where
+     the reader is looking. Measured, not guessed. */
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(205,176,122,.16),
+    rgba(205,176,122,.06) 38%,
+    transparent 66%);
+}
+.assure-item::before,
+.package::before,
+.quote::before { z-index: -1; }
+
+.cat-card::before { z-index: 2; }
+.cat-card-body { z-index: 3; }
+
+@media (any-hover: hover) {
+  .assure-item:hover::before,
+  .package:hover::before,
+  .quote:hover::before,
+  .cat-card:hover::before { opacity: 1; }
+}
+
+/* ---- TOUCH: match the weight of the hover ------------------------------- */
+@media (hover: none) {
+  .js .assure-item.is-pressed,
+  .js .package.is-pressed,
+  .js .quote.is-pressed,
+  .js .cat-card.is-pressed {
+    --tscale: .96;
+    --lift: 0px;
+    transition: transform .1s var(--ease), border-color .1s var(--ease);
+  }
+  /* The highlight lands where the finger actually touched, so the card
+     answers the contact point rather than lighting up uniformly. */
+  .js .assure-item.is-pressed::before,
+  .js .package.is-pressed::before,
+  .js .quote.is-pressed::before,
+  .js .cat-card.is-pressed::before { opacity: 1; }
+
+  .js .assure-item.is-pressed h3,
+  .js .package.is-pressed h3,
+  .js .cat-card.is-pressed h3 { color: var(--accent-bright); }
+  .js .quote.is-pressed .quote-mark { color: var(--accent-bright); }
+}
+
+/* The sheen follows the pointer, which is motion. Under reduced motion the
+   card still answers with its border and its heading. */
+@media (prefers-reduced-motion: reduce) {
+  .assure-item::before, .package::before,
+  .quote::before, .cat-card::before { display: none; }
+}
