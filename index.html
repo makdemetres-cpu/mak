@@ -1,497 +1,683 @@
-<!doctype html>
-<html lang="el" data-lang="el"
-      data-title-el="HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη"
-      data-title-en="HydroCore — Plumbing Solutions Across Greece | Thessaloniki"
-      data-desc-el="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση."
-      data-desc-en="HydroCore is Greece's largest certified plumbing network since 2007: 7 branches, 38 vehicles, 900+ professionals. Book online, 24/7 emergency response.">
+<!DOCTYPE html>
+<html lang="el">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="js/session-gate.js"></script>
-<title>HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη</title>
-<meta name="description" content="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση.">
-<meta name="theme-color" content="#00308F">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300308F'/%3E%3Cpath d='M50 20 C63 39 74 53 74 64 A24 24 0 1 1 26 64 C26 53 37 39 50 20 Z' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='62' r='9' fill='%2300308F'/%3E%3C/svg%3E">
 
+<title>Χρόνης Πέγκας — Φωτογραφία Γάμου, Ιωάννινα</title>
+<meta name="description" content="Φωτογραφία γάμου, βάπτισης και εκδηλώσεων στα Ιωάννινα και σε όλη την Ήπειρο. Ήσυχη, ντοκιμαντερίστικη ματιά — η μέρα σας όπως τη ζήσατε. Wedding photography in Ioannina, Greece.">
+
+<!-- Content Security Policy. `frame-ancestors` cannot be set from a <meta>
+     tag and must be sent as a real HTTP header — the ready-made header block
+     for Netlify / Apache / nginx is in README.md §Security. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#FAFAF9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0C0C" media="(prefers-color-scheme: dark)">
+
+<!-- UPDATE THESE to the real domain before publishing (see README.md). -->
+<link rel="canonical" href="https://www.example.gr/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Χρόνης Πέγκας Photography">
+<meta property="og:title" content="Χρόνης Πέγκας — Φωτογραφία Γάμου, Ιωάννινα">
+<meta property="og:description" content="Φωτογραφία γάμου, βάπτισης και εκδηλώσεων στα Ιωάννινα και σε όλη την Ήπειρο.">
+<meta property="og:image" content="https://www.example.gr/assets/img/og-image.jpg">
+<meta property="og:locale" content="el_GR">
+<meta property="og:locale:alternate" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preload" href="assets/fonts/GFSDidot-400-greek.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Commissioner-Variable-greek.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+
+<script src="js/boot.js"></script>
 </head>
+
 <body>
 
-<a href="#main" class="skip-link">Μετάβαση στο περιεχόμενο / Skip to content</a>
+<a class="skip-link" href="#main">
+  <span data-lang-el>Μετάβαση στο περιεχόμενο</span>
+  <span data-lang-en>Skip to content</span>
+</a>
 
-<!-- ============ PRELOADER ============ -->
-<div class="preloader" id="preloader" aria-hidden="true">
-  <svg class="preloader__mark" viewBox="0 0 100 100" width="72" height="72">
-    <circle class="preloader__ring" cx="50" cy="50" r="46" fill="none" stroke="#7CB9E8" stroke-width="2"/>
-    <path class="preloader__drop" d="M50 26 C61 41 70 53 70 64 A20 20 0 1 1 30 64 C30 53 39 41 50 26 Z" fill="#fff"/>
-  </svg>
-  <p class="preloader__label">HydroCore</p>
-</div>
+<div id="topSentinel" aria-hidden="true"></div>
+<div id="liveRegion" class="visually-hidden" role="status" aria-live="polite"></div>
 
-<!-- ============ NAV ============ -->
-<header class="nav" id="siteNav">
-  <div class="nav__inner">
-    <a href="index.html" class="nav__logo">
-      <svg class="nav__logo-mark" viewBox="0 0 100 100" width="34" height="34">
-        <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
-        <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
-        <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-      </svg>
-      <span class="nav__logo-word">Hydro<b>Core</b></span>
+<!-- ====================================================== HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="wordmark" href="#top" aria-label="Χρόνης Πέγκας Photography">
+      <span>Χρόνης Πέγκας</span>
+      <span class="wm-sub">Photography · Ιωάννινα</span>
     </a>
-    <nav class="nav__links" id="navLinks">
-      <a href="index.html" data-nav class="is-active"><span data-lang-el>Αρχική</span><span data-lang-en>Home</span></a>
-      <a href="index.html#about" data-nav><span data-lang-el>Σχετικά</span><span data-lang-en>About</span></a>
-      <a href="index.html#services" data-nav><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a>
-      <a href="index.html#locations" data-nav><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a>
-      <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="el" aria-pressed="true">EL</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      </div>
-      <a href="booking.html" class="btn btn-primary btn-sm">
-        <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span>
-      </a>
+
+    <nav class="nav-desktop" aria-label="Κύρια πλοήγηση">
+      <a href="#work"><span data-lang-el>Έργο</span><span data-lang-en>Work</span></a>
+      <a href="#story"><span data-lang-el>Ο Χρόνης</span><span data-lang-en>Chronis</span></a>
+      <a href="#approach"><span data-lang-el>Προσέγγιση</span><span data-lang-en>Approach</span></a>
+      <a href="#contact"><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></a>
     </nav>
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+
+    <div class="header-tools">
+      <div class="lang-toggle" role="group" aria-label="Language / Γλώσσα">
+        <button type="button" data-lang-btn="el" aria-pressed="true" lang="el">ΕΛ</button>
+        <button type="button" data-lang-btn="en" aria-pressed="false" lang="en">EN</button>
+      </div>
+      <button class="burger" id="burger" type="button"
+              aria-expanded="false" aria-controls="navMobile"
+              data-label-key="menuOpen" aria-label="Άνοιγμα μενού">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
-<div class="nav__scrim" id="navScrim"></div>
+
+<!-- ====================================================== MOBILE NAV -->
+<nav class="nav-mobile" id="navMobile" aria-hidden="true" aria-label="Μενού">
+  <ol>
+    <li><a href="#work"><span class="n-num">01</span><span data-lang-el>Το Έργο</span><span data-lang-en>The Work</span></a></li>
+    <li><a href="#story"><span class="n-num">02</span><span data-lang-el>Ο Χρόνης</span><span data-lang-en>Chronis</span></a></li>
+    <li><a href="#approach"><span class="n-num">03</span><span data-lang-el>Η Προσέγγιση</span><span data-lang-en>The Approach</span></a></li>
+    <li><a href="#contact"><span class="n-num">04</span><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></a></li>
+  </ol>
+  <div class="nav-mobile-foot">
+    <a href="mailto:xpegkas@gmail.com">xpegkas@gmail.com</a>
+    <a href="https://www.instagram.com/pegkas_professional/" target="_blank" rel="noopener noreferrer">@pegkas_professional</a>
+    <p>Ιωάννινα, Ήπειρος</p>
+  </div>
+</nav>
 
 <main id="main">
 
-<!-- ============ HERO ============ -->
+<!-- ====================================================== HERO -->
 <section class="hero" id="top">
-  <div class="hero__bg" aria-hidden="true">
-    <img class="hero__bg-photo" src="assets/img/hero-team.jpg" alt="" width="736" height="603">
-    <div class="hero__bg-overlay"></div>
-  </div>
-  <div class="hero__inner">
-    <div class="hero__content">
-      <h1 data-reveal="fade">
-        <span data-lang-el>Υδραυλικές λύσεις <em>χωρίς συμβιβασμούς</em></span>
-        <span data-lang-en>Plumbing, done <em>without compromise</em></span>
-      </h1>
-      <p class="lede" data-reveal="fade" style="--i:1">
-        <span data-lang-el>Το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα — 7 καταστήματα, 38 οχήματα και πάνω από 900 επαγγελματίες, έτοιμοι να φτάσουν στην πόρτα σας.</span>
-        <span data-lang-en>Greece's largest certified plumbing network — 7 branches, 38 vehicles and over 900 professionals, ready to reach your door.</span>
-      </p>
-      <div class="hero__cta" data-reveal="fade" style="--i:2">
-        <a href="booking.html" class="btn btn-primary">
-          <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book an Appointment</span>
-        </a>
-        <a href="tel:+308007008000" class="btn btn-light">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-          <span data-lang-el>Επείγον: 800 700 8000</span><span data-lang-en>Emergency: 800 700 8000</span>
-        </a>
-      </div>
-      <div class="hero__meta" data-reveal="fade" style="--i:3">
-        <div><strong data-count="18" data-suffix="+">0</strong><span data-lang-el>Χρόνια Εμπειρίας</span><span data-lang-en>Years of Experience</span></div>
-        <div><strong data-count="7">0</strong><span data-lang-el>Καταστήματα</span><span data-lang-en>Branches</span></div>
-        <div><strong data-count="38">0</strong><span data-lang-el>Οχήματα Συνεργείου</span><span data-lang-en>Service Vehicles</span></div>
-        <div><strong data-count="900" data-suffix="+">0</strong><span data-lang-el>Επαγγελματίες</span><span data-lang-en>Professionals</span></div>
-      </div>
-    </div>
+  <div class="hero-media">
+    <img src="assets/img/hero.jpg" width="2000" height="1250"
+         alt="Ζευγάρι σε γάμο στα Ιωάννινα, ασπρόμαυρη φωτογραφία"
+         fetchpriority="high" decoding="async">
   </div>
 
-  <div class="hero__curve" aria-hidden="true">
-    <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
-      <rect class="curve-seal" x="0" y="120" width="1440" height="80"/>
-      <path class="curve-shape" d="M0,20 Q720,220 1440,20 L1440,200 L0,200 Z"/>
-    </svg>
-  </div>
-</section>
-
-<!-- ============ ABOUT / STORY ============ -->
-<section class="section" id="about">
-  <div class="container">
-    <div class="story">
-      <div data-reveal="left">
-        <div class="story__art">
-          <div class="coverflow" id="storyCoverflow" tabindex="0" role="group"
-               aria-label="Φωτογραφικό ταξίδι στην ιστορία της HydroCore, 2007 έως σήμερα. Μετακινήστε το ποντίκι ή σύρετε, ή χρησιμοποιήστε τα βέλη αριστερά/δεξιά.">
-            <div class="coverflow__stage" id="coverflowStage">
-              <figure class="coverflow__slide" data-index="0" style="--grain:1">
-                <img src="assets/img/story-1.jpg" alt="Παλιά, φθαρμένα εργαλεία μέσα σε ξύλινη εργαλειοθήκη — η αρχή της HydroCore, 2007" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">26.06.2007</span>
-                  <span class="coverflow__cap"><span data-lang-el>Η Πρώτη Εργαλειοθήκη</span><span data-lang-en>The First Toolbox</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="1" style="--grain:0.75">
-                <img src="assets/img/story-2.jpg" alt="Εργαλεία κρεμασμένα σε τοίχο μικρού συνεργείου της HydroCore, 2013" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">14.03.2013</span>
-                  <span class="coverflow__cap"><span data-lang-el>Χτίζοντας τις Βάσεις</span><span data-lang-en>Building the Foundations</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="2" style="--grain:0.5">
-                <img src="assets/img/story-3.jpg" alt="Τεχνικός της HydroCore επισκευάζει σωληνώσεις κάτω από νεροχύτη, 2016" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">09.11.2016</span>
-                  <span class="coverflow__cap"><span data-lang-el>Χέρι στη Δουλειά</span><span data-lang-en>Hands at Work</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="3" style="--grain:0.25">
-                <img src="assets/img/story-4.jpg" alt="Τεχνικός εκπαιδεύεται στο εργαστήριο της HydroCore Academy, 2023" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">03.09.2023</span>
-                  <span class="coverflow__cap"><span data-lang-el>Η Ακαδημία μας</span><span data-lang-en>Our Academy</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="4" style="--grain:0">
-                <img src="assets/img/story-5.jpg" alt="Χειραψία συνεργασίας με φόντο σύγχρονη πόλη — η HydroCore σήμερα, 2026" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">17.01.2026</span>
-                  <span class="coverflow__cap"><span data-lang-el>Σφραγίζοντας το Μέλλον</span><span data-lang-en>Sealing the Future</span></span>
-                </figcaption>
-              </figure>
-            </div>
-            <p class="coverflow__hint" id="coverflowHint" aria-hidden="true">
-              <span data-lang-el>Περιηγηθείτε στην ιστορία μας</span>
-              <span data-lang-en>Hover to explore our story</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div data-reveal="right">
-        <p class="eyebrow"><span data-lang-el>Η Ιστορία μας</span><span data-lang-en>Our Story</span></p>
-        <h2 class="h-lg"><span data-lang-el>Από 3 φίλους σε 900+ επαγγελματίες</span><span data-lang-en>From 3 friends to a 900-strong team</span></h2>
-        <p class="lede" style="margin-top:16px">
-          <span data-lang-el>Το 2007, τρεις φίλοι με πάθος για τη χειροτεχνία της υδραυλικής άνοιξαν ένα μικρό συνεργείο στη Θεσσαλονίκη. Δεκαοχτώ χρόνια μετά, η HydroCore είναι συνώνυμο αξιοπιστίας σε επτά πόλεις της Ελλάδας — χωρίς ποτέ να ξεχάσει τις ρίζες της.</span>
-          <span data-lang-en>In 2007, three friends with a shared obsession for the craft of plumbing opened a small workshop in Thessaloniki. Eighteen years later, HydroCore is synonymous with reliability across seven Greek cities — without ever forgetting where it started.</span>
-        </p>
-
-        <div class="timeline">
-          <div class="timeline__item">
-            <span class="timeline__year">2007</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Η Αρχή</span><span data-lang-en>The Beginning</span></h3>
-              <p><span data-lang-el>Τρεις φίλοι, ένα μικρό συνεργείο και η υπόσχεση για έντιμη δουλειά στη Θεσσαλονίκη.</span><span data-lang-en>Three friends, one small workshop, and a promise of honest work in Thessaloniki.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2013</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Επέκταση στη Θεσσαλονίκη</span><span data-lang-en>Thessaloniki Expansion</span></h3>
-              <p><span data-lang-el>Δύο ακόμη καταστήματα ανοίγουν στην Καλαμαριά και τον Εύοσμο.</span><span data-lang-en>Two more branches open in Kalamaria and Evosmos.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2016</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Άφιξη στην Αθήνα</span><span data-lang-en>Arrival in Athens</span></h3>
-              <p><span data-lang-el>Η HydroCore φτάνει στην πρωτεύουσα, με καταστήματα στην Κηφισιά και τον Πειραιά.</span><span data-lang-en>HydroCore reaches the capital, with branches in Kifisia and Piraeus.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2019</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Πάτρα &amp; Κρήτη</span><span data-lang-en>Patra &amp; Crete</span></h3>
-              <p><span data-lang-el>Το δίκτυο επεκτείνεται στην Πελοπόννησο και το Ηράκλειο.</span><span data-lang-en>The network expands into the Peloponnese and Heraklion.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2023</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>HydroCore Academy</span><span data-lang-en>HydroCore Academy</span></h3>
-              <p><span data-lang-el>Δημιουργούμε το δικό μας πρόγραμμα εκπαίδευσης τεχνιτών, επενδύοντας στην επόμενη γενιά.</span><span data-lang-en>We launch our own technician training programme, investing in the next generation.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2026</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Σήμερα</span><span data-lang-en>Today</span></h3>
-              <p><span data-lang-el>900+ επαγγελματίες, 38 οχήματα, 7 καταστήματα — ένα σταθερό όνομα σε όλη την Ελλάδα.</span><span data-lang-en>900+ professionals, 38 vehicles, 7 branches — one trusted name across Greece.</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="stats" data-reveal-group data-reveal>
-      <div class="stats__bg" aria-hidden="true">
-        <img class="stats__bg-photo" src="assets/img/stats-plumber.jpg" alt="">
-        <div class="stats__bg-overlay"></div>
-      </div>
-      <div class="stat" data-reveal style="--i:0"><div class="stat__num" data-count="2007" data-no-group="true">0</div><div class="stat__label"><span data-lang-el>Έτος Ίδρυσης</span><span data-lang-en>Founded</span></div></div>
-      <div class="stat" data-reveal style="--i:1"><div class="stat__num" data-count="50000" data-suffix="+">0</div><div class="stat__label"><span data-lang-el>Ολοκληρωμένες Επισκευές</span><span data-lang-en>Completed Repairs</span></div></div>
-      <div class="stat" data-reveal style="--i:2"><div class="stat__num" data-count="98" data-suffix="%">0</div><div class="stat__label"><span data-lang-el>Ικανοποίηση Πελατών</span><span data-lang-en>Customer Satisfaction</span></div></div>
-      <div class="stat" data-reveal style="--i:3"><div class="stat__num" data-count="45" data-suffix="′">0</div><div class="stat__label"><span data-lang-el>Μ.Ο. Χρόνου Άφιξης</span><span data-lang-en>Avg. Response Time</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SERVICES ============ -->
-<section class="section section-alt" id="services">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Τι Κάνουμε</span><span data-lang-en>What We Do</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Υπηρεσίες για κάθε υδραυλική ανάγκη</span><span data-lang-en>Services for every plumbing need</span></h2>
-    <p class="lede center" style="margin-top:14px">
-      <span data-lang-el>Από ένα σταλάζον βρυσάκι μέχρι πλήρη ανακαίνιση δικτύου — το κατάλληλο συνεργείο φτάνει με τον κατάλληλο εξοπλισμό, την πρώτη φορά.</span>
-      <span data-lang-en>From a dripping tap to a full network overhaul — the right crew arrives with the right equipment, the first time.</span>
+  <div class="hero-body">
+    <p class="eyebrow">
+      <span data-lang-el>Φωτογραφία γάμου · Ιωάννινα</span>
+      <span data-lang-en>Wedding photography · Ioannina</span>
     </p>
-    <div class="services-grid" id="servicesGrid" data-reveal-group></div>
+    <h1>Χρόνης Πέγκας</h1>
+    <p class="hero-sub">
+      <span data-lang-el>Η μέρα σας όπως τη ζήσατε — όχι όπως υποτίθεται ότι έπρεπε να φαίνεται.</span>
+      <span data-lang-en>Your day as you lived it — not as it was supposed to look.</span>
+    </p>
+    <p class="hero-meta">
+      <span data-lang-el>Ιωάννινα</span><span data-lang-en>Ioannina</span>
+      <i class="dot" aria-hidden="true"></i>
+      <span data-lang-el>Ήπειρος</span><span data-lang-en>Epirus</span>
+      <i class="dot" aria-hidden="true"></i>
+      <span data-lang-el>Όλη η Ελλάδα</span><span data-lang-en>All of Greece</span>
+    </p>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <i></i>
+    <span data-lang-el>Κυλήστε</span><span data-lang-en>Scroll</span>
   </div>
 </section>
 
-<!-- ============ USP ============ -->
-<section class="section">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Γιατί HydroCore</span><span data-lang-en>Why HydroCore</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Το μέγεθος ενός δικτύου, η φροντίδα μιας γειτονιάς</span><span data-lang-en>The reach of a network, the care of a neighbourhood shop</span></h2>
-    <div class="usp-grid" data-reveal-group>
-      <div class="usp" data-reveal style="--i:0">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
-        <h3><span data-lang-el>Πιστοποιημένοι Τεχνικοί</span><span data-lang-en>Certified Technicians</span></h3>
-        <p><span data-lang-el>Όλοι οι τεχνικοί μας είναι αδειοδοτημένοι και εκπαιδευμένοι στο HydroCore Academy, σύμφωνα με το ευρωπαϊκό πρότυπο EN 806.</span><span data-lang-en>Every technician is licensed and trained through HydroCore Academy, to the EN 806 European standard.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:1">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        <h3><span data-lang-el>Απόκριση σε &lt;45 λεπτά</span><span data-lang-en>Under 45-Minute Response</span></h3>
-        <p><span data-lang-el>Μέσος χρόνος άφιξης σε αστικά κέντρα για επείγοντα περιστατικά, χάρη στα 38 οχήματα του στόλου μας.</span><span data-lang-en>Average arrival time in city centres for emergency callouts, backed by our 38-vehicle fleet.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:2">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 6 4 9.5 9 10 5-.5 9-4 9-10V6l-9-4Z"/><path d="M9 12h6M12 9v6"/></svg>
-        <h3><span data-lang-el>Εγγύηση 2 Ετών</span><span data-lang-en>2-Year Guarantee</span></h3>
-        <p><span data-lang-el>Κάθε επισκευή και εγκατάσταση συνοδεύεται από γραπτή εγγύηση εργασίας.</span><span data-lang-en>Every repair and installation comes with a written workmanship guarantee.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:3">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4-3-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-3 8-7 11Z"/><path d="M9 10c1 2 2 3 3 3"/></svg>
-        <h3><span data-lang-el>Υπεύθυνη Χρήση Νερού</span><span data-lang-en>Responsible Water Use</span></h3>
-        <p><span data-lang-el>Το πρόγραμμα «HydroCore Blue» προσφέρει δωρεάν ελέγχους διαρροών σε σχολεία και ευπαθείς ομάδες.</span><span data-lang-en>Our "HydroCore Blue" programme offers free leak checks to local schools and vulnerable households.</span></p>
-      </div>
+<!-- ====================================================== 01 — WORK -->
+<section class="section" id="work">
+  <div class="shell">
+
+    <div class="section-head reveal reveal--left">
+      <p class="sec-index">01<span class="visually-hidden"> — </span>
+        <span data-lang-el>Portfolio</span><span data-lang-en>Portfolio</span>
+      </p>
+      <h2><span data-lang-el>Το Έργο</span><span data-lang-en>The Work</span></h2>
+      <p class="lede">
+        <span data-lang-el>Λίγες φωτογραφίες από γάμους, βαπτίσεις και εκδηλώσεις. Καμία τους δεν στήθηκε — απλώς ήμουν εκεί τη σωστή στιγμή, και περίμενα.</span>
+        <span data-lang-en>A short selection from weddings, christenings and events. None of these were staged — I was simply there at the right moment, and I waited.</span>
+      </p>
     </div>
-  </div>
-</section>
 
-<!-- ============ LOCATIONS ============ -->
-<section class="section section-alt" id="locations">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Το Δίκτυό μας</span><span data-lang-en>Our Network</span></p>
-    <h2 class="h-lg center"><span data-lang-el>7 καταστήματα, 4 περιοχές, μία υπόσχεση</span><span data-lang-en>7 branches, 4 regions, one promise</span></h2>
-
-    <div class="locations">
-      <div data-reveal="fade">
-        <div class="location-switcher" id="locationSwitcher">
-          <div class="location-switcher__bg" id="locationSwitcherBg" aria-hidden="true"></div>
-          <div class="location-switcher__overlay" aria-hidden="true"></div>
-          <div class="location-switcher__list" id="locationSwitcherList"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TESTIMONIALS ============ -->
-<section class="section">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Μαρτυρίες</span><span data-lang-en>Testimonials</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Τι λένε οι πελάτες μας</span><span data-lang-en>What our customers say</span></h2>
-
-    <div class="testi-cta">
-      <button type="button" class="btn btn-ghost btn-sm" id="openReviewModal">
-        <span data-lang-el>Γράψτε μια Κριτική</span><span data-lang-en>Write a Review</span>
+    <div class="filters reveal reveal--left" role="group" aria-label="Φίλτρα κατηγορίας">
+      <button type="button" data-filter="all" aria-pressed="true">
+        <span data-lang-el>Όλα</span><span data-lang-en>All</span>
+      </button>
+      <button type="button" data-filter="wedding" aria-pressed="false">
+        <span data-lang-el>Γάμος</span><span data-lang-en>Weddings</span>
+      </button>
+      <button type="button" data-filter="christening" aria-pressed="false">
+        <span data-lang-el>Βάπτιση</span><span data-lang-en>Christenings</span>
+      </button>
+      <button type="button" data-filter="event" aria-pressed="false">
+        <span data-lang-el>Εκδήλωση</span><span data-lang-en>Events</span>
       </button>
     </div>
 
-    <div class="testi-track-wrap">
-      <div class="testi-track" id="testiTrack">
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Μας έσωσαν κυριολεκτικά τη νύχτα που έσπασε ο σωλήνας. Ήρθαν σε 25 λεπτά.»</span><span data-lang-en>"They saved us, literally, the night a pipe burst. Arrived in 25 minutes."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΕΠ</div>
-            <div><strong>Ελένη Παπαδοπούλου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Επαγγελματισμός σπάνιος. Άλλαξαν όλη την εγκατάσταση στο διαμέρισμα χωρίς καμία βρωμιά.»</span><span data-lang-en>"Rare professionalism. Re-piped the whole apartment without any mess."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΓΑ</div>
-            <div><strong>Γιώργος Αντωνίου</strong><span data-lang-el>Αθήνα</span><span data-lang-en>Athens</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Το ραντεβού online ήταν παιχνιδάκι, ήρθαν ακριβώς στην ώρα τους.»</span><span data-lang-en>"Booking online was effortless — they showed up exactly on time."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΜΚ</div>
-            <div><strong>Μαρία Κωνσταντίνου</strong><span data-lang-el>Πάτρα</span><span data-lang-en>Patra</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Ο έξυπνος αισθητήρας διαρροής που εγκατέστησαν μας γλίτωσε από σίγουρη ζημιά.»</span><span data-lang-en>"The smart leak sensor they installed saved us from certain damage."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΝΧ</div>
-            <div><strong>Νίκος Χατζής</strong><span data-lang-el>Ηράκλειο</span><span data-lang-en>Heraklion</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«18 χρόνια εμπιστοσύνης. Δεν πάω πουθενά αλλού.»</span><span data-lang-en>"18 years of trust. I wouldn't go anywhere else."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΣΔ</div>
-            <div><strong>Σοφία Δημητρίου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
-          </div>
-        </article>
-      </div>
+    <div class="gallery" id="gallery" data-reveal-group="65">
+
+      <button class="shot reveal reveal--up" data-cat="wedding" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-01.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+             alt="Η νύφη ετοιμάζεται πριν την τελετή">
+        <figcaption><span data-lang-el>Προετοιμασία · Ιωάννινα</span><span data-lang-en>Getting ready · Ioannina</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="wedding" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-02.jpg" width="1600" height="1067" loading="lazy" decoding="async"
+             alt="Η τελετή σε εκκλησία της Ηπείρου">
+        <figcaption><span data-lang-el>Τελετή · Ήπειρος</span><span data-lang-en>Ceremony · Epirus</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="christening" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-03.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+             alt="Βάπτιση, στιγμή στην κολυμβήθρα">
+        <figcaption><span data-lang-el>Βάπτιση · Ιωάννινα</span><span data-lang-en>Christening · Ioannina</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="wedding" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-04.jpg" width="1600" height="1067" loading="lazy" decoding="async"
+             alt="Το πρώτο χορό του ζευγαριού">
+        <figcaption><span data-lang-el>Δεξίωση · Λίμνη Παμβώτιδα</span><span data-lang-en>Reception · Lake Pamvotida</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="wedding" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-05.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+             alt="Πορτρέτο του ζευγαριού στο ηλιοβασίλεμα">
+        <figcaption><span data-lang-el>Πορτρέτο · Ζαγοροχώρια</span><span data-lang-en>Portrait · Zagori</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="event" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-06.jpg" width="1600" height="1067" loading="lazy" decoding="async"
+             alt="Καλεσμένοι σε εκδήλωση">
+        <figcaption><span data-lang-el>Εκδήλωση · Ιωάννινα</span><span data-lang-en>Event · Ioannina</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="wedding" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-07.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+             alt="Λεπτομέρεια από τα στέφανα">
+        <figcaption><span data-lang-el>Λεπτομέρεια · Στέφανα</span><span data-lang-en>Detail · Wedding crowns</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="christening" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-08.jpg" width="1600" height="1067" loading="lazy" decoding="async"
+             alt="Οικογένεια μετά τη βάπτιση">
+        <figcaption><span data-lang-el>Οικογένεια · Βάπτιση</span><span data-lang-en>Family · Christening</span></figcaption>
+      </button>
+
+      <button class="shot reveal reveal--up" data-cat="wedding" type="button" data-label-key="lightboxOpen" aria-label="Προβολή φωτογραφίας σε πλήρες μέγεθος">
+        <img src="assets/img/work-09.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+             alt="Το ζευγάρι φεύγει από την εκκλησία">
+        <figcaption><span data-lang-el>Έξοδος · Ιωάννινα</span><span data-lang-en>Leaving the church · Ioannina</span></figcaption>
+      </button>
+
     </div>
   </div>
 </section>
 
-<!-- ============ WRITE A REVIEW MODAL ============ -->
-<div class="review-modal-overlay" id="reviewModalOverlay"></div>
-<div class="review-modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
-  <div class="review-modal__head">
-    <h3 id="reviewModalTitle" class="h-md"><span data-lang-el>Γράψτε μια κριτική</span><span data-lang-en>Write a review</span></h3>
-    <button class="cookie-modal__close" id="reviewModalClose" type="button" aria-label="Close">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-  <form id="reviewForm" novalidate>
-    <div class="field">
-      <label for="reviewName"><span data-lang-el>Το όνομά σας</span><span data-lang-en>Your name</span></label>
-      <input type="text" id="reviewName" autocomplete="name" required>
-      <span class="field__error"><span data-lang-el>Συμπληρώστε το όνομά σας</span><span data-lang-en>Please enter your name</span></span>
-    </div>
-    <div class="field">
-      <label><span data-lang-el>Βαθμολογία</span><span data-lang-en>Rating</span></label>
-      <div class="star-picker" id="starPicker" role="radiogroup" aria-label="Rating">
-        <button type="button" class="star-picker__star" data-value="1" aria-label="1 star">★</button>
-        <button type="button" class="star-picker__star" data-value="2" aria-label="2 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="3" aria-label="3 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="4" aria-label="4 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="5" aria-label="5 stars">★</button>
-      </div>
-      <span class="field__error"><span data-lang-el>Επιλέξτε βαθμολογία</span><span data-lang-en>Please pick a rating</span></span>
-    </div>
-    <div class="field">
-      <label for="reviewText"><span data-lang-el>Η κριτική σας</span><span data-lang-en>Your review</span></label>
-      <textarea id="reviewText" required></textarea>
-      <span class="field__error"><span data-lang-el>Γράψτε λίγα λόγια για την εμπειρία σας</span><span data-lang-en>Tell us a little about your experience</span></span>
-    </div>
-    <div class="review-modal__actions">
-      <button type="button" class="btn btn-ghost" id="reviewCancel"><span data-lang-el>Άκυρο</span><span data-lang-en>Cancel</span></button>
-      <button type="submit" class="btn btn-primary"><span data-lang-el>Υποβολή</span><span data-lang-en>Submit</span></button>
-    </div>
-  </form>
-</div>
+<!-- ====================================================== 02 — STORY -->
+<section class="section section--tint" id="story">
+  <div class="shell">
+    <div class="split split--wide-media">
 
-<!-- ============ THANK YOU / CONFETTI ============ -->
-<div class="thanks-overlay" id="thanksOverlay">
-  <canvas class="thanks-overlay__canvas" id="confettiCanvas"></canvas>
-  <div class="thanks-panel">
-    <div class="success-panel__icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-    </div>
-    <h3 class="h-md"><span data-lang-el>Ευχαριστούμε!</span><span data-lang-en>Thank you!</span></h3>
-    <p><span data-lang-el>Η κριτική σας προστέθηκε με επιτυχία.</span><span data-lang-en>Your review was added successfully.</span></p>
-  </div>
-</div>
+      <figure class="split-media reveal reveal--left">
+        <img src="assets/img/portrait.jpg" width="1200" height="1500" loading="lazy" decoding="async"
+             alt="Ο Χρόνης Πέγκας, φωτογράφος, στα Ιωάννινα">
+        <figcaption>Χρόνης Πέγκας · Ιωάννινα</figcaption>
+      </figure>
 
-<!-- ============ CTA BANNER ============ -->
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <div class="cta-banner" data-reveal="scale">
-      <div class="cta-banner__bg" aria-hidden="true">
-        <img class="cta-banner__bg-photo" src="assets/img/cta-receptionist.jpg" alt="">
-        <div class="cta-banner__bg-overlay"></div>
+      <div class="split-body reveal reveal--right">
+        <p class="sec-index">02<span class="visually-hidden"> — </span>
+          <span data-lang-el>Η ιστορία</span><span data-lang-en>The story</span>
+        </p>
+        <h2>
+          <span data-lang-el>Ποιος είναι ο Χρόνης</span>
+          <span data-lang-en>Who is Chronis</span>
+        </h2>
+
+        <div class="prose">
+          <p>
+            <span data-lang-el>Γεννήθηκα και μεγάλωσα στα Ιωάννινα. Πήρα την πρώτη μου μηχανή στα <span class="fill">[ΗΛΙΚΙΑ]</span> και για χρόνια φωτογράφιζα ό,τι έβρισκα μπροστά μου — τη λίμνη τον χειμώνα, την οικογένειά μου, τους δρόμους της πόλης νωρίς το πρωί πριν ξυπνήσει.</span>
+            <span data-lang-en>I was born and raised in Ioannina. I picked up my first camera at <span class="fill">[AGE]</span>, and for years I photographed whatever was in front of me — the lake in winter, my family, the streets of the city early in the morning before it woke up.</span>
+          </p>
+          <p>
+            <span data-lang-el>Ο πρώτος γάμος που φωτογράφισα ήταν το <span class="fill">[ΕΤΟΣ]</span>, μιας φίλης που δεν είχε την πολυτέλεια επαγγελματία. Δεν ήξερα τι έκανα. Ξέρω όμως τι έμαθα εκείνη τη μέρα: ότι οι στιγμές που μετράνε δεν είναι ποτέ αυτές που περιμένεις.</span>
+            <span data-lang-en>The first wedding I photographed was in <span class="fill">[YEAR]</span> — a friend who couldn't afford a professional. I had no idea what I was doing. But I know what I learned that day: the moments that matter are never the ones you're waiting for.</span>
+          </p>
+
+          <p class="pullquote">
+            <span data-lang-el>«Ο καλύτερος φωτογράφος γάμου είναι αυτός που, στο τέλος της μέρας, κανείς δεν θυμάται ότι ήταν εκεί.»</span>
+            <span data-lang-en>“The best wedding photographer is the one nobody remembers was there.”</span>
+          </p>
+
+          <p>
+            <span data-lang-el>Από τότε έχω φωτογραφίσει <span class="fill">[ΑΡΙΘΜΟΣ]</span> γάμους σε όλη την Ήπειρο — σε πέτρινες εκκλησίες στα Ζαγοροχώρια, σε αυλές με ασβεστωμένους τοίχους, σε δεξιώσεις δίπλα στη λίμνη που κράτησαν μέχρι το πρωί. Δουλεύω μόνος, χωρίς βοηθό, με δύο μηχανές και σταθερούς φακούς.</span>
+            <span data-lang-en>Since then I've photographed <span class="fill">[NUMBER]</span> weddings across Epirus — in stone churches in the Zagori villages, in whitewashed courtyards, at receptions beside the lake that ran until morning. I work alone, without a second shooter, with two bodies and prime lenses.</span>
+          </p>
+          <p>
+            <span data-lang-el>Δεν θα σας πω πού να σταθείτε. Δεν θα σταματήσω την τελετή για να ξαναπάρω μια λήψη. Η δουλειά μου είναι να γίνω αόρατος, και να σας δώσω πίσω τη μέρα σας ακριβώς όπως ήταν.</span>
+            <span data-lang-en>I won't tell you where to stand. I won't stop the ceremony to get a shot again. My job is to become invisible, and to hand your day back to you exactly as it was.</span>
+          </p>
+        </div>
       </div>
-      <div>
-        <h2 class="h-md"><span data-lang-el>Χρειάζεστε άμεση βοήθεια;</span><span data-lang-en>Need help right now?</span></h2>
-        <p><span data-lang-el>Το κοντινότερο συνεργείο μας είναι μόλις λεπτά μακριά, 24 ώρες το 24ωρο.</span><span data-lang-en>Our nearest crew is just minutes away, 24 hours a day.</span></p>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================== 03 — APPROACH -->
+<section class="section" id="approach">
+  <div class="shell">
+
+    <div class="section-head reveal reveal--right">
+      <p class="sec-index">03<span class="visually-hidden"> — </span>
+        <span data-lang-el>Πώς δουλεύω</span><span data-lang-en>How I work</span>
+      </p>
+      <h2><span data-lang-el>Η Προσέγγιση</span><span data-lang-en>The Approach</span></h2>
+      <p class="lede">
+        <span data-lang-el>Τρία στάδια, με αυτή τη σειρά. Είναι η σειρά με την οποία εξελίσσεται η ίδια η μέρα.</span>
+        <span data-lang-en>Three stages, in this order. It's the order the day itself unfolds in.</span>
+      </p>
+    </div>
+
+    <div class="steps" data-reveal-group="90">
+      <article class="step reveal reveal--up">
+        <p class="step-n">01</p>
+        <h3><span data-lang-el>Πριν</span><span data-lang-en>Before</span></h3>
+        <p>
+          <span data-lang-el>Συναντιόμαστε — από κοντά στα Ιωάννινα ή με μια βιντεοκλήση. Μου λέτε πώς φαντάζεστε τη μέρα, ποιοι άνθρωποι μετράνε, τι σας αγχώνει. Επισκέπτομαι τον χώρο πριν τον γάμο όποτε γίνεται.</span>
+          <span data-lang-en>We meet — in person in Ioannina, or on a video call. You tell me how you picture the day, which people matter, what you're anxious about. I visit the venue beforehand whenever I can.</span>
+        </p>
+      </article>
+
+      <article class="step reveal reveal--up">
+        <p class="step-n">02</p>
+        <h3><span data-lang-el>Την ημέρα</span><span data-lang-en>On the day</span></h3>
+        <p>
+          <span data-lang-el>Φτάνω νωρίς και φεύγω αργά. Δεν διακόπτω, δεν σκηνοθετώ, δεν ζητάω να επαναληφθεί τίποτα. Το μόνο στημένο κομμάτι είναι τα πορτρέτα — και δεν κρατάνε πάνω από είκοσι λεπτά.</span>
+          <span data-lang-en>I arrive early and leave late. I don't interrupt, I don't direct, I don't ask for anything to be repeated. The only staged part is the portraits — and they never take more than twenty minutes.</span>
+        </p>
+      </article>
+
+      <article class="step reveal reveal--up">
+        <p class="step-n">03</p>
+        <h3><span data-lang-el>Μετά</span><span data-lang-en>After</span></h3>
+        <p>
+          <span data-lang-el>Μια πρώτη επιλογή σε <span class="fill">[ΗΜΕΡΕΣ]</span> ημέρες. Ολόκληρη η συλλογή, επεξεργασμένη μία-μία, σε <span class="fill">[ΕΒΔΟΜΑΔΕΣ]</span> εβδομάδες, σε ιδιωτική διαδικτυακή γκαλερί που μπορείτε να μοιραστείτε.</span>
+          <span data-lang-en>A first selection within <span class="fill">[DAYS]</span> days. The full collection, edited frame by frame, within <span class="fill">[WEEKS]</span> weeks, in a private online gallery you can share.</span>
+        </p>
+      </article>
+    </div>
+
+    <div class="services reveal reveal--up">
+      <div class="service">
+        <h3><span data-lang-el>Γάμος</span><span data-lang-en>Weddings</span></h3>
+        <p>
+          <span data-lang-el>Πλήρης κάλυψη, από την προετοιμασία μέχρι το τέλος της δεξίωσης.</span>
+          <span data-lang-en>Full coverage, from getting ready to the end of the reception.</span>
+        </p>
       </div>
-      <div class="cta-banner__actions">
-        <a href="tel:+308007008000" class="btn btn-white">
-          <span data-lang-el>Καλέστε 800 700 8000</span><span data-lang-en>Call 800 700 8000</span>
-        </a>
-        <a href="booking.html" class="btn btn-light"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Online</span></a>
+      <div class="service">
+        <h3><span data-lang-el>Βάπτιση</span><span data-lang-en>Christenings</span></h3>
+        <p>
+          <span data-lang-el>Η τελετή και η γιορτή που ακολουθεί, με την ίδια διακριτική ματιά.</span>
+          <span data-lang-en>The ceremony and the celebration after it, with the same unobtrusive eye.</span>
+        </p>
       </div>
+      <div class="service">
+        <h3><span data-lang-el>Εκδηλώσεις</span><span data-lang-en>Events</span></h3>
+        <p>
+          <span data-lang-el>Επέτειοι, οικογενειακές γιορτές και εταιρικές εκδηλώσεις στην Ήπειρο.</span>
+          <span data-lang-en>Anniversaries, family celebrations and corporate events across Epirus.</span>
+        </p>
+      </div>
+      <div class="service">
+        <h3><span data-lang-el>Ταξίδι</span><span data-lang-en>Travel</span></h3>
+        <p>
+          <span data-lang-el>Διαθέσιμος για γάμους σε όλη την Ελλάδα και στο εξωτερικό.</span>
+          <span data-lang-en>Available for weddings anywhere in Greece and abroad.</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====================================================== 04 — CONTACT -->
+<section class="section section--tint" id="contact">
+  <div class="shell">
+
+    <div class="section-head reveal reveal--left">
+      <p class="sec-index">04<span class="visually-hidden"> — </span>
+        <span data-lang-el>Ας μιλήσουμε</span><span data-lang-en>Let's talk</span>
+      </p>
+      <h2><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></h2>
+      <p class="lede">
+        <span data-lang-el>Πείτε μου την ημερομηνία και πού γίνεται ο γάμος. Απαντάω σε κάθε μήνυμα προσωπικά, συνήθως μέσα σε 48 ώρες.</span>
+        <span data-lang-en>Tell me your date and where the wedding is. I answer every message personally, usually within 48 hours.</span>
+      </p>
+    </div>
+
+    <div class="contact-grid">
+
+      <aside class="contact-aside reveal reveal--left">
+        <div class="contact-block">
+          <p class="eyebrow"><span data-lang-el>Email</span><span data-lang-en>Email</span></p>
+          <a href="mailto:xpegkas@gmail.com">xpegkas@gmail.com</a>
+        </div>
+        <div class="contact-block">
+          <p class="eyebrow">Instagram</p>
+          <a href="https://www.instagram.com/pegkas_professional/" target="_blank" rel="noopener noreferrer">@pegkas_professional</a>
+        </div>
+        <div class="contact-block">
+          <p class="eyebrow"><span data-lang-el>Έδρα</span><span data-lang-en>Based in</span></p>
+          <p><span data-lang-el>Ιωάννινα, Ήπειρος</span><span data-lang-en>Ioannina, Epirus</span></p>
+        </div>
+        <div class="contact-block">
+          <p class="eyebrow"><span data-lang-el>Διαθεσιμότητα</span><span data-lang-en>Availability</span></p>
+          <p>
+            <span data-lang-el>Δέχομαι περιορισμένο αριθμό γάμων ανά σεζόν.</span>
+            <span data-lang-en>I take a limited number of weddings each season.</span>
+          </p>
+        </div>
+      </aside>
+
+      <form class="form reveal reveal--right" id="contactForm" novalidate>
+        <!-- Honeypot. Hidden off-screen; a bot fills it, a person never sees it. -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Website</label>
+          <input class="hp-field" type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-name">
+              <span data-lang-el>Όνομα</span><span data-lang-en>Name</span>
+              <span class="req" aria-hidden="true">*</span>
+            </label>
+            <input type="text" id="f-name" name="name" required autocomplete="name">
+            <p class="field-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-email">
+              Email <span class="req" aria-hidden="true">*</span>
+            </label>
+            <input type="email" id="f-email" name="email" required autocomplete="email">
+            <p class="field-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="f-phone"><span data-lang-el>Τηλέφωνο</span><span data-lang-en>Phone</span></label>
+            <input type="tel" id="f-phone" name="phone" autocomplete="tel">
+            <p class="field-error" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-date"><span data-lang-el>Ημερομηνία</span><span data-lang-en>Date</span></label>
+            <input type="date" id="f-date" name="date">
+            <p class="field-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-type"><span data-lang-el>Τύπος εκδήλωσης</span><span data-lang-en>Type of occasion</span></label>
+          <!-- An <option> cannot contain the usual per-language <span> pair,
+               so these carry both strings as data-* and main.js swaps the
+               label text. Without that, English mode would empty the list. -->
+          <select id="f-type" name="type">
+            <option value="wedding"     data-el="Γάμος"    data-en="Wedding">Γάμος</option>
+            <option value="christening" data-el="Βάπτιση"  data-en="Christening">Βάπτιση</option>
+            <option value="event"       data-el="Εκδήλωση" data-en="Event">Εκδήλωση</option>
+            <option value="other"       data-el="Άλλο"     data-en="Other">Άλλο</option>
+          </select>
+          <p class="field-error" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <label for="f-message">
+            <span data-lang-el>Μήνυμα</span><span data-lang-en>Message</span>
+            <span class="req" aria-hidden="true">*</span>
+          </label>
+          <textarea id="f-message" name="message" rows="5" required></textarea>
+          <p class="field-error" aria-live="polite"></p>
+        </div>
+
+        <div class="consent-field">
+          <input type="checkbox" id="f-consent" name="consent" required>
+          <div>
+            <label for="f-consent">
+              <span data-lang-el>Έχω διαβάσει και συμφωνώ με την <a href="privacy.html">Πολιτική Απορρήτου</a>. Τα στοιχεία μου θα χρησιμοποιηθούν αποκλειστικά για να απαντηθεί το αίτημά μου.</span>
+              <span data-lang-en>I have read and agree to the <a href="privacy.html">Privacy Policy</a>. My details will be used only to answer this enquiry.</span>
+            </label>
+            <p class="field-error" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <button class="btn btn--full" type="submit">
+          <span data-btn-label>
+            <span data-lang-el>Αποστολή μηνύματος</span><span data-lang-en>Send message</span>
+          </span>
+        </button>
+
+        <div class="form-status" id="formStatus" hidden></div>
+      </form>
+
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer class="site-footer" id="footer">
-  <div class="container">
+<!-- ====================================================== FOOTER -->
+<footer class="site-footer">
+  <div class="shell">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="footer-logo">
-          <svg width="30" height="30" viewBox="0 0 100 100"><path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#7CB9E8"/><circle cx="50" cy="68" r="17" fill="none" stroke="#001240" stroke-width="6"/><path d="M50 51 L50 42" stroke="#001240" stroke-width="6" stroke-linecap="round"/></svg>
-          HydroCore
-        </a>
-        <p><span data-lang-el>Πιστοποιημένες υδραυλικές λύσεις για κατοικίες και επιχειρήσεις σε όλη την Ελλάδα, από το 2007.</span><span data-lang-en>Certified plumbing solutions for homes and businesses across Greece, since 2007.</span></p>
-        <div class="footer-social" aria-hidden="false">
-          <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.87v-7H7.9V12h2.5V9.8c0-2.5 1.49-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.87h-2.33v7A10 10 0 0 0 22 12Z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002ZM7 8.48H3V21h4V8.48ZM13.5 8.48H9.75V21h3.75v-6.4c0-1.7.32-3.35 2.43-3.35 2.08 0 2.1 1.94 2.1 3.46V21H22v-6.9c0-3.53-.76-6.24-4.88-6.24-1.98 0-3.31 1.09-3.85 2.12h-.05V8.48Z"/></svg></a>
-        </div>
-      </div>
+
       <div class="footer-col">
-        <h4><span data-lang-el>Πλοήγηση</span><span data-lang-en>Navigate</span></h4>
-        <ul>
-          <li><a href="index.html#about"><span data-lang-el>Σχετικά με εμάς</span><span data-lang-en>About Us</span></a></li>
-          <li><a href="index.html#services"><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a></li>
-          <li><a href="index.html#locations"><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a></li>
-          <li><a href="booking.html"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span></a></li>
-        </ul>
+        <h3>Χρόνης Πέγκας Photography</h3>
+        <p>
+          <span data-lang-el>Φωτογραφία γάμου, βάπτισης και εκδηλώσεων. Ιωάννινα, Ήπειρος.</span>
+          <span data-lang-en>Wedding, christening and event photography. Ioannina, Epirus.</span>
+        </p>
+        <p><span class="fill">[ΕΠΩΝΥΜΙΑ]</span> · <span data-lang-el>ΑΦΜ</span><span data-lang-en>VAT</span> <span class="fill">[ΑΦΜ]</span></p>
       </div>
+
       <div class="footer-col">
-        <h4><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></h4>
-        <ul>
-          <li><a href="booking.html?service=emergency"><span data-lang-el>Επείγουσα Επέμβαση</span><span data-lang-en>Emergency Response</span></a></li>
-          <li><a href="booking.html?service=leak-detection"><span data-lang-el>Εντοπισμός Διαρροών</span><span data-lang-en>Leak Detection</span></a></li>
-          <li><a href="booking.html?service=boilers"><span data-lang-el>Θερμοσίφωνες &amp; Λέβητες</span><span data-lang-en>Boilers &amp; Heaters</span></a></li>
-          <li><a href="booking.html?service=commercial"><span data-lang-el>Επαγγελματικές Εγκαταστάσεις</span><span data-lang-en>Commercial Contracts</span></a></li>
-        </ul>
+        <h3><span data-lang-el>Πλοήγηση</span><span data-lang-en>Navigate</span></h3>
+        <a href="#work"><span data-lang-el>Το Έργο</span><span data-lang-en>The Work</span></a>
+        <a href="#story"><span data-lang-el>Ο Χρόνης</span><span data-lang-en>Chronis</span></a>
+        <a href="#approach"><span data-lang-el>Η Προσέγγιση</span><span data-lang-en>The Approach</span></a>
+        <a href="#contact"><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></a>
       </div>
+
       <div class="footer-col">
-        <h4><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></h4>
-        <ul class="footer-contact">
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg> +30 2310 555 100</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg> info@hydrocore.gr</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span data-lang-el>Τσιμισκή 45, Θεσσαλονίκη</span><span data-lang-en>45 Tsimiski St, Thessaloniki</span></li>
-        </ul>
+        <h3><span data-lang-el>Νομικά</span><span data-lang-en>Legal</span></h3>
+        <a href="privacy.html"><span data-lang-el>Πολιτική Απορρήτου</span><span data-lang-en>Privacy Policy</span></a>
+        <a href="cookies.html"><span data-lang-el>Πολιτική Cookies</span><span data-lang-en>Cookie Policy</span></a>
+        <a href="terms.html"><span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Use</span></a>
+        <button class="linklike" type="button" data-consent="manage">
+          <span data-lang-el>Ρυθμίσεις cookies</span><span data-lang-en>Cookie settings</span>
+        </button>
       </div>
+
     </div>
 
     <div class="footer-bottom">
-      <span>© <span data-year>2026</span> HydroCore Υδραυλικές Λύσεις Α.Ε. <span data-lang-el>Με επιφύλαξη κάθε νομίμου δικαιώματος.</span><span data-lang-en>All rights reserved.</span></span>
-      <div class="footer-bottom__links">
-        <a href="privacy.html"><span data-lang-el>Πολιτική Απορρήτου</span><span data-lang-en>Privacy Policy</span></a>
-        <a href="terms.html"><span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Service</span></a>
-        <a href="#" data-open-cookie-settings><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></a>
-      </div>
+      <p>© <span data-year>2026</span> Χρόνης Πέγκας.
+        <span data-lang-el>Όλες οι φωτογραφίες προστατεύονται από πνευματικά δικαιώματα.</span>
+        <span data-lang-en>All photographs are protected by copyright.</span>
+      </p>
+      <p><span data-lang-el>Ιωάννινα, Ελλάδα</span><span data-lang-en>Ioannina, Greece</span></p>
     </div>
-    <p class="footer-legal-line">
-      <span data-lang-el>HydroCore Υδραυλικές Λύσεις Α.Ε. — Έδρα: Τσιμισκή 45, 546 23 Θεσσαλονίκη, Ελλάδα. ΑΦΜ: 099887766, Δ.Ο.Υ. Φ.Α.Ε. Θεσσαλονίκης, Αρ. Γ.Ε.ΜΗ.: 123456701000. Δεδομένα εταιρείας ενδεικτικά, για τους σκοπούς επίδειξης αυτού του website.</span>
-      <span data-lang-en>HydroCore Plumbing Solutions S.A. — Registered office: 45 Tsimiski St, 546 23 Thessaloniki, Greece. Tax ID: 099887766, Companies Registry No.: 123456701000. Company details are illustrative, for the purposes of this demo website.</span>
-    </p>
   </div>
 </footer>
 
-<script src="js/data.js"></script>
+<!-- ====================================================== BACK TO TOP -->
+<button class="to-top" id="toTop" type="button" data-label-key="toTop" aria-label="Επιστροφή στην κορυφή">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+    <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="square"/>
+  </svg>
+</button>
+
+<!-- ====================================================== LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Προβολή φωτογραφίας">
+  <button class="lb-close" id="lbClose" type="button" data-label-key="lightboxClose" aria-label="Κλείσιμο προβολής">✕</button>
+  <button class="lb-prev" id="lbPrev" type="button" data-label-key="lightboxPrev" aria-label="Προηγούμενη φωτογραφία">‹</button>
+  <img id="lbImg" alt="">
+  <button class="lb-next" id="lbNext" type="button" data-label-key="lightboxNext" aria-label="Επόμενη φωτογραφία">›</button>
+  <p class="lb-counter" id="lbCounter"></p>
+</div>
+
+<!-- ====================================================== COOKIE BANNER -->
+<!-- Not a modal, and it does not lock scrolling: the visitor can read the
+     whole site before deciding. Accept and Decline are visually identical —
+     see js/consent.js for why that is a legal requirement, not a style. -->
+<div class="cookie-banner" id="cookieBanner" role="region"
+     aria-label="Ειδοποίηση cookies" hidden>
+  <div class="cookie-inner">
+    <div class="cookie-copy">
+      <strong>
+        <span data-lang-el>Σεβόμαστε την ιδιωτικότητά σας</span>
+        <span data-lang-en>We respect your privacy</span>
+      </strong>
+      <span data-lang-el>Αυτός ο ιστότοπος χρησιμοποιεί μόνο απολύτως απαραίτητη τοπική αποθήκευση για να λειτουργήσει. Δεν χρησιμοποιούμε cookies παρακολούθησης και δεν μοιραζόμαστε δεδομένα με τρίτους. Μπορείτε να περιηγηθείτε ελεύθερα πριν αποφασίσετε. <a href="cookies.html">Πολιτική Cookies</a></span>
+      <span data-lang-en>This site uses only strictly necessary local storage to function. We use no tracking cookies and share no data with third parties. You're free to browse before deciding. <a href="cookies.html">Cookie Policy</a></span>
+    </div>
+
+    <div class="cookie-actions">
+      <button class="btn btn--ghost btn--manage" type="button" data-consent="manage">
+        <span data-lang-el>Διαχείριση</span><span data-lang-en>Manage</span>
+      </button>
+      <button class="btn btn--ghost" type="button" data-consent="decline">
+        <span data-lang-el>Απόρριψη</span><span data-lang-en>Decline</span>
+      </button>
+      <button class="btn btn--ghost" type="button" data-consent="accept">
+        <span data-lang-el>Αποδοχή</span><span data-lang-en>Accept</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================================== COOKIE PREFERENCES -->
+<div class="cookie-modal" id="cookieModal" role="dialog" aria-modal="true"
+     aria-labelledby="ccTitle" aria-hidden="true" hidden>
+  <button class="cookie-modal-backdrop" type="button" data-consent="close" tabindex="-1" aria-hidden="true"></button>
+
+  <div class="cookie-modal-panel">
+    <h2 id="ccTitle">
+      <span data-lang-el>Ρυθμίσεις cookies</span><span data-lang-en>Cookie settings</span>
+    </h2>
+    <p>
+      <span data-lang-el>Επιλέξτε τι επιτρέπετε. Η επιλογή σας αποθηκεύεται για 12 μήνες και μπορείτε να την αλλάξετε οποτεδήποτε από το υποσέλιδο.</span>
+      <span data-lang-en>Choose what you allow. Your choice is stored for 12 months and you can change it at any time from the footer.</span>
+    </p>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Απολύτως απαραίτητα</span><span data-lang-en>Strictly necessary</span></h3>
+        <span class="cat-locked"><span data-lang-el>Πάντα ενεργά</span><span data-lang-en>Always on</span></span>
+      </div>
+      <p>
+        <span data-lang-el>Η γλώσσα που επιλέξατε και η ίδια η απόφασή σας για τα cookies. Χωρίς αυτά ο ιστότοπος δεν μπορεί να θυμηθεί τίποτα. Δεν απαιτούν συγκατάθεση κατά το άρθρο 5(3) της Οδηγίας 2002/58/ΕΚ.</span>
+        <span data-lang-en>The language you picked, and your cookie decision itself. Without these the site can't remember anything. Exempt from consent under Art. 5(3) of Directive 2002/58/EC.</span>
+      </p>
+      <input type="checkbox" id="cc-necessary" checked disabled class="visually-hidden">
+    </div>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Λειτουργικά</span><span data-lang-en>Functional</span></h3>
+        <label class="switch">
+          <input type="checkbox" id="cc-functional">
+          <span aria-hidden="true"></span>
+          <span class="visually-hidden">Λειτουργικά cookies</span>
+        </label>
+      </div>
+      <p>
+        <span data-lang-el>Ενσωματώσεις τρίτων, όπως χάρτης ή βίντεο. Αυτή τη στιγμή δεν χρησιμοποιείται καμία — η επιλογή υπάρχει για να ισχύει αμέσως αν προστεθεί στο μέλλον.</span>
+        <span data-lang-en>Third-party embeds such as a map or video. None are in use right now — the choice exists so it applies immediately if one is ever added.</span>
+      </p>
+    </div>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Στατιστικά</span><span data-lang-en>Analytics</span></h3>
+        <label class="switch">
+          <input type="checkbox" id="cc-analytics">
+          <span aria-hidden="true"></span>
+          <span class="visually-hidden">Στατιστικά cookies</span>
+        </label>
+      </div>
+      <p>
+        <span data-lang-el>Ανώνυμα στοιχεία επισκεψιμότητας. Δεν χρησιμοποιούνται σε αυτή την έκδοση του ιστότοπου.</span>
+        <span data-lang-en>Anonymous traffic measurement. Not used in this version of the site.</span>
+      </p>
+    </div>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Μάρκετινγκ</span><span data-lang-en>Marketing</span></h3>
+        <label class="switch">
+          <input type="checkbox" id="cc-marketing">
+          <span aria-hidden="true"></span>
+          <span class="visually-hidden">Cookies μάρκετινγκ</span>
+        </label>
+      </div>
+      <p>
+        <span data-lang-el>Pixel διαφήμισης και επαναληπτικού μάρκετινγκ. Δεν χρησιμοποιούνται σε αυτή την έκδοση του ιστότοπου.</span>
+        <span data-lang-en>Advertising and retargeting pixels. Not used in this version of the site.</span>
+      </p>
+    </div>
+
+    <div class="cookie-modal-actions">
+      <button class="btn btn--ghost" type="button" data-consent="decline">
+        <span data-lang-el>Απόρριψη όλων</span><span data-lang-en>Decline all</span>
+      </button>
+      <button class="btn btn--ghost" type="button" data-consent="accept">
+        <span data-lang-el>Αποδοχή όλων</span><span data-lang-en>Accept all</span>
+      </button>
+      <button class="btn" type="button" data-consent="save">
+        <span data-lang-el>Αποθήκευση επιλογών</span><span data-lang-en>Save choices</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="js/strings.js"></script>
 <script src="js/main.js"></script>
 <script src="js/consent.js"></script>
-<script src="js/story-coverflow.js"></script>
+<script src="js/contact.js"></script>
+
+<!-- Structured data. Fill the marked values in before publishing — Google
+     will flag placeholder text, and wrong opening/contact data in a
+     LocalBusiness block is worse than none at all. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Χρόνης Πέγκας Photography",
+  "image": "https://www.example.gr/assets/img/og-image.jpg",
+  "url": "https://www.example.gr/",
+  "email": "xpegkas@gmail.com",
+  "description": "Φωτογραφία γάμου, βάπτισης και εκδηλώσεων στα Ιωάννινα και σε όλη την Ήπειρο.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Ιωάννινα",
+    "addressRegion": "Ήπειρος",
+    "addressCountry": "GR"
+  },
+  "areaServed": [
+    { "@type": "AdministrativeArea", "name": "Ήπειρος" },
+    { "@type": "Country", "name": "Ελλάδα" }
+  ],
+  "knowsLanguage": ["el", "en"],
+  "sameAs": ["https://www.instagram.com/pegkas_professional/"]
+}
+</script>
+
 </body>
 </html>

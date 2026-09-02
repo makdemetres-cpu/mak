@@ -1,97 +1,296 @@
-# HydroCore — Website
+# Χρόνης Πέγκας Photography
 
-A premium, animated, bilingual (Greek/English) marketing site for **HydroCore**, a fictional Thessaloniki-founded plumbing company, built as a static site (plain HTML/CSS/JS — no build step, no framework, no dependencies to install).
+A single-page, bilingual (Ελληνικά / English) portfolio site for a wedding,
+christening and event photographer based in Ioannina, Greece.
 
-> **This is a demo/portfolio build.** HydroCore, its staff, testimonials, and legal identifiers (Tax ID, Company Registry number, addresses, phone numbers) are all fictional. Replace every placeholder marked below with real information before using this in production.
+Plain HTML, CSS and JavaScript. No build step, no framework, no npm install —
+upload the folder and it runs. Total page weight on first load is roughly
+**480 KB**, most of which is photographs.
 
-## What's included
+---
 
-- **Homepage** (`index.html`) — hero, company story/timeline, animated stats, services, locations network, testimonials, CTA.
-- **Booking system** (`booking.html`) — a real, working 4-step booking form (service → schedule → contact details → confirm) with client-side validation, spam honeypot, and a GDPR consent checkbox.
-- **Privacy & Cookie Policy** (`privacy.html`) — GDPR (EU 2016/679) + Greek Law 4624/2019 + Law 3471/2006 (e-privacy/cookies) compliant.
-- **Terms of Service** (`terms.html`) — booking terms, pricing, cancellation, warranty, governing law (aligned with Greek consumer law, Law 2251/1994).
-- **Cookie consent banner + preference center** (`js/consent.js`) — granular opt-in (Necessary / Preferences / Analytics / Marketing), nothing non-essential loads before consent.
-- **Greek/English language toggle** — persisted per visitor, defaults to Greek.
-- Self-hosted **Vollkorn** (headings) + **Inter** (body) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
-- A split hero (text left, real team/fleet photo right with a slow Ken Burns zoom — see "Hero photography" below), single-curve section divider, borderless circular icon badges, and a floating dark stats banner, following the visual language of a reference design the client supplied.
+## ⚠️ Before you publish — the short list
 
-## Running it locally
+Nothing here is optional. The first three are legal requirements.
 
-No build step. From the project root:
+| # | What | Where |
+|---|------|-------|
+| 1 | Fill in every yellow `[ΣΥΜΠΛΗΡΩΣΤΕ]` placeholder | `privacy.html`, `terms.html`, and the footer of every page |
+| 2 | Replace the placeholder photographs with real ones | `assets/img/` |
+| 3 | Confirm the Data Protection Authority's address is current | `privacy.html` §7 |
+| 4 | Replace `https://www.example.gr/` with the real domain | `index.html`, `sitemap.xml`, `robots.txt` |
+| 5 | Set the publication date on the three legal pages | `privacy.html`, `cookies.html`, `terms.html` |
+
+The placeholders are **deliberately highlighted in yellow** on the live page.
+That is intentional: an unfilled legal placeholder is the one thing that must
+never ship quietly. When they are all filled in, the yellow disappears on its
+own — there is no CSS to remove.
+
+Search for them all at once:
 
 ```bash
-python3 -m http.server 8080
-# then open http://localhost:8080
+grep -rn "ΣΥΜΠΛΗΡΩΣΤΕ\|example\.gr\|\[ΑΦΜ\]\|\[ΕΠΩΝΥΜΙΑ\]" --include="*.html" --include="*.xml" --include="*.txt" .
 ```
 
-Any static file server works (`npx serve`, VS Code's Live Server, etc.) — just don't open `index.html` directly via `file://`, since the booking form's `fetch`-free JS still expects normal relative paths.
+### The values you need to collect
 
-## Making the booking form send real emails
+- Full registered business name (πλήρης νόμιμη επωνυμία)
+- Registered address, postcode, Ioannina — **this becomes public**
+- ΑΦΜ and ΔΟΥ
+- ΓΕΜΗ number, if the business has one
+- Public telephone number
+- Hosting provider name and the country its servers are in
+- Accountant's name (named as a processor in `privacy.html` §4)
+- How long photo archives are kept (`privacy.html` §3)
+- Delivery times for the first selection and the full gallery (`index.html`, §03)
+- Chronis' real story details: age when he started, year of the first wedding,
+  roughly how many weddings since (`index.html`, §02)
 
-Out of the box, the booking form works with **zero configuration**: on submit it opens the visitor's email client with a pre-filled message addressed to `appointments@hydrocore.gr`, so nothing is broken if you deploy as-is.
+---
 
-To have it send automatically (no email client popup) instead:
+## Replacing the photographs
 
-1. Create a free account at **[emailjs.com](https://www.emailjs.com)**.
-2. Add an Email Service (e.g. connect a Gmail/Outlook inbox) and note the **Service ID**.
-3. Create an Email Template with variables matching the payload sent by `js/booking.js` (`reference`, `service`, `branch`, `urgency`, `date`, `time`, `full_name`, `phone`, `email`, `address`, `notes`, `to_email`) and note the **Template ID**.
-4. Grab your **Public Key** from Account → API Keys.
-5. Open `js/booking.js` and fill in:
-   ```js
-   const EMAILJS_CONFIG = {
-     publicKey: "YOUR_PUBLIC_KEY",
-     serviceId: "YOUR_SERVICE_ID",
-     templateId: "YOUR_TEMPLATE_ID"
-   };
-   ```
-6. Redeploy. The mailto: fallback stays in place automatically if the EmailJS request ever fails.
+Every file in `assets/img/` is a generated grey placeholder, not a real
+photograph. **None of it is stock imagery**, so there is no licence to clear
+and nothing to attribute — but none of it is his work either, and all of it
+must be replaced.
 
-**Data protection note:** if you use EmailJS (or any similar third-party mailer), disclose it as a data processor and check whether it transfers data outside the EEA — `privacy.html` §5 already covers this, but confirm it matches whichever provider you actually pick.
+Keep the same filenames and roughly the same dimensions:
+
+| File | Size | Where it appears |
+|------|------|------------------|
+| `hero.jpg` | 2000 × 1250 | Full-width opening image |
+| `work-01.jpg` … `work-09.jpg` | ≥1200 × 1500 | Portfolio grid |
+| `portrait.jpg` | 1200 × 1500 | Portrait of Chronis, "Ο Χρόνης" section |
+| `og-image.jpg` | 1200 × 630 | The preview card when the link is shared |
+| `apple-touch-icon.png` | 180 × 180 | iOS home-screen icon |
+
+Notes:
+
+- **The grid crops every image to 4:5.** Portrait or landscape originals both
+  work — the important part of the frame should be near the centre.
+- Export at **JPEG quality 80–85, sRGB, longest edge 2000px**. Bigger files
+  will not look better on screen and will make the site slow on 4G.
+- The site renders photographs in black and white (`filter: grayscale(1)` in
+  `css/style.css`). To show them in colour, delete those four declarations.
+- If you change a photo's aspect ratio, update its `width` and `height`
+  attributes in the HTML. They are there to reserve space while the image
+  loads — without them the page jumps around as it loads, which Google
+  measures and penalises.
+
+### Changing the categories
+
+Each grid item carries `data-cat="wedding|christening|event"`, which is what
+the filter buttons match on. To add a category, add a filter button with a
+matching `data-filter` value — the JavaScript needs no changes.
+
+---
+
+## Switching the palette
+
+The site ships in direction **04 "Μελάνι"** — paper, ink, one hairline, and no
+accent colour at all, so the only colour a visitor ever sees is in the
+photographs themselves.
+
+Three alternatives are pre-written at the top of `css/style.css`. Replace the
+five values in the `PALETTE` block and the whole site changes; nothing else in
+the stylesheet hard-codes a colour.
+
+- **01 Πέτρα** — Old Town limestone, Epirot moss. Warmest, most traditional.
+- **02 Παμβώτιδα** — mist over the lake. Cool and quiet.
+- **03 Ασήμι** — near-black and oxidised silver, after Ioannina's silversmithing
+  tradition. Dark; also swap the values inside the dark-theme blocks.
+
+## Typography
+
+**GFS Didot** for display, **Commissioner** for everything else — both served
+from `assets/fonts/`, not from Google's CDN.
+
+That is a legal choice, not a performance one. Loading fonts from
+`fonts.googleapis.com` transmits every visitor's IP address to Google with no
+legal basis, and a German court awarded damages against a site owner for
+exactly that (LG München I, 20 Jan 2022, 3 O 17493/20). Self-hosting removes
+the transfer completely. **Do not "optimise" this back to a Google Fonts
+`<link>`.**
+
+Both faces were verified to carry a full Greek character set before adoption.
+This rules out most display serifs: Cormorant Garamond and Playfair Display —
+the two faces nearly every wedding template uses — ship **no Greek glyphs at
+all** and would silently fall back to a system font on the first Greek word.
+
+---
+
+## The contact form
+
+Ships in **mailto mode**: submitting opens the visitor's own email client with
+everything filled in, and no data is transmitted to any third party. It works
+from the moment the site goes live and carries no processor liability.
+
+To send messages directly instead, open `js/contact.js` and set:
+
+```js
+var FORM_ENDPOINT_KEY = "your-web3forms-access-key";
+```
+
+A key is free from [web3forms.com](https://web3forms.com) and arrives by email;
+no account is needed. **If you switch this on, you must also:**
+
+1. Name the provider as a processor in `privacy.html` §4 — the row is already
+   written and marked, it just needs completing.
+2. Check which country stores the submissions. If it is outside the EEA, state
+   the transfer safeguard too (GDPR Art. 44–49). An EU-hosted form service
+   avoids the question entirely.
+
+The consent checkbox is required in both modes, is never pre-ticked, and blocks
+submission until ticked. Pre-ticked consent boxes are invalid (GDPR Recital 32;
+CJEU C-673/17 *Planet49*).
+
+---
 
 ## Deploying
 
-This is a plain static site, so it runs anywhere:
+The site is a static folder. Every file in the root goes to the web root.
 
-- **Netlify / Vercel** — drag-and-drop the folder or connect the repo; zero config needed. This also unlocks serverless functions later if you outgrow EmailJS (e.g. to store bookings in a real database and avoid double-booked slots).
-- **GitHub Pages / any static host** — works identically; the booking form still functions since email delivery happens client-side.
+**Netlify / Vercel** — drag the folder onto the dashboard. `_redirects` wires up
+the 404 page and `_headers` applies the security headers automatically.
 
-## Hero photography
+**cPanel / Greek shared host (Papaki, Top.host…)** — upload everything to
+`public_html/` over FTP. `.htaccess` handles the 404 page, HTTPS redirect and
+security headers. Delete `_redirects` and `_headers`; they do nothing on Apache.
 
-The hero's right-hand panel (`.hero__visual-frame` in `index.html`) shows a real team/fleet photo (`assets/img/hero-team.jpg`), filling the rounded frame via `object-fit:cover` with a slow continuous "Ken Burns" zoom (`@keyframes hero-kenburns` in `css/style.css`) plus a one-time fade/slide-in on scroll (the existing `[data-reveal]` system). It's shown on both desktop and mobile — see `.hero__visual` in the `@media (max-width:760px)` block if you need to resize it further. The zoom animation is automatically disabled for visitors with `prefers-reduced-motion: reduce`, same as every other animation on the site.
+**GitHub Pages** — push and enable Pages. It serves `404.html` automatically but
+**ignores `_headers` and `.htaccess`**, so the security headers below will not
+be applied. Acceptable for a preview; use a real host for production.
 
-To swap in a different photo, just replace `assets/img/hero-team.jpg` (object-fit:cover means any aspect ratio works — a wide/landscape shot crops best into the portrait frame) and update the `alt` text on the `<img class="hero__visual-photo">` tag in `index.html`.
+### Security headers
 
-## Before going live — replace these placeholders
+`index.html` carries a Content-Security-Policy in a `<meta>` tag, which works
+everywhere. But `frame-ancestors` — the directive that stops another site
+embedding this one in an iframe to phish his clients — **cannot** be set from a
+meta tag. It has to be a real HTTP header, which is what `_headers` and
+`.htaccess` are for. Deploy one of them.
 
-| What | Where | Current placeholder |
-|---|---|---|
-| Legal company name, Tax ID (ΑΦΜ), Company Registry No. (Γ.Ε.ΜΗ.) | `index.html`, `privacy.html`, `terms.html` footers | `099887766` / `123456701000` |
-| Phone numbers & email addresses | site-wide | `+30 2310 555 100`, `800 700 8000`, `info@hydrocore.gr`, `appointments@hydrocore.gr`, `privacy@hydrocore.gr` |
-| Branch addresses | `js/data.js` | 7 fictional addresses |
-| DPO contact | `privacy.html` §1 | `privacy@hydrocore.gr` |
-| EmailJS credentials | `js/booking.js` | blank (mailto fallback active) |
-| Google Analytics ID (optional) | `js/consent.js` (`GA_MEASUREMENT_ID`) | blank (analytics stays off until you set this) |
-| Hero team/fleet photo | `assets/img/hero-team.jpg` | using a real client-supplied photo — replace with your own if this deploy is reused for a different business |
-| Favicon / social share image | inline SVG favicon in each page `<head>` | — |
+Verify after publishing at [securityheaders.com](https://securityheaders.com).
 
-## Structure
+### After the domain is live
+
+- Submit `sitemap.xml` to Google Search Console
+- Test the share preview with Facebook's Sharing Debugger
+- Re-run [PageSpeed Insights](https://pagespeed.web.dev) once the real
+  photographs are in — they are the only thing heavy enough to affect the score
+
+---
+
+## Legal
+
+Three pages, written for Greek and EU law rather than copied from a template:
+
+- **`privacy.html`** — GDPR Art. 13 notice. Controller identity, what is
+  collected and why, legal basis for each purpose, retention table, processors,
+  transfers outside the EEA, all Art. 15–22 rights, and how to complain to the
+  Αρχή Προστασίας Δεδομένων.
+- **`cookies.html`** — the complete storage table. Two `localStorage` entries,
+  both strictly necessary. No cookies in the technical sense are set at all.
+- **`terms.html`** — provider identification (ΠΔ 131/2003), copyright in the
+  photographs (ν. 2121/1993), an explicit AI-training reservation under Art. 4(3)
+  of Directive (EU) 2019/790, liability, and Greek jurisdiction.
+
+Points worth knowing:
+
+- **Photographs of guests are personal data.** `privacy.html` §2(b) sets out the
+  legal basis for photographing them (legitimate interest) separately from the
+  basis for *publishing* them (explicit consent, always optional, never a
+  condition of booking). Religious ceremony photographs may reveal religious
+  belief, which is Art. 9 special-category data — hence the separate treatment.
+- **The consent banner does not block the page.** Scrolling is never locked and
+  nothing is stored before a choice, because consent must be freely given
+  (Art. 4(11)). This was an explicit requirement and is verified by test.
+- **Accept and Decline are styled identically.** Making reject less prominent
+  than accept is a sanctioned dark pattern. Do not make Accept the primary
+  button.
+- **The ODR platform link is deliberately absent.** The EU's Online Dispute
+  Resolution platform shut down in July 2025; templates that still link it are
+  pointing at a dead service. `terms.html` §6 points at the Greek Consumer
+  Ombudsman instead.
+
+None of this is legal advice. For a first commercial site it is a genuinely
+solid baseline, but a Greek lawyer should read the three pages once the
+placeholders are filled in — an hour of their time is cheap next to a DPA
+complaint.
+
+---
+
+## How it is built
 
 ```
-index.html          Homepage
-booking.html         4-step booking flow
-privacy.html          Privacy & Cookie Policy (EL/EN)
-terms.html            Terms of Service (EL/EN)
+index.html            Single scrolling page — hero, portfolio, story, approach, contact
+privacy.html          GDPR privacy notice
+cookies.html          Cookie / local storage policy
+terms.html            Terms of use and copyright
+404.html              Custom not-found page
+
 css/fonts.css         Self-hosted @font-face declarations
-css/style.css         Full design system + components + responsive rules
-js/data.js            Single source of truth for branches & services
-js/strings.js         EL/EN toggle engine + small dynamic-string dictionary
-js/main.js            Nav, scroll reveal, counters, testimonials, locations, services grid
-js/consent.js         GDPR cookie consent banner + preference center
-js/booking.js         Booking form logic, validation, EmailJS + mailto fallback
-assets/fonts/         Vollkorn, Inter & Miama (Latin + Greek subsets), self-hosted
-assets/img/logo-mark.svg
+css/style.css         Everything else. Palette tokens are at the top.
+
+js/boot.js            Runs before first paint: marks JS available, restores language
+js/strings.js         Strings JavaScript generates itself (ARIA labels, validation)
+js/main.js            Navigation, language, scroll reveals, filtering, lightbox, back-to-top
+js/consent.js         Cookie consent banner and preferences dialog
+js/contact.js         Form validation and submission
+
+assets/fonts/         GFS Didot + Commissioner, split by character subset (~114 KB)
+assets/img/           Placeholder photographs — replace all of these
 ```
 
-## How the Greek/English toggle works
+### Bilingual text
 
-Nearly every piece of copy on the site exists twice in the HTML, wrapped in `<span data-lang-el>…</span>` / `<span data-lang-en>…</span>` pairs. A CSS rule (`html[data-lang="en"] [data-lang-el]{display:none}` and its mirror) shows only the active language — so the toggle in `js/strings.js` just flips one attribute on `<html>` and everything updates instantly, no page reload, no flash of untranslated content. Dynamic, JS-generated strings (toasts, validation messages) come from the small dictionary in `js/strings.js`.
+Both languages sit in the HTML as `data-lang-el` / `data-lang-en` pairs, and CSS
+hides the inactive one. So the page reads correctly with JavaScript disabled,
+both languages are visible to search engines, and switching costs one attribute
+write rather than a re-render.
+
+To edit copy, change **both** spans. `<option>` elements can't hold a span pair,
+so those carry `data-el` / `data-en` attributes instead and `main.js` swaps the
+label text.
+
+### The scroll animations
+
+Sections slide in from alternating sides using `IntersectionObserver`. There is
+**not one scroll event listener in the codebase** — header state, active nav
+link, reveals and the back-to-top button are all observer-driven, which the
+browser evaluates off the main thread.
+
+Three things keep it from misbehaving, all of which are load-bearing:
+
+- Only `opacity` and `transform` are animated. Nothing triggers layout.
+- The hidden state is scoped to `.js`, applied by `boot.js` before first paint.
+  With JavaScript off, every section is simply visible — the page is never left
+  blank waiting on an observer that will not run.
+- `html { overflow-x: clip }` stops the sideways travel from creating a
+  horizontal scrollbar. `clip` rather than `hidden`, because `hidden` silently
+  breaks `position: sticky` on ancestors.
+
+The horizontal travel is reduced on screens under 640px: a 34px slide reads as
+a jolt on a phone and is the usual cause of the jitter these effects get blamed
+for. `prefers-reduced-motion` disables the animation entirely.
+
+---
+
+## Verified
+
+Checked in Chromium at 320 / 360 / 390 / 430 / 1440px:
+
+- Zero horizontal overflow at every width, on every page
+- No console errors and no failed requests, on every page
+- Consent: banner appears, page still scrolls before choosing, nothing stored
+  before a choice, granular save works, choice is timestamped and versioned,
+  banner stays away on return
+- Form: blocks empty submission, rejects malformed email, refuses to send
+  without the privacy consent box, consent box is not pre-ticked
+- Lightbox: opens, navigates, closes on Escape, traps focus, swipes on touch
+- Renders correctly in dark mode, with reduced motion, and with JavaScript
+  fully disabled
+- All non-inline tap targets meet the WCAG 2.2 SC 2.5.8 24px minimum
+
+Not yet checked, because this environment has no access to them: real Safari on
+iOS, and Firefox.

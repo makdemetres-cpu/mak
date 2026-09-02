@@ -1,88 +1,152 @@
-<!doctype html>
-<html lang="el" data-lang="el"
-      data-title-el="Η σελίδα δεν βρέθηκε — HydroCore"
-      data-title-en="Page Not Found — HydroCore"
-      data-desc-el="Η σελίδα που ψάχνετε δεν βρέθηκε. Επιστρέψτε στην αρχική σελίδα της HydroCore ή κλείστε ραντεβού."
-      data-desc-en="The page you're looking for couldn't be found. Head back to the HydroCore homepage or book an appointment.">
+<!DOCTYPE html>
+<html lang="el">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="js/session-gate.js"></script>
-<title>Η σελίδα δεν βρέθηκε — HydroCore</title>
-<meta name="description" content="Η σελίδα που ψάχνετε δεν βρέθηκε. Επιστρέψτε στην αρχική σελίδα της HydroCore ή κλείστε ραντεβού.">
-<meta name="theme-color" content="#00308F">
-<meta name="robots" content="noindex">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300308F'/%3E%3Cpath d='M50 20 C63 39 74 53 74 64 A24 24 0 1 1 26 64 C26 53 37 39 50 20 Z' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='62' r='9' fill='%2300308F'/%3E%3C/svg%3E">
+<title>Η σελίδα δεν βρέθηκε — Χρόνης Πέγκας Photography</title>
+<meta name="description" content="Η σελίδα που ζητήσατε δεν υπάρχει.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- A 404 must never be indexed, or Google will list a dead URL as a real page. -->
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#FAFAF9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0C0C" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+<script src="js/boot.js"></script>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Μετάβαση στο περιεχόμενο / Skip to content</a>
+<a class="skip-link" href="#main"><span data-lang-el>Μετάβαση στο περιεχόμενο</span><span data-lang-en>Skip to content</span></a>
+<div id="topSentinel" aria-hidden="true"></div>
+<div id="liveRegion" class="visually-hidden" role="status" aria-live="polite"></div>
 
-<header class="nav" id="siteNav">
-  <div class="nav__inner">
-    <a href="index.html" class="nav__logo">
-      <svg class="nav__logo-mark" viewBox="0 0 100 100" width="34" height="34">
-        <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
-        <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
-        <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-      </svg>
-      <span class="nav__logo-word">Hydro<b>Core</b></span>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="wordmark" href="/" aria-label="Χρόνης Πέγκας Photography">
+      <span>Χρόνης Πέγκας</span>
+      <span class="wm-sub">Photography · Ιωάννινα</span>
     </a>
-    <nav class="nav__links" id="navLinks">
-      <a href="index.html" data-nav><span data-lang-el>Αρχική</span><span data-lang-en>Home</span></a>
-      <a href="index.html#about" data-nav><span data-lang-el>Σχετικά</span><span data-lang-en>About</span></a>
-      <a href="index.html#services" data-nav><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a>
-      <a href="index.html#locations" data-nav><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a>
-      <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="el" aria-pressed="true">EL</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      </div>
-      <a href="booking.html" class="btn btn-primary btn-sm">
-        <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span>
-      </a>
+    <nav class="nav-desktop" aria-label="Κύρια πλοήγηση">
+      <a href="/#work"><span data-lang-el>Έργο</span><span data-lang-en>Work</span></a>
+      <a href="/#story"><span data-lang-el>Ο Χρόνης</span><span data-lang-en>Chronis</span></a>
+      <a href="/#approach"><span data-lang-el>Προσέγγιση</span><span data-lang-en>Approach</span></a>
+      <a href="/#contact"><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></a>
     </nav>
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</header>
-<div class="nav__scrim" id="navScrim"></div>
-
-<main id="main">
-<section class="page-hero notfound">
-  <div class="page-hero__inner">
-    <p class="notfound__code">404</p>
-    <h1><span data-lang-el>Αυτή η σελίδα διέρρευσε</span><span data-lang-en>This page sprang a leak</span></h1>
-    <p>
-      <span data-lang-el>Η σελίδα που ψάχνετε δεν υπάρχει ή μετακινήθηκε. Ελέγξτε τη διεύθυνση ή επιστρέψτε σε γνωστό έδαφος.</span>
-      <span data-lang-en>The page you're looking for doesn't exist or has moved. Double-check the address, or head back to solid ground.</span>
-    </p>
-    <div class="notfound__actions">
-      <a href="index.html" class="btn btn-primary">
-        <span data-lang-el>Επιστροφή στην Αρχική</span><span data-lang-en>Back to Home</span>
-      </a>
-      <a href="booking.html" class="btn btn-light">
-        <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book an Appointment</span>
-      </a>
+    <div class="header-tools">
+      <div class="lang-toggle" role="group" aria-label="Language / Γλώσσα">
+        <button type="button" data-lang-btn="el" aria-pressed="true" lang="el">ΕΛ</button>
+        <button type="button" data-lang-btn="en" aria-pressed="false" lang="en">EN</button>
+      </div>
     </div>
   </div>
-</section>
+</header>
+
+<main id="main" class="notfound">
+  <p class="code" aria-hidden="true">404</p>
+
+  <h1>
+    <span data-lang-el>Αυτή η λήψη δεν βγήκε ποτέ</span>
+    <span data-lang-en>This frame was never taken</span>
+  </h1>
+
+  <p>
+    <span data-lang-el>Η σελίδα που ψάχνετε δεν υπάρχει — ίσως άλλαξε διεύθυνση ή ο σύνδεσμος ήταν λάθος. Δοκιμάστε από την αρχή.</span>
+    <span data-lang-en>The page you're looking for doesn't exist — it may have moved, or the link may have been wrong. Try again from the beginning.</span>
+  </p>
+
+  <div class="btn-row">
+    <a class="btn" href="/">
+      <span data-lang-el>Αρχική σελίδα</span><span data-lang-en>Home page</span>
+    </a>
+    <a class="btn btn--ghost" href="/#work">
+      <span data-lang-el>Δείτε το έργο</span><span data-lang-en>See the work</span>
+    </a>
+    <a class="btn btn--ghost" href="/#contact">
+      <span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span>
+    </a>
+  </div>
 </main>
 
-<footer class="site-footer" id="footer">
-  <div class="container">
-    <div class="footer-bottom" style="border-top:none;padding-top:0">
-      <span>© <span data-year>2026</span> HydroCore Υδραυλικές Λύσεις Α.Ε.</span>
-      <div class="footer-bottom__links">
-        <a href="privacy.html"><span data-lang-el>Πολιτική Απορρήτου</span><span data-lang-en>Privacy Policy</span></a>
-        <a href="terms.html"><span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Service</span></a>
-        <a href="#" data-open-cookie-settings><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></a>
-      </div>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-bottom">
+      <p>© <span data-year>2026</span> Χρόνης Πέγκας.
+        <span data-lang-el>Όλες οι φωτογραφίες προστατεύονται από πνευματικά δικαιώματα.</span>
+        <span data-lang-en>All photographs are protected by copyright.</span>
+      </p>
+      <p>
+        <a href="/privacy.html"><span data-lang-el>Απόρρητο</span><span data-lang-en>Privacy</span></a> ·
+        <a href="/cookies.html">Cookies</a> ·
+        <a href="/terms.html"><span data-lang-el>Όροι</span><span data-lang-en>Terms</span></a>
+      </p>
     </div>
   </div>
 </footer>
 
-<script src="js/data.js"></script>
+<div class="cookie-banner" id="cookieBanner" role="region" aria-label="Ειδοποίηση cookies" hidden>
+  <div class="cookie-inner">
+    <div class="cookie-copy">
+      <strong><span data-lang-el>Σεβόμαστε την ιδιωτικότητά σας</span><span data-lang-en>We respect your privacy</span></strong>
+      <span data-lang-el>Αυτός ο ιστότοπος χρησιμοποιεί μόνο απολύτως απαραίτητη τοπική αποθήκευση για να λειτουργήσει. Δεν χρησιμοποιούμε cookies παρακολούθησης. <a href="/cookies.html">Πολιτική Cookies</a></span>
+      <span data-lang-en>This site uses only strictly necessary local storage to function. We use no tracking cookies. <a href="/cookies.html">Cookie Policy</a></span>
+    </div>
+    <div class="cookie-actions">
+      <button class="btn btn--ghost btn--manage" type="button" data-consent="manage"><span data-lang-el>Διαχείριση</span><span data-lang-en>Manage</span></button>
+      <button class="btn btn--ghost" type="button" data-consent="decline"><span data-lang-el>Απόρριψη</span><span data-lang-en>Decline</span></button>
+      <button class="btn btn--ghost" type="button" data-consent="accept"><span data-lang-el>Αποδοχή</span><span data-lang-en>Accept</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="cookie-modal" id="cookieModal" role="dialog" aria-modal="true" aria-labelledby="ccTitle" aria-hidden="true" hidden>
+  <button class="cookie-modal-backdrop" type="button" data-consent="close" tabindex="-1" aria-hidden="true"></button>
+  <div class="cookie-modal-panel">
+    <h2 id="ccTitle"><span data-lang-el>Ρυθμίσεις cookies</span><span data-lang-en>Cookie settings</span></h2>
+    <p><span data-lang-el>Επιλέξτε τι επιτρέπετε. Η επιλογή σας αποθηκεύεται για 12 μήνες.</span><span data-lang-en>Choose what you allow. Your choice is stored for 12 months.</span></p>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Απολύτως απαραίτητα</span><span data-lang-en>Strictly necessary</span></h3>
+        <span class="cat-locked"><span data-lang-el>Πάντα ενεργά</span><span data-lang-en>Always on</span></span>
+      </div>
+      <p><span data-lang-el>Η γλώσσα που επιλέξατε και η απόφασή σας για τα cookies.</span><span data-lang-en>The language you picked, and your cookie decision itself.</span></p>
+      <input type="checkbox" id="cc-necessary" checked disabled class="visually-hidden">
+    </div>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Λειτουργικά</span><span data-lang-en>Functional</span></h3>
+        <label class="switch"><input type="checkbox" id="cc-functional"><span aria-hidden="true"></span><span class="visually-hidden">Λειτουργικά cookies</span></label>
+      </div>
+      <p><span data-lang-el>Ενσωματώσεις τρίτων. Καμία δεν χρησιμοποιείται.</span><span data-lang-en>Third-party embeds. None are in use.</span></p>
+    </div>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Στατιστικά</span><span data-lang-en>Analytics</span></h3>
+        <label class="switch"><input type="checkbox" id="cc-analytics"><span aria-hidden="true"></span><span class="visually-hidden">Στατιστικά cookies</span></label>
+      </div>
+      <p><span data-lang-el>Δεν χρησιμοποιούνται σε αυτή την έκδοση.</span><span data-lang-en>Not used in this version.</span></p>
+    </div>
+
+    <div class="cat">
+      <div class="cat-top">
+        <h3><span data-lang-el>Μάρκετινγκ</span><span data-lang-en>Marketing</span></h3>
+        <label class="switch"><input type="checkbox" id="cc-marketing"><span aria-hidden="true"></span><span class="visually-hidden">Cookies μάρκετινγκ</span></label>
+      </div>
+      <p><span data-lang-el>Δεν χρησιμοποιούνται σε αυτή την έκδοση.</span><span data-lang-en>Not used in this version.</span></p>
+    </div>
+
+    <div class="cookie-modal-actions">
+      <button class="btn btn--ghost" type="button" data-consent="decline"><span data-lang-el>Απόρριψη όλων</span><span data-lang-en>Decline all</span></button>
+      <button class="btn btn--ghost" type="button" data-consent="accept"><span data-lang-el>Αποδοχή όλων</span><span data-lang-en>Accept all</span></button>
+      <button class="btn" type="button" data-consent="save"><span data-lang-el>Αποθήκευση επιλογών</span><span data-lang-en>Save choices</span></button>
+    </div>
+  </div>
+</div>
+
 <script src="js/strings.js"></script>
 <script src="js/main.js"></script>
 <script src="js/consent.js"></script>

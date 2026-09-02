@@ -1,84 +1,72 @@
-/* Small dictionary for strings JS has to generate itself (toasts, aria
-   labels, dynamic booking confirmations). Static page copy lives directly
-   in the HTML as [data-lang-el]/[data-lang-en] pairs — see style.css. */
-window.HC_STRINGS = {
+/* ==========================================================================
+   Strings that JavaScript has to produce itself — ARIA labels, validation
+   messages, status text. Static page copy is NOT here: it lives directly in
+   the HTML as [data-lang-el] / [data-lang-en] pairs, so the page reads
+   correctly with JavaScript disabled and both languages are in the markup
+   for search engines. See css/style.css → "Language pairs".
+   ========================================================================== */
+window.XP_STRINGS = {
   el: {
-    menuOpen: "Άνοιγμα μενού", menuClose: "Κλείσιμο μενού",
-    langSwitchTo: "Switch to English",
-    toastCopied: "Αντιγράφηκε στο πρόχειρο",
-    getDirections: "Οδηγίες", callNow: "Κλήση",
-    consentSaved: "Οι προτιμήσεις cookies αποθηκεύτηκαν",
-    consentAcceptedAll: "Αποδεχτήκατε όλα τα cookies",
-    consentRejected: "Απορρίφθηκαν τα μη απαραίτητα cookies",
-    bookingRef: "Κωδικός Αιτήματος",
-    bookingSuccessMail: "Στάλθηκε στο appointments@hydrocore.gr — θα επικοινωνήσουμε εντός 2 ωρών εργάσιμου ωραρίου.",
-    bookingFallbackMail: "Ανοίξαμε το πρόγραμμα email σας με τα στοιχεία συμπληρωμένα προς appointments@hydrocore.gr. Αν δεν ανοίξει αυτόματα, στείλτε μας email στο appointments@hydrocore.gr με τον κωδικό αιτήματός σας.",
-    fieldRequired: "Το πεδίο είναι υποχρεωτικό",
-    fieldInvalidPhone: "Δώστε έγκυρο τηλέφωνο (π.χ. 6912345678 ή 2310123456)",
-    fieldInvalidEmail: "Δώστε έγκυρο email",
-    fieldInvalidDate: "Επιλέξτε ημερομηνία από σήμερα και μετά",
-    consentRequired: "Πρέπει να αποδεχτείτε την Πολιτική Απορρήτου για να συνεχίσετε",
-    stepOf: "Βήμα {n} από {total}",
-    copied: "Αντιγράφηκε"
+    menuOpen: "Άνοιγμα μενού",
+    menuClose: "Κλείσιμο μενού",
+    langSwitched: "Η γλώσσα άλλαξε στα Ελληνικά",
+
+    lightboxOpen: "Προβολή φωτογραφίας σε πλήρες μέγεθος",
+    lightboxClose: "Κλείσιμο προβολής",
+    lightboxPrev: "Προηγούμενη φωτογραφία",
+    lightboxNext: "Επόμενη φωτογραφία",
+    lightboxOf: "{n} από {total}",
+
+    toTop: "Επιστροφή στην κορυφή",
+
+    consentSaved: "Οι προτιμήσεις σας αποθηκεύτηκαν.",
+    consentAccepted: "Αποδεχτήκατε όλα τα cookies.",
+    consentDeclined: "Απορρίφθηκαν όλα τα μη απαραίτητα cookies.",
+
+    fieldRequired: "Το πεδίο είναι υποχρεωτικό.",
+    fieldEmail: "Δώστε μια έγκυρη διεύθυνση email.",
+    fieldPhone: "Δώστε ένα έγκυρο τηλέφωνο (π.χ. 6941234567).",
+    fieldDate: "Επιλέξτε μια ημερομηνία από σήμερα και μετά.",
+    fieldConsent: "Πρέπει να συμφωνήσετε με την Πολιτική Απορρήτου για να στείλετε το μήνυμα.",
+
+    formSending: "Αποστολή…",
+    formSend: "Αποστολή μηνύματος",
+    formOkTitle: "Το μήνυμά σας στάλθηκε.",
+    formOkBody: "Ευχαριστούμε. Ο Χρόνης θα σας απαντήσει συνήθως εντός 48 ωρών.",
+    formErrTitle: "Το μήνυμα δεν στάλθηκε.",
+    formErrBody: "Κάτι πήγε στραβά με την αποστολή. Στείλτε μας απευθείας email στο {email} και θα απαντήσουμε το συντομότερο.",
+    formMailtoBody: "Ανοίγουμε το πρόγραμμα email σας με τα στοιχεία συμπληρωμένα. Αν δεν άνοιξε, στείλτε μας email στο {email}."
   },
+
   en: {
-    menuOpen: "Open menu", menuClose: "Close menu",
-    langSwitchTo: "Αλλαγή σε Ελληνικά",
-    toastCopied: "Copied to clipboard",
-    getDirections: "Directions", callNow: "Call now",
-    consentSaved: "Your cookie preferences were saved",
-    consentAcceptedAll: "You accepted all cookies",
-    consentRejected: "Non-essential cookies were rejected",
-    bookingRef: "Request Reference",
-    bookingSuccessMail: "Sent to appointments@hydrocore.gr — we'll be in touch within 2 business hours.",
-    bookingFallbackMail: "We opened your email app with the details addressed to appointments@hydrocore.gr. If it didn't open automatically, please email us at appointments@hydrocore.gr with your request reference.",
-    fieldRequired: "This field is required",
-    fieldInvalidPhone: "Enter a valid phone number (e.g. 6912345678 or 2310123456)",
-    fieldInvalidEmail: "Enter a valid email address",
-    fieldInvalidDate: "Choose a date from today onward",
-    consentRequired: "You must accept the Privacy Policy to continue",
-    stepOf: "Step {n} of {total}",
-    copied: "Copied"
+    menuOpen: "Open menu",
+    menuClose: "Close menu",
+    langSwitched: "Language switched to English",
+
+    lightboxOpen: "View photograph full size",
+    lightboxClose: "Close viewer",
+    lightboxPrev: "Previous photograph",
+    lightboxNext: "Next photograph",
+    lightboxOf: "{n} of {total}",
+
+    toTop: "Back to top",
+
+    consentSaved: "Your preferences have been saved.",
+    consentAccepted: "You accepted all cookies.",
+    consentDeclined: "All non-essential cookies were declined.",
+
+    fieldRequired: "This field is required.",
+    fieldEmail: "Enter a valid email address.",
+    fieldPhone: "Enter a valid phone number (e.g. +30 694 123 4567).",
+    fieldDate: "Choose a date from today onward.",
+    fieldConsent: "You must agree to the Privacy Policy before sending.",
+
+    formSending: "Sending…",
+    formSend: "Send message",
+    formOkTitle: "Your message has been sent.",
+    formOkBody: "Thank you. Chronis usually replies within 48 hours.",
+    formErrTitle: "The message could not be sent.",
+    formErrBody: "Something went wrong sending the form. Please email us directly at {email} and we'll reply as soon as we can.",
+    formMailtoBody: "We've opened your email app with the details filled in. If nothing opened, please email us at {email}."
   }
 };
-
-window.HC_LANG = {
-  get: function () {
-    return localStorage.getItem("hc_lang") || document.documentElement.getAttribute("data-lang") || "el";
-  },
-  t: function (key) {
-    var lang = window.HC_LANG.get();
-    var dict = window.HC_STRINGS[lang] || window.HC_STRINGS.el;
-    return dict[key] || key;
-  },
-  set: function (lang) {
-    if (lang !== "el" && lang !== "en") return;
-    localStorage.setItem("hc_lang", lang);
-    document.documentElement.setAttribute("data-lang", lang);
-    document.documentElement.setAttribute("lang", lang);
-    document.querySelectorAll(".lang-switch button").forEach(function (btn) {
-      btn.classList.toggle("is-active", btn.dataset.lang === lang);
-      btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");
-    });
-    var titleAttr = document.documentElement.getAttribute("data-title-" + lang);
-    if (titleAttr) document.title = titleAttr;
-    var descAttr = document.documentElement.getAttribute("data-desc-" + lang);
-    var metaDesc = document.querySelector('meta[name="description"]');
-    if (descAttr && metaDesc) metaDesc.setAttribute("content", descAttr);
-    document.dispatchEvent(new CustomEvent("hc:langchange", { detail: { lang: lang } }));
-  },
-  init: function () {
-    var saved = localStorage.getItem("hc_lang");
-    var lang = saved || "el";
-    window.HC_LANG.set(lang);
-    document.querySelectorAll(".lang-switch").forEach(function (group) {
-      group.addEventListener("click", function (e) {
-        var btn = e.target.closest("button[data-lang]");
-        if (!btn) return;
-        window.HC_LANG.set(btn.dataset.lang);
-      });
-    });
-  }
-};
-
-document.addEventListener("DOMContentLoaded", window.HC_LANG.init);

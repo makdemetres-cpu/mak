@@ -1,486 +1,379 @@
-(() => {
+/* ==========================================================================
+   Χρόνης Πέγκας Photography — site behaviour
+   --------------------------------------------------------------------------
+   Navigation, language switching, scroll reveals, portfolio filtering,
+   lightbox, back-to-top.
+
+   Performance note: there is not a single scroll event listener in this
+   file. Every scroll-driven state — header border, active nav link, reveal
+   animations, back-to-top visibility — is driven by IntersectionObserver,
+   which the browser evaluates off the main thread. Only opacity and
+   transform are animated, so nothing here can cause layout thrash or the
+   scroll jank that these effects are usually blamed for.
+   ========================================================================== */
+(function () {
   "use strict";
 
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.__hcFreshVisit) window.scrollTo(0, 0);
-    initPreloader();
-    initNav();
-    renderServices();
-    initReveal();
-    initCounters();
-    initLocationSwitcher();
-    initFooterYear();
-    initReviewFlow();
+  var root = document.documentElement;
+  var S = window.XP_STRINGS || { el: {}, en: {} };
+
+  function t(key) {
+    var lang = root.getAttribute("lang") === "en" ? "en" : "el";
+    return (S[lang] && S[lang][key]) || (S.el && S.el[key]) || "";
+  }
+  function fmt(str, vals) {
+    return String(str).replace(/\{(\w+)\}/g, function (m, k) {
+      return Object.prototype.hasOwnProperty.call(vals, k) ? vals[k] : m;
+    });
+  }
+  function store(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) { /* storage unavailable */ }
+  }
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ======================================================================
+     LANGUAGE
+     Both languages are present in the DOM; CSS hides the inactive one. The
+     switch therefore costs one attribute write and no re-render of content.
+     ====================================================================== */
+  function applyLang(lang, silent) {
+    root.setAttribute("lang", lang);
+    store("xp_lang", lang);
+
+    document.querySelectorAll("[data-lang-btn]").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.dataset.langBtn === lang));
+    });
+
+    // Swap any element whose label differs per language but which has no
+    // visible text of its own (icon buttons).
+    document.querySelectorAll("[data-label-key]").forEach(function (el) {
+      el.setAttribute("aria-label", t(el.dataset.labelKey));
+    });
+
+    // <option> elements can't hold the per-language span pair the rest of the
+    // page uses, so their labels are swapped here instead.
+    document.querySelectorAll("option[data-el][data-en]").forEach(function (o) {
+      o.textContent = lang === "en" ? o.dataset.en : o.dataset.el;
+    });
+
+    // Alternate-language links on legal pages point at the same document.
+    document.querySelectorAll("[data-alt-lang]").forEach(function (el) {
+      el.setAttribute("hreflang", lang === "el" ? "en" : "el");
+    });
+
+    if (!silent) announce(t("langSwitched"));
+  }
+
+  document.querySelectorAll("[data-lang-btn]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      applyLang(btn.dataset.langBtn);
+    });
   });
 
-  /* ---------------- Services grid ---------------- */
-  const SERVICE_ICONS = {
-    bolt: '<path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/>',
-    search: '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
-    pipe: '<path d="M4 6h9a4 4 0 0 1 4 4v8"/><path d="M20 6h-4"/><circle cx="4" cy="6" r="2"/><circle cx="17" cy="18" r="2"/>',
-    drain: '<circle cx="12" cy="12" r="9"/><path d="M8 10c1 2 2 3 4 3s3-1 4-3M8 14c1-1 2-1.5 4-1.5s3 .5 4 1.5"/>',
-    flame: '<path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c0-1-.5-2-1-3 2 1 3 4 3 6a6 6 0 0 1-12 0c0-3 1.5-6 4-10Z"/>',
-    bath: '<path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5v-2Z"/><path d="M7 12V6a2 2 0 0 1 3-1.7M5 21h14"/>',
-    building: '<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h.01M15 16h.01"/>',
-    shield: '<path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/>'
-  };
+  /* Screen-reader announcements for state changes that have no visible text. */
+  var liveRegion = document.getElementById("liveRegion");
+  function announce(msg) {
+    if (!liveRegion || !msg) return;
+    liveRegion.textContent = "";
+    window.setTimeout(function () { liveRegion.textContent = msg; }, 60);
+  }
+  window.XP_announce = announce;
 
-  function renderServices() {
-    const grid = document.getElementById("servicesGrid");
-    if (!grid || !window.HC_DATA) return;
-    function paint() {
-      const lang = document.documentElement.getAttribute("data-lang") || "el";
-      grid.innerHTML = window.HC_DATA.services.map((s, i) => `
-        <div class="service-flip" data-reveal style="--i:${i % 4}">
-          <div class="service-flip__inner">
-            <div class="service-flip__face service-flip__face--back" aria-hidden="true">
-              <svg viewBox="0 0 100 100" width="46" height="46">
-                <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
-                <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
-                <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="service-flip__face service-flip__face--front">
-              <article class="service-card">
-                <div class="service-card__icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${SERVICE_ICONS[s.icon] || ""}</svg>
-                </div>
-                <h3>${s.name[lang]}</h3>
-                <p>${s.desc[lang]}</p>
-                <a class="service-card__link" href="booking.html?service=${encodeURIComponent(s.id)}">
-                  ${lang === "el" ? "Κλείστε Ραντεβού" : "Book this"}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-            </div>
-          </div>
-        </div>`).join("");
-      initReveal();
-    }
-    paint();
-    document.addEventListener("hc:langchange", paint);
+  /* ======================================================================
+     HEADER + MOBILE NAV
+     ====================================================================== */
+  var header = document.querySelector(".site-header");
+  var sentinel = document.getElementById("topSentinel");
+
+  if (header && sentinel && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      header.classList.toggle("is-scrolled", !entries[0].isIntersecting);
+    }, { rootMargin: "0px" }).observe(sentinel);
   }
 
-  /* ---------------- Preloader ---------------- */
-  function initPreloader() {
-    const pre = document.getElementById("preloader");
-    if (!pre) return;
-    const done = () => pre.classList.add("is-done");
-    if (document.readyState === "complete") {
-      setTimeout(done, 500);
+  var burger = document.getElementById("burger");
+  var mobileNav = document.getElementById("navMobile");
+  var scrollLockY = 0;
+
+  function lockScroll() {
+    scrollLockY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = -scrollLockY + "px";
+    document.body.style.width = "100%";
+  }
+  function unlockScroll() {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.width = "";
+    window.scrollTo(0, scrollLockY);
+  }
+
+  function setMenu(open) {
+    if (!burger || !mobileNav) return;
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", t(open ? "menuClose" : "menuOpen"));
+    mobileNav.classList.toggle("is-open", open);
+    mobileNav.setAttribute("aria-hidden", String(!open));
+    if (open) { lockScroll(); } else { unlockScroll(); }
+  }
+
+  if (burger && mobileNav) {
+    burger.addEventListener("click", function () {
+      setMenu(burger.getAttribute("aria-expanded") !== "true");
+    });
+    mobileNav.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { setMenu(false); });
+    });
+    // Closing on resize past the breakpoint prevents a hidden fixed panel
+    // keeping the scroll lock applied on a now-desktop layout.
+    window.matchMedia("(min-width: 940px)").addEventListener("change", function (e) {
+      if (e.matches) setMenu(false);
+    });
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (mobileNav && mobileNav.classList.contains("is-open")) setMenu(false);
+  });
+
+  /* ======================================================================
+     SCROLL REVEAL
+     Sections enter from alternating sides. Each element is unobserved the
+     moment it has played, so the observer set shrinks to nothing as the
+     visitor scrolls and costs nothing on a long page.
+     ====================================================================== */
+  var revealables = document.querySelectorAll(".reveal");
+
+  if (!("IntersectionObserver" in window) || reduceMotion) {
+    // No observer support, or the visitor asked for reduced motion: show
+    // everything immediately rather than animating.
+    revealables.forEach(function (el) { el.classList.add("is-in", "is-settled"); });
+  } else {
+    // Stagger items that share a parent group, so a grid of photographs
+    // arrives as a sequence rather than all at once.
+    document.querySelectorAll("[data-reveal-group]").forEach(function (group) {
+      var kids = group.querySelectorAll(":scope > .reveal");
+      var step = parseInt(group.dataset.revealGroup, 10);
+      if (isNaN(step)) step = 70;
+      kids.forEach(function (el, i) {
+        el.style.setProperty("--reveal-delay", (i * step) + "ms");
+      });
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        el.classList.add("is-in");
+        io.unobserve(el);
+        el.addEventListener("transitionend", function onEnd(ev) {
+          if (ev.propertyName !== "opacity") return;
+          el.classList.add("is-settled");
+          el.removeEventListener("transitionend", onEnd);
+        });
+      });
+    }, {
+      // Fires a little before the element's top edge reaches the viewport
+      // bottom, so the motion reads as part of the scroll rather than
+      // something that starts after the reader has already arrived.
+      rootMargin: "0px 0px -12% 0px",
+      threshold: 0.06
+    });
+
+    revealables.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ======================================================================
+     ACTIVE NAV LINK
+     ====================================================================== */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav-desktop a[href^='#']"));
+  var sections = navLinks
+    .map(function (a) { return document.querySelector(a.getAttribute("href")); })
+    .filter(Boolean);
+
+  if (sections.length && "IntersectionObserver" in window) {
+    var visible = new Map();
+    var navIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { visible.set(e.target.id, e.intersectionRatio); });
+
+      var bestId = null, bestRatio = 0;
+      visible.forEach(function (ratio, id) {
+        if (ratio > bestRatio) { bestRatio = ratio; bestId = id; }
+      });
+
+      navLinks.forEach(function (a) {
+        a.classList.toggle("is-active", bestId !== null && a.getAttribute("href") === "#" + bestId);
+      });
+    }, { threshold: [0, 0.25, 0.5, 0.75], rootMargin: "-20% 0px -35% 0px" });
+
+    sections.forEach(function (s) { navIo.observe(s); });
+  }
+
+  /* ======================================================================
+     PORTFOLIO FILTER
+     ====================================================================== */
+  var gallery = document.getElementById("gallery");
+  var filterBtns = document.querySelectorAll("[data-filter]");
+
+  function applyFilter(cat) {
+    if (!gallery) return;
+    gallery.querySelectorAll(".shot").forEach(function (shot) {
+      var match = cat === "all" || shot.dataset.cat === cat;
+      shot.hidden = !match;
+    });
+    filterBtns.forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.dataset.filter === cat));
+    });
+    refreshLightboxSet();
+  }
+
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () { applyFilter(btn.dataset.filter); });
+  });
+
+  /* ======================================================================
+     LIGHTBOX
+     ====================================================================== */
+  var lightbox = document.getElementById("lightbox");
+  var lbImg = document.getElementById("lbImg");
+  var lbCounter = document.getElementById("lbCounter");
+  var lbPrev = document.getElementById("lbPrev");
+  var lbNext = document.getElementById("lbNext");
+  var lbClose = document.getElementById("lbClose");
+  var lbSet = [];
+  var lbIndex = 0;
+  var lbOpener = null;
+
+  function refreshLightboxSet() {
+    if (!gallery) return;
+    lbSet = Array.prototype.slice.call(gallery.querySelectorAll(".shot")).filter(function (s) {
+      return !s.hidden;
+    });
+  }
+
+  function showAt(i) {
+    if (!lbSet.length || !lbImg) return;
+    lbIndex = (i + lbSet.length) % lbSet.length;
+    var shot = lbSet[lbIndex];
+    var img = shot.querySelector("img");
+    if (!img) return;
+    // Full-size source if one is declared, otherwise the grid image itself.
+    lbImg.src = img.dataset.full || img.currentSrc || img.src;
+    lbImg.alt = img.alt || "";
+    if (lbCounter) {
+      lbCounter.textContent = fmt(t("lightboxOf"), { n: lbIndex + 1, total: lbSet.length });
+    }
+    var single = lbSet.length < 2;
+    if (lbPrev) lbPrev.hidden = single;
+    if (lbNext) lbNext.hidden = single;
+  }
+
+  function openLightbox(shot) {
+    if (!lightbox) return;
+    refreshLightboxSet();
+    var i = lbSet.indexOf(shot);
+    if (i < 0) return;
+    lbOpener = shot;
+    showAt(i);
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    lockScroll();
+    if (lbClose) lbClose.focus();
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    unlockScroll();
+    // Release the decoded full-size image rather than holding it in memory.
+    if (lbImg) lbImg.removeAttribute("src");
+    if (lbOpener) { lbOpener.focus(); lbOpener = null; }
+  }
+
+  if (gallery) {
+    refreshLightboxSet();
+    gallery.addEventListener("click", function (e) {
+      var shot = e.target.closest(".shot");
+      if (shot) openLightbox(shot);
+    });
+  }
+
+  if (lbClose) lbClose.addEventListener("click", closeLightbox);
+  if (lbPrev) lbPrev.addEventListener("click", function () { showAt(lbIndex - 1); });
+  if (lbNext) lbNext.addEventListener("click", function () { showAt(lbIndex + 1); });
+
+  if (lightbox) {
+    // Clicking the backdrop (but not the photograph or a control) closes.
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (!lightbox.classList.contains("is-open")) return;
+      if (e.key === "Escape") { closeLightbox(); }
+      else if (e.key === "ArrowLeft") { showAt(lbIndex - 1); }
+      else if (e.key === "ArrowRight") { showAt(lbIndex + 1); }
+      else if (e.key === "Tab") {
+        // Keep focus inside the viewer while it is open.
+        var focusables = lightbox.querySelectorAll("button:not([hidden])");
+        if (!focusables.length) return;
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    // Swipe between photographs on touch devices.
+    var tx = 0, ty = 0;
+    lightbox.addEventListener("touchstart", function (e) {
+      tx = e.changedTouches[0].clientX;
+      ty = e.changedTouches[0].clientY;
+    }, { passive: true });
+    lightbox.addEventListener("touchend", function (e) {
+      var dx = e.changedTouches[0].clientX - tx;
+      var dy = e.changedTouches[0].clientY - ty;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+        showAt(dx < 0 ? lbIndex + 1 : lbIndex - 1);
+      }
+    }, { passive: true });
+  }
+
+  /* ======================================================================
+     BACK TO TOP
+     ====================================================================== */
+  var toTop = document.getElementById("toTop");
+  if (toTop) {
+    if (sentinel && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        toTop.classList.toggle("is-visible", !entries[0].isIntersecting);
+      }, { rootMargin: "400px 0px 0px 0px" }).observe(sentinel);
     } else {
-      window.addEventListener("load", () => setTimeout(done, 500));
+      toTop.classList.add("is-visible");
     }
-    // safety net so it never gets stuck
-    setTimeout(done, 2600);
-  }
 
-  /* ---------------- Nav ---------------- */
-  function initNav() {
-    const nav = document.getElementById("siteNav");
-    const toggle = document.getElementById("navToggle");
-    const links = document.getElementById("navLinks");
-    const scrim = document.getElementById("navScrim");
-    if (!nav) return;
-
-    const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    if (toggle && links) {
-      const closeMenu = () => {
-        toggle.setAttribute("aria-expanded", "false");
-        links.classList.remove("is-open");
-        scrim && scrim.classList.remove("is-open");
-        document.body.style.overflow = "";
-      };
-      const openMenu = () => {
-        toggle.setAttribute("aria-expanded", "true");
-        links.classList.add("is-open");
-        scrim && scrim.classList.add("is-open");
-        document.body.style.overflow = "hidden";
-      };
-      toggle.addEventListener("click", () => {
-        const isOpen = links.classList.contains("is-open");
-        isOpen ? closeMenu() : openMenu();
+    toTop.addEventListener("click", function () {
+      window.scrollTo({
+        top: 0,
+        behavior: reduceMotion ? "auto" : "smooth"
       });
-      scrim && scrim.addEventListener("click", closeMenu);
-      links.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
-      window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
-    }
-
-    // active link by current path (exact match on the page path, ignoring in-page #anchors)
-    const path = location.pathname.split("/").pop() || "index.html";
-    nav.querySelectorAll("[data-nav]").forEach((a) => {
-      const href = a.getAttribute("href") || "";
-      const hasHash = href.includes("#");
-      const hrefPath = href.split("#")[0] || "index.html";
-      const isMatch = !hasHash && (hrefPath === path || (path === "" && hrefPath === "index.html"));
-      a.classList.toggle("is-active", isMatch);
+      // Return focus to the top of the document, not just the scroll position,
+      // so keyboard and screen-reader users actually go back to the start.
+      var skip = document.querySelector(".skip-link");
+      if (skip) skip.focus({ preventScroll: true });
     });
   }
 
-  /* ---------------- Scroll reveal ---------------- */
-  function initReveal() {
-    const items = document.querySelectorAll("[data-reveal]");
-    if (!items.length) return;
+  /* ======================================================================
+     MISC
+     ====================================================================== */
+  document.querySelectorAll("[data-year]").forEach(function (el) {
+    el.textContent = String(new Date().getFullYear());
+  });
 
-    document.querySelectorAll("[data-reveal-group]").forEach((group) => {
-      Array.from(group.querySelectorAll("[data-reveal]")).forEach((el, i) => {
-        el.style.setProperty("--i", i);
-      });
-    });
-
-    if (!("IntersectionObserver" in window)) {
-      items.forEach((el) => el.classList.add("is-visible"));
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
-    );
-    items.forEach((el) => io.observe(el));
-  }
-
-  /* ---------------- Animated counters ---------------- */
-  function initCounters() {
-    const els = document.querySelectorAll("[data-count]");
-    if (!els.length) return;
-
-    const animate = (el) => {
-      const target = parseFloat(el.dataset.count);
-      const suffix = el.dataset.suffix || "";
-      const noGroup = "noGroup" in el.dataset;
-      const decimals = el.dataset.count.includes(".") ? 1 : 0;
-      const duration = 1600;
-      const start = performance.now();
-      const from = 0;
-      function tick(now) {
-        const p = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const val = from + (target - from) * eased;
-        const rounded = decimals ? val.toFixed(decimals) : Math.round(val);
-        el.textContent = (noGroup ? String(rounded) : rounded.toLocaleString(document.documentElement.lang === "el" ? "el-GR" : "en-US")) + suffix;
-        if (p < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    };
-
-    if (!("IntersectionObserver" in window)) {
-      els.forEach(animate);
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            animate(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.6 }
-    );
-    els.forEach((el) => io.observe(el));
-  }
-
-  /* ---------------- Location switcher (hover a branch, its photo crossfades in) ---------------- */
-  function initLocationSwitcher() {
-    const bgEl = document.getElementById("locationSwitcherBg");
-    const listEl = document.getElementById("locationSwitcherList");
-    if (!bgEl || !listEl || !window.HC_DATA) return;
-
-    const locations = window.HC_DATA.locations;
-    function lang() { return document.documentElement.getAttribute("data-lang") || "el"; }
-
-    const locationPhotos = {
-      0: "assets/img/location-1.jpg",
-      1: "assets/img/location-2.jpg",
-      2: "assets/img/location-3.jpg",
-      3: "assets/img/location-4.jpg",
-      4: "assets/img/location-5.jpg",
-      5: "assets/img/location-6.jpg",
-      6: "assets/img/location-7.jpg",
-    };
-
-    bgEl.innerHTML = locations.map((loc, i) => `
-      <div class="location-switcher__bg-layer${i === 0 ? " is-active" : ""}" data-idx="${i}"><img src="${locationPhotos[i]}" alt="" loading="lazy"></div>
-    `).join("");
-    const layers = Array.from(bgEl.children);
-
-    let current = 0;
-    function setActive(idx) {
-      current = idx;
-      layers.forEach((el, i) => el.classList.toggle("is-active", i === idx));
-      Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-active", i === idx));
-      updateDots();
-    }
-
-    function setEngaged(idx) {
-      Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-engaged", i === idx));
-    }
-
-    function renderList() {
-      listEl.innerHTML = locations.map((loc) => `
-        <button type="button" class="location-switcher__item">
-          <strong>${loc.name[lang()]}</strong>
-          <span>${loc.hours[lang()]}</span>
-          <span class="item-directions"><span data-lang-el>Οδηγίες</span><span data-lang-en>Directions</span></span>
-        </button>
-      `).join("");
-      Array.from(listEl.children).forEach((btn, i) => {
-        btn.addEventListener("mouseenter", () => setActive(i));
-        btn.addEventListener("focus", () => setActive(i));
-        btn.addEventListener("click", () => { setActive(i); setEngaged(i); });
-      });
-      setActive(0);
-    }
-    listEl.addEventListener("mouseleave", () => setActive(0));
-
-    /* ---- Mobile-only affordances: swipe the photo to change branch, plus dots + arrows ---- */
-    const switcherEl = document.getElementById("locationSwitcher");
-    const controls = document.createElement("div");
-    controls.className = "location-switcher__controls";
-    controls.innerHTML = `
-      <button type="button" class="location-switcher__arrow location-switcher__arrow--prev" aria-label="Προηγούμενο κατάστημα">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <div class="location-switcher__dots" role="tablist" aria-label="Καταστήματα"></div>
-      <button type="button" class="location-switcher__arrow location-switcher__arrow--next" aria-label="Επόμενο κατάστημα">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </button>
-    `;
-    switcherEl.parentElement.appendChild(controls);
-    const dotsEl = controls.querySelector(".location-switcher__dots");
-    const dots = locations.map((_, i) => {
-      const dot = document.createElement("button");
-      dot.type = "button";
-      dot.className = "location-switcher__dot";
-      dot.setAttribute("role", "tab");
-      dot.setAttribute("aria-label", `${i + 1}`);
-      dot.addEventListener("click", () => { setActive(i); setEngaged(i); });
-      dotsEl.appendChild(dot);
-      return dot;
-    });
-    function updateDots() {
-      dots.forEach((d, i) => {
-        d.classList.toggle("is-active", i === current);
-        d.setAttribute("aria-selected", i === current ? "true" : "false");
-      });
-    }
-    function step(delta) {
-      const next = Math.max(0, Math.min(locations.length - 1, current + delta));
-      setActive(next);
-      setEngaged(next);
-    }
-    controls.querySelector(".location-switcher__arrow--prev").addEventListener("click", () => step(-1));
-    controls.querySelector(".location-switcher__arrow--next").addEventListener("click", () => step(1));
-
-    let dragStartX = null;
-    bgEl.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "mouse") return;
-      dragStartX = e.clientX;
-      try { bgEl.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
-    });
-    bgEl.addEventListener("pointerup", (e) => {
-      if (dragStartX === null) return;
-      const delta = e.clientX - dragStartX;
-      dragStartX = null;
-      if (Math.abs(delta) < 32) return;
-      step(delta < 0 ? 1 : -1);
-    });
-    bgEl.addEventListener("pointercancel", () => { dragStartX = null; });
-
-    renderList();
-    document.addEventListener("hc:langchange", renderList);
-  }
-
-  function initFooterYear() {
-    document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
-  }
-
-  /* ---------------- Reviews: write-a-review + confetti ---------------- */
-  function initReviewFlow() {
-    const openBtn = document.getElementById("openReviewModal");
-    const overlay = document.getElementById("reviewModalOverlay");
-    const modal = document.getElementById("reviewModal");
-    const closeBtn = document.getElementById("reviewModalClose");
-    const cancelBtn = document.getElementById("reviewCancel");
-    const form = document.getElementById("reviewForm");
-    const nameField = document.getElementById("reviewName");
-    const textField = document.getElementById("reviewText");
-    const starPicker = document.getElementById("starPicker");
-    const stars = starPicker ? starPicker.querySelectorAll(".star-picker__star") : [];
-    const track = document.getElementById("testiTrack");
-    const thanksOverlay = document.getElementById("thanksOverlay");
-    if (!openBtn || !modal || !form || !track || !thanksOverlay) return;
-
-    const openModal = () => {
-      overlay.classList.add("is-visible");
-      modal.classList.add("is-visible");
-      document.body.style.overflow = "hidden";
-      nameField.focus();
-    };
-    const closeModal = () => {
-      overlay.classList.remove("is-visible");
-      modal.classList.remove("is-visible");
-      document.body.style.overflow = "";
-    };
-
-    openBtn.addEventListener("click", openModal);
-    closeBtn && closeBtn.addEventListener("click", closeModal);
-    cancelBtn && cancelBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.classList.contains("is-visible")) closeModal();
-    });
-
-    let rating = 0;
-    function paintStars() {
-      stars.forEach((s) => s.classList.toggle("is-filled", Number(s.dataset.value) <= rating));
-    }
-    stars.forEach((s) => {
-      s.addEventListener("click", () => {
-        rating = Number(s.dataset.value);
-        paintStars();
-        starPicker.closest(".field").classList.remove("has-error");
-      });
-    });
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      let valid = true;
-      [nameField, textField].forEach((f) => {
-        const wrap = f.closest(".field");
-        if (!f.value.trim()) { wrap.classList.add("has-error"); valid = false; }
-        else wrap.classList.remove("has-error");
-      });
-      const starsWrap = starPicker.closest(".field");
-      if (rating < 1) { starsWrap.classList.add("has-error"); valid = false; }
-      else starsWrap.classList.remove("has-error");
-      if (!valid) return;
-
-      addReviewCard({ name: nameField.value.trim(), rating, text: textField.value.trim() });
-
-      form.reset();
-      rating = 0;
-      paintStars();
-      closeModal();
-      showThanks();
-    });
-
-    function initials(name) {
-      const parts = name.trim().split(/\s+/).slice(0, 2);
-      return parts.map((w) => w[0]).join("").toUpperCase();
-    }
-
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = str;
-      return div.innerHTML;
-    }
-
-    function addReviewCard({ name, rating, text }) {
-      const card = document.createElement("article");
-      card.className = "testi-card testi-card--new";
-      const starsMarkup = "★".repeat(rating) + "☆".repeat(5 - rating);
-      card.innerHTML = `
-        <div class="testi-stars" aria-hidden="true">${starsMarkup}</div>
-        <p>«${escapeHtml(text)}»</p>
-        <div class="testi-person">
-          <div class="testi-avatar">${initials(name) || "?"}</div>
-          <div><strong>${escapeHtml(name)}</strong><span data-lang-el>Νέα κριτική</span><span data-lang-en>New review</span></div>
-        </div>`;
-      track.prepend(card);
-      track.scrollTo({ left: 0, behavior: "smooth" });
-    }
-
-    function showThanks() {
-      thanksOverlay.classList.add("is-visible");
-      runConfetti();
-      clearTimeout(thanksOverlay._t);
-      thanksOverlay._t = setTimeout(hideThanks, 3800);
-    }
-    function hideThanks() {
-      thanksOverlay.classList.remove("is-visible");
-    }
-    thanksOverlay.addEventListener("click", hideThanks);
-
-    function runConfetti() {
-      const canvas = document.getElementById("confettiCanvas");
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const colors = ["#7CB9E8", "#72A0C1", "#00308F", "#8B8C89", "#FFFFFF"];
-      const count = 140;
-      const particles = Array.from({ length: count }, () => ({
-        x: w / 2 + (Math.random() - 0.5) * 140,
-        y: h / 2 - 20,
-        vx: (Math.random() - 0.5) * 9,
-        vy: -(Math.random() * 9 + 4),
-        size: Math.random() * 7 + 4,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.3,
-        shape: Math.random() > 0.5 ? "rect" : "circle"
-      }));
-
-      const gravity = 0.18;
-      const start = performance.now();
-      const duration = 3200;
-
-      function frame(now) {
-        const t = now - start;
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach((p) => {
-          p.vy += gravity;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.rotation += p.rotationSpeed;
-          const fade = Math.max(0, 1 - t / duration);
-          ctx.save();
-          ctx.globalAlpha = fade;
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rotation);
-          ctx.fillStyle = p.color;
-          if (p.shape === "rect") ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-          else { ctx.beginPath(); ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2); ctx.fill(); }
-          ctx.restore();
-        });
-        if (t < duration) requestAnimationFrame(frame);
-        else ctx.clearRect(0, 0, w, h);
-      }
-      requestAnimationFrame(frame);
-    }
-  }
-
-  /* ---------------- Toast (shared) ---------------- */
-  window.HCToast = function (msg) {
-    let toast = document.getElementById("hcToast");
-    if (!toast) {
-      toast = document.createElement("div");
-      toast.id = "hcToast";
-      toast.className = "toast";
-      toast.setAttribute("role", "status");
-      toast.setAttribute("aria-live", "polite");
-      document.body.appendChild(toast);
-    }
-    toast.textContent = msg;
-    toast.classList.add("is-visible");
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => toast.classList.remove("is-visible"), 3600);
-  };
+  // Apply stored language labels on first load. Silent: boot.js already set
+  // the correct language before paint, so nothing actually changed here and
+  // announcing "language switched" would be a lie to a screen reader.
+  applyLang(root.getAttribute("lang") === "en" ? "en" : "el", true);
 })();

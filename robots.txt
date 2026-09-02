@@ -1,0 +1,26 @@
+# Χρόνης Πέγκας Photography
+User-agent: *
+Allow: /
+
+# The photographs on this site are copyright works and are expressly not
+# licensed for AI training or text-and-data mining. See terms.html §2 and
+# Art. 4(3) of Directive (EU) 2019/790.
+User-agent: GPTBot
+Disallow: /
+User-agent: Google-Extended
+Disallow: /
+User-agent: CCBot
+Disallow: /
+User-agent: anthropic-ai
+Disallow: /
+User-agent: ClaudeBot
+Disallow: /
+User-agent: Applebot-Extended
+Disallow: /
+User-agent: Bytespider
+Disallow: /
+User-agent: meta-externalagent
+Disallow: /
+
+# UPDATE the domain below before publishing.
+Sitemap: https://www.example.gr/sitemap.xml
