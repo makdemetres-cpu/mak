@@ -30,3 +30,8 @@ ErrorDocument 404 /404.html
   ExpiresByType text/css    "access plus 1 week"
   ExpiresByType application/javascript "access plus 1 week"
 </IfModule>
+
+# Local preview launchers — never serve these.
+<FilesMatch "\.(bat|command)$">
+  Require all denied
+</FilesMatch>

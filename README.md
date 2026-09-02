@@ -233,6 +233,31 @@ visitor is reading.
 
 ---
 
+## Previewing without a terminal
+
+Opening `index.html` straight from disk does **not** show the real design.
+The browser treats a `file://` page as a foreign origin and refuses the
+`.woff2` font files, so GFS Didot silently falls back to Times — and the
+typeface is most of the site's character.
+
+Three ways to see it properly without typing a command:
+
+1. **Double-click `start-preview.bat`** (Windows) or **`start-preview.command`**
+   (Mac). A black window opens — that is the server; leave it open — and your
+   browser goes to `http://localhost:8000`. Close the window when finished.
+   Needs Python or Node already installed; the file tells you if neither is.
+2. **VS Code + Live Server.** Install [VS Code](https://code.visualstudio.com)
+   (free), open this folder in it, install the "Live Server" extension from
+   the Extensions panel, then right-click `index.html` → *Open with Live
+   Server*. Entirely point-and-click, and it reloads as you edit.
+3. **XAMPP.** Heavier, but it runs PHP — the only way to test `contact.php`
+   in "php" mode locally. Install it, copy this folder into `htdocs`, press
+   Start next to Apache in its control panel, then visit
+   `http://localhost/<folder-name>`.
+
+Do not upload `start-preview.bat` or `start-preview.command` to the live
+site; they are local helpers and do nothing on a web server.
+
 ## Deploying
 
 The site is a static folder. Every file in the root goes to the web root.
