@@ -48,11 +48,6 @@ import * as THREE from "./vendor/three.module.min.js";
 
   var STAGE_NAMES_DESKTOP = ["lens", "viewfinder", "back", "dial"];
   var STAGE_NAMES_MOBILE = ["lens", "viewfinder"];
-  var RIG_BASE_DEG = -26; // permanent 3/4 product-shot starting angle
-  var RIG_MAX_DEG = 52;   // "noticeable but tasteful" turntable turn ADDED on
-                           // top of the base angle as you scroll — safe to go
-                           // this far because real geometry never vanishes
-                           // edge-on the way the old flat SVG plane did.
 
   /* ---- nav lock (identical to the previous CSS-only build) -------------- */
   function navLinks() { return document.querySelectorAll(".nav-desktop a, .nav-mobile a"); }
@@ -87,11 +82,22 @@ import * as THREE from "./vendor/three.module.min.js";
   if (!hasWebGL()) { fallbackFlat(); return; }
 
   /* ---- scene construction ------------------------------------------------ */
-  var bodyMat = new THREE.MeshStandardMaterial({ color: 0x232228, metalness: 0.55, roughness: 0.42 });
-  var darkMat = new THREE.MeshStandardMaterial({ color: 0x131215, metalness: 0.7, roughness: 0.32 });
-  var glassMat = new THREE.MeshStandardMaterial({ color: 0x050508, metalness: 0.9, roughness: 0.08 });
-  var goldMat = new THREE.MeshStandardMaterial({ color: 0xc2a05f, metalness: 0.85, roughness: 0.3 });
-  var goldBrightMat = new THREE.MeshStandardMaterial({ color: 0xe7c888, metalness: 0.9, roughness: 0.2 });
+  // Flat, evenly-lit "illustrated diagram" materials — soft matte surfaces
+  // with restrained specular, closer to a clean architectural render than
+  // a moody metal product shot. Glass/screens stay glossier on purpose:
+  // that contrast against the matte body is what reads as "material" at
+  // a glance, the same way the reference villa render uses glossy glazing
+  // against flat matte walls.
+  var bodyMat = new THREE.MeshStandardMaterial({ color: 0x2c2b31, metalness: 0.12, roughness: 0.62 });
+  var darkMat = new THREE.MeshStandardMaterial({ color: 0x18171c, metalness: 0.16, roughness: 0.58 });
+  var gripMat = new THREE.MeshStandardMaterial({ color: 0x201f24, metalness: 0.05, roughness: 0.85 });
+  var glassMat = new THREE.MeshStandardMaterial({ color: 0x040406, metalness: 0.55, roughness: 0.18 });
+  var goldMat = new THREE.MeshStandardMaterial({ color: 0xc2a05f, metalness: 0.35, roughness: 0.48 });
+  var goldBrightMat = new THREE.MeshStandardMaterial({ color: 0xe7c888, metalness: 0.4, roughness: 0.38 });
+  // Noticeably lighter than the body/dark tones on purpose — the pentaprism
+  // hump needs to read as its own distinct part breaking the body's top
+  // silhouette, not blend into shadow against the dark background.
+  var vfMat = new THREE.MeshStandardMaterial({ color: 0x48474e, metalness: 0.1, roughness: 0.55 });
 
   function buildRig() {
     var rig = new THREE.Group();
@@ -99,38 +105,88 @@ import * as THREE from "./vendor/three.module.min.js";
     var body = new THREE.Mesh(new THREE.BoxGeometry(1.72, 1.02, 0.62), bodyMat);
     rig.add(body);
 
-    [-0.78, 0.78].forEach(function (x) {
+    // Grip: a raised block on the body's right edge, proud of the front
+    // face — the single detail that most sells "camera" over "box" at a
+    // glance.
+    var grip = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.86, 0.5), gripMat);
+    grip.position.set(0.75, -0.02, 0.16);
+    rig.add(grip);
+
+    var shutterBtn = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.05, 16), goldBrightMat);
+    shutterBtn.position.set(0.73, 0.53, 0.3);
+    shutterBtn.rotation.x = -0.35;
+    rig.add(shutterBtn);
+
+    // Sits on top of the pentaprism's roof ridge (built below, peak at
+    // y≈0.81) — it was previously embedded inside the prism's base and
+    // z-fighting with it, which made both look like a single dark smear.
+    var hotShoe = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.05, 0.14), darkMat);
+    hotShoe.position.set(0, 0.855, -0.02);
+    rig.add(hotShoe);
+
+    // Pushed out to the body's far corners, clear of the dial/shutter
+    // cluster on the right — three separate details reading as three
+    // separate details instead of one cluttered blob.
+    [-0.84, 0.84].forEach(function (x) {
       // Torus faces Z (its hole) by default — turn it 90° around Y so the
       // hole faces outward along X, like a strap lug you could thread
       // something through, instead of facing the camera edge-on.
       var lug = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.018, 8, 20), goldMat);
-      lug.position.set(x, 0.48, 0.02);
+      lug.position.set(x, 0.38, 0.05);
       lug.rotation.y = Math.PI / 2;
       rig.add(lug);
     });
 
+    // Lens: built up in visible layers front-to-back (mount collar → main
+    // barrel → grip-ridge detail → aperture-ring section → gold accent
+    // ring → front rim → glass) instead of one plain cylinder, so it
+    // reads as an assembled optic rather than a single tube.
     var lens = new THREE.Group();
-    var barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.44, 0.58, 28), darkMat);
-    barrel.rotation.x = Math.PI / 2;
-    barrel.position.z = 0.29;
+    var mount = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 0.07, 28), darkMat);
+    mount.rotation.x = Math.PI / 2; mount.position.z = 0.035;
+    lens.add(mount);
+    var barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.44, 0.3, 28), darkMat);
+    barrel.rotation.x = Math.PI / 2; barrel.position.z = 0.22;
     lens.add(barrel);
-    var glass = new THREE.Mesh(new THREE.CircleGeometry(0.33, 28), glassMat);
-    glass.position.z = 0.585;
-    lens.add(glass);
+    var gripRidge = new THREE.Mesh(new THREE.TorusGeometry(0.425, 0.018, 8, 32), gripMat);
+    gripRidge.position.z = 0.2;
+    lens.add(gripRidge);
+    var apertureBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.39, 0.41, 0.1, 28), darkMat);
+    apertureBarrel.rotation.x = Math.PI / 2; apertureBarrel.position.z = 0.42;
+    lens.add(apertureBarrel);
     // Torus already faces Z by default — that's forward, toward the
     // viewer, exactly right for a lens ring. No rotation needed (rotating
-    // it like the cylinder above turned it edge-on into a flat line).
-    var ring = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.028, 10, 36), goldMat);
-    ring.position.z = 0.29;
+    // it like the cylinders above turned it edge-on into a flat line).
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.026, 10, 36), goldMat);
+    ring.position.z = 0.42;
     lens.add(ring);
+    var frontRim = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.38, 0.03, 28), darkMat);
+    frontRim.rotation.x = Math.PI / 2; frontRim.position.z = 0.485;
+    lens.add(frontRim);
+    var glass = new THREE.Mesh(new THREE.CircleGeometry(0.33, 28), glassMat);
+    glass.position.z = 0.505;
+    lens.add(glass);
     lens.position.set(0, -0.14, 0.31);
     rig.add(lens);
 
+    // Viewfinder: a proper pentaprism silhouette — flat front/back and
+    // bottom, sloped roof up to an off-centre ridge — built as a 2D
+    // profile extruded to a width, then turned so the extrusion runs
+    // along the camera's X axis instead of the shape's own.
     var vf = new THREE.Group();
-    var vfBody = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.3, 0.34, 4), darkMat);
-    vfBody.rotation.y = Math.PI / 4;
+    var prismShape = new THREE.Shape();
+    prismShape.moveTo(-0.17, 0);
+    prismShape.lineTo(0.17, 0);
+    prismShape.lineTo(0.17, 0.15);
+    prismShape.lineTo(0.02, 0.3);
+    prismShape.lineTo(-0.17, 0.15);
+    prismShape.closePath();
+    var prismGeo = new THREE.ExtrudeGeometry(prismShape, { depth: 0.4, bevelEnabled: false });
+    prismGeo.translate(0, 0, -0.2);
+    var vfBody = new THREE.Mesh(prismGeo, vfMat);
+    vfBody.rotation.y = Math.PI / 2;
     vf.add(vfBody);
-    vf.position.set(-0.05, 0.6, -0.02);
+    vf.position.set(0, 0.51, -0.02);
     rig.add(vf);
 
     var back = new THREE.Group();
@@ -148,7 +204,14 @@ import * as THREE from "./vendor/three.module.min.js";
     var dialNub = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.06, 0.03), goldMat);
     dialNub.position.set(0.09, 0.03, 0);
     dial.add(dialNub);
-    dial.position.set(0.62, 0.56, 0.08);
+    for (var i = 0; i < 10; i++) {
+      var a = (i / 10) * Math.PI * 2;
+      var tick = new THREE.Mesh(new THREE.BoxGeometry(0.014, 0.03, 0.006), goldMat);
+      tick.position.set(Math.cos(a) * 0.125, 0, Math.sin(a) * 0.125);
+      tick.rotation.y = -a;
+      dial.add(tick);
+    }
+    dial.position.set(0.5, 0.545, 0.16);
     rig.add(dial);
 
     return {
@@ -170,26 +233,31 @@ import * as THREE from "./vendor/three.module.min.js";
     camera.position.set(0, 0.55, 4.4);
     camera.lookAt(0, 0, 0);
 
-    scene.add(new THREE.HemisphereLight(0x9a9aa2, 0x141018, 1.6));
-    var key = new THREE.DirectionalLight(0xffe6c2, 5.5); key.position.set(2.4, 3, 2.8); scene.add(key);
-    var fill = new THREE.DirectionalLight(0xffe2c0, 1.4); fill.position.set(-2.6, 0.6, -0.6); scene.add(fill);
-    var rim = new THREE.DirectionalLight(0xfff2df, 2.6); rim.position.set(-1.2, 2.2, -3.2); scene.add(rim);
+    // Soft, mostly-ambient lighting on purpose: a moody, high-contrast
+    // product-shot rig (what an earlier version of this used) fights the
+    // flat, evenly-lit "illustrated diagram" look this is going for — a
+    // clean geometric render closer to an architectural elevation than a
+    // studio photo. One gentle key light for a touch of form-defining
+    // shadow, nothing more.
+    scene.add(new THREE.HemisphereLight(0xaeaeb6, 0x201c22, 2.4));
+    var key = new THREE.DirectionalLight(0xfff3e2, 1.6); key.position.set(2, 2.6, 2.4); scene.add(key);
 
     var built = buildRig();
     rig = built.rig;
     parts = built.parts;
-    // A permanent 3/4 product-shot angle — flat-on made the lens read as a
-    // giant disc and hid the body's top/side entirely. The scroll-driven
-    // turntable turn (see frame() below) is added on top of this, not
-    // instead of it.
-    rig.rotation.x = THREE.MathUtils.degToRad(-10);
+    // A permanent, gentle 3/4 angle — flat-on made the lens read as a giant
+    // disc and hid the body's top/side entirely, and a pure elevation view
+    // would make the exploded parts overlap each other on screen. This is
+    // a fixed camera-diagram angle, not a turntable: nothing here changes
+    // with scroll position.
+    rig.rotation.x = THREE.MathUtils.degToRad(-9);
+    rig.rotation.y = THREE.MathUtils.degToRad(-16);
     scene.add(rig);
 
     renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMapping = THREE.NoToneMapping;
 
     canvasEl.addEventListener("webglcontextlost", function (e) { e.preventDefault(); webglAlive = false; fallbackFlat(); }, false);
 
@@ -249,10 +317,10 @@ import * as THREE from "./vendor/three.module.min.js";
       applyPart(parts[name], t);
     });
 
-    rig.rotation.y = THREE.MathUtils.degToRad(RIG_BASE_DEG + p * RIG_MAX_DEG);
-    // A slight dolly-back as the parts spread out, so the whole exploded
-    // arrangement stays inside frame instead of the outer pieces drifting
-    // past the edge of the canvas.
+    // The rig's own orientation is fixed (set once, above) — no
+    // whole-camera turntable turn. A slight dolly-back as the parts spread
+    // out keeps the whole exploded arrangement inside frame instead of the
+    // outer pieces drifting past the edge of the canvas.
     camera.position.z = 4.4 + p * 0.9;
 
     copyEl.style.setProperty("--copy-op", (1 - smoothstep(0, 0.08, p)).toFixed(3));
