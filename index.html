@@ -1,497 +1,852 @@
-<!doctype html>
-<html lang="el" data-lang="el"
-      data-title-el="HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη"
-      data-title-en="HydroCore — Plumbing Solutions Across Greece | Thessaloniki"
-      data-desc-el="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση."
-      data-desc-en="HydroCore is Greece's largest certified plumbing network since 2007: 7 branches, 38 vehicles, 900+ professionals. Book online, 24/7 emergency response.">
+<!DOCTYPE html>
+<html lang="el" class="no-js">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="js/session-gate.js"></script>
-<title>HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη</title>
-<meta name="description" content="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση.">
-<meta name="theme-color" content="#00308F">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300308F'/%3E%3Cpath d='M50 20 C63 39 74 53 74 64 A24 24 0 1 1 26 64 C26 53 37 39 50 20 Z' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='62' r='9' fill='%2300308F'/%3E%3C/svg%3E">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fbf7ef">
 
+<title>Vet Care — Κτηνιατρικό Κέντρο στην Οβρυά Πατρών</title>
+<meta name="description" content="Κτηνιατρικό Κέντρο Vet Care στην Οβρυά Πατρών. Παθολογικό, ακτινολογικό, μικροβιολογικό, χειρουργικό και οδοντιατρικό τμήμα για ζώα συντροφιάς, καθώς και υπηρεσίες για παραγωγικά ζώα. Τηλ. 2616007142.">
+<link rel="canonical" href="https://www.vet-care.gr/">
+
+<!-- Open Graph / social cards -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vet Care">
+<meta property="og:locale" content="el_GR">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:title" content="Vet Care — Κτηνιατρικό Κέντρο στην Οβρυά Πατρών">
+<meta property="og:description" content="Ολοκληρωμένη κτηνιατρική φροντίδα για ζώα συντροφιάς και παραγωγικά ζώα, στην Οβρυά Πατρών.">
+<meta property="og:url" content="https://www.vet-care.gr/">
+<meta property="og:image" content="https://www.vet-care.gr/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vet Care — Κτηνιατρικό Κέντρο, Οβρυά Πάτρας">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/favicon.svg">
+
+<!-- The Greek subsets are preloaded because Greek is the default language. -->
+<link rel="preload" href="assets/fonts/Alegreya-Variable-greek.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/AlegreyaSans-400-greek.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+
+<script src="js/head.js"></script>
+
+<!-- Structured data. The Google rating is shown on the page with attribution
+     but deliberately left out of aggregateRating markup: that property is for
+     ratings a site collects itself, not for republishing another platform's. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VeterinaryCare",
+  "name": "Vet Care — Κτηνιατρικό Κέντρο",
+  "alternateName": "Vet Care Veterinary Centre",
+  "url": "https://www.vet-care.gr/",
+  "image": "https://www.vet-care.gr/assets/img/og-image.png",
+  "email": "info@vet-care.gr",
+  "telephone": "+302616007142",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Δημοκρατίας 149",
+    "addressLocality": "Οβρυά, Πάτρα",
+    "postalCode": "26334",
+    "addressRegion": "Αχαΐα",
+    "addressCountry": "GR"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 38.1918279, "longitude": 21.7323388 },
+  "hasMap": "https://www.google.com/maps/dir/?api=1&destination=38.1918279,21.7323388",
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "14:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "18:00", "closes": "21:00" }
+  ],
+  "areaServed": [
+    { "@type": "Place", "name": "Οβρυά" },
+    { "@type": "Place", "name": "Πάτρα" },
+    { "@type": "Place", "name": "Αχαΐα" }
+  ],
+  "availableService": [
+    { "@type": "MedicalProcedure", "name": "Παθολογικό" },
+    { "@type": "MedicalProcedure", "name": "Ακτινολογικό" },
+    { "@type": "MedicalProcedure", "name": "Μικροβιολογικό" },
+    { "@type": "MedicalProcedure", "name": "Χειρουργικό" },
+    { "@type": "MedicalProcedure", "name": "Οδοντιατρικό" }
+  ]
+}
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main" data-i18n="skip">Μετάβαση στο περιεχόμενο</a>
 
-<a href="#main" class="skip-link">Μετάβαση στο περιεχόμενο / Skip to content</a>
+<!-- Icon sprite: one definition per icon, referenced with <use>. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-mobile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 8.1 5.6a1.6 1.6 0 0 0 1.8 0L21 7"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.5c0 5.6-8 12-8 12s-8-6.4-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10.3" r="3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.6V12l3.6 2.2"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="5" width="17.6" height="16" rx="2.5"/><path d="M3.2 10h17.6M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M12.5 5.5 19 12l-6.5 6.5"/></symbol>
+  <symbol id="i-arrow-ne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9.5 6 6 6-6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="m8 12.3 2.8 2.8L16.2 9"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 7.6v5.2M12 16.2h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 16.4v-5.2M12 7.8h.01"/></symbol>
+  <symbol id="i-paw" viewBox="0 0 48 48" fill="currentColor"><ellipse cx="24" cy="33" rx="12" ry="9.5"/><ellipse cx="11" cy="19" rx="5" ry="6.5" transform="rotate(-18 11 19)"/><ellipse cx="20" cy="13" rx="5" ry="6.8"/><ellipse cx="29" cy="13" rx="5" ry="6.8"/><ellipse cx="38" cy="20" rx="5" ry="6.5" transform="rotate(18 38 20)"/></symbol>
+  <symbol id="i-stethoscope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 3v5a5 5 0 0 0 10 0V3"/><path d="M4 3h3M14 3h3M10.5 12.9v2.4a5 5 0 0 0 5 5 3.6 3.6 0 0 0 3.6-3.6v-1.2"/><circle cx="19.1" cy="13.4" r="2.1"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5.5A2.5 2.5 0 0 1 5.5 3H8M16 3h2.5A2.5 2.5 0 0 1 21 5.5V8M21 16v2.5a2.5 2.5 0 0 1-2.5 2.5H16M8 21H5.5A2.5 2.5 0 0 1 3 18.5V16"/><path d="M12 7.5v9M9 9.5v5M15 9.5v5"/></symbol>
+  <symbol id="i-microscope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h13M9 21a6 6 0 0 0 6-9.5"/><path d="m10.6 4.2 3.1 5.4a2 2 0 0 1-.7 2.7l-1.7 1a2 2 0 0 1-2.7-.7L5.5 7.2a2 2 0 0 1 .7-2.7l1.7-1a2 2 0 0 1 2.7.7z"/><path d="M4.5 17.5h5"/></symbol>
+  <symbol id="i-scalpel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 3 21 9.5 12 12 9.5 5.5z"/><path d="m9.5 12.5-6.4 6.4a1.6 1.6 0 0 0 0 2.2 1.6 1.6 0 0 0 2.2 0l6.4-6.4"/></symbol>
+  <symbol id="i-tooth" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3.2c1.6 0 2.4.8 4.5.8s2.9-.8 4.5-.8c2.4 0 3.8 1.9 3.5 4.7-.3 2.6-1.4 3.9-1.9 6.6-.4 2.1-.5 6.3-2.6 6.3-1.7 0-1.7-3.2-2-5.1-.2-1.4-.6-2.2-1.5-2.2s-1.3.8-1.5 2.2c-.3 1.9-.3 5.1-2 5.1-2.1 0-2.2-4.2-2.6-6.3-.5-2.7-1.6-4-1.9-6.6C3.7 5.1 5.1 3.2 7.5 3.2z"/></symbol>
+  <symbol id="i-barn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.2 12 4l9 6.2V21H3z"/><path d="M9.5 21v-6h5v6M3 13.5h18"/></symbol>
+  <symbol id="i-cycle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 0 1 14.6-5.9"/><path d="M20.5 12a8.5 8.5 0 0 1-14.6 5.9"/><path d="M18.4 2.6v3.8h-3.8M5.6 21.4v-3.8h3.8"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.5 6v6c0 4.6 3.2 7.9 7.5 9.2 4.3-1.3 7.5-4.6 7.5-9.2V6z"/><path d="m9 12 2.2 2.2L15.4 10"/></symbol>
+  <symbol id="i-wheat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9"/><path d="M12 12.5c-3 0-4.6-1.7-4.6-4.6 3 0 4.6 1.7 4.6 4.6zM12 12.5c3 0 4.6-1.7 4.6-4.6-3 0-4.6 1.7-4.6 4.6zM12 7.5c-2.1-2.1-2-4.2 0-6.2 2 2 2.1 4.1 0 6.2z"/><path d="M12 17.5c-3 0-4.6-1.7-4.6-4.6 3 0 4.6 1.7 4.6 4.6zM12 17.5c3 0 4.6-1.7 4.6-4.6-3 0-4.6 1.7-4.6 4.6z"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1.9" y="7.9" width="20.2" height="8.2" rx="4.1" transform="rotate(-45 12 12)"/><path d="M8.5 8.5 15.5 15.5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.3S3.8 15.4 3.8 9.6A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 8.2 2.8c0 5.8-8.2 10.7-8.2 10.7z"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></symbol>
+</svg>
 
-<!-- ============ PRELOADER ============ -->
-<div class="preloader" id="preloader" aria-hidden="true">
-  <svg class="preloader__mark" viewBox="0 0 100 100" width="72" height="72">
-    <circle class="preloader__ring" cx="50" cy="50" r="46" fill="none" stroke="#7CB9E8" stroke-width="2"/>
-    <path class="preloader__drop" d="M50 26 C61 41 70 53 70 64 A20 20 0 1 1 30 64 C30 53 39 41 50 26 Z" fill="#fff"/>
-  </svg>
-  <p class="preloader__label">HydroCore</p>
-</div>
-
-<!-- ============ NAV ============ -->
-<header class="nav" id="siteNav">
-  <div class="nav__inner">
-    <a href="index.html" class="nav__logo">
-      <svg class="nav__logo-mark" viewBox="0 0 100 100" width="34" height="34">
-        <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
-        <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
-        <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-      </svg>
-      <span class="nav__logo-word">Hydro<b>Core</b></span>
+<header class="header" id="site-header">
+  <div class="container header__inner">
+    <a class="brand" href="#top" aria-label="Vet Care">
+      <img class="brand__mark" src="assets/img/logo.svg" alt="" width="40" height="40" aria-hidden="true">
+      <span class="brand__text">
+        <span class="brand__name">Vet Care</span>
+        <span class="brand__tag" data-i18n="brand.tagline">Κτηνιατρικό Κέντρο</span>
+      </span>
     </a>
-    <nav class="nav__links" id="navLinks">
-      <a href="index.html" data-nav class="is-active"><span data-lang-el>Αρχική</span><span data-lang-en>Home</span></a>
-      <a href="index.html#about" data-nav><span data-lang-el>Σχετικά</span><span data-lang-en>About</span></a>
-      <a href="index.html#services" data-nav><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a>
-      <a href="index.html#locations" data-nav><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a>
-      <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="el" aria-pressed="true">EL</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      </div>
-      <a href="booking.html" class="btn btn-primary btn-sm">
-        <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span>
-      </a>
+
+    <nav class="nav" aria-label="Κύρια πλοήγηση" data-i18n-attr="aria-label:nav.menu">
+      <a class="nav__link" href="#story" data-i18n="nav.story">Η ιστορία μας</a>
+      <a class="nav__link" href="#services" data-i18n="nav.services">Υπηρεσίες</a>
+      <a class="nav__link" href="#booking" data-i18n="nav.booking">Ραντεβού</a>
+      <a class="nav__link" href="#findus" data-i18n="nav.findus">Πού είμαστε</a>
+      <a class="nav__link" href="#contact" data-i18n="nav.contact">Επικοινωνία</a>
     </nav>
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
-<div class="nav__scrim" id="navScrim"></div>
 
-<main id="main">
-
-<!-- ============ HERO ============ -->
-<section class="hero" id="top">
-  <div class="hero__bg" aria-hidden="true">
-    <img class="hero__bg-photo" src="assets/img/hero-team.jpg" alt="" width="736" height="603">
-    <div class="hero__bg-overlay"></div>
-  </div>
-  <div class="hero__inner">
-    <div class="hero__content">
-      <h1 data-reveal="fade">
-        <span data-lang-el>Υδραυλικές λύσεις <em>χωρίς συμβιβασμούς</em></span>
-        <span data-lang-en>Plumbing, done <em>without compromise</em></span>
-      </h1>
-      <p class="lede" data-reveal="fade" style="--i:1">
-        <span data-lang-el>Το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα — 7 καταστήματα, 38 οχήματα και πάνω από 900 επαγγελματίες, έτοιμοι να φτάσουν στην πόρτα σας.</span>
-        <span data-lang-en>Greece's largest certified plumbing network — 7 branches, 38 vehicles and over 900 professionals, ready to reach your door.</span>
-      </p>
-      <div class="hero__cta" data-reveal="fade" style="--i:2">
-        <a href="booking.html" class="btn btn-primary">
-          <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book an Appointment</span>
-        </a>
-        <a href="tel:+308007008000" class="btn btn-light">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-          <span data-lang-el>Επείγον: 800 700 8000</span><span data-lang-en>Emergency: 800 700 8000</span>
-        </a>
+    <div class="header__actions">
+      <div class="lang" role="group" aria-label="Επιλογή γλώσσας" data-i18n-attr="aria-label:lang.aria">
+        <button type="button" class="lang__btn" data-lang-set="el" aria-pressed="true"
+                data-i18n-attr="aria-label:lang.el" lang="el">ΕΛ</button>
+        <button type="button" class="lang__btn" data-lang-set="en" aria-pressed="false"
+                data-i18n-attr="aria-label:lang.en" lang="en">EN</button>
       </div>
-      <div class="hero__meta" data-reveal="fade" style="--i:3">
-        <div><strong data-count="18" data-suffix="+">0</strong><span data-lang-el>Χρόνια Εμπειρίας</span><span data-lang-en>Years of Experience</span></div>
-        <div><strong data-count="7">0</strong><span data-lang-el>Καταστήματα</span><span data-lang-en>Branches</span></div>
-        <div><strong data-count="38">0</strong><span data-lang-el>Οχήματα Συνεργείου</span><span data-lang-en>Service Vehicles</span></div>
-        <div><strong data-count="900" data-suffix="+">0</strong><span data-lang-el>Επαγγελματίες</span><span data-lang-en>Professionals</span></div>
-      </div>
-    </div>
-  </div>
 
-  <div class="hero__curve" aria-hidden="true">
-    <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
-      <rect class="curve-seal" x="0" y="120" width="1440" height="80"/>
-      <path class="curve-shape" d="M0,20 Q720,220 1440,20 L1440,200 L0,200 Z"/>
-    </svg>
-  </div>
-</section>
+      <button type="button" class="lang-mini" data-lang-toggle lang="en"
+              data-i18n="lang.other" data-i18n-attr="aria-label:lang.otherAria"
+              aria-label="Switch to English">EN</button>
 
-<!-- ============ ABOUT / STORY ============ -->
-<section class="section" id="about">
-  <div class="container">
-    <div class="story">
-      <div data-reveal="left">
-        <div class="story__art">
-          <div class="coverflow" id="storyCoverflow" tabindex="0" role="group"
-               aria-label="Φωτογραφικό ταξίδι στην ιστορία της HydroCore, 2007 έως σήμερα. Μετακινήστε το ποντίκι ή σύρετε, ή χρησιμοποιήστε τα βέλη αριστερά/δεξιά.">
-            <div class="coverflow__stage" id="coverflowStage">
-              <figure class="coverflow__slide" data-index="0" style="--grain:1">
-                <img src="assets/img/story-1.jpg" alt="Παλιά, φθαρμένα εργαλεία μέσα σε ξύλινη εργαλειοθήκη — η αρχή της HydroCore, 2007" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">26.06.2007</span>
-                  <span class="coverflow__cap"><span data-lang-el>Η Πρώτη Εργαλειοθήκη</span><span data-lang-en>The First Toolbox</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="1" style="--grain:0.75">
-                <img src="assets/img/story-2.jpg" alt="Εργαλεία κρεμασμένα σε τοίχο μικρού συνεργείου της HydroCore, 2013" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">14.03.2013</span>
-                  <span class="coverflow__cap"><span data-lang-el>Χτίζοντας τις Βάσεις</span><span data-lang-en>Building the Foundations</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="2" style="--grain:0.5">
-                <img src="assets/img/story-3.jpg" alt="Τεχνικός της HydroCore επισκευάζει σωληνώσεις κάτω από νεροχύτη, 2016" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">09.11.2016</span>
-                  <span class="coverflow__cap"><span data-lang-el>Χέρι στη Δουλειά</span><span data-lang-en>Hands at Work</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="3" style="--grain:0.25">
-                <img src="assets/img/story-4.jpg" alt="Τεχνικός εκπαιδεύεται στο εργαστήριο της HydroCore Academy, 2023" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">03.09.2023</span>
-                  <span class="coverflow__cap"><span data-lang-el>Η Ακαδημία μας</span><span data-lang-en>Our Academy</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="4" style="--grain:0">
-                <img src="assets/img/story-5.jpg" alt="Χειραψία συνεργασίας με φόντο σύγχρονη πόλη — η HydroCore σήμερα, 2026" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">17.01.2026</span>
-                  <span class="coverflow__cap"><span data-lang-el>Σφραγίζοντας το Μέλλον</span><span data-lang-en>Sealing the Future</span></span>
-                </figcaption>
-              </figure>
-            </div>
-            <p class="coverflow__hint" id="coverflowHint" aria-hidden="true">
-              <span data-lang-el>Περιηγηθείτε στην ιστορία μας</span>
-              <span data-lang-en>Hover to explore our story</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div data-reveal="right">
-        <p class="eyebrow"><span data-lang-el>Η Ιστορία μας</span><span data-lang-en>Our Story</span></p>
-        <h2 class="h-lg"><span data-lang-el>Από 3 φίλους σε 900+ επαγγελματίες</span><span data-lang-en>From 3 friends to a 900-strong team</span></h2>
-        <p class="lede" style="margin-top:16px">
-          <span data-lang-el>Το 2007, τρεις φίλοι με πάθος για τη χειροτεχνία της υδραυλικής άνοιξαν ένα μικρό συνεργείο στη Θεσσαλονίκη. Δεκαοχτώ χρόνια μετά, η HydroCore είναι συνώνυμο αξιοπιστίας σε επτά πόλεις της Ελλάδας — χωρίς ποτέ να ξεχάσει τις ρίζες της.</span>
-          <span data-lang-en>In 2007, three friends with a shared obsession for the craft of plumbing opened a small workshop in Thessaloniki. Eighteen years later, HydroCore is synonymous with reliability across seven Greek cities — without ever forgetting where it started.</span>
-        </p>
+      <a class="icon-btn" href="tel:+302616007142" data-i18n-attr="aria-label:nav.callAria"
+         aria-label="Καλέστε το κτηνιατρείο στο 2616007142">
+        <svg class="ic" width="20" height="20" aria-hidden="true"><use href="#i-phone"/></svg>
+      </a>
 
-        <div class="timeline">
-          <div class="timeline__item">
-            <span class="timeline__year">2007</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Η Αρχή</span><span data-lang-en>The Beginning</span></h3>
-              <p><span data-lang-el>Τρεις φίλοι, ένα μικρό συνεργείο και η υπόσχεση για έντιμη δουλειά στη Θεσσαλονίκη.</span><span data-lang-en>Three friends, one small workshop, and a promise of honest work in Thessaloniki.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2013</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Επέκταση στη Θεσσαλονίκη</span><span data-lang-en>Thessaloniki Expansion</span></h3>
-              <p><span data-lang-el>Δύο ακόμη καταστήματα ανοίγουν στην Καλαμαριά και τον Εύοσμο.</span><span data-lang-en>Two more branches open in Kalamaria and Evosmos.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2016</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Άφιξη στην Αθήνα</span><span data-lang-en>Arrival in Athens</span></h3>
-              <p><span data-lang-el>Η HydroCore φτάνει στην πρωτεύουσα, με καταστήματα στην Κηφισιά και τον Πειραιά.</span><span data-lang-en>HydroCore reaches the capital, with branches in Kifisia and Piraeus.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2019</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Πάτρα &amp; Κρήτη</span><span data-lang-en>Patra &amp; Crete</span></h3>
-              <p><span data-lang-el>Το δίκτυο επεκτείνεται στην Πελοπόννησο και το Ηράκλειο.</span><span data-lang-en>The network expands into the Peloponnese and Heraklion.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2023</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>HydroCore Academy</span><span data-lang-en>HydroCore Academy</span></h3>
-              <p><span data-lang-el>Δημιουργούμε το δικό μας πρόγραμμα εκπαίδευσης τεχνιτών, επενδύοντας στην επόμενη γενιά.</span><span data-lang-en>We launch our own technician training programme, investing in the next generation.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2026</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Σήμερα</span><span data-lang-en>Today</span></h3>
-              <p><span data-lang-el>900+ επαγγελματίες, 38 οχήματα, 7 καταστήματα — ένα σταθερό όνομα σε όλη την Ελλάδα.</span><span data-lang-en>900+ professionals, 38 vehicles, 7 branches — one trusted name across Greece.</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <a class="btn" href="#booking" data-i18n="nav.book">Κλείστε ραντεβού</a>
 
-    <div class="stats" data-reveal-group data-reveal>
-      <div class="stats__bg" aria-hidden="true">
-        <img class="stats__bg-photo" src="assets/img/stats-plumber.jpg" alt="">
-        <div class="stats__bg-overlay"></div>
-      </div>
-      <div class="stat" data-reveal style="--i:0"><div class="stat__num" data-count="2007" data-no-group="true">0</div><div class="stat__label"><span data-lang-el>Έτος Ίδρυσης</span><span data-lang-en>Founded</span></div></div>
-      <div class="stat" data-reveal style="--i:1"><div class="stat__num" data-count="50000" data-suffix="+">0</div><div class="stat__label"><span data-lang-el>Ολοκληρωμένες Επισκευές</span><span data-lang-en>Completed Repairs</span></div></div>
-      <div class="stat" data-reveal style="--i:2"><div class="stat__num" data-count="98" data-suffix="%">0</div><div class="stat__label"><span data-lang-el>Ικανοποίηση Πελατών</span><span data-lang-en>Customer Satisfaction</span></div></div>
-      <div class="stat" data-reveal style="--i:3"><div class="stat__num" data-count="45" data-suffix="′">0</div><div class="stat__label"><span data-lang-el>Μ.Ο. Χρόνου Άφιξης</span><span data-lang-en>Avg. Response Time</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SERVICES ============ -->
-<section class="section section-alt" id="services">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Τι Κάνουμε</span><span data-lang-en>What We Do</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Υπηρεσίες για κάθε υδραυλική ανάγκη</span><span data-lang-en>Services for every plumbing need</span></h2>
-    <p class="lede center" style="margin-top:14px">
-      <span data-lang-el>Από ένα σταλάζον βρυσάκι μέχρι πλήρη ανακαίνιση δικτύου — το κατάλληλο συνεργείο φτάνει με τον κατάλληλο εξοπλισμό, την πρώτη φορά.</span>
-      <span data-lang-en>From a dripping tap to a full network overhaul — the right crew arrives with the right equipment, the first time.</span>
-    </p>
-    <div class="services-grid" id="servicesGrid" data-reveal-group></div>
-  </div>
-</section>
-
-<!-- ============ USP ============ -->
-<section class="section">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Γιατί HydroCore</span><span data-lang-en>Why HydroCore</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Το μέγεθος ενός δικτύου, η φροντίδα μιας γειτονιάς</span><span data-lang-en>The reach of a network, the care of a neighbourhood shop</span></h2>
-    <div class="usp-grid" data-reveal-group>
-      <div class="usp" data-reveal style="--i:0">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
-        <h3><span data-lang-el>Πιστοποιημένοι Τεχνικοί</span><span data-lang-en>Certified Technicians</span></h3>
-        <p><span data-lang-el>Όλοι οι τεχνικοί μας είναι αδειοδοτημένοι και εκπαιδευμένοι στο HydroCore Academy, σύμφωνα με το ευρωπαϊκό πρότυπο EN 806.</span><span data-lang-en>Every technician is licensed and trained through HydroCore Academy, to the EN 806 European standard.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:1">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        <h3><span data-lang-el>Απόκριση σε &lt;45 λεπτά</span><span data-lang-en>Under 45-Minute Response</span></h3>
-        <p><span data-lang-el>Μέσος χρόνος άφιξης σε αστικά κέντρα για επείγοντα περιστατικά, χάρη στα 38 οχήματα του στόλου μας.</span><span data-lang-en>Average arrival time in city centres for emergency callouts, backed by our 38-vehicle fleet.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:2">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 6 4 9.5 9 10 5-.5 9-4 9-10V6l-9-4Z"/><path d="M9 12h6M12 9v6"/></svg>
-        <h3><span data-lang-el>Εγγύηση 2 Ετών</span><span data-lang-en>2-Year Guarantee</span></h3>
-        <p><span data-lang-el>Κάθε επισκευή και εγκατάσταση συνοδεύεται από γραπτή εγγύηση εργασίας.</span><span data-lang-en>Every repair and installation comes with a written workmanship guarantee.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:3">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4-3-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-3 8-7 11Z"/><path d="M9 10c1 2 2 3 3 3"/></svg>
-        <h3><span data-lang-el>Υπεύθυνη Χρήση Νερού</span><span data-lang-en>Responsible Water Use</span></h3>
-        <p><span data-lang-el>Το πρόγραμμα «HydroCore Blue» προσφέρει δωρεάν ελέγχους διαρροών σε σχολεία και ευπαθείς ομάδες.</span><span data-lang-en>Our "HydroCore Blue" programme offers free leak checks to local schools and vulnerable households.</span></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ LOCATIONS ============ -->
-<section class="section section-alt" id="locations">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Το Δίκτυό μας</span><span data-lang-en>Our Network</span></p>
-    <h2 class="h-lg center"><span data-lang-el>7 καταστήματα, 4 περιοχές, μία υπόσχεση</span><span data-lang-en>7 branches, 4 regions, one promise</span></h2>
-
-    <div class="locations">
-      <div data-reveal="fade">
-        <div class="location-switcher" id="locationSwitcher">
-          <div class="location-switcher__bg" id="locationSwitcherBg" aria-hidden="true"></div>
-          <div class="location-switcher__overlay" aria-hidden="true"></div>
-          <div class="location-switcher__list" id="locationSwitcherList"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TESTIMONIALS ============ -->
-<section class="section">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Μαρτυρίες</span><span data-lang-en>Testimonials</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Τι λένε οι πελάτες μας</span><span data-lang-en>What our customers say</span></h2>
-
-    <div class="testi-cta">
-      <button type="button" class="btn btn-ghost btn-sm" id="openReviewModal">
-        <span data-lang-el>Γράψτε μια Κριτική</span><span data-lang-en>Write a Review</span>
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="drawer"
+              data-i18n-attr="aria-label:nav.openMenu" aria-label="Άνοιγμα μενού">
+        <span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
       </button>
     </div>
+  </div>
+</header>
 
-    <div class="testi-track-wrap">
-      <div class="testi-track" id="testiTrack">
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Μας έσωσαν κυριολεκτικά τη νύχτα που έσπασε ο σωλήνας. Ήρθαν σε 25 λεπτά.»</span><span data-lang-en>"They saved us, literally, the night a pipe burst. Arrived in 25 minutes."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΕΠ</div>
-            <div><strong>Ελένη Παπαδοπούλου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Επαγγελματισμός σπάνιος. Άλλαξαν όλη την εγκατάσταση στο διαμέρισμα χωρίς καμία βρωμιά.»</span><span data-lang-en>"Rare professionalism. Re-piped the whole apartment without any mess."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΓΑ</div>
-            <div><strong>Γιώργος Αντωνίου</strong><span data-lang-el>Αθήνα</span><span data-lang-en>Athens</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Το ραντεβού online ήταν παιχνιδάκι, ήρθαν ακριβώς στην ώρα τους.»</span><span data-lang-en>"Booking online was effortless — they showed up exactly on time."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΜΚ</div>
-            <div><strong>Μαρία Κωνσταντίνου</strong><span data-lang-el>Πάτρα</span><span data-lang-en>Patra</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Ο έξυπνος αισθητήρας διαρροής που εγκατέστησαν μας γλίτωσε από σίγουρη ζημιά.»</span><span data-lang-en>"The smart leak sensor they installed saved us from certain damage."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΝΧ</div>
-            <div><strong>Νίκος Χατζής</strong><span data-lang-el>Ηράκλειο</span><span data-lang-en>Heraklion</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«18 χρόνια εμπιστοσύνης. Δεν πάω πουθενά αλλού.»</span><span data-lang-en>"18 years of trust. I wouldn't go anywhere else."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΣΔ</div>
-            <div><strong>Σοφία Δημητρίου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
-          </div>
-        </article>
+<!-- Mobile drawer: a real full-screen menu, not a squeezed desktop nav -->
+<div class="drawer" id="drawer" hidden>
+  <nav class="drawer__nav" aria-label="Κύρια πλοήγηση" data-i18n-attr="aria-label:nav.menu">
+    <a class="drawer__link" href="#story"><span data-i18n="nav.story">Η ιστορία μας</span><svg width="20" height="20" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="drawer__link" href="#services"><span data-i18n="nav.services">Υπηρεσίες</span><svg width="20" height="20" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="drawer__link" href="#booking"><span data-i18n="nav.booking">Ραντεβού</span><svg width="20" height="20" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="drawer__link" href="#findus"><span data-i18n="nav.findus">Πού είμαστε</span><svg width="20" height="20" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+    <a class="drawer__link" href="#contact"><span data-i18n="nav.contact">Επικοινωνία</span><svg width="20" height="20" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+  </nav>
+  <div class="drawer__foot">
+    <div class="drawer__contact">
+      <a href="tel:+302616007142">2616 007142</a>
+      <a href="tel:+306972701536">6972 701536</a>
+      <a href="mailto:info@vet-care.gr">info@vet-care.gr</a>
+    </div>
+    <div class="lang" role="group" aria-label="Επιλογή γλώσσας" data-i18n-attr="aria-label:lang.aria">
+      <button type="button" class="lang__btn" data-lang-set="el" aria-pressed="true" lang="el">ΕΛ</button>
+      <button type="button" class="lang__btn" data-lang-set="en" aria-pressed="false" lang="en">EN</button>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow" data-reveal data-i18n="hero.eyebrow">Οβρυά · Πάτρα</span>
+      <h1 class="hero__title" id="hero-title" data-reveal style="--reveal-delay:60ms"
+          data-i18n-html="hero.title">Φροντίδα για κάθε ζώο,<br><em class="accent-italic">μικρό ή μεγάλο</em></h1>
+      <p class="lede hero__lede" data-reveal style="--reveal-delay:140ms" data-i18n="hero.lede">
+        Το Κτηνιατρικό Κέντρο Vet Care στην Οβρυά προσφέρει ολοκληρωμένη φροντίδα για ζώα συντροφιάς και παραγωγικά ζώα — από την καθημερινή πρόληψη μέχρι τη διάγνωση και τη χειρουργική.
+      </p>
+
+      <div class="hero__ctas" data-reveal style="--reveal-delay:220ms">
+        <a class="btn" href="#booking">
+          <svg width="19" height="19" aria-hidden="true"><use href="#i-calendar"/></svg>
+          <span data-i18n="hero.ctaBook">Κλείστε ραντεβού</span>
+        </a>
+        <a class="btn btn--ghost" href="tel:+302616007142">
+          <svg width="19" height="19" aria-hidden="true"><use href="#i-phone"/></svg>
+          <span data-i18n="hero.ctaCall">Καλέστε 2616 007142</span>
+        </a>
+      </div>
+
+      <div class="hero__facts" data-reveal style="--reveal-delay:300ms">
+        <!-- Live open/closed state, computed in Europe/Athens from the real hours -->
+        <span class="chip" id="status-chip" data-status-chip>
+          <span class="chip__dot" aria-hidden="true"></span>
+          <span data-status-text data-i18n="status.checking">Ωράριο λειτουργίας</span>
+        </span>
+        <span class="chip">
+          <svg width="15" height="15" aria-hidden="true" style="color:var(--sage-500)"><use href="#i-pin"/></svg>
+          <span data-i18n="hero.addressChip">Δημοκρατίας 149, Οβρυά</span>
+        </span>
+      </div>
+
+      <a class="hero__scroll" href="#story">
+        <span data-i18n="hero.scroll">Δείτε περισσότερα</span>
+        <svg aria-hidden="true"><use href="#i-chevron-down"/></svg>
+      </a>
+    </div>
+
+    <div class="hero__visual" data-reveal="scale" style="--reveal-delay:180ms">
+      <!-- TODO (client): replace with a real photo of the clinic or the team.
+           Keep the .arch wrapper — it does the framing and the 5:6 crop. -->
+      <div class="arch hero__arch">
+        <img src="assets/img/hero-art.svg" width="800" height="960" decoding="async"
+             alt="Εικονογράφηση: σκύλος και γάτα σε λόφο της αχαϊκής υπαίθρου, με αγρόκτημα και πρόβατα στο βάθος"
+             data-i18n-attr="alt:hero.artAlt">
+      </div>
+
+      <div class="hero__badges">
+        <div class="hero__badge hero__badge--rating">
+        <span class="stars" aria-hidden="true">
+          <svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg>
+        </span>
+        <strong><span data-i18n-attr="aria-label:hero.ratingAria" aria-label="Βαθμολογία 4,7 στα 5 από 46 κριτικές Google">4,7 / 5</span></strong>
+        <span>46 <span data-i18n="hero.ratingLabel">κριτικές στο Google</span></span>
+      </div>
+
+      <div class="hero__badge hero__badge--hours">
+        <span data-i18n="hero.hoursLabel">Δευτέρα – Παρασκευή</span>
+        <strong data-i18n="hero.hoursValue">09:00–14:00 &amp; 18:00–21:00</strong>
+      </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ WRITE A REVIEW MODAL ============ -->
-<div class="review-modal-overlay" id="reviewModalOverlay"></div>
-<div class="review-modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
-  <div class="review-modal__head">
-    <h3 id="reviewModalTitle" class="h-md"><span data-lang-el>Γράψτε μια κριτική</span><span data-lang-en>Write a review</span></h3>
-    <button class="cookie-modal__close" id="reviewModalClose" type="button" aria-label="Close">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-  <form id="reviewForm" novalidate>
-    <div class="field">
-      <label for="reviewName"><span data-lang-el>Το όνομά σας</span><span data-lang-en>Your name</span></label>
-      <input type="text" id="reviewName" autocomplete="name" required>
-      <span class="field__error"><span data-lang-el>Συμπληρώστε το όνομά σας</span><span data-lang-en>Please enter your name</span></span>
-    </div>
-    <div class="field">
-      <label><span data-lang-el>Βαθμολογία</span><span data-lang-en>Rating</span></label>
-      <div class="star-picker" id="starPicker" role="radiogroup" aria-label="Rating">
-        <button type="button" class="star-picker__star" data-value="1" aria-label="1 star">★</button>
-        <button type="button" class="star-picker__star" data-value="2" aria-label="2 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="3" aria-label="3 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="4" aria-label="4 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="5" aria-label="5 stars">★</button>
+<!-- ============================ STORY ============================ -->
+<section class="section section--bone" id="story" aria-labelledby="story-title">
+  <div class="container story__inner">
+    <div class="story__visual" data-reveal="left">
+      <!-- TODO (client): a real photograph of the two veterinarians belongs here. -->
+      <div class="arch story__arch">
+        <img src="assets/img/story-art.svg" width="800" height="1000" loading="lazy" decoding="async"
+             alt="Διακοσμητικό μοτίβο με πατημασιές, οπλές, κλαδιά ελιάς και στηθοσκόπιο"
+             data-i18n-attr="alt:story.artAlt">
       </div>
-      <span class="field__error"><span data-lang-el>Επιλέξτε βαθμολογία</span><span data-lang-en>Please pick a rating</span></span>
+      <figure class="story__signature">
+        <p>
+          <strong data-i18n="story.signature.text">Ελένη Φωτοπούλου &amp; Γεώργιος Μαντζούνης</strong>
+          <span data-i18n="story.signature.role">Κτηνίατροι, Vet Care</span>
+        </p>
+      </figure>
     </div>
-    <div class="field">
-      <label for="reviewText"><span data-lang-el>Η κριτική σας</span><span data-lang-en>Your review</span></label>
-      <textarea id="reviewText" required></textarea>
-      <span class="field__error"><span data-lang-el>Γράψτε λίγα λόγια για την εμπειρία σας</span><span data-lang-en>Tell us a little about your experience</span></span>
-    </div>
-    <div class="review-modal__actions">
-      <button type="button" class="btn btn-ghost" id="reviewCancel"><span data-lang-el>Άκυρο</span><span data-lang-en>Cancel</span></button>
-      <button type="submit" class="btn btn-primary"><span data-lang-el>Υποβολή</span><span data-lang-en>Submit</span></button>
-    </div>
-  </form>
-</div>
 
-<!-- ============ THANK YOU / CONFETTI ============ -->
-<div class="thanks-overlay" id="thanksOverlay">
-  <canvas class="thanks-overlay__canvas" id="confettiCanvas"></canvas>
-  <div class="thanks-panel">
-    <div class="success-panel__icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+    <div class="story__copy">
+      <span class="eyebrow" data-reveal data-i18n="story.eyebrow">Η ιστορία μας</span>
+      <h2 id="story-title" data-reveal style="--reveal-delay:60ms" data-i18n-html="story.title">Δύο κτηνίατροι, μία <em class="accent-italic">κοινή φιλοσοφία</em></h2>
+      <p class="lede" data-reveal style="--reveal-delay:120ms" data-i18n-html="story.p1"></p>
+      <p data-reveal style="--reveal-delay:160ms" data-i18n-html="story.p2"></p>
+
+      <ul class="pillars">
+        <li class="pillar" data-reveal style="--reveal-delay:200ms">
+          <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-clock"/></svg></span>
+          <div>
+            <h3 data-i18n="story.pillar1.title">Χρόνος για κάθε περιστατικό</h3>
+            <p data-i18n="story.pillar1.text"></p>
+          </div>
+        </li>
+        <li class="pillar" data-reveal style="--reveal-delay:260ms">
+          <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+          <div>
+            <h3 data-i18n="story.pillar2.title">Πρόληψη πριν από τη θεραπεία</h3>
+            <p data-i18n="story.pillar2.text"></p>
+          </div>
+        </li>
+        <li class="pillar" data-reveal style="--reveal-delay:320ms">
+          <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-barn"/></svg></span>
+          <div>
+            <h3 data-i18n="story.pillar3.title">Από το σπίτι ως τον στάβλο</h3>
+            <p data-i18n="story.pillar3.text"></p>
+          </div>
+        </li>
+      </ul>
     </div>
-    <h3 class="h-md"><span data-lang-el>Ευχαριστούμε!</span><span data-lang-en>Thank you!</span></h3>
-    <p><span data-lang-el>Η κριτική σας προστέθηκε με επιτυχία.</span><span data-lang-en>Your review was added successfully.</span></p>
   </div>
-</div>
+</section>
 
-<!-- ============ CTA BANNER ============ -->
-<section class="section" style="padding-top:0">
+<!-- ============================ SERVICES ============================ -->
+<section class="section" id="services" aria-labelledby="services-title">
   <div class="container">
-    <div class="cta-banner" data-reveal="scale">
-      <div class="cta-banner__bg" aria-hidden="true">
-        <img class="cta-banner__bg-photo" src="assets/img/cta-receptionist.jpg" alt="">
-        <div class="cta-banner__bg-overlay"></div>
+    <div class="section__head section__head--center">
+      <span class="eyebrow eyebrow--center" data-reveal data-i18n="services.eyebrow">Υπηρεσίες</span>
+      <h2 id="services-title" data-reveal style="--reveal-delay:60ms" data-i18n-html="services.title">Ό,τι χρειάζεται, <em class="accent-italic">κάτω από μία στέγη</em></h2>
+      <p class="lede" data-reveal style="--reveal-delay:120ms" data-i18n="services.lede"></p>
+    </div>
+
+    <!-- Companion animals -->
+    <div class="svc-group">
+      <div class="svc-group__head" data-reveal>
+        <h3 data-i18n="services.small.title">Ζώα συντροφιάς</h3>
+        <span class="rule" aria-hidden="true"><i class="rule__mark"></i></span>
+        <span class="svc-group__count" data-i18n="services.small.count">5 τμήματα</span>
       </div>
-      <div>
-        <h2 class="h-md"><span data-lang-el>Χρειάζεστε άμεση βοήθεια;</span><span data-lang-en>Need help right now?</span></h2>
-        <p><span data-lang-el>Το κοντινότερο συνεργείο μας είναι μόλις λεπτά μακριά, 24 ώρες το 24ωρο.</span><span data-lang-en>Our nearest crew is just minutes away, 24 hours a day.</span></p>
+      <div class="svc-grid svc-grid--5">
+        <article class="svc-card" data-reveal style="--reveal-delay:60ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-stethoscope"/></svg></span>
+          <h4 data-i18n="svc.internal.title">Παθολογικό</h4>
+          <p data-i18n="svc.internal.text"></p>
+        </article>
+        <article class="svc-card" data-reveal style="--reveal-delay:110ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-scan"/></svg></span>
+          <h4 data-i18n="svc.radiology.title">Ακτινολογικό</h4>
+          <p data-i18n="svc.radiology.text"></p>
+        </article>
+        <article class="svc-card" data-reveal style="--reveal-delay:160ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-microscope"/></svg></span>
+          <h4 data-i18n="svc.lab.title">Μικροβιολογικό</h4>
+          <p data-i18n="svc.lab.text"></p>
+        </article>
+        <article class="svc-card" data-reveal style="--reveal-delay:210ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-scalpel"/></svg></span>
+          <h4 data-i18n="svc.surgery.title">Χειρουργικό</h4>
+          <p data-i18n="svc.surgery.text"></p>
+        </article>
+        <article class="svc-card" data-reveal style="--reveal-delay:260ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-tooth"/></svg></span>
+          <h4 data-i18n="svc.dental.title">Οδοντιατρικό</h4>
+          <p data-i18n="svc.dental.text"></p>
+        </article>
       </div>
-      <div class="cta-banner__actions">
-        <a href="tel:+308007008000" class="btn btn-white">
-          <span data-lang-el>Καλέστε 800 700 8000</span><span data-lang-en>Call 800 700 8000</span>
-        </a>
-        <a href="booking.html" class="btn btn-light"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Online</span></a>
+    </div>
+
+    <!-- Farm animals -->
+    <div class="svc-group">
+      <div class="svc-group__head" data-reveal>
+        <h3 data-i18n="services.farm.title">Παραγωγικά ζώα</h3>
+        <span class="rule" aria-hidden="true"><i class="rule__mark"></i></span>
+        <span class="svc-group__count" data-i18n="services.farm.count">4 υπηρεσίες</span>
+      </div>
+      <div class="svc-grid svc-grid--4">
+        <article class="svc-card" data-reveal style="--reveal-delay:60ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-barn"/></svg></span>
+          <h4 data-i18n="svc.herd.title">Διαχείριση εκτροφής</h4>
+          <p data-i18n="svc.herd.text"></p>
+        </article>
+        <article class="svc-card" data-reveal style="--reveal-delay:110ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-cycle"/></svg></span>
+          <h4 data-i18n="svc.repro.title">Αναπαραγωγική διαχείριση</h4>
+          <p data-i18n="svc.repro.text"></p>
+        </article>
+        <article class="svc-card" data-reveal style="--reveal-delay:160ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-shield"/></svg></span>
+          <h4 data-i18n="svc.prevention.title">Προληπτική κτηνιατρική</h4>
+          <p data-i18n="svc.prevention.text"></p>
+        </article>
+        <article class="svc-card" data-reveal style="--reveal-delay:210ms">
+          <span class="svc-card__icon" aria-hidden="true"><svg><use href="#i-wheat"/></svg></span>
+          <h4 data-i18n="svc.advice.title">Ζωοτεχνικές συμβουλές</h4>
+          <p data-i18n="svc.advice.text"></p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Pharmacy + routine services.
+         TODO (client): confirm every line below is genuinely offered and delete
+         any that is not — these are standard clinic services, not verified ones. -->
+    <div class="svc-extra" data-reveal>
+      <h3 data-i18n="services.extra.title">Κτηνιατρικά φάρμακα &amp; καθημερινές υπηρεσίες</h3>
+      <p data-i18n="services.extra.text"></p>
+      <ul class="svc-extra__list">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="services.extra.1"></span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="services.extra.2"></span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="services.extra.3"></span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="services.extra.4"></span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="services.extra.5"></span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="services.extra.6"></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BOOKING ============================ -->
+<section class="section section--bone" id="booking" aria-labelledby="booking-title">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow" data-reveal data-i18n="booking.eyebrow">Ραντεβού</span>
+      <h2 id="booking-title" data-reveal style="--reveal-delay:60ms" data-i18n-html="booking.title">Ζητήστε ραντεβού <em class="accent-italic">online</em></h2>
+    </div>
+
+    <div class="booking__inner">
+      <aside class="booking__aside" data-reveal="left">
+        <h3 data-i18n="booking.aside.title">Πώς λειτουργεί</h3>
+        <p data-i18n-html="booking.aside.text"></p>
+        <ol class="booking__steps">
+          <li>
+            <span aria-hidden="true">1</span>
+            <div><strong data-i18n="booking.step1.title"></strong><p data-i18n="booking.step1.text"></p></div>
+          </li>
+          <li>
+            <span aria-hidden="true">2</span>
+            <div><strong data-i18n="booking.step2.title"></strong><p data-i18n="booking.step2.text"></p></div>
+          </li>
+          <li>
+            <span aria-hidden="true">3</span>
+            <div><strong data-i18n="booking.step3.title"></strong><p data-i18n="booking.step3.text"></p></div>
+          </li>
+        </ol>
+        <div class="booking__call">
+          <p><strong style="color:var(--white)" data-i18n="booking.urgent.title">Είναι επείγον;</strong>
+             <span data-i18n="booking.urgent.text"></span></p>
+          <a class="btn btn--light" href="tel:+306972701536">
+            <svg width="19" height="19" aria-hidden="true"><use href="#i-mobile"/></svg>
+            <span data-i18n="booking.urgent.cta">Κλήση 6972 701536</span>
+          </a>
+        </div>
+      </aside>
+
+      <div class="booking__form-wrap" data-reveal="right">
+        <!-- The form posts to js/booking.js. With no endpoint configured it
+             falls back to a pre-filled mailto: so the site is never broken. -->
+        <form class="form-grid" id="booking-form" novalidate>
+          <div class="field">
+            <label for="bf-name" data-i18n="booking.name">Ονοματεπώνυμο</label>
+            <input type="text" id="bf-name" name="name" autocomplete="name" required
+                   data-i18n-attr="placeholder:booking.namePh" aria-describedby="bf-name-err">
+            <p class="field__error" id="bf-name-err" data-i18n="booking.err.required"></p>
+          </div>
+
+          <div class="field">
+            <label for="bf-phone" data-i18n="booking.phone">Τηλέφωνο</label>
+            <input type="tel" id="bf-phone" name="phone" autocomplete="tel" inputmode="tel" required
+                   data-i18n-attr="placeholder:booking.phonePh" aria-describedby="bf-phone-err">
+            <p class="field__error" id="bf-phone-err" data-i18n="booking.err.phone"></p>
+          </div>
+
+          <div class="field">
+            <label for="bf-email">
+              <span data-i18n="booking.email">Email</span>
+              <span class="opt" data-i18n="booking.emailOpt">(προαιρετικό)</span>
+            </label>
+            <input type="email" id="bf-email" name="email" autocomplete="email"
+                   data-i18n-attr="placeholder:booking.emailPh" aria-describedby="bf-email-err">
+            <p class="field__error" id="bf-email-err" data-i18n="booking.err.email"></p>
+          </div>
+
+          <div class="field">
+            <label for="bf-animal" data-i18n="booking.animal">Είδος ζώου</label>
+            <select id="bf-animal" name="animal" required aria-describedby="bf-animal-err">
+              <option value="" data-i18n="booking.animal.choose">Επιλέξτε…</option>
+              <option value="dog" data-i18n="booking.animal.dog">Σκύλος</option>
+              <option value="cat" data-i18n="booking.animal.cat">Γάτα</option>
+              <option value="small-pet" data-i18n="booking.animal.smallPet">Άλλο ζώο συντροφιάς</option>
+              <option value="farm" data-i18n="booking.animal.farm">Παραγωγικά ζώα / εκτροφή</option>
+              <option value="other" data-i18n="booking.animal.other">Άλλο</option>
+            </select>
+            <p class="field__error" id="bf-animal-err" data-i18n="booking.err.required"></p>
+          </div>
+
+          <div class="field">
+            <label for="bf-date" data-i18n="booking.date">Προτιμώμενη ημερομηνία</label>
+            <input type="date" id="bf-date" name="date" aria-describedby="bf-date-err">
+            <p class="field__error" id="bf-date-err" data-i18n="booking.err.date"></p>
+          </div>
+
+          <div class="field">
+            <label for="bf-slot" data-i18n="booking.slot">Προτιμώμενη ώρα</label>
+            <select id="bf-slot" name="slot">
+              <option value="any" data-i18n="booking.slot.any">Ό,τι είναι διαθέσιμο</option>
+              <option value="morning" data-i18n="booking.slot.morning">Πρωί (09:00–14:00)</option>
+              <option value="evening" data-i18n="booking.slot.evening">Απόγευμα (18:00–21:00)</option>
+            </select>
+          </div>
+
+          <div class="field field--full">
+            <label for="bf-message">
+              <span data-i18n="booking.message">Λόγος επίσκεψης</span>
+              <span class="opt" data-i18n="booking.messageOpt">(προαιρετικό)</span>
+            </label>
+            <textarea id="bf-message" name="message" rows="4" maxlength="800"
+                      data-i18n-attr="placeholder:booking.messagePh"></textarea>
+          </div>
+
+          <!-- Spam trap. Hidden from sight and from assistive technology; a
+               filled value simply makes the submit a no-op. -->
+          <div class="hp" aria-hidden="true">
+            <label for="bf-website">Website</label>
+            <input type="text" id="bf-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <!-- GDPR consent. Never pre-ticked; submit is disabled until ticked. -->
+          <div class="consent">
+            <input type="checkbox" id="bf-consent" name="consent" required aria-describedby="bf-consent-err">
+            <label for="bf-consent" data-i18n-html="booking.consent"></label>
+            <p class="field__error" id="bf-consent-err" style="grid-column:1/-1" data-i18n="booking.err.consent"></p>
+          </div>
+
+          <div class="form-status" id="bf-status" role="status" aria-live="polite">
+            <svg aria-hidden="true"><use href="#i-info"/></svg>
+            <span id="bf-status-text"></span>
+          </div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn" id="bf-submit" disabled aria-disabled="true">
+              <svg width="19" height="19" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+              <span data-i18n="booking.submit">Αποστολή αιτήματος</span>
+            </button>
+            <p class="form-note" data-i18n="booking.note"></p>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </section>
 
-</main>
-
-<!-- ============ FOOTER ============ -->
-<footer class="site-footer" id="footer">
+<!-- ============================ FIND US ============================ -->
+<section class="section" id="findus" aria-labelledby="findus-title">
   <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="footer-logo">
-          <svg width="30" height="30" viewBox="0 0 100 100"><path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#7CB9E8"/><circle cx="50" cy="68" r="17" fill="none" stroke="#001240" stroke-width="6"/><path d="M50 51 L50 42" stroke="#001240" stroke-width="6" stroke-linecap="round"/></svg>
-          HydroCore
+    <div class="section__head">
+      <span class="eyebrow" data-reveal data-i18n="findus.eyebrow">Πού είμαστε</span>
+      <h2 id="findus-title" data-reveal style="--reveal-delay:60ms" data-i18n-html="findus.title">Στην Οβρυά, <em class="accent-italic">λίγο έξω από την Πάτρα</em></h2>
+      <p class="lede" data-reveal style="--reveal-delay:120ms" data-i18n="findus.lede"></p>
+    </div>
+
+    <div class="findus__inner">
+      <!-- A hand-drawn schematic in the site's own palette, NOT a Google Maps
+           iframe: an iframe would contact Google and set cookies on load,
+           before the visitor has consented to anything. Tapping it opens the
+           real Maps directions in a new tab, which is a deliberate action. -->
+      <a class="map-card" data-reveal="left"
+         href="https://www.google.com/maps/dir/?api=1&amp;destination=38.1918279,21.7323388"
+         target="_blank" rel="noopener noreferrer"
+         data-i18n-attr="aria-label:findus.mapAria"
+         aria-label="Άνοιγμα οδηγιών πλοήγησης προς το Vet Care στους Χάρτες Google, σε νέα καρτέλα">
+        <svg viewBox="0 0 800 520" role="img" aria-hidden="true" focusable="false">
+          <rect width="800" height="520" fill="#e7ddc8"/>
+          <!-- green space -->
+          <path d="M556 372c58-26 128-18 176 16v132H520c-14-52-6-118 36-148z" fill="#cfdcc9"/>
+          <path d="M0 0h236c26 42 22 84-10 112C186 146 96 150 0 130z" fill="#cfdcc9"/>
+          <!-- blocks -->
+          <g fill="#d7cbaf">
+            <rect x="60" y="196" width="150" height="86" rx="8"/>
+            <rect x="238" y="176" width="112" height="72" rx="8"/>
+            <rect x="380" y="150" width="126" height="70" rx="8"/>
+            <rect x="540" y="120" width="150" height="80" rx="8"/>
+            <rect x="96" y="360" width="128" height="90" rx="8"/>
+            <rect x="256" y="344" width="140" height="96" rx="8"/>
+            <rect x="428" y="330" width="86" height="72" rx="8"/>
+          </g>
+          <!-- roads: casing then fill, the way real map tiles are drawn -->
+          <g stroke-linecap="round">
+            <path d="M-20 424 820 164" stroke="#cfc2a4" stroke-width="48" fill="none"/>
+            <path d="M-20 424 820 164" stroke="#f8f3e8" stroke-width="38" fill="none"/>
+            <path d="M262 -20 316 540" stroke="#cfc2a4" stroke-width="26" fill="none"/>
+            <path d="M262 -20 316 540" stroke="#f8f3e8" stroke-width="18" fill="none"/>
+            <path d="M540 -20 574 540" stroke="#cfc2a4" stroke-width="26" fill="none"/>
+            <path d="M540 -20 574 540" stroke="#f8f3e8" stroke-width="18" fill="none"/>
+            <path d="M-20 246 300 158" stroke="#cfc2a4" stroke-width="22" fill="none"/>
+            <path d="M-20 246 300 158" stroke="#f8f3e8" stroke-width="15" fill="none"/>
+          </g>
+          <path d="M-20 424 820 164" stroke="#e0d3b6" stroke-width="2" stroke-dasharray="16 14" fill="none"/>
+
+          <!-- labels -->
+          <text x="86" y="404" transform="rotate(-17.2 86 404)" fill="#95886c"
+                font-family="Alegreya Sans, sans-serif" font-size="21" letter-spacing="3.4"
+                data-i18n="map.street">ΔΗΜΟΚΡΑΤΙΑΣ</text>
+          <text x="612" y="470" fill="#8fa38d" font-family="Alegreya Sans, sans-serif"
+                font-size="24" letter-spacing="5" data-i18n="map.area">ΟΒΡΥΑ</text>
+
+          <!-- compass -->
+          <g transform="translate(738 62)">
+            <circle r="26" fill="#fbf7ef" opacity="0.9"/>
+            <text y="-6" text-anchor="middle" fill="#4a5350" font-family="Alegreya Sans, sans-serif"
+                  font-size="14" font-weight="700" data-i18n="map.north">Β</text>
+            <path d="M0 2 6 17 0 13-6 17z" fill="#a9502f"/>
+          </g>
+
+          <!-- the clinic -->
+          <g transform="translate(400 272)">
+            <circle class="map-pin-pulse" r="16" fill="#a9502f" opacity="0.32"/>
+            <path d="M0-42c-13 0-23 10-23 23C-23-4 0 20 0 20s23-24 23-39c0-13-10-23-23-23z" fill="#a9502f"/>
+            <circle cy="-19" r="8.5" fill="#fbf7ef"/>
+          </g>
+        </svg>
+
+        <span class="map-card__overlay">
+          <span>
+            <strong data-i18n="findus.mapLabel">Vet Care</strong>
+            <span data-i18n="findus.mapSub">Δημοκρατίας 149, Οβρυά 263 34</span>
+          </span>
+          <span class="map-card__go">
+            <span data-i18n="findus.mapGo">Οδηγίες</span>
+            <svg aria-hidden="true"><use href="#i-arrow-ne"/></svg>
+          </span>
+        </span>
+      </a>
+
+      <div class="findus__details" data-reveal="right">
+        <ul class="directions">
+          <li>
+            <svg aria-hidden="true"><use href="#i-pin"/></svg>
+            <div>
+              <strong data-i18n="findus.address.title">Διεύθυνση</strong>
+              <span data-i18n="findus.address.text"></span>
+            </div>
+          </li>
+          <li>
+            <svg aria-hidden="true"><use href="#i-arrow-ne"/></svg>
+            <div>
+              <strong data-i18n="findus.nav.title">Πλοήγηση</strong>
+              <span data-i18n="findus.nav.text"></span>
+            </div>
+          </li>
+          <li>
+            <svg aria-hidden="true"><use href="#i-clock"/></svg>
+            <div>
+              <strong data-i18n="findus.hours.title">Ώρες επίσκεψης</strong>
+              <span data-i18n="findus.hours.text"></span>
+            </div>
+          </li>
+        </ul>
+        <!-- TODO (client): add a parking note here once confirmed, e.g.
+             "Ελεύθερη στάθμευση μπροστά από το ιατρείο". Left out on purpose
+             rather than guessed. -->
+        <a class="btn btn--forest" href="https://www.google.com/maps/dir/?api=1&amp;destination=38.1918279,21.7323388"
+           target="_blank" rel="noopener noreferrer">
+          <svg width="19" height="19" aria-hidden="true"><use href="#i-pin"/></svg>
+          <span data-i18n="findus.cta">Άνοιγμα στους Χάρτες Google</span>
         </a>
-        <p><span data-lang-el>Πιστοποιημένες υδραυλικές λύσεις για κατοικίες και επιχειρήσεις σε όλη την Ελλάδα, από το 2007.</span><span data-lang-en>Certified plumbing solutions for homes and businesses across Greece, since 2007.</span></p>
-        <div class="footer-social" aria-hidden="false">
-          <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.87v-7H7.9V12h2.5V9.8c0-2.5 1.49-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.87h-2.33v7A10 10 0 0 0 22 12Z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002ZM7 8.48H3V21h4V8.48ZM13.5 8.48H9.75V21h3.75v-6.4c0-1.7.32-3.35 2.43-3.35 2.08 0 2.1 1.94 2.1 3.46V21H22v-6.9c0-3.53-.76-6.24-4.88-6.24-1.98 0-3.31 1.09-3.85 2.12h-.05V8.48Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTACT ============================ -->
+<section class="section section--bone" id="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="section__head">
+      <span class="eyebrow" data-reveal data-i18n="contact.eyebrow">Επικοινωνία</span>
+      <h2 id="contact-title" data-reveal style="--reveal-delay:60ms" data-i18n-html="contact.title">Μιλήστε <em class="accent-italic">μαζί μας</em></h2>
+      <p class="lede" data-reveal style="--reveal-delay:120ms" data-i18n="contact.lede"></p>
+    </div>
+
+    <div class="contact__inner">
+      <div class="contact-list" data-reveal>
+        <a class="contact-row" href="tel:+302616007142">
+          <span class="contact-row__icon" aria-hidden="true"><svg><use href="#i-phone"/></svg></span>
+          <dl>
+            <dt data-i18n="contact.landline">Σταθερό</dt>
+            <dd>2616 007142</dd>
+          </dl>
+        </a>
+        <a class="contact-row" href="tel:+306972701536">
+          <span class="contact-row__icon" aria-hidden="true"><svg><use href="#i-mobile"/></svg></span>
+          <dl>
+            <dt data-i18n="contact.mobile">Κινητό</dt>
+            <dd>6972 701536</dd>
+          </dl>
+        </a>
+        <a class="contact-row" href="mailto:info@vet-care.gr">
+          <span class="contact-row__icon" aria-hidden="true"><svg><use href="#i-mail"/></svg></span>
+          <dl>
+            <dt data-i18n="contact.email">Email</dt>
+            <dd>info@vet-care.gr</dd>
+          </dl>
+        </a>
+        <div class="contact-row">
+          <span class="contact-row__icon" aria-hidden="true"><svg><use href="#i-pin"/></svg></span>
+          <dl>
+            <dt data-i18n="contact.address">Διεύθυνση</dt>
+            <dd>Δημοκρατίας 149<small data-i18n="contact.addressHint">Οβρυά, Πάτρα, Τ.Κ. 263 34</small></dd>
+          </dl>
         </div>
       </div>
-      <div class="footer-col">
-        <h4><span data-lang-el>Πλοήγηση</span><span data-lang-en>Navigate</span></h4>
+
+      <div class="hours-card" data-reveal style="--reveal-delay:120ms">
+        <h3>
+          <svg aria-hidden="true"><use href="#i-clock"/></svg>
+          <span data-i18n="contact.hours.title">Ωράριο λειτουργίας</span>
+        </h3>
+        <table class="hours" id="hours-table">
+          <caption data-i18n="contact.hours.caption"></caption>
+          <tbody>
+            <tr data-day="1"><th scope="row" data-i18n="day.mon">Δευτέρα</th><td data-i18n="hours.weekday">09:00–14:00 &amp; 18:00–21:00</td></tr>
+            <tr data-day="2"><th scope="row" data-i18n="day.tue">Τρίτη</th><td data-i18n="hours.weekday">09:00–14:00 &amp; 18:00–21:00</td></tr>
+            <tr data-day="3"><th scope="row" data-i18n="day.wed">Τετάρτη</th><td data-i18n="hours.weekday">09:00–14:00 &amp; 18:00–21:00</td></tr>
+            <tr data-day="4"><th scope="row" data-i18n="day.thu">Πέμπτη</th><td data-i18n="hours.weekday">09:00–14:00 &amp; 18:00–21:00</td></tr>
+            <tr data-day="5"><th scope="row" data-i18n="day.fri">Παρασκευή</th><td data-i18n="hours.weekday">09:00–14:00 &amp; 18:00–21:00</td></tr>
+            <tr data-day="6"><th scope="row" data-i18n="day.sat">Σάββατο</th><td class="is-closed" data-i18n="day.closed">Κλειστά</td></tr>
+            <tr data-day="0"><th scope="row" data-i18n="day.sun">Κυριακή</th><td class="is-closed" data-i18n="day.closed">Κλειστά</td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top:1.6rem">
+          <svg aria-hidden="true"><use href="#i-heart"/></svg>
+          <span data-i18n="contact.social.title">Στα κοινωνικά δίκτυα</span>
+        </h3>
+        <p style="font-size:.9rem;color:var(--text-soft)" data-i18n="contact.social.text"></p>
+        <!-- TODO (client): replace href="#" with the real profile URLs, then
+             delete aria-disabled and the inline note above. -->
+        <div class="socials">
+          <a class="icon-btn" href="#" aria-label="Facebook" aria-disabled="true">
+            <svg width="20" height="20" aria-hidden="true"><use href="#i-facebook"/></svg>
+          </a>
+          <a class="icon-btn" href="#" aria-label="Instagram" aria-disabled="true">
+            <svg width="20" height="20" aria-hidden="true"><use href="#i-instagram"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="brand" href="#top" aria-label="Vet Care">
+          <img class="brand__mark" src="assets/img/logo.svg" alt="" width="40" height="40" aria-hidden="true">
+          <span class="brand__text">
+            <span class="brand__name">Vet Care</span>
+            <span class="brand__tag" data-i18n="brand.tagline">Κτηνιατρικό Κέντρο</span>
+          </span>
+        </a>
+        <p data-i18n="footer.about"></p>
+      </div>
+
+      <div>
+        <h3 data-i18n="footer.explore">Πλοήγηση</h3>
         <ul>
-          <li><a href="index.html#about"><span data-lang-el>Σχετικά με εμάς</span><span data-lang-en>About Us</span></a></li>
-          <li><a href="index.html#services"><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a></li>
-          <li><a href="index.html#locations"><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a></li>
-          <li><a href="booking.html"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span></a></li>
+          <li><a href="#story" data-i18n="nav.story">Η ιστορία μας</a></li>
+          <li><a href="#services" data-i18n="nav.services">Υπηρεσίες</a></li>
+          <li><a href="#booking" data-i18n="nav.booking">Ραντεβού</a></li>
+          <li><a href="#findus" data-i18n="nav.findus">Πού είμαστε</a></li>
+          <li><a href="#contact" data-i18n="nav.contact">Επικοινωνία</a></li>
         </ul>
       </div>
-      <div class="footer-col">
-        <h4><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></h4>
-        <ul>
-          <li><a href="booking.html?service=emergency"><span data-lang-el>Επείγουσα Επέμβαση</span><span data-lang-en>Emergency Response</span></a></li>
-          <li><a href="booking.html?service=leak-detection"><span data-lang-el>Εντοπισμός Διαρροών</span><span data-lang-en>Leak Detection</span></a></li>
-          <li><a href="booking.html?service=boilers"><span data-lang-el>Θερμοσίφωνες &amp; Λέβητες</span><span data-lang-en>Boilers &amp; Heaters</span></a></li>
-          <li><a href="booking.html?service=commercial"><span data-lang-el>Επαγγελματικές Εγκαταστάσεις</span><span data-lang-en>Commercial Contracts</span></a></li>
-        </ul>
+
+      <div>
+        <h3 data-i18n="footer.hours">Ωράριο</h3>
+        <dl class="footer__hours">
+          <div><dt data-i18n="footer.weekdays">Δευτ – Παρ</dt><dd>09:00–14:00<br>18:00–21:00</dd></div>
+          <div><dt data-i18n="footer.saturday">Σάββατο</dt><dd data-i18n="day.closed">Κλειστά</dd></div>
+          <div><dt data-i18n="footer.sunday">Κυριακή</dt><dd data-i18n="day.closed">Κλειστά</dd></div>
+        </dl>
       </div>
-      <div class="footer-col">
-        <h4><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></h4>
-        <ul class="footer-contact">
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg> +30 2310 555 100</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg> info@hydrocore.gr</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span data-lang-el>Τσιμισκή 45, Θεσσαλονίκη</span><span data-lang-en>45 Tsimiski St, Thessaloniki</span></li>
+
+      <div>
+        <h3 data-i18n="footer.contact">Επικοινωνία</h3>
+        <ul>
+          <li><a href="tel:+302616007142">2616 007142</a></li>
+          <li><a href="tel:+306972701536">6972 701536</a></li>
+          <li><a href="mailto:info@vet-care.gr">info@vet-care.gr</a></li>
+          <li>Δημοκρατίας 149,<br>Οβρυά 263 34</li>
         </ul>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <span>© <span data-year>2026</span> HydroCore Υδραυλικές Λύσεις Α.Ε. <span data-lang-el>Με επιφύλαξη κάθε νομίμου δικαιώματος.</span><span data-lang-en>All rights reserved.</span></span>
-      <div class="footer-bottom__links">
-        <a href="privacy.html"><span data-lang-el>Πολιτική Απορρήτου</span><span data-lang-en>Privacy Policy</span></a>
-        <a href="terms.html"><span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Service</span></a>
-        <a href="#" data-open-cookie-settings><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></a>
-      </div>
+    <div class="footer__bottom">
+      <p>© <span id="year">2026</span> Vet Care. <span data-i18n="footer.rights">Με επιφύλαξη παντός δικαιώματος.</span></p>
+      <nav class="footer__legal" aria-label="Νομικές πληροφορίες">
+        <a href="privacy.html" data-i18n="footer.privacy">Πολιτική Απορρήτου</a>
+        <a href="cookies.html" data-i18n="footer.cookies">Πολιτική Cookies</a>
+        <button type="button" data-open-prefs data-i18n="footer.cookieSettings">Ρυθμίσεις cookies</button>
+      </nav>
     </div>
-    <p class="footer-legal-line">
-      <span data-lang-el>HydroCore Υδραυλικές Λύσεις Α.Ε. — Έδρα: Τσιμισκή 45, 546 23 Θεσσαλονίκη, Ελλάδα. ΑΦΜ: 099887766, Δ.Ο.Υ. Φ.Α.Ε. Θεσσαλονίκης, Αρ. Γ.Ε.ΜΗ.: 123456701000. Δεδομένα εταιρείας ενδεικτικά, για τους σκοπούς επίδειξης αυτού του website.</span>
-      <span data-lang-en>HydroCore Plumbing Solutions S.A. — Registered office: 45 Tsimiski St, 546 23 Thessaloniki, Greece. Tax ID: 099887766, Companies Registry No.: 123456701000. Company details are illustrative, for the purposes of this demo website.</span>
-    </p>
+    <p style="margin-top:1rem;font-size:.8rem;color:var(--sage-300)" data-i18n="footer.controller"></p>
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/strings.js"></script>
-<script src="js/main.js"></script>
-<script src="js/consent.js"></script>
-<script src="js/story-coverflow.js"></script>
+<!-- Mobile-only thumb bar: the two things a visitor on a phone actually wants -->
+<div class="action-bar">
+  <a class="btn btn--ghost" href="tel:+302616007142">
+    <svg width="18" height="18" aria-hidden="true"><use href="#i-phone"/></svg>
+    <span data-i18n="action.call">Κλήση</span>
+  </a>
+  <a class="btn" href="#booking">
+    <svg width="18" height="18" aria-hidden="true"><use href="#i-calendar"/></svg>
+    <span data-i18n="action.book">Ραντεβού</span>
+  </a>
+</div>
+
+<button type="button" class="to-top" id="to-top" data-i18n-attr="aria-label:toTop" aria-label="Επιστροφή στην κορυφή">
+  <svg aria-hidden="true"><use href="#i-arrow-up"/></svg>
+</button>
+
+<!-- ===================== COOKIE CONSENT ===================== -->
+<div class="cookie" id="cookie-banner" role="dialog" aria-modal="false" aria-labelledby="cookie-title"
+     data-i18n-attr="aria-label:cookie.aria" hidden>
+  <div class="cookie__body">
+    <h2 id="cookie-title" data-i18n="cookie.title">Η ιδιωτικότητά σας, με τους δικούς σας όρους</h2>
+    <p data-i18n-html="cookie.text"></p>
+  </div>
+  <div class="cookie__actions">
+    <!-- Accept and Reject are identical in size, weight and click depth. -->
+    <button type="button" class="btn btn--forest" data-consent="accept" data-i18n="cookie.accept">Αποδοχή</button>
+    <button type="button" class="btn btn--forest" data-consent="reject" data-i18n="cookie.reject">Απόρριψη</button>
+    <button type="button" class="cookie__link" data-open-prefs data-i18n="cookie.settings">Ρυθμίσεις</button>
+  </div>
+</div>
+
+<dialog class="prefs" id="cookie-prefs" aria-labelledby="prefs-title">
+  <div class="prefs__inner">
+    <h2 id="prefs-title" data-i18n="prefs.title">Ρυθμίσεις cookies</h2>
+    <p class="prefs__intro" data-i18n="prefs.intro"></p>
+
+    <div class="pref-item">
+      <h3 data-i18n="prefs.necessary.title">Απολύτως απαραίτητα</h3>
+      <span class="pref-item__locked" data-i18n="prefs.necessary.locked">Πάντα ενεργά</span>
+      <p data-i18n="prefs.necessary.text"></p>
+    </div>
+
+    <div class="pref-item">
+      <h3 data-i18n="prefs.analytics.title">Στατιστικά επισκεψιμότητας</h3>
+      <span class="switch">
+        <!-- Not pre-ticked: it renders unchecked unless the visitor previously
+             opted in, which js/consent.js sets explicitly. -->
+        <input type="checkbox" id="pref-analytics" data-i18n-attr="aria-label:prefs.analytics.title">
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+      </span>
+      <p data-i18n="prefs.analytics.text"></p>
+    </div>
+
+    <div class="prefs__actions">
+      <button type="button" class="btn btn--forest" data-consent="accept" data-i18n="prefs.acceptAll">Αποδοχή όλων</button>
+      <button type="button" class="btn btn--forest" data-consent="reject" data-i18n="prefs.rejectAll">Απόρριψη όλων</button>
+      <button type="button" class="btn btn--ghost" data-consent="save" data-i18n="prefs.save">Αποθήκευση επιλογών</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="js/i18n.js"></script>
+<script src="js/consent.js" defer></script>
+<script src="js/booking.js" defer></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

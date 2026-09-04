@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" role="img" aria-labelledby="art404">
+  <title id="art404">A dog sitting beside a trail of paw prints leading off the page</title>
+  <!-- Original illustration for the 404 page. -->
+  <ellipse cx="252" cy="262" rx="96" ry="14" fill="#c6d2c4" opacity="0.75"/>
+  <!-- paw prints wandering off to the left -->
+  <g fill="#a8bfae">
+    <g transform="translate(24 236) rotate(-14) scale(0.62)">
+      <ellipse cx="24" cy="31" rx="12" ry="9.5"/><ellipse cx="11" cy="17" rx="5" ry="6.5"/>
+      <ellipse cx="20" cy="12" rx="5" ry="6.8"/><ellipse cx="29" cy="12" rx="5" ry="6.8"/>
+      <ellipse cx="38" cy="18" rx="5" ry="6.5"/>
+    </g>
+    <g transform="translate(74 214) rotate(-6) scale(0.7)">
+      <ellipse cx="24" cy="31" rx="12" ry="9.5"/><ellipse cx="11" cy="17" rx="5" ry="6.5"/>
+      <ellipse cx="20" cy="12" rx="5" ry="6.8"/><ellipse cx="29" cy="12" rx="5" ry="6.8"/>
+      <ellipse cx="38" cy="18" rx="5" ry="6.5"/>
+    </g>
+    <g transform="translate(128 238) rotate(4) scale(0.78)">
+      <ellipse cx="24" cy="31" rx="12" ry="9.5"/><ellipse cx="11" cy="17" rx="5" ry="6.5"/>
+      <ellipse cx="20" cy="12" rx="5" ry="6.8"/><ellipse cx="29" cy="12" rx="5" ry="6.8"/>
+      <ellipse cx="38" cy="18" rx="5" ry="6.5"/>
+    </g>
+  </g>
+  <!-- the dog itself, head tilted the way dogs do when a question is asked -->
+  <g transform="translate(178 96) scale(0.92)" fill="#274a3e">
+    <path d="M12 114C-16 98-14 60 12 48c-16 14-16 42 6 54z"/>
+    <ellipse cx="48" cy="118" rx="45" ry="49"/>
+    <ellipse cx="52" cy="162" rx="41" ry="10"/>
+    <ellipse cx="106" cy="112" rx="35" ry="41"/>
+    <rect x="93" y="110" width="19" height="60" rx="9.5"/>
+    <rect x="114" y="108" width="21" height="62" rx="10.5"/>
+    <ellipse cx="102" cy="167" rx="16" ry="7"/>
+    <ellipse cx="124" cy="167" rx="17" ry="7"/>
+    <rect x="108" y="46" width="30" height="74" rx="15" transform="rotate(-7 123 83)"/>
+    <g transform="rotate(13 128 52)">
+      <circle cx="128" cy="52" r="31"/>
+      <path d="M110 36L100 0l32 28z"/>
+      <path d="M140 28L152-2l8 40z"/>
+      <rect x="144" y="42" width="46" height="28" rx="13"/>
+      <circle cx="188" cy="50" r="7"/>
+      <circle cx="140" cy="44" r="3.6" fill="#fbf7ef"/>
+    </g>
+  </g>
+  <!-- a question hanging in the air -->
+  <g fill="#d9a441">
+    <path d="M366 66c0-9 7-15 16-15s16 6 16 14c0 7-4 10-8 13-4 2-6 4-6 8h-9c0-7 3-11 7-14 3-2 5-4 5-7 0-4-3-6-6-6s-6 2-6 7z"/>
+    <circle cx="378" cy="100" r="5"/>
+  </g>
+</svg>

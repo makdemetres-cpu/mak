@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 960" preserveAspectRatio="xMidYMid slice"
+     role="img" aria-labelledby="heroArtTitle">
+  <title id="heroArtTitle">Illustration of the Achaian countryside at golden hour, with a dog and a cat on a hillside and grazing sheep beyond</title>
+  <!-- Original illustration for Vet Care. Flat vector, no third-party assets.
+       TODO (client): this is a placeholder for a real photograph of the clinic
+       or the team — drop a WebP/AVIF into assets/img/ and swap the <img src>
+       in index.html (.hero__arch). Keep the 5:6 crop for desktop. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#f7efdf"/>
+      <stop offset="0.52" stop-color="#f6e6c9"/>
+      <stop offset="1" stop-color="#efd9ae"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e8b658" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#e8b658" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9cbba"/>
+      <stop offset="1" stop-color="#a4b9a6"/>
+    </linearGradient>
+    <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#86a48d"/>
+      <stop offset="1" stop-color="#6e8c7a"/>
+    </linearGradient>
+    <linearGradient id="hillNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3f6c58"/>
+      <stop offset="1" stop-color="#2b5344"/>
+    </linearGradient>
+    <linearGradient id="fore" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e3b31"/>
+      <stop offset="1" stop-color="#14261f"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="960" fill="url(#sky)"/>
+
+  <!-- sun -->
+  <circle cx="527" cy="298" r="230" fill="url(#sunGlow)"/>
+  <circle cx="527" cy="298" r="104" fill="#e2a94f"/>
+  <circle cx="527" cy="298" r="104" fill="none" stroke="#fbf7ef" stroke-width="2" opacity="0.35"/>
+
+  <!-- a few birds, drawn as open arcs -->
+  <g fill="none" stroke="#7c8f7f" stroke-width="3.4" stroke-linecap="round" opacity="0.75">
+    <path d="M150 214c9-9 17-9 25 0"/>
+    <path d="M175 214c8-9 16-9 24 0"/>
+    <path d="M214 172c7-7 14-7 20 0"/>
+  </g>
+
+  <!-- far ridge -->
+  <path fill="url(#hillFar)" d="M0 470c96-40 158 6 236-14 78-20 128-64 204-52 76 12 118 60 190 52 42-5 118-38 170-52v556H0z"/>
+
+  <!-- olive grove on the far ridge, simple stipple canopies -->
+  <g fill="#93ab97" opacity="0.85">
+    <ellipse cx="96" cy="470" rx="21" ry="16"/><rect x="94" y="470" width="4" height="22" fill="#8a9f8d"/>
+    <ellipse cx="146" cy="479" rx="16" ry="12"/><rect x="144" y="479" width="3.5" height="18" fill="#8a9f8d"/>
+    <ellipse cx="676" cy="452" rx="19" ry="14"/><rect x="674" y="452" width="4" height="20" fill="#8a9f8d"/>
+    <ellipse cx="722" cy="461" rx="15" ry="11"/><rect x="720" y="461" width="3.5" height="17" fill="#8a9f8d"/>
+  </g>
+
+  <!-- farmstead: barn + silo, the livestock half of the practice -->
+  <g>
+    <path d="M262 508h96v56h-96z" fill="#c58a63"/>
+    <path d="M256 508l54-34 54 34z" fill="#a9502f"/>
+    <rect x="298" y="530" width="24" height="34" fill="#8f5a3c"/>
+    <rect x="368" y="516" width="26" height="48" fill="#d8c6a8"/>
+    <path d="M366 516l13-14 13 14z" fill="#a9502f"/>
+  </g>
+
+  <!-- mid ridge -->
+  <path fill="url(#hillMid)" d="M0 596c110-34 176 16 268 2 92-14 150-52 234-38 84 14 190 44 298 22v378H0z"/>
+
+  <!-- sheep grazing on the mid ridge -->
+  <g fill="#ecebe0">
+    <g transform="translate(668 572) scale(1.0)">
+      <ellipse cx="0" cy="0" rx="19" ry="13"/>
+      <circle cx="17" cy="-7" r="7.5" fill="#3c4a41"/>
+      <rect x="-11" y="10" width="4" height="11" fill="#3c4a41"/>
+      <rect x="6" y="10" width="4" height="11" fill="#3c4a41"/>
+    </g>
+    <g transform="translate(724 586) scale(0.82)">
+      <ellipse cx="0" cy="0" rx="19" ry="13"/>
+      <circle cx="17" cy="-7" r="7.5" fill="#3c4a41"/>
+      <rect x="-11" y="10" width="4" height="11" fill="#3c4a41"/>
+      <rect x="6" y="10" width="4" height="11" fill="#3c4a41"/>
+    </g>
+    <g transform="translate(766 566) scale(0.66)">
+      <ellipse cx="0" cy="0" rx="19" ry="13"/>
+      <circle cx="17" cy="-7" r="7.5" fill="#3c4a41"/>
+      <rect x="-11" y="10" width="4" height="11" fill="#3c4a41"/>
+      <rect x="6" y="10" width="4" height="11" fill="#3c4a41"/>
+    </g>
+  </g>
+
+  <!-- near ridge: the stage for the dog and the cat -->
+  <path fill="url(#hillNear)" d="M0 742c126-46 214 10 322-6 108-16 176-46 258-30 82 16 156 40 220 26v268H0z"/>
+
+  <!-- Dog, sitting in profile, facing the cat. Built from primitives that
+       union into one silhouette — a modernist, geometric illustration style. -->
+  <g transform="translate(228 566)" fill="#12241d">
+    <path d="M12 114C-16 98-14 60 12 48c-16 14-16 42 6 54z"/>
+    <ellipse cx="48" cy="118" rx="45" ry="49"/>
+    <ellipse cx="52" cy="162" rx="41" ry="10"/>
+    <ellipse cx="106" cy="112" rx="35" ry="41"/>
+    <rect x="93" y="110" width="19" height="60" rx="9.5"/>
+    <rect x="114" y="108" width="21" height="62" rx="10.5"/>
+    <ellipse cx="102" cy="167" rx="16" ry="7"/>
+    <ellipse cx="124" cy="167" rx="17" ry="7"/>
+    <rect x="108" y="46" width="30" height="74" rx="15" transform="rotate(-7 123 83)"/>
+    <circle cx="128" cy="52" r="31"/>
+    <path d="M110 36L100 0l32 28z"/>
+    <path d="M140 28L152-2l8 40z"/>
+    <rect x="144" y="42" width="46" height="28" rx="13"/>
+    <circle cx="188" cy="50" r="7"/>
+  </g>
+
+  <!-- Cat, sitting in profile, facing the dog -->
+  <g transform="translate(586 606) scale(-0.88 0.88)" fill="#12241d">
+    <path d="M20 116C-8 112-14 76 8 66c-14 12-8 36 12 40z"/>
+    <ellipse cx="52" cy="88" rx="36" ry="43"/>
+    <ellipse cx="52" cy="126" rx="38" ry="8"/>
+    <rect x="64" y="90" width="16" height="42" rx="8"/>
+    <ellipse cx="72" cy="130" rx="12" ry="5"/>
+    <circle cx="64" cy="42" r="28"/>
+    <path d="M44 26L38-4l26 22z"/>
+    <path d="M70 18L94-6l-4 34z"/>
+    <ellipse cx="88" cy="48" rx="13" ry="10"/>
+  </g>
+
+  <!-- foreground bank with grass tufts -->
+  <path fill="url(#fore)" d="M0 862c132-30 206 14 318 2 112-12 190-34 268-18 78 16 148 30 214 20v94H0z"/>
+  <g stroke="#254136" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.9">
+    <path d="M64 900c2-16 8-26 16-32"/><path d="M78 902c-2-14-1-24 3-32"/>
+    <path d="M700 884c2-16 8-26 16-32"/><path d="M714 886c-2-14-1-24 3-32"/>
+    <path d="M392 880c2-14 7-23 14-28"/>
+  </g>
+
+  <!-- olive sprig, bottom-left corner ornament -->
+  <g transform="translate(20 828) rotate(-12)" fill="#5d7d67" opacity="0.9">
+    <path d="M0 60C22 44 52 30 92 22" stroke="#5d7d67" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="42" rx="13" ry="7" transform="rotate(-28 24 42)"/>
+    <ellipse cx="52" cy="30" rx="13" ry="7" transform="rotate(-20 52 30)"/>
+    <ellipse cx="80" cy="22" rx="13" ry="7" transform="rotate(-12 80 22)"/>
+    <ellipse cx="36" cy="58" rx="11" ry="6" transform="rotate(18 36 58)"/>
+    <ellipse cx="64" cy="46" rx="11" ry="6" transform="rotate(24 64 46)"/>
+  </g>
+
+  <!-- print-like grain so the flats do not read as digital fill -->
+  <rect width="800" height="960" filter="url(#grain)" opacity="0.14" style="mix-blend-mode:multiply"/>
+</svg>

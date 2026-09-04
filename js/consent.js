@@ -1,269 +1,216 @@
-/* ==========================================================================
-   HydroCore — GDPR consent manager
-   - Blocks everything non-essential until the visitor chooses.
-   - Stores a granular, timestamped decision in localStorage.
-   - Re-openable anytime via the "Cookie Settings" link in the footer.
-   - See privacy.html §8 for the full cookie table this UI maps to.
-   ========================================================================== */
-(() => {
+/* ===========================================================================
+   Cookie / tracker consent
+   ---------------------------------------------------------------------------
+   Legal basis this implementation is written against:
+
+   * GDPR (EU) 2016/679 — art. 4(11) and art. 7: consent must be freely given,
+     specific, informed and unambiguous, given by a clear affirmative act, and
+     be as easy to withdraw as it was to give.
+   * ePrivacy Directive 2002/58/EC as transposed by Greek Law 3471/2006,
+     art. 4(5): storing or reading information on a subscriber's terminal
+     equipment needs prior consent, EXCEPT where it is strictly necessary to
+     provide a service the user explicitly requested.
+   * Greek DPA (ΑΠΔΠΧ) Recommendation 1/2020 on trackers, and its 2022 sweep of
+     news websites: only strictly necessary trackers may be pre-enabled; a
+     first-layer banner offering only "I agree" and "More options", or styling
+     accept more prominently than reject, is unlawful.
+   * EDPB Guidelines 03/2022 on deceptive design patterns — no "hindering"
+     (reject buried behind extra clicks), no "stirring" (visual nudging).
+
+   What this site actually stores
+   -----------------------------
+   Strictly necessary, no consent required, and set even if you reject:
+     · vetcare.lang    — the language you picked
+     · vetcare.consent — this decision, so we can honour it and stop asking
+   Both are localStorage entries, first-party, never sent anywhere.
+   Nothing else is stored today. No analytics tool is installed; the analytics
+   category exists so that if one is ever added it is already gated behind
+   opt-in consent, and `runAnalytics()` below is the single place to wire it.
+
+   HOW OFTEN THE BANNER SHOWS — and why (the brief asked for this reasoning)
+   ------------------------------------------------------------------------
+   The brief suggested showing the banner on every single page load. That is
+   right up to the moment the visitor answers, and wrong afterwards:
+
+     · Before a choice exists, the banner appears on every page load, in both
+       languages, on every page — nothing non-essential runs meanwhile. There
+       is no cookie wall: the whole site stays usable while it is open, since
+       consent conditioned on access would not be "freely given" (art. 7(4)).
+     · Once a choice exists it is respected and the banner stops. Re-asking a
+       visitor who already refused is exactly the "nagging" the EDPB lists as a
+       deceptive pattern in Guidelines 03/2022, and the Greek DPA's 2022
+       enforcement letters make the same point: a refusal must be honoured, not
+       worn down.
+     · Consent does not last forever. Neither GDPR nor Law 3471/2006 fixes a
+       period, so we follow the supervisory-authority convention of refreshing
+       it after about six months (CNIL's published figure; the ΑΠΔΠΧ has not
+       set a shorter one). ACCEPTANCE AND REFUSAL EXPIRE ALIKE — expiring only
+       refusals would be a dark pattern in disguise.
+     · Withdrawal is one click, from the footer of every page ("Ρυθμίσεις
+       cookies"), i.e. exactly as easy as giving consent was.
+
+   Where the stricter reading was chosen: we treat the analytics category as
+   opt-in even though a purely anonymous, first-party audience count could
+   arguably be argued as exempt; and we self-host the fonts and use a drawn
+   map instead of a Google Maps iframe, so no third party sees a visitor's IP
+   before they consent.
+   =========================================================================== */
+
+(function () {
   "use strict";
 
-  const STORAGE_KEY = "hc_consent_v1";
-  const CATS = ["necessary", "preferences", "analytics", "marketing"];
+  var KEY = "vetcare.consent";
+  var VERSION = 1;
+  /* Six months, in milliseconds. */
+  var MAX_AGE = 1000 * 60 * 60 * 24 * 182;
 
-  function getConsent() {
+  var banner = document.getElementById("cookie-banner");
+  var dialog = document.getElementById("cookie-prefs");
+  var analyticsToggle = document.getElementById("pref-analytics");
+
+  /* ----------------------------------------------------------------- *
+   * Storage helpers — every access is guarded: Safari private mode and
+   * "block all cookies" settings throw on localStorage.
+   * ----------------------------------------------------------------- */
+  function read() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      var raw = window.localStorage.getItem(KEY);
       if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (!parsed || typeof parsed !== "object") return null;
+      var parsed = JSON.parse(raw);
+      if (!parsed || parsed.v !== VERSION || typeof parsed.ts !== "number") return null;
+      if (Date.now() - parsed.ts > MAX_AGE) return null; /* expired → ask again */
       return parsed;
-    } catch (e) { return null; }
+    } catch (e) {
+      return null;
+    }
   }
 
-  function saveConsent(consent) {
-    consent.necessary = true;
-    consent.ts = new Date().toISOString();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
-    document.dispatchEvent(new CustomEvent("hc:consentchange", { detail: consent }));
-    applyIntegrations(consent);
+  function write(state) {
+    try {
+      window.localStorage.setItem(
+        KEY,
+        JSON.stringify({ v: VERSION, ts: Date.now(), analytics: !!state.analytics })
+      );
+    } catch (e) {
+      /* If we cannot remember the choice we must not act on a guess: the
+         banner will simply ask again next time, and nothing extra runs. */
+    }
   }
 
-  /* Nothing loads until consent is explicit. If you wire up real
-     analytics/marketing tags, gate their <script> injection here —
-     never in the raw page HTML. */
-  function applyIntegrations(consent) {
-    if (consent.analytics) loadAnalyticsStub();
-    if (consent.marketing) loadMarketingStub();
+  /* ----------------------------------------------------------------- *
+   * The one place any non-essential script may be started.
+   * ----------------------------------------------------------------- */
+  var analyticsStarted = false;
+  function runAnalytics() {
+    if (analyticsStarted) return;
+    analyticsStarted = true;
+
+    /* TODO (client): drop your analytics snippet in here — and ONLY here, so
+       it can never execute before consent. A privacy-friendly, cookieless
+       option keeps this page's disclosures accurate, e.g.:
+
+         var s = document.createElement("script");
+         s.defer = true;
+         s.src = "https://plausible.io/js/script.js";
+         s.setAttribute("data-domain", "vet-care.gr");
+         document.head.appendChild(s);
+
+       If you add anything that stores data or transfers it outside the EEA,
+       update cookies.html (the table) and privacy.html (§ processors) to
+       match — the policies must describe what the site really does. */
   }
 
-  const GA_MEASUREMENT_ID = ""; // e.g. "G-XXXXXXX" — left blank in this demo, so nothing is ever loaded
-  function loadAnalyticsStub() {
-    if (!GA_MEASUREMENT_ID || window.__hcAnalyticsLoaded) return;
-    window.__hcAnalyticsLoaded = true;
-    const s = document.createElement("script");
-    s.async = true;
-    s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { window.dataLayer.push(arguments); }
-    window.gtag = gtag;
-    gtag("js", new Date());
-    gtag("config", GA_MEASUREMENT_ID, { anonymize_ip: true });
-  }
-  function loadMarketingStub() {
-    /* Placeholder: no marketing/ad pixels are wired up in this demo build. */
+  /* ----------------------------------------------------------------- *
+   * Banner + dialog plumbing
+   * ----------------------------------------------------------------- */
+  function showBanner() {
+    if (!banner) return;
+    banner.hidden = false;
+    banner.classList.add("is-open");
+    banner.setAttribute("tabindex", "-1");
+    /* Announce it without hijacking the page: focus moves to the notice, but
+       the rest of the site stays reachable and scrollable behind it. */
+    window.setTimeout(function () {
+      try { banner.focus({ preventScroll: true }); } catch (e) { banner.focus(); }
+    }, 350);
   }
 
-  /* ---------------- UI ---------------- */
-  function buildBannerOverlay() {
-    const el = document.createElement("div");
-    el.className = "cookie-banner-overlay";
-    el.id = "cookieBannerOverlay";
-    document.body.appendChild(el);
-    return el;
+  function hideBanner() {
+    if (!banner) return;
+    banner.classList.remove("is-open");
+    banner.hidden = true;
   }
 
-  function buildBanner() {
-    const el = document.createElement("div");
-    el.className = "cookie-banner";
-    el.id = "cookieBanner";
-    el.setAttribute("role", "dialog");
-    el.setAttribute("aria-label", "Cookie consent");
-    el.innerHTML = `
-      <div class="cookie-banner__inner">
-        <div class="cookie-banner__text">
-          <h3>
-            <span data-lang-el>🍪 Χρησιμοποιούμε cookies</span>
-            <span data-lang-en>🍪 We use cookies</span>
-          </h3>
-          <p data-lang-el>Χρησιμοποιούμε απολύτως απαραίτητα cookies για τη λειτουργία του site, και προαιρετικά cookies προτιμήσεων/στατιστικών μόνο με τη συγκατάθεσή σας. Δείτε την <a href="privacy.html#cookies">Πολιτική Cookies</a>.</p>
-          <p data-lang-en>We use strictly necessary cookies to run this site, and optional preference/analytics cookies only with your consent. See our <a href="privacy.html#cookies">Cookie Policy</a>.</p>
-        </div>
-        <div class="cookie-banner__actions">
-          <button class="btn btn-ghost btn-sm" id="cookieManage" type="button">
-            <span data-lang-el>Ρυθμίσεις</span><span data-lang-en>Manage</span>
-          </button>
-          <button class="btn btn-ghost btn-sm" id="cookieReject" type="button">
-            <span data-lang-el>Απόρριψη μη απαραίτητων</span><span data-lang-en>Reject non-essential</span>
-          </button>
-          <button class="btn btn-primary btn-sm" id="cookieAccept" type="button">
-            <span data-lang-el>Αποδοχή όλων</span><span data-lang-en>Accept all</span>
-          </button>
-        </div>
-      </div>`;
-    document.body.appendChild(el);
-    return el;
+  function openPrefs() {
+    if (!dialog) return;
+    var state = read();
+    if (analyticsToggle) analyticsToggle.checked = !!(state && state.analytics);
+    if (typeof dialog.showModal === "function") {
+      if (!dialog.open) dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
   }
 
-  function catCopy(id) {
-    const map = {
-      necessary: {
-        title: { el: "Απολύτως Απαραίτητα", en: "Strictly Necessary" },
-        desc: { el: "Απαιτούνται για βασικές λειτουργίες (πλοήγηση, ασφάλεια, αποθήκευση των προτιμήσεών σας cookie). Δεν μπορούν να απενεργοποιηθούν.", en: "Required for core functions (navigation, security, remembering your cookie choice). Cannot be turned off." }
-      },
-      preferences: {
-        title: { el: "Προτιμήσεις", en: "Preferences" },
-        desc: { el: "Θυμούνται επιλογές όπως τη γλώσσα εμφάνισης (Ελληνικά/English) στις επόμενες επισκέψεις σας.", en: "Remember choices like display language (Greek/English) across your visits." }
-      },
-      analytics: {
-        title: { el: "Στατιστικά / Ανάλυση", en: "Analytics" },
-        desc: { el: "Ανώνυμα στατιστικά επισκεψιμότητας για να βελτιώνουμε το site. Ανενεργά σε αυτή τη demo έκδοση.", en: "Anonymous traffic statistics to help us improve the site. Inactive in this demo build." }
-      },
-      marketing: {
-        title: { el: "Μάρκετινγκ", en: "Marketing" },
-        desc: { el: "Θα χρησιμοποιούνταν για εξατομικευμένες διαφημίσεις. Δεν χρησιμοποιείται σήμερα.", en: "Would be used for personalised advertising. Not currently in use." }
-      }
-    };
-    return map[id];
+  function closePrefs() {
+    if (!dialog) return;
+    if (typeof dialog.close === "function" && dialog.open) dialog.close();
+    else dialog.removeAttribute("open");
   }
 
-  function buildModal() {
-    const overlay = document.createElement("div");
-    overlay.className = "cookie-modal-overlay";
-    overlay.id = "cookieOverlay";
-
-    const modal = document.createElement("div");
-    modal.className = "cookie-modal";
-    modal.id = "cookieModal";
-    modal.setAttribute("role", "dialog");
-    modal.setAttribute("aria-modal", "true");
-    modal.setAttribute("aria-labelledby", "cookieModalTitle");
-
-    const catsHtml = CATS.map((id) => {
-      const c = catCopy(id);
-      const locked = id === "necessary";
-      return `
-      <div class="cookie-cat">
-        <div class="cookie-cat__head">
-          <h4><span data-lang-el>${c.title.el}</span><span data-lang-en>${c.title.en}</span></h4>
-          <button type="button" class="toggle ${locked ? "is-on is-disabled" : ""}" data-cat="${id}" ${locked ? 'aria-disabled="true"' : 'aria-pressed="false"'}></button>
-        </div>
-        <p><span data-lang-el>${c.desc.el}</span><span data-lang-en>${c.desc.en}</span></p>
-      </div>`;
-    }).join("");
-
-    modal.innerHTML = `
-      <div class="cookie-modal__head">
-        <div>
-          <h3 id="cookieModalTitle"><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></h3>
-          <p style="color:var(--deep);font-size:.86rem;margin-top:6px">
-            <span data-lang-el>Επιλέξτε ποιες κατηγορίες cookies επιτρέπετε. Περισσότερα στην <a href="privacy.html#cookies" style="color:var(--deep);font-weight:700">Πολιτική Cookies</a>.</span>
-            <span data-lang-en>Choose which categories of cookies you allow. More in our <a href="privacy.html#cookies" style="color:var(--deep);font-weight:700">Cookie Policy</a>.</span>
-          </p>
-        </div>
-        <button class="cookie-modal__close" id="cookieModalClose" type="button" aria-label="Close">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      ${catsHtml}
-      <div class="cookie-modal__actions">
-        <button class="btn btn-ghost btn-sm" id="cookieRejectModal" type="button"><span data-lang-el>Απόρριψη όλων</span><span data-lang-en>Reject all</span></button>
-        <button class="btn btn-primary btn-sm" id="cookieSaveModal" type="button"><span data-lang-el>Αποθήκευση προτιμήσεων</span><span data-lang-en>Save preferences</span></button>
-      </div>`;
-
-    document.body.appendChild(overlay);
-    document.body.appendChild(modal);
-    return { overlay, modal };
+  function decide(analytics) {
+    write({ analytics: analytics });
+    if (analytics) runAnalytics();
+    hideBanner();
+    closePrefs();
+    document.dispatchEvent(
+      new CustomEvent("vetcare:consent", { detail: { analytics: analytics } })
+    );
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const bannerOverlay = buildBannerOverlay();
-    const banner = buildBanner();
-    const { overlay, modal } = buildModal();
+  /* Buttons are wired by intent, so accept/reject behave identically wherever
+     they appear (banner or dialog) and neither path is longer than the other. */
+  document.addEventListener("click", function (event) {
+    var target = event.target.closest ? event.target.closest("[data-consent], [data-open-prefs]") : null;
+    if (!target) return;
 
-    const openModal = () => { overlay.classList.add("is-visible"); modal.classList.add("is-visible"); };
-    const closeModal = () => { overlay.classList.remove("is-visible"); modal.classList.remove("is-visible"); };
-
-    /* This gate reappears on every fresh visit (new tab/browser session) —
-       set by js/session-gate.js, which runs first on every page — but not
-       on a plain refresh or when navigating between pages in the same
-       session. When it does apply, scrolling stays locked from the moment
-       the page loads until the visitor resolves it via Accept, Reject, or
-       Save/Reject inside Manage. */
-    const isFreshVisit = window.__hcFreshVisit !== false;
-    if (isFreshVisit) document.body.style.overflow = "hidden";
-    function resolveGate() {
-      document.body.style.overflow = "";
-      bannerOverlay.classList.remove("is-visible");
-      banner.classList.remove("is-visible");
+    if (target.hasAttribute("data-open-prefs")) {
+      event.preventDefault();
+      openPrefs();
+      return;
     }
 
-    function setToggleState(id, on) {
-      const btn = modal.querySelector(`.toggle[data-cat="${id}"]`);
-      if (!btn || btn.classList.contains("is-disabled")) return;
-      btn.classList.toggle("is-on", on);
-      btn.setAttribute("aria-pressed", on ? "true" : "false");
-    }
-    function readToggles() {
-      const out = {};
-      CATS.forEach((id) => {
-        const btn = modal.querySelector(`.toggle[data-cat="${id}"]`);
-        out[id] = btn.classList.contains("is-on");
-      });
-      return out;
-    }
-    modal.querySelectorAll(".toggle").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        if (btn.classList.contains("is-disabled")) return;
-        btn.classList.toggle("is-on");
-        btn.setAttribute("aria-pressed", btn.classList.contains("is-on") ? "true" : "false");
-      });
-    });
-
-    const existing = getConsent();
-    if (existing) {
-      CATS.forEach((id) => setToggleState(id, !!existing[id]));
-      applyIntegrations(existing);
-    }
-    // Shown on every fresh visit by design, regardless of a past choice —
-    // but not on a refresh or when navigating between pages.
-    if (isFreshVisit) {
-      setTimeout(() => {
-        bannerOverlay.classList.add("is-visible");
-        banner.classList.add("is-visible");
-      }, 300);
-    }
-
-    document.getElementById("cookieAccept").addEventListener("click", () => {
-      saveConsent({ preferences: true, analytics: true, marketing: true });
-      resolveGate();
-      window.HCToast && window.HCToast(window.HC_LANG.t("consentAcceptedAll"));
-    });
-    document.getElementById("cookieReject").addEventListener("click", () => {
-      saveConsent({ preferences: false, analytics: false, marketing: false });
-      resolveGate();
-      window.HCToast && window.HCToast(window.HC_LANG.t("consentRejected"));
-    });
-    document.getElementById("cookieManage").addEventListener("click", () => {
-      CATS.forEach((id) => setToggleState(id, existing ? !!existing[id] : id === "necessary"));
-      openModal();
-    });
-    document.getElementById("cookieModalClose").addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
-    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-    document.getElementById("cookieRejectModal").addEventListener("click", () => {
-      CATS.forEach((id) => setToggleState(id, id === "necessary"));
-      saveConsent(readToggles());
-      closeModal();
-      resolveGate();
-      window.HCToast && window.HCToast(window.HC_LANG.t("consentRejected"));
-    });
-    document.getElementById("cookieSaveModal").addEventListener("click", () => {
-      saveConsent(readToggles());
-      closeModal();
-      resolveGate();
-      window.HCToast && window.HCToast(window.HC_LANG.t("consentSaved"));
-    });
-
-    // reopen from footer link on any page
-    document.querySelectorAll("[data-open-cookie-settings]").forEach((trigger) => {
-      trigger.addEventListener("click", (e) => {
-        e.preventDefault();
-        const c = getConsent();
-        CATS.forEach((id) => setToggleState(id, c ? !!c[id] : id === "necessary"));
-        openModal();
-      });
-    });
+    var action = target.getAttribute("data-consent");
+    if (action === "accept") decide(true);
+    else if (action === "reject") decide(false);
+    else if (action === "save") decide(!!(analyticsToggle && analyticsToggle.checked));
   });
+
+  /* Closing the dialog with Esc or the backdrop must NOT be read as consent:
+     if no decision has been recorded yet, the banner comes straight back. */
+  if (dialog) {
+    dialog.addEventListener("close", function () {
+      if (!read()) showBanner();
+    });
+  }
+
+  /* ----------------------------------------------------------------- *
+   * Boot
+   * ----------------------------------------------------------------- */
+  var stored = read();
+  if (stored) {
+    if (stored.analytics) runAnalytics();
+  } else {
+    showBanner();
+  }
+
+  window.VetCareConsent = {
+    get: read,
+    open: openPrefs,
+    /* Exposed so other scripts can ask before doing anything non-essential. */
+    allows: function (category) {
+      var s = read();
+      return category === "necessary" ? true : !!(s && s[category]);
+    }
+  };
 })();

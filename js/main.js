@@ -1,486 +1,255 @@
-(() => {
+/* ===========================================================================
+   Site behaviour: reveals, sticky header, mobile drawer, scroll-to-top,
+   language switching, live opening status.
+   Everything degrades: with JS off the page is fully readable and every link,
+   phone number and the map all still work.
+   =========================================================================== */
+
+(function () {
   "use strict";
 
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.__hcFreshVisit) window.scrollTo(0, 0);
-    initPreloader();
-    initNav();
-    renderServices();
-    initReveal();
-    initCounters();
-    initLocationSwitcher();
-    initFooterYear();
-    initReviewFlow();
-  });
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  /* ---------------- Services grid ---------------- */
-  const SERVICE_ICONS = {
-    bolt: '<path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/>',
-    search: '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
-    pipe: '<path d="M4 6h9a4 4 0 0 1 4 4v8"/><path d="M20 6h-4"/><circle cx="4" cy="6" r="2"/><circle cx="17" cy="18" r="2"/>',
-    drain: '<circle cx="12" cy="12" r="9"/><path d="M8 10c1 2 2 3 4 3s3-1 4-3M8 14c1-1 2-1.5 4-1.5s3 .5 4 1.5"/>',
-    flame: '<path d="M12 2c1 3-2 4-2 7a4 4 0 0 0 8 0c0-1-.5-2-1-3 2 1 3 4 3 6a6 6 0 0 1-12 0c0-3 1.5-6 4-10Z"/>',
-    bath: '<path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5v-2Z"/><path d="M7 12V6a2 2 0 0 1 3-1.7M5 21h14"/>',
-    building: '<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h.01M15 16h.01"/>',
-    shield: '<path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/>'
-  };
-
-  function renderServices() {
-    const grid = document.getElementById("servicesGrid");
-    if (!grid || !window.HC_DATA) return;
-    function paint() {
-      const lang = document.documentElement.getAttribute("data-lang") || "el";
-      grid.innerHTML = window.HC_DATA.services.map((s, i) => `
-        <div class="service-flip" data-reveal style="--i:${i % 4}">
-          <div class="service-flip__inner">
-            <div class="service-flip__face service-flip__face--back" aria-hidden="true">
-              <svg viewBox="0 0 100 100" width="46" height="46">
-                <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
-                <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
-                <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="service-flip__face service-flip__face--front">
-              <article class="service-card">
-                <div class="service-card__icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${SERVICE_ICONS[s.icon] || ""}</svg>
-                </div>
-                <h3>${s.name[lang]}</h3>
-                <p>${s.desc[lang]}</p>
-                <a class="service-card__link" href="booking.html?service=${encodeURIComponent(s.id)}">
-                  ${lang === "el" ? "Κλείστε Ραντεβού" : "Book this"}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-                </a>
-              </article>
-            </div>
-          </div>
-        </div>`).join("");
-      initReveal();
-    }
-    paint();
-    document.addEventListener("hc:langchange", paint);
-  }
-
-  /* ---------------- Preloader ---------------- */
-  function initPreloader() {
-    const pre = document.getElementById("preloader");
-    if (!pre) return;
-    const done = () => pre.classList.add("is-done");
-    if (document.readyState === "complete") {
-      setTimeout(done, 500);
-    } else {
-      window.addEventListener("load", () => setTimeout(done, 500));
-    }
-    // safety net so it never gets stuck
-    setTimeout(done, 2600);
-  }
-
-  /* ---------------- Nav ---------------- */
-  function initNav() {
-    const nav = document.getElementById("siteNav");
-    const toggle = document.getElementById("navToggle");
-    const links = document.getElementById("navLinks");
-    const scrim = document.getElementById("navScrim");
-    if (!nav) return;
-
-    const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    if (toggle && links) {
-      const closeMenu = () => {
-        toggle.setAttribute("aria-expanded", "false");
-        links.classList.remove("is-open");
-        scrim && scrim.classList.remove("is-open");
-        document.body.style.overflow = "";
-      };
-      const openMenu = () => {
-        toggle.setAttribute("aria-expanded", "true");
-        links.classList.add("is-open");
-        scrim && scrim.classList.add("is-open");
-        document.body.style.overflow = "hidden";
-      };
-      toggle.addEventListener("click", () => {
-        const isOpen = links.classList.contains("is-open");
-        isOpen ? closeMenu() : openMenu();
-      });
-      scrim && scrim.addEventListener("click", closeMenu);
-      links.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
-      window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
-    }
-
-    // active link by current path (exact match on the page path, ignoring in-page #anchors)
-    const path = location.pathname.split("/").pop() || "index.html";
-    nav.querySelectorAll("[data-nav]").forEach((a) => {
-      const href = a.getAttribute("href") || "";
-      const hasHash = href.includes("#");
-      const hrefPath = href.split("#")[0] || "index.html";
-      const isMatch = !hasHash && (hrefPath === path || (path === "" && hrefPath === "index.html"));
-      a.classList.toggle("is-active", isMatch);
-    });
-  }
-
-  /* ---------------- Scroll reveal ---------------- */
-  function initReveal() {
-    const items = document.querySelectorAll("[data-reveal]");
+  /* ------------------------------------------------------------------ *
+   * 1. Scroll reveals
+   * ------------------------------------------------------------------ */
+  (function reveals() {
+    var items = document.querySelectorAll("[data-reveal]");
     if (!items.length) return;
 
-    document.querySelectorAll("[data-reveal-group]").forEach((group) => {
-      Array.from(group.querySelectorAll("[data-reveal]")).forEach((el, i) => {
-        el.style.setProperty("--i", i);
-      });
-    });
-
-    if (!("IntersectionObserver" in window)) {
-      items.forEach((el) => el.classList.add("is-visible"));
+    if (!("IntersectionObserver" in window) || reduceMotion.matches) {
+      for (var i = 0; i < items.length; i++) items[i].classList.add("is-visible");
       return;
     }
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
     );
-    items.forEach((el) => io.observe(el));
-  }
 
-  /* ---------------- Animated counters ---------------- */
-  function initCounters() {
-    const els = document.querySelectorAll("[data-count]");
-    if (!els.length) return;
+    for (var j = 0; j < items.length; j++) observer.observe(items[j]);
+  })();
 
-    const animate = (el) => {
-      const target = parseFloat(el.dataset.count);
-      const suffix = el.dataset.suffix || "";
-      const noGroup = "noGroup" in el.dataset;
-      const decimals = el.dataset.count.includes(".") ? 1 : 0;
-      const duration = 1600;
-      const start = performance.now();
-      const from = 0;
-      function tick(now) {
-        const p = Math.min(1, (now - start) / duration);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const val = from + (target - from) * eased;
-        const rounded = decimals ? val.toFixed(decimals) : Math.round(val);
-        el.textContent = (noGroup ? String(rounded) : rounded.toLocaleString(document.documentElement.lang === "el" ? "el-GR" : "en-US")) + suffix;
-        if (p < 1) requestAnimationFrame(tick);
+  /* ------------------------------------------------------------------ *
+   * 2. Header state + scroll-to-top + scrollspy, on one rAF-throttled
+   *    scroll listener so nothing fights for the main thread.
+   * ------------------------------------------------------------------ */
+  (function scrollUi() {
+    var header = document.getElementById("site-header");
+    var toTop = document.getElementById("to-top");
+    var links = Array.prototype.slice.call(document.querySelectorAll(".nav__link[href^='#']"));
+    var sections = links
+      .map(function (link) { return document.querySelector(link.getAttribute("href")); })
+      .filter(Boolean);
+
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var y = window.scrollY || window.pageYOffset;
+
+      if (header) header.classList.toggle("is-stuck", y > 12);
+      if (toTop) toTop.classList.toggle("is-visible", y > window.innerHeight * 0.6);
+
+      if (sections.length) {
+        var line = y + window.innerHeight * 0.32;
+        var active = -1;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].offsetTop <= line) active = i;
+        }
+        for (var j = 0; j < links.length; j++) {
+          links[j].classList.toggle("is-current", j === active);
+        }
       }
-      requestAnimationFrame(tick);
-    };
-
-    if (!("IntersectionObserver" in window)) {
-      els.forEach(animate);
-      return;
     }
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            animate(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(update);
+        }
       },
-      { threshold: 0.6 }
+      { passive: true }
     );
-    els.forEach((el) => io.observe(el));
-  }
+    update();
 
-  /* ---------------- Location switcher (hover a branch, its photo crossfades in) ---------------- */
-  function initLocationSwitcher() {
-    const bgEl = document.getElementById("locationSwitcherBg");
-    const listEl = document.getElementById("locationSwitcherList");
-    if (!bgEl || !listEl || !window.HC_DATA) return;
-
-    const locations = window.HC_DATA.locations;
-    function lang() { return document.documentElement.getAttribute("data-lang") || "el"; }
-
-    const locationPhotos = {
-      0: "assets/img/location-1.jpg",
-      1: "assets/img/location-2.jpg",
-      2: "assets/img/location-3.jpg",
-      3: "assets/img/location-4.jpg",
-      4: "assets/img/location-5.jpg",
-      5: "assets/img/location-6.jpg",
-      6: "assets/img/location-7.jpg",
-    };
-
-    bgEl.innerHTML = locations.map((loc, i) => `
-      <div class="location-switcher__bg-layer${i === 0 ? " is-active" : ""}" data-idx="${i}"><img src="${locationPhotos[i]}" alt="" loading="lazy"></div>
-    `).join("");
-    const layers = Array.from(bgEl.children);
-
-    let current = 0;
-    function setActive(idx) {
-      current = idx;
-      layers.forEach((el, i) => el.classList.toggle("is-active", i === idx));
-      Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-active", i === idx));
-      updateDots();
-    }
-
-    function setEngaged(idx) {
-      Array.from(listEl.children).forEach((el, i) => el.classList.toggle("is-engaged", i === idx));
-    }
-
-    function renderList() {
-      listEl.innerHTML = locations.map((loc) => `
-        <button type="button" class="location-switcher__item">
-          <strong>${loc.name[lang()]}</strong>
-          <span>${loc.hours[lang()]}</span>
-          <span class="item-directions"><span data-lang-el>Οδηγίες</span><span data-lang-en>Directions</span></span>
-        </button>
-      `).join("");
-      Array.from(listEl.children).forEach((btn, i) => {
-        btn.addEventListener("mouseenter", () => setActive(i));
-        btn.addEventListener("focus", () => setActive(i));
-        btn.addEventListener("click", () => { setActive(i); setEngaged(i); });
-      });
-      setActive(0);
-    }
-    listEl.addEventListener("mouseleave", () => setActive(0));
-
-    /* ---- Mobile-only affordances: swipe the photo to change branch, plus dots + arrows ---- */
-    const switcherEl = document.getElementById("locationSwitcher");
-    const controls = document.createElement("div");
-    controls.className = "location-switcher__controls";
-    controls.innerHTML = `
-      <button type="button" class="location-switcher__arrow location-switcher__arrow--prev" aria-label="Προηγούμενο κατάστημα">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <div class="location-switcher__dots" role="tablist" aria-label="Καταστήματα"></div>
-      <button type="button" class="location-switcher__arrow location-switcher__arrow--next" aria-label="Επόμενο κατάστημα">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </button>
-    `;
-    switcherEl.parentElement.appendChild(controls);
-    const dotsEl = controls.querySelector(".location-switcher__dots");
-    const dots = locations.map((_, i) => {
-      const dot = document.createElement("button");
-      dot.type = "button";
-      dot.className = "location-switcher__dot";
-      dot.setAttribute("role", "tab");
-      dot.setAttribute("aria-label", `${i + 1}`);
-      dot.addEventListener("click", () => { setActive(i); setEngaged(i); });
-      dotsEl.appendChild(dot);
-      return dot;
-    });
-    function updateDots() {
-      dots.forEach((d, i) => {
-        d.classList.toggle("is-active", i === current);
-        d.setAttribute("aria-selected", i === current ? "true" : "false");
+    if (toTop) {
+      toTop.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: reduceMotion.matches ? "auto" : "smooth" });
+        var brand = document.querySelector(".brand");
+        if (brand) brand.focus({ preventScroll: true });
       });
     }
-    function step(delta) {
-      const next = Math.max(0, Math.min(locations.length - 1, current + delta));
-      setActive(next);
-      setEngaged(next);
-    }
-    controls.querySelector(".location-switcher__arrow--prev").addEventListener("click", () => step(-1));
-    controls.querySelector(".location-switcher__arrow--next").addEventListener("click", () => step(1));
+  })();
 
-    let dragStartX = null;
-    bgEl.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "mouse") return;
-      dragStartX = e.clientX;
-      try { bgEl.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
-    });
-    bgEl.addEventListener("pointerup", (e) => {
-      if (dragStartX === null) return;
-      const delta = e.clientX - dragStartX;
-      dragStartX = null;
-      if (Math.abs(delta) < 32) return;
-      step(delta < 0 ? 1 : -1);
-    });
-    bgEl.addEventListener("pointercancel", () => { dragStartX = null; });
+  /* ------------------------------------------------------------------ *
+   * 3. Mobile drawer
+   * ------------------------------------------------------------------ */
+  (function drawer() {
+    var toggle = document.getElementById("nav-toggle");
+    var panel = document.getElementById("drawer");
+    if (!toggle || !panel) return;
 
-    renderList();
-    document.addEventListener("hc:langchange", renderList);
-  }
+    var lastFocus = null;
 
-  function initFooterYear() {
-    document.querySelectorAll("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
-  }
-
-  /* ---------------- Reviews: write-a-review + confetti ---------------- */
-  function initReviewFlow() {
-    const openBtn = document.getElementById("openReviewModal");
-    const overlay = document.getElementById("reviewModalOverlay");
-    const modal = document.getElementById("reviewModal");
-    const closeBtn = document.getElementById("reviewModalClose");
-    const cancelBtn = document.getElementById("reviewCancel");
-    const form = document.getElementById("reviewForm");
-    const nameField = document.getElementById("reviewName");
-    const textField = document.getElementById("reviewText");
-    const starPicker = document.getElementById("starPicker");
-    const stars = starPicker ? starPicker.querySelectorAll(".star-picker__star") : [];
-    const track = document.getElementById("testiTrack");
-    const thanksOverlay = document.getElementById("thanksOverlay");
-    if (!openBtn || !modal || !form || !track || !thanksOverlay) return;
-
-    const openModal = () => {
-      overlay.classList.add("is-visible");
-      modal.classList.add("is-visible");
+    function open() {
+      lastFocus = document.activeElement;
+      panel.hidden = false;
+      /* next frame, so the transition has a start state to animate from */
+      window.requestAnimationFrame(function () { panel.classList.add("is-open"); });
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.setAttribute("aria-label", window.VetCareI18n ? window.VetCareI18n.t("nav.closeMenu") : "Close menu");
       document.body.style.overflow = "hidden";
-      nameField.focus();
-    };
-    const closeModal = () => {
-      overlay.classList.remove("is-visible");
-      modal.classList.remove("is-visible");
+      var first = panel.querySelector("a, button");
+      if (first) first.focus({ preventScroll: true });
+    }
+
+    function close() {
+      panel.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", window.VetCareI18n ? window.VetCareI18n.t("nav.openMenu") : "Open menu");
       document.body.style.overflow = "";
-    };
+      window.setTimeout(function () {
+        if (!panel.classList.contains("is-open")) panel.hidden = true;
+      }, 320);
+      if (lastFocus) lastFocus.focus({ preventScroll: true });
+    }
 
-    openBtn.addEventListener("click", openModal);
-    closeBtn && closeBtn.addEventListener("click", closeModal);
-    cancelBtn && cancelBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.classList.contains("is-visible")) closeModal();
+    toggle.addEventListener("click", function () {
+      if (toggle.getAttribute("aria-expanded") === "true") close();
+      else open();
     });
 
-    let rating = 0;
-    function paintStars() {
-      stars.forEach((s) => s.classList.toggle("is-filled", Number(s.dataset.value) <= rating));
-    }
-    stars.forEach((s) => {
-      s.addEventListener("click", () => {
-        rating = Number(s.dataset.value);
-        paintStars();
-        starPicker.closest(".field").classList.remove("has-error");
-      });
+    panel.addEventListener("click", function (event) {
+      if (event.target.closest("a")) close();
     });
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      let valid = true;
-      [nameField, textField].forEach((f) => {
-        const wrap = f.closest(".field");
-        if (!f.value.trim()) { wrap.classList.add("has-error"); valid = false; }
-        else wrap.classList.remove("has-error");
-      });
-      const starsWrap = starPicker.closest(".field");
-      if (rating < 1) { starsWrap.classList.add("has-error"); valid = false; }
-      else starsWrap.classList.remove("has-error");
-      if (!valid) return;
-
-      addReviewCard({ name: nameField.value.trim(), rating, text: textField.value.trim() });
-
-      form.reset();
-      rating = 0;
-      paintStars();
-      closeModal();
-      showThanks();
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") close();
     });
 
-    function initials(name) {
-      const parts = name.trim().split(/\s+/).slice(0, 2);
-      return parts.map((w) => w[0]).join("").toUpperCase();
-    }
+    /* Keep the drawer in step with the layout it belongs to. */
+    window.matchMedia("(min-width: 901px)").addEventListener("change", function (mq) {
+      if (mq.matches && toggle.getAttribute("aria-expanded") === "true") close();
+    });
+  })();
 
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = str;
-      return div.innerHTML;
-    }
-
-    function addReviewCard({ name, rating, text }) {
-      const card = document.createElement("article");
-      card.className = "testi-card testi-card--new";
-      const starsMarkup = "★".repeat(rating) + "☆".repeat(5 - rating);
-      card.innerHTML = `
-        <div class="testi-stars" aria-hidden="true">${starsMarkup}</div>
-        <p>«${escapeHtml(text)}»</p>
-        <div class="testi-person">
-          <div class="testi-avatar">${initials(name) || "?"}</div>
-          <div><strong>${escapeHtml(name)}</strong><span data-lang-el>Νέα κριτική</span><span data-lang-en>New review</span></div>
-        </div>`;
-      track.prepend(card);
-      track.scrollTo({ left: 0, behavior: "smooth" });
-    }
-
-    function showThanks() {
-      thanksOverlay.classList.add("is-visible");
-      runConfetti();
-      clearTimeout(thanksOverlay._t);
-      thanksOverlay._t = setTimeout(hideThanks, 3800);
-    }
-    function hideThanks() {
-      thanksOverlay.classList.remove("is-visible");
-    }
-    thanksOverlay.addEventListener("click", hideThanks);
-
-    function runConfetti() {
-      const canvas = document.getElementById("confettiCanvas");
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const colors = ["#7CB9E8", "#72A0C1", "#00308F", "#8B8C89", "#FFFFFF"];
-      const count = 140;
-      const particles = Array.from({ length: count }, () => ({
-        x: w / 2 + (Math.random() - 0.5) * 140,
-        y: h / 2 - 20,
-        vx: (Math.random() - 0.5) * 9,
-        vy: -(Math.random() * 9 + 4),
-        size: Math.random() * 7 + 4,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.3,
-        shape: Math.random() > 0.5 ? "rect" : "circle"
-      }));
-
-      const gravity = 0.18;
-      const start = performance.now();
-      const duration = 3200;
-
-      function frame(now) {
-        const t = now - start;
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach((p) => {
-          p.vy += gravity;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.rotation += p.rotationSpeed;
-          const fade = Math.max(0, 1 - t / duration);
-          ctx.save();
-          ctx.globalAlpha = fade;
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rotation);
-          ctx.fillStyle = p.color;
-          if (p.shape === "rect") ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-          else { ctx.beginPath(); ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2); ctx.fill(); }
-          ctx.restore();
-        });
-        if (t < duration) requestAnimationFrame(frame);
-        else ctx.clearRect(0, 0, w, h);
+  /* ------------------------------------------------------------------ *
+   * 4. Language switch
+   * ------------------------------------------------------------------ */
+  (function language() {
+    document.addEventListener("click", function (event) {
+      if (!window.VetCareI18n) return;
+      var target = event.target.closest
+        ? event.target.closest("[data-lang-set], [data-lang-toggle]")
+        : null;
+      if (!target) return;
+      if (target.hasAttribute("data-lang-toggle")) {
+        /* The compact phone switch simply flips to the other language. */
+        window.VetCareI18n.set(window.VetCareI18n.lang === "el" ? "en" : "el");
+      } else {
+        window.VetCareI18n.set(target.getAttribute("data-lang-set"));
       }
-      requestAnimationFrame(frame);
-    }
-  }
+    });
+  })();
 
-  /* ---------------- Toast (shared) ---------------- */
-  window.HCToast = function (msg) {
-    let toast = document.getElementById("hcToast");
-    if (!toast) {
-      toast = document.createElement("div");
-      toast.id = "hcToast";
-      toast.className = "toast";
-      toast.setAttribute("role", "status");
-      toast.setAttribute("aria-live", "polite");
-      document.body.appendChild(toast);
+  /* ------------------------------------------------------------------ *
+   * 5. Live opening status — computed in the clinic's own timezone so it is
+   *    correct for a visitor reading the page from anywhere.
+   *    Hours: Mon–Fri 09:00–14:00 and 18:00–21:00. Sat/Sun closed.
+   * ------------------------------------------------------------------ */
+  (function openingStatus() {
+    var chip = document.querySelector("[data-status-chip]");
+    var text = document.querySelector("[data-status-text]");
+    var table = document.getElementById("hours-table");
+    if (!chip && !table) return;
+
+    var MORNING = [9 * 60, 14 * 60];
+    var EVENING = [18 * 60, 21 * 60];
+
+    function athens() {
+      var parts;
+      try {
+        parts = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Europe/Athens",
+          weekday: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false
+        }).formatToParts(new Date());
+      } catch (e) {
+        /* No Intl timezone support: fall back to the visitor's own clock. */
+        var now = new Date();
+        return { day: now.getDay(), minutes: now.getHours() * 60 + now.getMinutes() };
+      }
+
+      var map = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+      var day = 0, hour = 0, minute = 0;
+      parts.forEach(function (part) {
+        if (part.type === "weekday") day = map[part.value] !== undefined ? map[part.value] : 0;
+        if (part.type === "hour") hour = parseInt(part.value, 10) % 24;
+        if (part.type === "minute") minute = parseInt(part.value, 10);
+      });
+      return { day: day, minutes: hour * 60 + minute };
     }
-    toast.textContent = msg;
-    toast.classList.add("is-visible");
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => toast.classList.remove("is-visible"), 3600);
-  };
+
+    function t(key) { return window.VetCareI18n ? window.VetCareI18n.t(key) : ""; }
+
+    function render() {
+      var now = athens();
+      var weekday = now.day >= 1 && now.day <= 5;
+      var inMorning = now.minutes >= MORNING[0] && now.minutes < MORNING[1];
+      var inEvening = now.minutes >= EVENING[0] && now.minutes < EVENING[1];
+      var isOpen = weekday && (inMorning || inEvening);
+
+      if (chip && text) {
+        chip.classList.toggle("chip--open", isOpen);
+        chip.classList.toggle("chip--closed", !isOpen);
+
+        if (isOpen) {
+          text.textContent = t("status.open");
+        } else if (weekday && now.minutes < MORNING[0]) {
+          text.textContent = t("status.opensAt").replace("{time}", "09:00");
+        } else if (weekday && now.minutes >= MORNING[1] && now.minutes < EVENING[0]) {
+          text.textContent = t("status.opensAt").replace("{time}", "18:00");
+        } else if (now.day >= 1 && now.day <= 4) {
+          text.textContent = t("status.opensTomorrow");
+        } else {
+          text.textContent = t("status.opensMon");
+        }
+      }
+
+      if (table) {
+        var rows = table.querySelectorAll("tr[data-day]");
+        for (var i = 0; i < rows.length; i++) {
+          rows[i].classList.toggle(
+            "is-today",
+            parseInt(rows[i].getAttribute("data-day"), 10) === now.day
+          );
+        }
+      }
+    }
+
+    render();
+    document.addEventListener("vetcare:langchange", render);
+    /* Re-check on the minute boundary so a page left open stays honest. */
+    window.setInterval(render, 60 * 1000);
+  })();
+
+  /* ------------------------------------------------------------------ *
+   * 6. Footer year
+   * ------------------------------------------------------------------ */
+  (function year() {
+    var el = document.getElementById("year");
+    if (el) el.textContent = String(new Date().getFullYear());
+  })();
 })();

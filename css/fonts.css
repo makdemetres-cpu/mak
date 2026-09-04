@@ -1,76 +1,132 @@
-/* Self-hosted fonts — Vollkorn (headings/display) and Inter (body).
-   Hosted locally (not via Google's CDN) so no visitor request/IP ever
-   reaches a third party just to render text — see privacy.html §8. */
+/* ---------------------------------------------------------------------------
+   Self-hosted webfonts — Alegreya (display) + Alegreya Sans (body/UI)
+   Both by Juan Pablo del Peral / Huerta Tipográfica, SIL Open Font License 1.1
+   (https://openfontlicense.org) — free for commercial web use.
 
-/* Vollkorn is only ever used at weight 700 across the site, so that's
-   the only weight self-hosted (verified for full Greek coverage before
-   adopting it — see the greek block below). */
-@font-face {
-  font-family: 'Vollkorn';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../assets/fonts/Vollkorn-700-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Vollkorn';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../assets/fonts/Vollkorn-700-greek.woff2') format('woff2');
-  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
-}
+   They are served from this domain rather than from Google's CDN on purpose:
+   a request to fonts.gstatic.com would disclose every visitor's IP address to
+   a third country before consent, which is exactly the transfer German and
+   other EU courts have penalised. Self-hosting keeps the site consent-free.
 
+   Only the `greek` and `latin` unicode-ranges are shipped (the site is
+   Greek/English only), which keeps the whole type system at ~270 KB and lets
+   the browser download just the ranges a given page actually paints.
+--------------------------------------------------------------------------- */
+
+/* --- Alegreya, variable weight 400–900 --------------------------------- */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Alegreya";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 900;
   font-display: swap;
-  src: url('../assets/fonts/Inter-Variable-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("../assets/fonts/Alegreya-Variable-greek.woff2") format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1,
+    U+03A3-03FF;
 }
 @font-face {
-  font-family: 'Inter';
+  font-family: "Alegreya";
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 900;
   font-display: swap;
-  src: url('../assets/fonts/Inter-Variable-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  src: url("../assets/fonts/Alegreya-Variable-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 100 900;
+  font-family: "Alegreya";
+  font-style: italic;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('../assets/fonts/Inter-Variable-greek.woff2') format('woff2');
-  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+  src: url("../assets/fonts/Alegreya-Italic-greek.woff2") format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1,
+    U+03A3-03FF;
 }
 @font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 100 900;
+  font-family: "Alegreya";
+  font-style: italic;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('../assets/fonts/Inter-Variable-greek-ext.woff2') format('woff2');
-  unicode-range: U+1F00-1FFF;
+  src: url("../assets/fonts/Alegreya-Italic-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Miama — calligraphic script used only for the Our Story photo timeline
-   captions. Verified to include real Greek glyph coverage (not just Latin,
-   unlike most script fonts) before adopting it. */
+/* --- Alegreya Sans, 300 / 400 / 500 / 700 ------------------------------ */
 @font-face {
-  font-family: 'Miama';
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("../assets/fonts/AlegreyaSans-300-greek.woff2") format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1,
+    U+03A3-03FF;
+}
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("../assets/fonts/AlegreyaSans-300-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Alegreya Sans";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../assets/fonts/Miama-400-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url("../assets/fonts/AlegreyaSans-400-greek.woff2") format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1,
+    U+03A3-03FF;
 }
 @font-face {
-  font-family: 'Miama';
+  font-family: "Alegreya Sans";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../assets/fonts/Miama-400-greek.woff2') format('woff2');
-  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+  src: url("../assets/fonts/AlegreyaSans-400-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/AlegreyaSans-500-greek.woff2") format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1,
+    U+03A3-03FF;
+}
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/AlegreyaSans-500-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/AlegreyaSans-700-greek.woff2") format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1,
+    U+03A3-03FF;
+}
+@font-face {
+  font-family: "Alegreya Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/AlegreyaSans-700-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
 }
