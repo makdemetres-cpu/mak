@@ -1494,20 +1494,21 @@ body.consent-open .to-top {
    --------------------------------------------------------------------------
    Mechanism: .hero-stage-wrap is many viewport-heights tall. .hero-stage is
    position:sticky inside it, so it stays pinned on screen for that whole
-   scroll distance. js/camera-scene.js reads how far through that distance
-   the visitor has scrolled (0 to 1) and writes it to two kinds of custom
-   property: --t on each .cam-part (0 = assembled, 1 = fully detached) and
-   --rig-rot / --copy-op on the rig and the copy block. Every rule below
-   that consumes those properties is therefore a pure function of scroll
-   position — no transition is applied to them — so scrolling back up
-   reverses the assembly exactly, frame for frame, with no separate
-   "reverse" logic anywhere.
+   scroll distance. js/camera-3d.js reads how far through that distance the
+   visitor has scrolled (0 to 1) and uses it to move a real Three.js camera
+   model apart at the seams and turn it — genuine 3D position/rotation on
+   the WebGL side, not a CSS custom property, because the parts now travel
+   in actual depth (toward and away from the viewer), not just across a flat
+   plane. Scrolling back up reverses it for free: the animation is a pure
+   function of scroll position on every frame, not a one-shot trigger, so
+   there is no separate "reverse" branch anywhere in the script.
 
-   Responsiveness: part travel distances are expressed in %, which CSS
-   resolves against each PART's OWN box, not the viewport. That is what
-   makes the same JS-supplied --t work correctly at 320px and at 1920px
-   without any breakpoint-specific math in the script — only the SVG's
-   overall scale changes, which it already does responsively.
+   The rules below only cover what stays in plain CSS: sizing/positioning
+   .cam-canvas (where Three.js renders) and .cam-rig/.cam-svg (the flat,
+   always-assembled fallback drawing — see the .has-3d and .cam-flat
+   comments below for exactly when each is shown), plus the left-hand
+   stage text and the nav lock, both of which are identical regardless of
+   whether the 3D scene is running.
    ========================================================================== */
 
 /* Without JS the wrapper never gets tall, so the section is a single normal
@@ -1532,33 +1533,43 @@ body.consent-open .to-top {
   .js .hero-stage-wrap { height: auto !important; }
   .hero-stage { position: static; height: auto; padding-block: calc(var(--header-h) + 3rem) 2rem; }
 }
+/* .cam-flat is the same collapse, applied by camera-3d.js instead of the
+   OS-level motion preference — for a device with no WebGL, or one whose
+   WebGL context died mid-session. There is no meaningful "pause the 3D
+   scene here" middle ground once that has happened, so it gets the exact
+   same flat, single-screen treatment as reduced motion. */
+.js.cam-flat .hero-stage-wrap { height: auto !important; }
+.cam-flat .hero-stage { position: static; height: auto; padding-block: calc(var(--header-h) + 3rem) 2rem; }
 
 .cam-stage {
   position: relative;
   width: min(78vw, 480px);
   aspect-ratio: 4 / 3;
-  perspective: 1200px;
   margin-block: clamp(1.25rem, 3vw, 2rem);
 }
-.cam-rig {
-  position: absolute; inset: 0;
-  transform-style: preserve-3d;
-  transform: rotateY(var(--rig-rot, 0deg));
-}
-@media (prefers-reduced-motion: reduce) { .cam-rig { transform: none; } }
 
+/* Real 3D (js/camera-3d.js, Three.js). Hidden until that script has actually
+   built a scene and rendered a frame without error — see the .has-3d swap
+   below — so a WebGL failure never leaves a blank canvas on screen. */
+.cam-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: none;
+  touch-action: pan-y;   /* decorative canvas must never eat a scroll gesture */
+}
+html.has-3d .cam-canvas { display: block; }
+html.has-3d .cam-rig { display: none; }
+
+/* Flat fallback: prefers-reduced-motion, no WebGL, a WebGL context that
+   later dies mid-session, or no JS at all. Always assembled, never
+   animated — camera-3d.js drives the .has-3d swap above; it never touches
+   any property on these elements. */
+.cam-rig { position: absolute; inset: 0; }
 .cam-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .cam-part {
-  --t: 0;
   fill: none; stroke: var(--accent); stroke-width: 2;
   stroke-linecap: round; stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-  /* Rotating an SVG element with a CSS transform defaults to pivoting
-     around (0,0) of the whole viewBox (transform-box: view-box), not the
-     element's own geometry. That sent every part swinging on a huge,
-     wrong-direction arc. Pin the pivot to each part's own center instead. */
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
 }
 .cam-part .cam-fill { fill: color-mix(in srgb, var(--accent) 8%, transparent); stroke: var(--accent); }
 .cam-part .cam-fill-strong { fill: color-mix(in srgb, var(--accent) 16%, transparent); stroke: var(--accent); }
@@ -1569,61 +1580,9 @@ body.consent-open .to-top {
   .cam-part .cam-fill-strong { fill: rgba(194,160,95,.16); }
 }
 
-/* Body stays put — everything else explodes away from it and back.
-
-   Offsets below are in the SVG's OWN user units (the 400×300 viewBox), not
-   percent. A CSS transform percentage on an SVG element resolves against
-   the whole SVG viewport, not the individual part's own geometry — so a
-   "-60%" here would not mean "60% of the lens", it would mean 60% of the
-   entire 400-wide canvas, which sent an earlier version of this clean off
-   the edge of the drawing. A plain number, by contrast, is read as SVG user
-   units and lands exactly where the number says relative to the artwork's
-   own coordinates — and because the whole <svg> is already scaled
-   responsively against .cam-stage, it still scales correctly with the
-   drawing at every screen size with no extra math.
-
-   These are plain 2D transforms (translate/rotate), not translate3d/rotateZ.
-   The whole-camera 3D turn lives one level up, on .cam-rig — a normal HTML
-   element, where CSS 3D transforms are fully and predictably supported.
-   Giving each individual <g> inside the SVG its own translateZ nested
-   inside that already-3D context does not composite reliably in current
-   browsers: an early version of this did exactly that, and a part's Y
-   offset came out inverted — moving up when the value said down. Composing
-   real 3D rotation of the whole picture-plane with plain 2D movement of the
-   parts inside it avoids that failure mode entirely, and still reads as
-   three-dimensional because the picture-plane itself is genuinely turning. */
-.cam-body { transform: translate(0, 0); }
-
-.cam-lens {
-  transform:
-    translate(calc(var(--t) * -95px), calc(var(--t) * 80px))
-    rotate(calc(var(--t) * -24deg));
-}
-.cam-viewfinder {
-  transform:
-    translate(calc(var(--t) * 15px), calc(var(--t) * -60px))
-    rotate(calc(var(--t) * 16deg));
-}
-.cam-back {
-  transform:
-    translate(calc(var(--t) * 100px), calc(var(--t) * 10px))
-    rotate(calc(var(--t) * 48deg));
-}
-.cam-dial {
-  transform:
-    translate(calc(var(--t) * 85px), calc(var(--t) * -55px))
-    rotate(calc(var(--t) * 66deg));
-}
-
-/* Mobile gets the shorter, simpler sequence: only lens and viewfinder move,
-   and the back panel / dial are not even drawn, so there is less linework
-   for a weaker GPU to paint. */
-@media (max-width: 899px) {
-  .cam-back, .cam-dial { display: none; }
-}
-
 .hero-copy { opacity: var(--copy-op, 1); }
 @media (prefers-reduced-motion: reduce) { .hero-copy { opacity: 1; } }
+.cam-flat .hero-copy { opacity: 1; }
 
 /* ---- the left-hand (stacked, on mobile) narrative text -------------------- */
 .cam-stagetext {
@@ -1639,7 +1598,7 @@ body.consent-open .to-top {
   margin: 0;
 }
 /* Only one line at a time, in the language pair already visible. Hidden by
-   default so the page reads cleanly if camera-scene.js never runs; only
+   default so the page reads cleanly if camera-3d.js never runs; only
    .js turns this into a toggled sequence. Every line stays absolutely
    stacked at all times (never toggled back into flow) so the outgoing and
    incoming line crossfade in the exact same spot instead of one of them
@@ -1668,6 +1627,16 @@ body.consent-open .to-top {
   }
   .js .cam-line:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
 }
+/* Same stacked, all-shown-at-once treatment for .cam-flat — see the
+   .hero-stage-wrap comment above for why this mirrors reduced-motion. */
+.js.cam-flat .cam-stagetext { position: static; transform: none; margin-top: 1.5rem; max-width: 46ch; width: auto; min-height: 0; }
+.js.cam-flat .cam-line {
+  position: static; opacity: 1;
+  display: flex; flex-direction: column; gap: .5em;
+  padding-bottom: .9rem; margin-bottom: .9rem;
+  border-bottom: 1px solid var(--rule);
+}
+.js.cam-flat .cam-line:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
 
 @media (max-width: 899px) {
   .hero-stage { padding-top: calc(var(--header-h) + 1rem); justify-content: flex-start; gap: .5rem; }
@@ -1693,7 +1662,7 @@ body.consent-open .to-top {
 }
 
 /* ---- nav lock -------------------------------------------------------------
-   Applied by js/camera-scene.js until the sequence has played through once.
+   Applied by js/camera-3d.js until the sequence has played through once.
    The wordmark is deliberately left clickable throughout — it only scrolls
    to the top of the very sequence the visitor is already in, so it cannot
    be used to skip anything. */

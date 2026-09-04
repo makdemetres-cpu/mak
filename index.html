@@ -101,17 +101,21 @@
 <!-- ====================================================== HERO -->
 <!-- A tall pinned sequence, NOT a scroll-jack. .hero-stage-wrap is many
      viewport-heights tall; .hero-stage is position:sticky inside it, so it
-     stays on screen for the whole scroll distance while js/camera-scene.js
+     stays on screen for the whole scroll distance while js/camera-3d.js
      reads how far through that distance the visitor has scrolled and uses
-     it to drive the camera apart. Scrolling back up reverses it for free,
-     because the animation is a pure function of scroll position, not a
-     one-shot trigger.
+     it to drive a real, rotatable 3D camera (Three.js, self-hosted, no CDN)
+     apart at the seams. Scrolling back up reverses it for free, because the
+     animation is a pure function of scroll position, not a one-shot trigger.
+
+     The 3D scene only ever replaces the flat SVG glyph below once it has
+     actually built and rendered a frame — no WebGL, prefers-reduced-motion,
+     or no JS at all all leave the SVG in place, assembled and static.
 
      Nav is locked (see body[data-nav-locked]) until the sequence has played
-     through once. A visitor with reduced motion enabled never sees any of
-     this: the wrapper collapses to a normal single screen, the camera sits
-     assembled, every line of text is shown at once, and nav is never
-     locked — see the prefers-reduced-motion block in css/style.css. -->
+     through once. Whenever the 3D scene is not running for any reason above,
+     the wrapper collapses to a normal single screen, every line of text is
+     shown at once, and nav is never locked — see the prefers-reduced-motion
+     and .cam-flat blocks in css/style.css. -->
 <section class="hero-stage-wrap" id="top" data-cam-wrap>
   <div class="hero-stage">
 
@@ -135,6 +139,13 @@
     </div>
 
     <div class="cam-stage" aria-hidden="true">
+      <!-- Real 3D (Three.js), used whenever WebGL + full motion are available.
+           js/camera-3d.js adds .has-3d to <html> once it has actually built
+           and rendered a frame, which is what swaps this in for the SVG
+           below via CSS — never assumed just because the script loaded. -->
+      <canvas class="cam-canvas"></canvas>
+      <!-- Flat, static fallback: prefers-reduced-motion, no WebGL, or no JS
+           at all. Always assembled, never animated. -->
       <div class="cam-rig">
         <svg class="cam-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
 
@@ -757,7 +768,7 @@
         <span data-lang-el>Όλες οι φωτογραφίες προστατεύονται από πνευματικά δικαιώματα.</span>
         <span data-lang-en>All photographs are protected by copyright.</span>
       </p>
-      <p><span data-lang-el>Ιωάννινα, Ελλάδα</span><span data-lang-en>Ioannina, Greece</span> · <span class="build-id">build 10</span></p>
+      <p><span data-lang-el>Ιωάννινα, Ελλάδα</span><span data-lang-en>Ioannina, Greece</span> · <span class="build-id">build 11</span></p>
     </div>
   </div>
 </footer>
@@ -898,7 +909,17 @@
 <script src="js/consent.js"></script>
 <script src="js/contact.js"></script>
 <script src="js/tilt.js"></script>
-<script src="js/camera-scene.js"></script>
+<script type="module" src="js/camera-3d.js"></script>
+<!-- Belt-and-braces for the handful of very old browsers that support
+     .js/boot.js (a plain script) but not type="module": without this,
+     camera-3d.js would simply never run and the nav would stay locked
+     forever, since nothing else ever calls unlockNav(). -->
+<script nomodule>
+  document.body.removeAttribute("data-nav-locked");
+  Array.prototype.forEach.call(document.querySelectorAll(".nav-desktop a, .nav-mobile a"), function (a) {
+    a.removeAttribute("aria-disabled"); a.removeAttribute("tabindex");
+  });
+</script>
 
 <!-- Structured data. Fill the marked values in before publishing — Google
      will flag placeholder text, and wrong opening/contact data in a
