@@ -1580,7 +1580,7 @@ html.has-3d .cam-rig { display: none; }
   .cam-part .cam-fill-strong { fill: rgba(194,160,95,.16); }
 }
 
-.hero-copy { opacity: var(--copy-op, 1); }
+.hero-copy { opacity: var(--copy-op, 1); transition: opacity .12s linear; }
 @media (prefers-reduced-motion: reduce) { .hero-copy { opacity: 1; } }
 .cam-flat .hero-copy { opacity: 1; }
 

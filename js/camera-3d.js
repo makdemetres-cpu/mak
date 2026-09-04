@@ -46,8 +46,11 @@ import * as THREE from "./vendor/three.module.min.js";
   var reduceMQ = window.matchMedia("(prefers-reduced-motion: reduce)");
   var mobileMQ = window.matchMedia("(max-width: 899px)");
 
-  var STAGE_NAMES_DESKTOP = ["lens", "viewfinder", "back", "dial"];
-  var STAGE_NAMES_MOBILE = ["lens", "viewfinder"];
+  // Mobile's shorter sequence deliberately reuses the same first two names
+  // as desktop's longer one (see the markup comment above .cam-stagetext)
+  // so the two breakpoints can share the same numbered stage-text slots.
+  var STAGE_NAMES_DESKTOP = ["lensFront", "viewfinder", "lensBarrel", "grip", "back", "dial"];
+  var STAGE_NAMES_MOBILE = ["lensFront", "viewfinder"];
 
   /* ---- nav lock (identical to the previous CSS-only build) -------------- */
   function navLinks() { return document.querySelectorAll(".nav-desktop a, .nav-mobile a"); }
@@ -107,7 +110,9 @@ import * as THREE from "./vendor/three.module.min.js";
 
     // Grip: a raised block on the body's right edge, proud of the front
     // face — the single detail that most sells "camera" over "box" at a
-    // glance.
+    // glance. Detachable (see STAGE_NAMES_DESKTOP), so it stays a plain
+    // Mesh rather than a Group — applyPart() only needs .position/.rotation,
+    // which every Object3D has.
     var grip = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.86, 0.5), gripMat);
     grip.position.set(0.75, -0.02, 0.16);
     rig.add(grip);
@@ -137,37 +142,46 @@ import * as THREE from "./vendor/three.module.min.js";
       rig.add(lug);
     });
 
-    // Lens: built up in visible layers front-to-back (mount collar → main
-    // barrel → grip-ridge detail → aperture-ring section → gold accent
-    // ring → front rim → glass) instead of one plain cylinder, so it
-    // reads as an assembled optic rather than a single tube.
-    var lens = new THREE.Group();
+    // Lens: built up in visible layers front-to-back, and split into two
+    // independently-detachable groups instead of one — the rear barrel
+    // assembly (mount collar → main barrel → grip-ridge detail) and the
+    // front optical assembly (aperture-ring section → gold accent ring →
+    // front rim → glass). Both groups share the same rest position, so at
+    // t=0 they still read as one continuous lens; the split only becomes
+    // visible once they pull apart from each other.
+    var LENS_REST = new THREE.Vector3(0, -0.14, 0.31);
+
+    var lensBarrel = new THREE.Group();
     var mount = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 0.07, 28), darkMat);
     mount.rotation.x = Math.PI / 2; mount.position.z = 0.035;
-    lens.add(mount);
+    lensBarrel.add(mount);
     var barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.44, 0.3, 28), darkMat);
     barrel.rotation.x = Math.PI / 2; barrel.position.z = 0.22;
-    lens.add(barrel);
+    lensBarrel.add(barrel);
     var gripRidge = new THREE.Mesh(new THREE.TorusGeometry(0.425, 0.018, 8, 32), gripMat);
     gripRidge.position.z = 0.2;
-    lens.add(gripRidge);
+    lensBarrel.add(gripRidge);
+    lensBarrel.position.copy(LENS_REST);
+    rig.add(lensBarrel);
+
+    var lensFront = new THREE.Group();
     var apertureBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.39, 0.41, 0.1, 28), darkMat);
     apertureBarrel.rotation.x = Math.PI / 2; apertureBarrel.position.z = 0.42;
-    lens.add(apertureBarrel);
+    lensFront.add(apertureBarrel);
     // Torus already faces Z by default — that's forward, toward the
     // viewer, exactly right for a lens ring. No rotation needed (rotating
     // it like the cylinders above turned it edge-on into a flat line).
     var ring = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.026, 10, 36), goldMat);
     ring.position.z = 0.42;
-    lens.add(ring);
+    lensFront.add(ring);
     var frontRim = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.38, 0.03, 28), darkMat);
     frontRim.rotation.x = Math.PI / 2; frontRim.position.z = 0.485;
-    lens.add(frontRim);
+    lensFront.add(frontRim);
     var glass = new THREE.Mesh(new THREE.CircleGeometry(0.33, 28), glassMat);
     glass.position.z = 0.505;
-    lens.add(glass);
-    lens.position.set(0, -0.14, 0.31);
-    rig.add(lens);
+    lensFront.add(glass);
+    lensFront.position.copy(LENS_REST);
+    rig.add(lensFront);
 
     // Viewfinder: a proper pentaprism silhouette — flat front/back and
     // bottom, sloped roof up to an off-centre ridge — built as a 2D
@@ -217,10 +231,17 @@ import * as THREE from "./vendor/three.module.min.js";
     return {
       rig: rig,
       parts: {
-        lens: { obj: lens, rest: lens.position.clone(), dPos: new THREE.Vector3(-0.55, -0.42, 0.65), dRot: new THREE.Vector3(0.55, 0, -0.95) },
+        lensFront: { obj: lensFront, rest: lensFront.position.clone(), dPos: new THREE.Vector3(-0.32, -0.22, 0.95), dRot: new THREE.Vector3(0.35, 0, -0.5) },
+        // A cylinder viewed straight down its own axis (as this one is at
+        // rest, pointing at the camera like the lens it's part of) reads as
+        // a tiny dot, not a tube — dRot.y here turns it side-on once
+        // detached so its actual barrel shape becomes visible, the same
+        // way a real lens barrel would tumble in the air.
+        lensBarrel: { obj: lensBarrel, rest: lensBarrel.position.clone(), dPos: new THREE.Vector3(-0.85, -1.15, -0.25), dRot: new THREE.Vector3(0.2, 1.2, -0.3) },
         viewfinder: { obj: vf, rest: vf.position.clone(), dPos: new THREE.Vector3(0.22, 0.5, -0.32), dRot: new THREE.Vector3(0.7, 0.3, 0.2) },
+        grip: { obj: grip, rest: grip.position.clone(), dPos: new THREE.Vector3(0.58, -0.2, 0.2), dRot: new THREE.Vector3(-0.2, 0.4, 0.3) },
         back: { obj: back, rest: back.position.clone(), dPos: new THREE.Vector3(0.06, -0.03, -0.38), dRot: new THREE.Vector3(0, -2.05, 0) },
-        dial: { obj: dial, rest: dial.position.clone(), dPos: new THREE.Vector3(0.32, 0.3, 0.26), dRot: new THREE.Vector3(0, 0, 5.6) }
+        dial: { obj: dial, rest: dial.position.clone(), dPos: new THREE.Vector3(0.62, 0.58, 0.5), dRot: new THREE.Vector3(0, 0, 5.6) }
       }
     };
   }
@@ -297,59 +318,96 @@ import * as THREE from "./vendor/three.module.min.js";
     p.obj.rotation.set(p.dRot.x * t, p.dRot.y * t, p.dRot.z * t);
   }
 
-  // Driven by a continuous requestAnimationFrame loop rather than a
-  // "scroll" event listener. An event-driven version of this worked in
-  // every real browser tested directly, but silently never fired at all
-  // inside this project's own Claude Artifact preview tool — that preview
-  // renders the page inside a sandboxed iframe whose scrolling apparently
-  // doesn't dispatch "scroll" events the normal way, even though the
-  // content visibly does scroll (this .hero-stage-wrap's CSS position:
-  // sticky still worked fine there, since that needs no JS at all). Polling
-  // getBoundingClientRect() every frame instead sidesteps the question of
-  // whether any particular host fires scroll events correctly: it reads
-  // the actual current layout, which is authoritative regardless. The
-  // scroll-reveal system in main.js already uses the same rAF-polling
-  // safety-net pattern for the same class of reliability concern.
+  // Stage-text elements queried once and cached, rather than re-querying
+  // the DOM for the same handful of nodes on every single frame.
+  var maxStages = Math.max(STAGE_NAMES_DESKTOP.length, STAGE_NAMES_MOBILE.length);
+  var lineEls = [];
+  for (var s = 1; s <= maxStages; s++) lineEls.push(wrap.querySelector('.cam-line[data-stage="' + s + '"]'));
+
+  // Each part's animated position/rotation eases toward its scroll-derived
+  // target instead of snapping straight to it — a fixed fraction of the
+  // remaining distance is closed every frame, exponentially decaying
+  // toward the target, which reads as smooth, weighted motion rather than
+  // something rigidly welded to the scrollbar. The time constant (not a
+  // flat per-frame fraction) keeps the same feel regardless of the
+  // display's refresh rate: a 144Hz screen doesn't converge any faster or
+  // slower in wall-clock time than a 60Hz one.
+  var EASE_MS = 140;
+  var currentT = {};
+  Object.keys(parts).forEach(function (name) { currentT[name] = 0; });
+  var cameraZCurrent = camera.position.z;
+
+  /* ---- scroll → progress -------------------------------------------------
+     Driven by a continuous requestAnimationFrame loop rather than a
+     "scroll" event listener. An event-driven version of this worked in
+     every real browser tested directly, but silently never fired at all
+     inside this project's own Claude Artifact preview tool — that preview
+     renders the page inside a sandboxed iframe whose scrolling apparently
+     doesn't dispatch "scroll" events the normal way, even though the
+     content visibly does scroll (this .hero-stage-wrap's CSS position:
+     sticky still worked fine there, since that needs no JS at all). Polling
+     getBoundingClientRect() every frame instead sidesteps the question of
+     whether any particular host fires scroll events correctly: it reads
+     the actual current layout, which is authoritative regardless. The
+     scroll-reveal system in main.js already uses the same rAF-polling
+     safety-net pattern for the same class of reliability concern. */
   var lastP = -1;
-  function frame() {
+  var lastFrameTime = -1;
+  function frame(now) {
     requestAnimationFrame(frame);
     if (!webglAlive) return;
+
+    var dtMs = lastFrameTime < 0 ? 16 : Math.min(64, now - lastFrameTime);
+    lastFrameTime = now;
+    var ease = 1 - Math.exp(-dtMs / EASE_MS);
 
     var rect = wrap.getBoundingClientRect();
     var total = rect.height - window.innerHeight;
     var p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 1;
-    // Nothing moved since last frame (page is scrolled away from the hero
-    // entirely, or simply idle) — skip the rebuild-and-render work, but the
-    // rAF loop above keeps itself alive either way so it picks back up the
-    // instant scrolling resumes, with no event to wait for.
-    if (p === lastP) return;
+    var scrolled = p !== lastP;
     lastP = p;
 
     var stageNames = mobileMQ.matches ? STAGE_NAMES_MOBILE : STAGE_NAMES_DESKTOP;
     var rr = ranges(stageNames.length);
-    var active = {};
-    stageNames.forEach(function (name, i) { active[name] = true; });
 
+    // Applying every part every frame (not just while scroll position is
+    // literally changing) is what lets the ease-toward-target motion above
+    // keep animating for the few frames after the visitor's scroll input
+    // itself has already stopped — a real physical camera wouldn't stop
+    // dead the instant a hand stops moving either.
+    var settled = true;
     Object.keys(parts).forEach(function (name) {
       var idx = stageNames.indexOf(name);
-      var t = idx === -1 ? 0 : smoothstep(rr[idx][0], rr[idx][1], p);
-      applyPart(parts[name], t);
+      var target = idx === -1 ? 0 : smoothstep(rr[idx][0], rr[idx][1], p);
+      var cur = currentT[name];
+      var next = cur + (target - cur) * ease;
+      if (Math.abs(target - next) < 0.0008) next = target;
+      if (next !== cur) settled = false;
+      currentT[name] = next;
+      applyPart(parts[name], next);
     });
 
     // The rig's own orientation is fixed (set once, above) — no
     // whole-camera turntable turn. A slight dolly-back as the parts spread
     // out keeps the whole exploded arrangement inside frame instead of the
-    // outer pieces drifting past the edge of the canvas.
-    camera.position.z = 4.4 + p * 0.9;
+    // outer pieces drifting past the edge of the canvas — eased for the
+    // same reason the parts are.
+    var targetZ = 4.4 + p * 0.9;
+    cameraZCurrent += (targetZ - cameraZCurrent) * ease;
+    if (Math.abs(targetZ - cameraZCurrent) < 0.0008) cameraZCurrent = targetZ;
+    else settled = false;
+    camera.position.z = cameraZCurrent;
+
+    if (!scrolled && settled) return; // truly nothing to redraw this frame
 
     copyEl.style.setProperty("--copy-op", (1 - smoothstep(0, 0.08, p)).toFixed(3));
-    stageNames.forEach(function (name, i) {
-      var line = wrap.querySelector('.cam-line[data-stage="' + (i + 1) + '"]');
-      if (!line) return;
+    for (var i = 0; i < stageNames.length; i++) {
+      var line = lineEls[i];
+      if (!line) continue;
       var isLast = i === stageNames.length - 1;
       var isActive = p >= rr[i][0] && (isLast || p < rr[i + 1][0]);
       line.classList.toggle("is-active", isActive);
-    });
+    }
 
     try {
       renderer.render(scene, camera);
@@ -366,5 +424,5 @@ import * as THREE from "./vendor/three.module.min.js";
   // frame (see the comment above frame()), so a resize or breakpoint
   // change is picked up automatically on the very next frame with no
   // separate "resize" listener needed to trigger a recompute.
-  frame();
+  frame(performance.now());
 })();
