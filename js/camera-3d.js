@@ -297,14 +297,33 @@ import * as THREE from "./vendor/three.module.min.js";
     p.obj.rotation.set(p.dRot.x * t, p.dRot.y * t, p.dRot.z * t);
   }
 
-  var queued = false;
+  // Driven by a continuous requestAnimationFrame loop rather than a
+  // "scroll" event listener. An event-driven version of this worked in
+  // every real browser tested directly, but silently never fired at all
+  // inside this project's own Claude Artifact preview tool — that preview
+  // renders the page inside a sandboxed iframe whose scrolling apparently
+  // doesn't dispatch "scroll" events the normal way, even though the
+  // content visibly does scroll (this .hero-stage-wrap's CSS position:
+  // sticky still worked fine there, since that needs no JS at all). Polling
+  // getBoundingClientRect() every frame instead sidesteps the question of
+  // whether any particular host fires scroll events correctly: it reads
+  // the actual current layout, which is authoritative regardless. The
+  // scroll-reveal system in main.js already uses the same rAF-polling
+  // safety-net pattern for the same class of reliability concern.
+  var lastP = -1;
   function frame() {
-    queued = false;
+    requestAnimationFrame(frame);
     if (!webglAlive) return;
 
     var rect = wrap.getBoundingClientRect();
     var total = rect.height - window.innerHeight;
     var p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 1;
+    // Nothing moved since last frame (page is scrolled away from the hero
+    // entirely, or simply idle) — skip the rebuild-and-render work, but the
+    // rAF loop above keeps itself alive either way so it picks back up the
+    // instant scrolling resumes, with no event to wait for.
+    if (p === lastP) return;
+    lastP = p;
 
     var stageNames = mobileMQ.matches ? STAGE_NAMES_MOBILE : STAGE_NAMES_DESKTOP;
     var rr = ranges(stageNames.length);
@@ -343,10 +362,9 @@ import * as THREE from "./vendor/three.module.min.js";
 
     if (p >= 0.985) unlockNav();
   }
-  function onScrollOrResize() { if (queued) return; queued = true; requestAnimationFrame(frame); }
-  window.addEventListener("scroll", onScrollOrResize, { passive: true });
-  window.addEventListener("resize", onScrollOrResize, { passive: true });
-  mobileMQ.addEventListener("change", onScrollOrResize);
-
+  // Reads mobileMQ.matches and getBoundingClientRect() fresh every single
+  // frame (see the comment above frame()), so a resize or breakpoint
+  // change is picked up automatically on the very next frame with no
+  // separate "resize" listener needed to trigger a recompute.
   frame();
 })();
