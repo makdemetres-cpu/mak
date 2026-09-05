@@ -15,15 +15,69 @@
 
 declare(strict_types=1);
 
+/* The session cookie carries the only thing standing between a stranger and
+   the reviewers' names and email addresses, so it is locked down before the
+   session starts: unreadable to scripts, never sent to another site, and
+   HTTPS-only wherever the site is served over HTTPS. */
+session_set_cookie_params([
+    'httponly' => true,
+    'samesite' => 'Strict',
+    'secure'   => (($_SERVER['HTTPS'] ?? '') !== '' && ($_SERVER['HTTPS'] ?? '') !== 'off')
+        || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https',
+]);
 session_start();
 header('X-Robots-Tag: noindex, nofollow');
 header('Referrer-Policy: same-origin');
+header('Cache-Control: no-store, private');
 
 require __DIR__ . '/review-store.php';
 
 $config = is_file(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
 $hash   = (string)($config['admin_password_hash'] ?? '');
 $file   = review_store_path($config);
+
+/* ------------------------------------------------------- brute-force guard
+   A single password protects this page, and a pause between attempts does not
+   slow an attacker who simply opens fifty connections at once — each one waits
+   in parallel. So failures are counted and remembered instead: after enough of
+   them from one address, that address is refused for a while, whether or not
+   it then guesses correctly. Counting is per address, so an attacker can never
+   lock the clinic out of its own page. */
+const LOGIN_MAX_FAILURES = 8;
+const LOGIN_LOCKOUT_SECONDS = 900;   /* 15 minutes */
+
+$attemptsFile = dirname($file) . '/login-attempts.json.php';
+
+function login_attempts_load(string $file): array {
+    if (!is_file($file)) return [];
+    $rows = review_store_decode((string)file_get_contents($file));
+    /* Forget an address that has been quiet for a day, so the file cannot grow
+       forever. Pruning on 'until' instead would drop every record that has not
+       yet reached the lockout threshold — and the count would never build up. */
+    $cutoff = time() - 86400;
+    return array_filter(
+        is_array($rows) ? $rows : [],
+        static fn($r) => is_array($r) && (int)($r['seen'] ?? 0) > $cutoff
+    );
+}
+
+/* Written here rather than through review_store_save(), which renumbers rows
+   with array_values() — correct for a list of reviews, fatal for a map keyed
+   by address: the keys would be thrown away and no count would ever match. */
+function login_attempts_save(string $file, array $rows): void {
+    $dir = dirname($file);
+    if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) return;
+    $payload = REVIEW_STORE_GUARD . json_encode((object)$rows, JSON_UNESCAPED_UNICODE);
+    $tmp = $file . '.tmp';
+    if (file_put_contents($tmp, $payload, LOCK_EX) !== false) {
+        rename($tmp, $file);
+    }
+}
+
+$who = hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . '|vetcare-admin');
+$attempts = login_attempts_load($attemptsFile);
+$lockedUntil = (int)($attempts[$who]['until'] ?? 0);
+$lockedOut = $lockedUntil > time();
 
 function load(string $file): array { return review_store_load($file); }
 function save(string $file, array $rows): void { review_store_save($file, $rows); }
@@ -32,20 +86,42 @@ $error = '';
 
 /* ------------------------------------------------------------------ login */
 if (($_POST['action'] ?? '') === 'login') {
-    if ($hash === '') {
+    if ($lockedOut) {
+        $minutes = max(1, (int)ceil(($lockedUntil - time()) / 60));
+        $error = 'Πολλές αποτυχημένες προσπάθειες. Δοκιμάστε ξανά σε ' . $minutes . ' λεπτά.';
+    } elseif ($hash === '') {
         $error = 'Δεν έχει οριστεί κωδικός στο config.php.';
     } elseif (password_verify((string)($_POST['password'] ?? ''), $hash)) {
         session_regenerate_id(true);
         $_SESSION['vetcare_admin'] = true;
         $_SESSION['csrf'] = bin2hex(random_bytes(16));
+        unset($attempts[$who]);                 /* a good login clears the slate */
+        login_attempts_save($attemptsFile, $attempts);
     } else {
-        /* Slow a guesser down without locking the clinic out. */
-        usleep(400000);
-        $error = 'Λάθος κωδικός.';
+        usleep(400000);                          /* still slow a single guesser */
+        $failures = (int)($attempts[$who]['n'] ?? 0) + 1;
+        $attempts[$who] = [
+            'n'     => $failures,
+            'seen'  => time(),
+            'until' => $failures >= LOGIN_MAX_FAILURES ? time() + LOGIN_LOCKOUT_SECONDS : 0,
+        ];
+        login_attempts_save($attemptsFile, $attempts);
+        if ($failures >= LOGIN_MAX_FAILURES) {
+            $error = 'Πολλές αποτυχημένες προσπάθειες. Δοκιμάστε ξανά σε '
+                . (int)ceil(LOGIN_LOCKOUT_SECONDS / 60) . ' λεπτά.';
+            $lockedOut = true;
+        } else {
+            $error = 'Λάθος κωδικός.';
+        }
     }
 }
 
 if (($_GET['logout'] ?? '') === '1') {
+    $_SESSION = [];
+    if (ini_get('session.use_cookies')) {
+        $p = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, $p['path'], $p['domain'], $p['secure'], $p['httponly']);
+    }
     session_destroy();
     header('Location: review-admin.php');
     exit;
@@ -78,6 +154,13 @@ $pending = array_values(array_filter($rows, static fn($r) => ($r['status'] ?? ''
 $live    = array_values(array_filter($rows, static fn($r) => ($r['status'] ?? '') === 'approved'));
 
 function e(?string $s): string { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
+
+/* str_repeat() throws on a negative count, so a rating outside 1-5 — only
+   possible if the file were edited by hand — would blank the whole page. */
+function stars(mixed $rating): string {
+    $n = max(0, min(5, (int)$rating));
+    return str_repeat('★', $n) . str_repeat('☆', 5 - $n);
+}
 ?>
 <!DOCTYPE html>
 <html lang="el">
@@ -122,6 +205,7 @@ function e(?string $s): string { return htmlspecialchars((string)$s, ENT_QUOTES,
   <h1>Διαχείριση κριτικών</h1>
   <p class="admin__intro">Συνδεθείτε για να εγκρίνετε τις κριτικές που αφήνουν οι επισκέπτες.</p>
   <?php if ($error): ?><p class="admin__err"><?= e($error) ?></p><?php endif; ?>
+  <?php if (!$lockedOut): ?>
   <form class="login" method="post">
     <input type="hidden" name="action" value="login">
     <div class="field">
@@ -130,6 +214,7 @@ function e(?string $s): string { return htmlspecialchars((string)$s, ENT_QUOTES,
     </div>
     <button class="btn" type="submit">Σύνδεση</button>
   </form>
+  <?php endif; ?>
 <?php else: ?>
   <h1>Κριτικές</h1>
   <p class="admin__intro">
@@ -146,14 +231,14 @@ function e(?string $s): string { return htmlspecialchars((string)$s, ENT_QUOTES,
     <article class="rv">
       <div class="rv__top">
         <span class="rv__name"><?= e($r['author'] ?? '') ?></span>
-        <span class="rv__stars" aria-label="<?= (int)($r['rating'] ?? 0) ?> στα 5"><?= str_repeat('★', (int)($r['rating'] ?? 0)) ?><?= str_repeat('☆', 5 - (int)($r['rating'] ?? 0)) ?></span>
+        <span class="rv__stars" aria-label="<?= (int)($r['rating'] ?? 0) ?> στα 5"><?= stars($r['rating'] ?? 0) ?></span>
         <span class="tag tag--wait">Σε αναμονή</span>
         <span class="rv__meta"><?= e(substr((string)($r['created'] ?? ''), 0, 10)) ?><?= !empty($r['email']) ? ' · ' . e($r['email']) : '' ?></span>
       </div>
       <p class="rv__text"><?= e($r['text'] ?? '') ?></p>
       <div class="rv__actions">
         <form method="post"><input type="hidden" name="action" value="moderate"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf'] ?? '') ?>"><input type="hidden" name="id" value="<?= e($r['id'] ?? '') ?>"><input type="hidden" name="do" value="approve"><button class="btn btn--forest" type="submit">Έγκριση</button></form>
-        <form method="post" onsubmit="return confirm('Οριστική διαγραφή αυτής της κριτικής;');"><input type="hidden" name="action" value="moderate"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf'] ?? '') ?>"><input type="hidden" name="id" value="<?= e($r['id'] ?? '') ?>"><input type="hidden" name="do" value="delete"><button class="btn btn--ghost" type="submit">Διαγραφή</button></form>
+        <form method="post" data-confirm="Οριστική διαγραφή αυτής της κριτικής;"><input type="hidden" name="action" value="moderate"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf'] ?? '') ?>"><input type="hidden" name="id" value="<?= e($r['id'] ?? '') ?>"><input type="hidden" name="do" value="delete"><button class="btn btn--ghost" type="submit">Διαγραφή</button></form>
       </div>
     </article>
   <?php endforeach; ?>
@@ -164,18 +249,19 @@ function e(?string $s): string { return htmlspecialchars((string)$s, ENT_QUOTES,
     <article class="rv">
       <div class="rv__top">
         <span class="rv__name"><?= e($r['author'] ?? '') ?></span>
-        <span class="rv__stars"><?= str_repeat('★', (int)($r['rating'] ?? 0)) ?><?= str_repeat('☆', 5 - (int)($r['rating'] ?? 0)) ?></span>
+        <span class="rv__stars"><?= stars($r['rating'] ?? 0) ?></span>
         <span class="tag tag--live">Δημοσιευμένη</span>
         <span class="rv__meta"><?= e(substr((string)($r['created'] ?? ''), 0, 10)) ?></span>
       </div>
       <p class="rv__text"><?= e($r['text'] ?? '') ?></p>
       <div class="rv__actions">
         <form method="post"><input type="hidden" name="action" value="moderate"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf'] ?? '') ?>"><input type="hidden" name="id" value="<?= e($r['id'] ?? '') ?>"><input type="hidden" name="do" value="hide"><button class="btn btn--ghost" type="submit">Απόσυρση</button></form>
-        <form method="post" onsubmit="return confirm('Οριστική διαγραφή αυτής της κριτικής;');"><input type="hidden" name="action" value="moderate"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf'] ?? '') ?>"><input type="hidden" name="id" value="<?= e($r['id'] ?? '') ?>"><input type="hidden" name="do" value="delete"><button class="btn btn--ghost" type="submit">Διαγραφή</button></form>
+        <form method="post" data-confirm="Οριστική διαγραφή αυτής της κριτικής;"><input type="hidden" name="action" value="moderate"><input type="hidden" name="csrf" value="<?= e($_SESSION['csrf'] ?? '') ?>"><input type="hidden" name="id" value="<?= e($r['id'] ?? '') ?>"><input type="hidden" name="do" value="delete"><button class="btn btn--ghost" type="submit">Διαγραφή</button></form>
       </div>
     </article>
   <?php endforeach; ?>
 <?php endif; ?>
 </main>
+<script src="js/admin.js"></script>
 </body>
 </html>

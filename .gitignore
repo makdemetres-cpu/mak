@@ -1,4 +1,11 @@
+# The clinic's own settings, including the Google API key and the admin
+# password hash. Never committed, and never uploaded to a host that cannot
+# execute PHP — a static host would serve it as plain text.
 config.php
-# Runtime artefacts of the review store — never part of the source
-data/reviews.json.php.lock
-data/reviews.json.php.tmp
+
+# Runtime artefacts: written by the site as it runs, never part of the source.
+# They hold reviewers' names, emails and abuse counters.
+data/*.lock
+data/*.tmp
+data/login-attempts.json.php
+data/send-rate.json.php

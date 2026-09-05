@@ -175,7 +175,7 @@
       "review.email": "Email",
       "review.emailOpt": "(προαιρετικό, δεν δημοσιεύεται)",
       "review.emailHint": "Μόνο αν θέλετε να μπορούμε να επικοινωνήσουμε μαζί σας για την κριτική.",
-      "review.consent": "Συναινώ στη δημοσίευση του ονόματος και του κειμένου μου στον ιστότοπο του Vet Care και έχω διαβάσει την <a href=\"privacy.html\" target=\"_blank\">Πολιτική Απορρήτου</a>. Μπορώ να ζητήσω τη διαγραφή της οποιαδήποτε στιγμή.",
+      "review.consent": "Συναινώ στη δημοσίευση του ονόματος και του κειμένου μου στον ιστότοπο του Vet Care και έχω διαβάσει την <a href=\"privacy.html\" target=\"_blank\" rel=\"noopener\">Πολιτική Απορρήτου</a>. Μπορώ να ζητήσω τη διαγραφή της οποιαδήποτε στιγμή.",
       "review.submit": "Αποστολή κριτικής",
       "review.cancel": "Άκυρο",
       "review.close": "Κλείσιμο",
@@ -189,6 +189,7 @@
       "review.err.email": "Ελέγξτε τη διεύθυνση email.",
       "review.err.consent": "Χρειαζόμαστε τη συναίνεσή σας για να δημοσιεύσουμε την κριτική.",
       "review.err.rate": "Έχετε ήδη στείλει κριτική πρόσφατα. Δοκιμάστε ξανά αργότερα.",
+      "review.err.full": "Δεν μπορούμε να δεχτούμε άλλη κριτική αυτή τη στιγμή. Στείλτε την στο info@vet-care.gr ή αφήστε την στο Google.",
 
       /* --- booking --- */
       "booking.eyebrow": "Ραντεβού",
@@ -503,7 +504,7 @@
       "review.email": "Email",
       "review.emailOpt": "(optional, never published)",
       "review.emailHint": "Only so we can get back to you about your review, if we need to.",
-      "review.consent": "I consent to my name and text being published on the Vet Care website and I have read the <a href=\"privacy.html\" target=\"_blank\">Privacy Policy</a>. I can ask for it to be removed at any time.",
+      "review.consent": "I consent to my name and text being published on the Vet Care website and I have read the <a href=\"privacy.html\" target=\"_blank\" rel=\"noopener\">Privacy Policy</a>. I can ask for it to be removed at any time.",
       "review.submit": "Send review",
       "review.cancel": "Cancel",
       "review.close": "Close",
@@ -517,6 +518,7 @@
       "review.err.email": "Please check the email address.",
       "review.err.consent": "We need your consent before we can publish the review.",
       "review.err.rate": "You have already sent a review recently. Please try again later.",
+      "review.err.full": "We cannot accept another review right now. Send it to info@vet-care.gr instead, or leave it on Google.",
 
       /* --- booking --- */
       "booking.eyebrow": "Appointments",

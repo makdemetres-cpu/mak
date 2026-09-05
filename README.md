@@ -235,6 +235,35 @@ compose the two in one rule the way `.is-magnetic .btn[data-magnet]` does in
 `css/style.css` — overriding instead would make the drift snap off exactly when
 the cursor arrives.
 
+## Security
+
+The site was attacked deliberately before launch — the endpoints hammered with
+malformed input, forged cross-site requests, injected fields, oversized bodies,
+XSS payloads and parallel password guessing. What that found is fixed. What
+holds it together:
+
+| | |
+|---|---|
+| **Nothing publishes itself** | A review submitted on the site is stored as `pending` and appears only after someone approves it in `review-admin.php`. |
+| **Reviews are text, never markup** | Review text and names reach the page through `textContent` and `htmlspecialchars()`, never `innerHTML`. `<script>`, `<svg onload>` and `<img onerror>` payloads render as the characters they are. |
+| **Submissions must come from this site** | `review-submit.php` and `send.php` require a JSON content type and check `Sec-Fetch-Site`. A browser cannot send JSON cross-origin without asking permission first, and we never grant it — so another website cannot make its visitors post reviews or send mail here. |
+| **The client decides nothing** | A submission that includes `status`, `id` or `fingerprint` has them ignored: the server builds every stored field itself. |
+| **Guessing the password is slow, then impossible** | Eight wrong attempts locks that address out for 15 minutes. Counting is per address, so nobody can lock the clinic out of its own page. |
+| **The session cookie is locked down** | `HttpOnly`, `SameSite=Strict`, and `Secure` whenever the site is served over HTTPS. |
+| **Moderation actions carry a token** | Approve, hide and delete each require a CSRF token issued at login and compared with `hash_equals()`. |
+| **The store cannot be grown without end** | Five submissions an hour per address, 200 pending and 1,000 rows in total. Approved reviews are never at risk — only the pending queue is capped. |
+| **The store cannot be fetched** | `data/` is denied in `.htaccess`, *and* every file in it begins with a PHP guard that returns 404, so it stays private even on a server that ignores `.htaccess`. |
+| **The API key never reaches the browser** | The page calls `reviews.php`; `reviews.php` calls Google. |
+| **No third-party requests at all** | Fonts, artwork and scripts are all served from this origin. Verified: a full page load makes zero external requests, before or after consent. |
+
+**The one thing you have to get right** is the moderation password. It is all
+that stands between a stranger and the reviewers' names and email addresses.
+Four unrelated words or 16 random characters, used nowhere else.
+
+**Never upload `config.php` to a host that cannot run PHP.** On a static host a
+`.php` file is served as plain text — the API key and the password hash with it.
+This is why it is git-ignored and why the site is designed to work without it.
+
 ## Turning on analytics (only if you want it)
 
 There is exactly one place where a non-essential script may start:
@@ -260,6 +289,8 @@ Search the codebase for `TODO (client)` to find each one in place.
 | **Parking note** | `index.html`, Find Us section | A commented-out slot is ready; left out rather than guessed. |
 | **The "everyday services" list** | `index.html`, `.svc-extra` | Vaccinations, microchipping, travel certificates, ultrasound, dental cleaning and "urgent cases by phone" are standard for a clinic of this kind but were **not** individually confirmed. Delete any line you don't actually offer. |
 | **Testimonials** | built | Four real reviews, copied word for word from the Google listing into `curated-reviews.json`, plus the live feed and the site's own form. Nothing is invented: an entry with no name shows no name, and one with no rating shows no stars. |
+| **The HTTPS redirect and HSTS** | `.htaccess` | Both are written and commented out. Turn on the redirect once the SSL certificate is live and you have loaded the site over `https://` yourself; turn on HSTS only after that, because it cannot be undone by removing the header. |
+| **www or no www** | `sitemap.xml`, `robots.txt`, and the canonical/OG tags in all four HTML files | They all say `https://www.vet-care.gr/`. If the site ends up on `vet-care.gr` without the `www`, change them all to match — a canonical pointing at a hostname that redirects splits your search ranking between the two. |
 | **The Google listing address** | `curated-reviews.json` → `"googleUrl"`, or `config.php` → `google_listing_url` | The *"see more"* button falls back to a Google Maps search for the clinic by name and street, which lands on the listing. For the exact address: Google Maps → **Share** → copy. No API key needed. Put it in the JSON and it works on a static host too. |
 
 ---

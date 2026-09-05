@@ -20,6 +20,7 @@ require __DIR__ . '/review-store.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
+header('Cache-Control: no-store');
 
 function reply(int $code, array $payload): never {
     http_response_code($code);
@@ -29,6 +30,21 @@ function reply(int $code, array $payload): never {
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     reply(405, ['ok' => false, 'error' => 'method']);
+}
+
+/* ------------------------------------------------------- same-origin only
+   Without this, any other website could make its visitors post reviews here
+   without them knowing. A cross-origin POST cannot carry a JSON content type
+   unless the browser first asks our permission, and we never grant it — so
+   demanding JSON here is what turns that protection on. Sec-Fetch-Site is a
+   second, independent check in every browser that sends it. */
+$contentType = strtolower((string)($_SERVER['CONTENT_TYPE'] ?? ''));
+if (!str_starts_with($contentType, 'application/json')) {
+    reply(415, ['ok' => false, 'error' => 'content_type']);
+}
+$fetchSite = (string)($_SERVER['HTTP_SEC_FETCH_SITE'] ?? '');
+if ($fetchSite !== '' && $fetchSite !== 'same-origin' && $fetchSite !== 'none') {
+    reply(403, ['ok' => false, 'error' => 'cross_origin']);
 }
 
 $config = is_file(__DIR__ . '/config.php') ? require __DIR__ . '/config.php' : [];
@@ -57,7 +73,13 @@ $clean = static function ($value, int $max): string {
 $author = $clean($data['author'] ?? '', 60);
 $email  = $clean($data['email'] ?? '', 160);
 $text   = $clean($data['text'] ?? '', 1200);
-$rating = (int)($data['rating'] ?? 0);
+/* (int) on an array or an object silently yields 1, which would store a
+   one-star review nobody chose. Only a real number counts. */
+$ratingRaw = $data['rating'] ?? null;
+if (!is_int($ratingRaw) && !(is_string($ratingRaw) && ctype_digit($ratingRaw))) {
+    reply(422, ['ok' => false, 'error' => 'rating']);
+}
+$rating = (int)$ratingRaw;
 
 if ($author === '' || mb_strlen($author) < 2) {
     reply(422, ['ok' => false, 'error' => 'author']);
@@ -91,6 +113,25 @@ if ($lock === false || !flock($lock, LOCK_EX)) {
 }
 
 $existing = review_store_load($file);
+
+/* A hard ceiling on the store. The per-address limit below stops one person
+   flooding it; this stops a crowd of them — a botnet, or visitors tricked into
+   submitting from another site — from growing the file without end and filling
+   the disk. Approved reviews are never at risk: only the pending queue is
+   capped, and the clinic empties it by moderating. */
+const MAX_PENDING = 200;
+const MAX_ROWS = 1000;
+$pendingCount = 0;
+foreach ($existing as $row) {
+    if (($row['status'] ?? '') !== 'approved') {
+        $pendingCount++;
+    }
+}
+if ($pendingCount >= MAX_PENDING || count($existing) >= MAX_ROWS) {
+    flock($lock, LOCK_UN);
+    fclose($lock);
+    reply(503, ['ok' => false, 'error' => 'full']);
+}
 
 /* Light rate limit, sized so it stops a flood without ever standing between a
    genuine visitor and their first review. One-per-hour was too tight: whole

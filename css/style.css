@@ -561,7 +561,10 @@ p { text-wrap: pretty; }
   letter-spacing: -0.01em;
 }
 .brand__tag {
-  font-size: 0.66rem;
+  /* 0.66rem worked out at 9.6px on a tablet, which is small for uppercase
+     Greek even in a logo lockup. A floor of 11px keeps it legible at every
+     size without widening the lockup enough to crowd the header. */
+  font-size: max(11px, 0.66rem);
   letter-spacing: 0.19em;
   text-transform: uppercase;
   color: var(--sage-600);
@@ -1061,7 +1064,15 @@ p { text-wrap: pretty; }
   color: var(--text-soft);
   overflow-wrap: break-word;
 }
-.rvcard__link { font-size: 0.85rem; font-weight: 600; justify-self: start; }
+.rvcard__link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  justify-self: start;
+  /* 22px was under the 24px target minimum. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
 
 /* The English translation of a Greek review. Set apart with a rule and a
    quieter type size so it reads as a translation of the words above, never as
@@ -2113,6 +2124,11 @@ dialog.prefs {
   gap: clamp(1.5rem, 4vw, 3.5rem);
   align-items: start;
 }
+/* A grid item refuses to shrink below its content's natural width unless told
+   otherwise, and the cookie table is wider than a phone. Without this the
+   whole page stretched to the table's width and scrolled sideways; with it the
+   table scrolls inside its own .table-scroll wrapper, as intended. */
+.legal__inner > * { min-width: 0; }
 .toc {
   position: sticky;
   top: calc(var(--header-h) + 1.25rem);
@@ -2139,6 +2155,11 @@ dialog.prefs {
   line-height: 1.35;
   color: var(--forest-800);
   text-decoration: none;
+  /* These are block-level links, so WCAG 2.5.8's exception for links inside a
+     sentence does not cover them: they have to reach 24px themselves. */
+  min-height: 24px;
+  align-content: center;
+  padding-block: 0.15rem;
 }
 .toc a::before { content: counter(toc) "."; color: var(--sage-600); font-variant-numeric: tabular-nums; }
 .toc a:hover { color: var(--clay-700); }
@@ -2289,7 +2310,10 @@ dialog.prefs {
 
   .brand__mark { width: 34px; height: 34px; }
   .brand__name { font-size: 1.16rem; }
-  .brand__tag { font-size: 0.6rem; letter-spacing: 0.16em; }
+  /* Kept at 11px rather than 0.6rem (9.6px): between 561px and 900px the
+     tagline is still shown, and uppercase Greek at 9.6px is hard to read.
+     Below 561px it is hidden altogether, so nothing has to shrink. */
+  .brand__tag { font-size: 11px; letter-spacing: 0.16em; }
 
   /* Drawer contents */
   .drawer__nav { display: grid; align-content: center; gap: 0.35rem; }

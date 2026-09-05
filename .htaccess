@@ -8,12 +8,20 @@
 ErrorDocument 404 /404.html
 
 # ------------------------------------------------------- canonical https/www
-# Uncomment once the domain and its SSL certificate are live, so visitors are
-# not served the site on both http:// and https://.
+# Uncomment BOTH blocks once the domain and its SSL certificate are live and
+# you have loaded the site over https:// yourself and seen it work.
+#
+# Order matters: the redirect first, HSTS only after. HSTS tells every browser
+# to refuse http:// for this domain for a year, and it cannot be taken back by
+# removing the header — so switching it on before HTTPS works would put the
+# site out of reach until the certificate is fixed.
 # <IfModule mod_rewrite.c>
 #   RewriteEngine On
 #   RewriteCond %{HTTPS} !=on
 #   RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+# </IfModule>
+# <IfModule mod_headers.c>
+#   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 # </IfModule>
 
 # ------------------------------------------------------------------- headers
@@ -59,7 +67,16 @@ ErrorDocument 404 /404.html
 # Guarded: "Require" is Apache 2.4 syntax and would 500 the whole site on an
 # older server rather than just failing quietly.
 <IfModule mod_authz_core.c>
-  <FilesMatch "^(netlify\.toml|vercel\.json|_headers|README\.md|\.nojekyll|config\.php|config\.sample\.php|review-store\.php)$">
+  <FilesMatch "^(netlify\.toml|vercel\.json|_headers|\.nojekyll|config\.php|config\.sample\.php|review-store\.php)$">
+    Require all denied
+  </FilesMatch>
+  # Documentation and repository files describe where the data lives and where
+  # the moderation page is. None of it is secret, but there is no reason to
+  # hand a stranger the map — and no reason for any of it to be uploaded.
+  <FilesMatch "\.(md|markdown|yml|yaml|lock|json5|bak|orig|sql|log|ini|sh)$">
+    Require all denied
+  </FilesMatch>
+  <FilesMatch "^\.">
     Require all denied
   </FilesMatch>
 </IfModule>

@@ -59,6 +59,13 @@ return [
      * Generate the hash by running this once on the server (or locally):
      *   php -r "echo password_hash('your-chosen-password', PASSWORD_DEFAULT), PHP_EOL;"
      * Paste the result below. Never store the plain password here.
+     *
+     * CHOOSE IT PROPERLY. This one password is all that stands between a
+     * stranger and the reviewers' names and email addresses. Use at least
+     * four unrelated words or 16 random characters, and use it nowhere else.
+     * The page locks an address out for 15 minutes after 8 wrong guesses, so
+     * guessing is slow — but a password that appears in any leaked list is
+     * found on the first try, and no lockout helps with that.
      */
     'admin_password_hash' => '',
 

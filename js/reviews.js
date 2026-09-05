@@ -523,8 +523,14 @@
             "The review form works on any PHP host, such as Hostinger."
           );
           showStatus("err", "review.status.offline");
+        } else if (code === "full") {
+          /* The clinic's moderation queue is full — the visitor did nothing
+             wrong, so do not tell them to try again in a moment. */
+          showStatus("err", "review.err.full");
+        } else if (code === "rate") {
+          showStatus("err", "review.err.rate");
         } else {
-          showStatus("err", code === "rate" ? "review.err.rate" : "review.status.err");
+          showStatus("err", "review.status.err");
         }
       })
       .then(function () {

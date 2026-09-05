@@ -45,6 +45,46 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     fail(405, 'Method not allowed');
 }
 
+/* ------------------------------------------------------- same-origin only
+   Without this, any other website could quietly make its visitors send mail
+   to the clinic. A cross-origin POST cannot carry a JSON content type unless
+   the browser asks our permission first, and we never grant it. */
+if (!str_starts_with(strtolower((string)($_SERVER['CONTENT_TYPE'] ?? '')), 'application/json')) {
+    fail(415, 'Unsupported content type');
+}
+$fetchSite = (string)($_SERVER['HTTP_SEC_FETCH_SITE'] ?? '');
+if ($fetchSite !== '' && $fetchSite !== 'same-origin' && $fetchSite !== 'none') {
+    fail(403, 'Cross-origin request');
+}
+
+/* ------------------------------------------------------------ rate limit
+   This endpoint puts mail in the clinic's inbox, so left open it is a way to
+   flood that inbox. A handful an hour from one address is far more than any
+   real visitor needs and far less than a spammer wants. Only a counter and a
+   timestamp are kept, keyed by a salted hash — never the address itself — and
+   the file is pruned as it goes, so this stores no personal data and needs no
+   mention in the privacy policy. */
+const RATE_LIMIT_PER_HOUR = 6;
+$rateFile = __DIR__ . '/data/send-rate.json.php';
+
+$rateRows = [];
+if (is_file($rateFile)) {
+    $body = (string)file_get_contents($rateFile);
+    $cut = strpos($body, '?>');
+    $decoded = json_decode($cut === false ? $body : substr($body, $cut + 2), true);
+    $rateRows = is_array($decoded) ? $decoded : [];
+}
+$now = time();
+$rateRows = array_filter(
+    $rateRows,
+    static fn($r) => is_array($r) && (int)($r['first'] ?? 0) > $now - 3600
+);
+$who = hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . '|vetcare-send');
+$sent = (int)($rateRows[$who]['n'] ?? 0);
+if ($sent >= RATE_LIMIT_PER_HOUR) {
+    fail(429, 'Too many requests');
+}
+
 $raw = file_get_contents('php://input');
 if ($raw === false || strlen($raw) > 20000) {
     fail(413, 'Payload too large');
@@ -117,6 +157,18 @@ $encodedSubject = '=?UTF-8?B?' . base64_encode(SUBJECT . ' — ' . $name) . '?='
 
 if (!mail(TO, $encodedSubject, $body, implode("\r\n", $headers))) {
     fail(500, 'Mail delivery failed');
+}
+
+/* Count it only once the mail actually went out, so a failing mail server
+   never uses up a visitor's allowance. */
+$rateRows[$who] = ['n' => $sent + 1, 'first' => (int)($rateRows[$who]['first'] ?? $now)];
+$rateDir = dirname($rateFile);
+if (is_dir($rateDir) || mkdir($rateDir, 0775, true) || is_dir($rateDir)) {
+    file_put_contents(
+        $rateFile,
+        "<?php http_response_code(404); exit; ?>\n" . json_encode((object)$rateRows),
+        LOCK_EX
+    );
 }
 
 echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);

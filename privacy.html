@@ -184,6 +184,8 @@
 <!-- TODO (client): συμπληρώστε την επωνυμία του παρόχου φιλοξενίας μόλις
      επιλεγεί (π.χ. Netlify, Vercel, Cloudflare) και τη χώρα των διακομιστών. -->
 
+<p><strong>Προστασία από κατάχρηση.</strong> Για να μην μπορεί κάποιος να πλημμυρίσει τις φόρμες ή τη σελίδα διαχείρισης με αυτοματοποιημένες προσπάθειες, κρατάμε έναν <em>κρυπτογραφικό συνοψιστικό κωδικό (hash) της διεύθυνσης IP</em> — ποτέ την ίδια τη διεύθυνση — μαζί με έναν μετρητή και μια χρονοσήμανση. Δεν είναι δυνατή η αντιστροφή του σε διεύθυνση και δεν χρησιμοποιείται για κανέναν άλλο σκοπό. Οι μετρητές για τη σελίδα διαχείρισης διαγράφονται εντός <strong>24 ωρών</strong> και για τη φόρμα ραντεβού εντός <strong>μίας ώρας</strong>. Ο αντίστοιχος κωδικός για τη φόρμα κριτικών αποθηκεύεται μαζί με την κριτική και διαγράφεται μαζί της (βλ. § 2.6). Νομική βάση: το έννομο συμφέρον μας για την ασφάλεια του ιστότοπου (άρθρο 6 παρ. 1 στοιχ. στ΄ ΓΚΠΔ).</p>
+
 <h3>2.5 Τι ΔΕΝ κάνουμε</h3>
 <ul>
   <li>Δεν χρησιμοποιούμε εργαλεία στατιστικών ή διαφημιστικούς ιχνηλάτες.</li>
@@ -304,6 +306,8 @@
 
 <h3>2.4 Technical connection data</h3>
 <p>As with any website, our hosting provider logs technical details of each request (IP address, browser type, date and time) so the site can be served and kept secure. We do not combine this with other data and do not use it to identify visitors.</p>
+
+<p><strong>Abuse prevention.</strong> So that nobody can flood the forms or the moderation page with automated attempts, we keep a <em>cryptographic hash of the IP address</em> — never the address itself — together with a counter and a timestamp. It cannot be turned back into an address and is used for nothing else. The counters for the moderation page are deleted within <strong>24 hours</strong>, and those for the appointment form within <strong>one hour</strong>. The equivalent hash for the review form is stored alongside the review itself and deleted with it (see § 2.6). Legal basis: our legitimate interest in the security of the site (Article 6(1)(f) GDPR).</p>
 
 <h3>2.5 What we do not do</h3>
 <ul>
