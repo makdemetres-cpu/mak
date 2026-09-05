@@ -215,6 +215,26 @@ published, the legal basis, and the right to have one removed. The form takes an
 explicit tick before it can be sent, and only the display name and the text are
 ever shown — the optional email is never published.
 
+## Motion
+
+Every animation is transform/opacity only and stops dead under
+`prefers-reduced-motion: reduce`.
+
+One effect is cursor-driven: inside the **"Πώς λειτουργεί"** panel in the
+Booking section, the three numbered steps and the call button lean a few pixels
+towards the pointer and spring back — *magnetic drift*, in `js/main.js` § 6. It
+installs itself only where there is a real cursor (`hover: hover and pointer:
+fine`), so phones and tablets get nothing rather than an effect that could only
+fire mid-tap, and it watches both that and the reduced-motion setting live, so
+changing either takes effect without a reload. The loop idles the moment
+everything has settled.
+
+To move it somewhere else, put `data-magnetic` on the container and `data-magnet`
+on each element that should lean. If a target has its own hover transform,
+compose the two in one rule the way `.is-magnetic .btn[data-magnet]` does in
+`css/style.css` — overriding instead would make the drift snap off exactly when
+the cursor arrives.
+
 ## Turning on analytics (only if you want it)
 
 There is exactly one place where a non-essential script may start:

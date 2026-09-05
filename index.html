@@ -436,27 +436,30 @@
     </div>
 
     <div class="booking__inner">
-      <aside class="booking__aside" data-reveal="left">
+      <!-- data-magnetic: the numbered steps and the call button lean a few
+           pixels towards the cursor inside this panel. Cursor-only, and off
+           under prefers-reduced-motion — see js/main.js § 6. -->
+      <aside class="booking__aside" data-reveal="left" data-magnetic>
         <h3 data-i18n="booking.aside.title">Πώς λειτουργεί</h3>
         <p data-i18n-html="booking.aside.text"></p>
         <ol class="booking__steps">
           <li>
-            <span aria-hidden="true">1</span>
+            <span aria-hidden="true" data-magnet>1</span>
             <div><strong data-i18n="booking.step1.title"></strong><p data-i18n="booking.step1.text"></p></div>
           </li>
           <li>
-            <span aria-hidden="true">2</span>
+            <span aria-hidden="true" data-magnet>2</span>
             <div><strong data-i18n="booking.step2.title"></strong><p data-i18n="booking.step2.text"></p></div>
           </li>
           <li>
-            <span aria-hidden="true">3</span>
+            <span aria-hidden="true" data-magnet>3</span>
             <div><strong data-i18n="booking.step3.title"></strong><p data-i18n="booking.step3.text"></p></div>
           </li>
         </ol>
         <div class="booking__call">
           <p><strong style="color:var(--white)" data-i18n="booking.urgent.title">Είναι επείγον;</strong>
              <span data-i18n="booking.urgent.text"></span></p>
-          <a class="btn btn--light" href="tel:+306972701536">
+          <a class="btn btn--light" href="tel:+306972701536" data-magnet>
             <svg width="19" height="19" aria-hidden="true"><use href="#i-mobile"/></svg>
             <span data-i18n="booking.urgent.cta">Κλήση 6972 701536</span>
           </a>

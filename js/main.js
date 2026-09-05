@@ -281,7 +281,169 @@
   })();
 
   /* ------------------------------------------------------------------ *
-   * 6. Footer year
+   * 6. Magnetic drift
+   *    Elements inside a [data-magnetic] section lean a few pixels towards
+   *    the cursor and spring back when it leaves — felt more than seen.
+   *
+   *    Three things keep it honest. It needs a real cursor, so a phone or
+   *    tablet gets nothing at all rather than an effect that can only fire
+   *    mid-tap. It stops entirely under prefers-reduced-motion, and it
+   *    watches that setting live rather than only at load. And it moves
+   *    nothing but a CSS custom property, so the browser composites the
+   *    transform on the GPU and never re-lays-out the page.
+   * ------------------------------------------------------------------ */
+  (function magneticDrift() {
+    var fields = document.querySelectorAll("[data-magnetic]");
+    if (!fields.length) return;
+
+    var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+    var MAX_DRIFT = 10;   /* px at the very centre — deliberately small */
+    var RADIUS = 240;     /* px — how near the cursor must be to pull at all */
+    var EASE = 0.14;      /* how fast a magnet chases its target */
+    var SETTLE = 0.05;    /* px — closer than this counts as arrived */
+
+    var magnets = [];     /* { el, rect, x, y, tx, ty } */
+    var running = false;
+    var pointerX = 0, pointerY = 0, pointerLive = false;
+
+    function measure() {
+      for (var i = 0; i < magnets.length; i++) {
+        magnets[i].rect = magnets[i].el.getBoundingClientRect();
+      }
+    }
+
+    /* Rects are cached rather than read each frame: reading one mid-animation
+       forces the browser to re-run layout, which is exactly what drops frames.
+       They are refreshed when something could have moved them instead. */
+    var remeasureQueued = false;
+    function queueMeasure() {
+      if (remeasureQueued || !magnets.length) return;
+      remeasureQueued = true;
+      window.requestAnimationFrame(function () {
+        remeasureQueued = false;
+        measure();
+      });
+    }
+
+    function tick() {
+      var moving = false;
+
+      for (var i = 0; i < magnets.length; i++) {
+        var m = magnets[i];
+        var r = m.rect;
+
+        if (pointerLive && r && r.width) {
+          var cx = r.left + r.width / 2;
+          var cy = r.top + r.height / 2;
+          var dx = pointerX - cx;
+          var dy = pointerY - cy;
+          var distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < RADIUS) {
+            /* Pull falls off with distance, so the nearest element leans
+               furthest and the rest of the grid barely stirs. */
+            var pull = (1 - distance / RADIUS) * MAX_DRIFT / Math.max(distance, 1);
+            m.tx = dx * pull;
+            m.ty = dy * pull;
+          } else {
+            m.tx = 0;
+            m.ty = 0;
+          }
+        } else {
+          m.tx = 0;
+          m.ty = 0;
+        }
+
+        m.x += (m.tx - m.x) * EASE;
+        m.y += (m.ty - m.y) * EASE;
+
+        if (Math.abs(m.x) < SETTLE && Math.abs(m.y) < SETTLE) {
+          m.x = 0;
+          m.y = 0;
+          m.el.style.removeProperty("--mag-x");
+          m.el.style.removeProperty("--mag-y");
+        } else {
+          moving = true;
+          m.el.style.setProperty("--mag-x", m.x.toFixed(2) + "px");
+          m.el.style.setProperty("--mag-y", m.y.toFixed(2) + "px");
+        }
+      }
+
+      /* Idle when everything has settled and the cursor has left: no timer
+         ticking away in the background on a page nobody is pointing at. */
+      if (moving || pointerLive) {
+        window.requestAnimationFrame(tick);
+      } else {
+        running = false;
+      }
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      window.requestAnimationFrame(tick);
+    }
+
+    function onPointerMove(event) {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      pointerLive = true;
+      start();
+    }
+
+    function onPointerLeave() {
+      pointerLive = false;
+      start();               /* keep ticking just long enough to spring back */
+    }
+
+    function enable() {
+      if (magnets.length) return;
+      for (var i = 0; i < fields.length; i++) {
+        var field = fields[i];
+        var targets = field.querySelectorAll("[data-magnet]");
+        for (var j = 0; j < targets.length; j++) {
+          magnets.push({ el: targets[j], rect: null, x: 0, y: 0, tx: 0, ty: 0 });
+        }
+        field.addEventListener("pointermove", onPointerMove);
+        field.addEventListener("pointerleave", onPointerLeave);
+        field.classList.add("is-magnetic");
+      }
+      measure();
+      window.addEventListener("scroll", queueMeasure, { passive: true });
+      window.addEventListener("resize", queueMeasure);
+    }
+
+    function disable() {
+      if (!magnets.length) return;
+      for (var i = 0; i < fields.length; i++) {
+        fields[i].removeEventListener("pointermove", onPointerMove);
+        fields[i].removeEventListener("pointerleave", onPointerLeave);
+        fields[i].classList.remove("is-magnetic");
+      }
+      for (var k = 0; k < magnets.length; k++) {
+        magnets[k].el.style.removeProperty("--mag-x");
+        magnets[k].el.style.removeProperty("--mag-y");
+      }
+      magnets = [];
+      pointerLive = false;
+      window.removeEventListener("scroll", queueMeasure);
+      window.removeEventListener("resize", queueMeasure);
+    }
+
+    function sync() {
+      if (finePointer.matches && !reduceMotion.matches) enable();
+      else disable();
+    }
+
+    sync();
+    /* Someone can turn reduced motion on, or move the window to a screen they
+       are driving with a trackpad rather than a finger, without reloading. */
+    finePointer.addEventListener("change", sync);
+    reduceMotion.addEventListener("change", sync);
+  })();
+
+  /* ------------------------------------------------------------------ *
+   * 7. Footer year
    * ------------------------------------------------------------------ */
   (function year() {
     var el = document.getElementById("year");

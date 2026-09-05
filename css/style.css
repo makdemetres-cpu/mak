@@ -1246,6 +1246,41 @@ p { text-wrap: pretty; }
 }
 .booking__call p { margin-bottom: 0.75rem; }
 
+/* --- magnetic drift ---
+   js/main.js § 6 writes --mag-x / --mag-y on each [data-magnet] every frame
+   while the cursor is inside the panel. Nothing here runs on its own: with
+   the script off, or under prefers-reduced-motion, the variables are never
+   set and both rules below resolve to a plain 0, 0 — no motion, no layout
+   difference. The class is added by the script only once the effect is
+   actually live, so these rules cannot strand an element mid-drift. */
+.is-magnetic [data-magnet] {
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
+}
+
+/* The call button already lifts on hover. Composing both in one transform
+   keeps the lift, where overriding it would make the drift snap off at the
+   moment the cursor arrives — the one place it is most visible. */
+.is-magnetic .btn[data-magnet],
+.is-magnetic .btn[data-magnet]:hover {
+  transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0)
+             translateY(var(--btn-lift, 0px));
+  /* transform is driven per frame from script, so it must not also be eased
+     by CSS — the two would fight and the drift would lag the cursor. */
+  transition: box-shadow 0.22s var(--ease-out),
+    background-color 0.22s var(--ease-out), color 0.22s var(--ease-out),
+    border-color 0.22s var(--ease-out);
+}
+.is-magnetic .btn[data-magnet]:hover { --btn-lift: -2px; }
+.is-magnetic .btn[data-magnet]:active { --btn-lift: 0px; }
+
+/* Belt and braces: even if the class were somehow left on, a visitor who asks
+   for reduced motion gets none. */
+@media (prefers-reduced-motion: reduce) {
+  .is-magnetic [data-magnet],
+  .is-magnetic .btn[data-magnet],
+  .is-magnetic .btn[data-magnet]:hover { transform: none; }
+}
+
 .booking__form-wrap {
   padding: clamp(1.5rem, 3vw, 2.4rem);
   background: var(--white);
