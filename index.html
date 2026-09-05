@@ -505,7 +505,9 @@
           <div class="field">
             <label for="bf-date" data-i18n="booking.date">Προτιμώμενη ημερομηνία</label>
             <input type="date" id="bf-date" name="date" aria-describedby="bf-date-err">
-            <p class="field__error" id="bf-date-err" data-i18n="booking.err.date"></p>
+            <!-- Text is set by js/booking.js, which picks between the "too early" and
+                 "too far ahead" message, so it carries no data-i18n key of its own. -->
+            <p class="field__error" id="bf-date-err"></p>
           </div>
 
           <div class="field">

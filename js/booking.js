@@ -63,14 +63,25 @@
     return window.VetCareI18n ? window.VetCareI18n.t(key) : "";
   }
 
-  /* A date in the past is never a useful preference. */
+  /* How far ahead the clinic takes appointments through the website. Beyond
+     this the visitor is asked to phone instead — the diary that far out is not
+     something a form can sensibly hold. This is the single source of truth:
+     the calendar in js/ui-controls.js reads it back off the input. */
+  var MAX_DAYS_AHEAD = 45;
+
+  function isoOf(date) {
+    return date.getFullYear() +
+      "-" + String(date.getMonth() + 1).padStart(2, "0") +
+      "-" + String(date.getDate()).padStart(2, "0");
+  }
+
+  /* A date in the past is never a useful preference, and neither is one past
+     the booking window. */
   if (dateInput) {
     var today = new Date();
-    var iso =
-      today.getFullYear() +
-      "-" + String(today.getMonth() + 1).padStart(2, "0") +
-      "-" + String(today.getDate()).padStart(2, "0");
-    dateInput.min = iso;
+    today.setHours(0, 0, 0, 0);
+    dateInput.min = isoOf(today);
+    dateInput.max = isoOf(new Date(today.getFullYear(), today.getMonth(), today.getDate() + MAX_DAYS_AHEAD));
   }
 
   /* ---- submit gating: consent first, always ---- */
@@ -129,11 +140,23 @@
     setError(animal, !animalOk);
     if (!animalOk) problems.push(animal);
 
+    /* Checked again here, not just in the calendar: the underlying input can
+       still be set directly, and the message differs for each end. */
     var dateOk = true;
+    var dateTooFar = false;
     if (dateInput && dateInput.value) {
-      dateOk = dateInput.value >= dateInput.min;
+      if (dateInput.value < dateInput.min) {
+        dateOk = false;
+      } else if (dateInput.max && dateInput.value > dateInput.max) {
+        dateOk = false;
+        dateTooFar = true;
+      }
     }
-    if (dateInput) setError(dateInput, !dateOk);
+    if (dateInput) {
+      var dateErr = document.getElementById("bf-date-err");
+      if (dateErr) dateErr.textContent = t(dateTooFar ? "booking.err.dateMax" : "booking.err.date");
+      setError(dateInput, !dateOk);
+    }
     if (!dateOk) problems.push(dateInput);
 
     var consentOk = consentBox.checked;

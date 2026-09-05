@@ -226,6 +226,8 @@
       "date.prevMonth": "Προηγούμενος μήνας",
       "date.nextMonth": "Επόμενος μήνας",
       "date.closedNote": "Σάββατο & Κυριακή κλειστά",
+      "date.windowNote": "Ραντεβού έως {days} ημέρες μπροστά. Για αργότερα,",
+      "date.windowCall": "καλέστε μας",
       "date.clear": "Καθαρισμός",
       "booking.slot": "Προτιμώμενη ώρα",
       "booking.slot.morning": "Πρωί (09:00–14:00)",
@@ -252,6 +254,7 @@
       "booking.err.email": "Ελέγξτε τη διεύθυνση email.",
       "booking.err.consent": "Χρειαζόμαστε τη συναίνεσή σας για να επεξεργαστούμε το αίτημα.",
       "booking.err.date": "Επιλέξτε μια ημερομηνία από σήμερα και μετά.",
+      "booking.err.dateMax": "Μέσω του ιστότοπου κλείνουμε ραντεβού έως 45 ημέρες μπροστά. Για αργότερη ημερομηνία καλέστε μας στο 2616 007142.",
       "booking.status.sending": "Γίνεται αποστολή…",
       "booking.status.ok":
         "Το αίτημά σας στάλθηκε. Θα επικοινωνήσουμε μαζί σας εντός του ωραρίου λειτουργίας για να επιβεβαιώσουμε την ώρα.",
@@ -552,6 +555,8 @@
       "date.prevMonth": "Previous month",
       "date.nextMonth": "Next month",
       "date.closedNote": "Closed Saturday & Sunday",
+      "date.windowNote": "Appointments up to {days} days ahead. For later dates,",
+      "date.windowCall": "call us",
       "date.clear": "Clear",
       "booking.slot": "Preferred time",
       "booking.slot.morning": "Morning (09:00–14:00)",
@@ -578,6 +583,7 @@
       "booking.err.email": "Please check the email address.",
       "booking.err.consent": "We need your consent before we can process the request.",
       "booking.err.date": "Please choose today's date or later.",
+      "booking.err.dateMax": "Online we take appointments up to 45 days ahead. For a later date please call us on +30 2616 007142.",
       "booking.status.sending": "Sending…",
       "booking.status.ok":
         "Your request has been sent. We'll contact you within opening hours to confirm the time.",

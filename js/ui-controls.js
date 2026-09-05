@@ -53,11 +53,77 @@
     return window.matchMedia("(max-width: 620px)").matches;
   }
 
+  /* Keep an open popup correctly placed. Content arriving elsewhere on the page
+     — the reviews section finishing its fetch, an image landing, a font
+     swapping — moves the field underneath it, and a popup positioned once at
+     open time can end up behind the sticky header. */
+  function watchPlacement(pop, button, isSheetNow) {
+    var frame = 0;
+    function reposition() {
+      if (frame) return;
+      frame = window.requestAnimationFrame(function () {
+        frame = 0;
+        if (!pop.hidden && !isSheetNow()) placePopup(pop, button);
+      });
+    }
+    window.addEventListener("scroll", reposition, { passive: true });
+    var observer = null;
+    if ("ResizeObserver" in window) {
+      observer = new ResizeObserver(reposition);
+      observer.observe(document.body);
+    }
+    return function stop() {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", reposition);
+      if (observer) observer.disconnect();
+    };
+  }
+
   function makeBackdrop() {
     var el = document.createElement("div");
     el.className = "cpop-backdrop";
     document.body.appendChild(el);
     return el;
+  }
+
+  /* Decide whether a popup opens downwards or upwards by measuring it, not by
+     guessing a height — the calendar in particular changes height with the
+     notes in its footer, and a guess left the buttons below the fold. */
+  function placePopup(pop, button) {
+    pop.classList.remove("is-up");
+    pop.style.maxHeight = "";
+
+    /* The sticky site header covers the top of the viewport, so the room above
+       the field is not simply its distance from the top of the screen. */
+    var header = document.getElementById("site-header");
+    var topInset = (header ? header.offsetHeight : 0) + 8;
+
+    var rect = button.getBoundingClientRect();
+    var needed = pop.offsetHeight;
+    var below = window.innerHeight - rect.bottom - 12;
+    var above = rect.top - topInset - 12;
+
+    if (below >= needed) return;              /* fits underneath as it is */
+
+    if (above > below) {
+      pop.classList.add("is-up");
+      if (above < needed) pop.style.maxHeight = Math.max(200, above) + "px";
+    } else if (below < needed) {
+      /* Neither side has room: stay below and let it scroll, so the footer
+         buttons are always reachable. */
+      pop.style.maxHeight = Math.max(200, below) + "px";
+    }
+
+    /* Measure again and correct. Heights shift with the month shown, the
+       language and the loaded fonts, so a single calculation from an estimate
+       is not enough — this checks the box that actually ended up on screen. */
+    var placed = pop.getBoundingClientRect();
+    var overTop = (topInset + 4) - placed.top;
+    var overBottom = placed.bottom - (window.innerHeight - 4);
+    if (overTop > 0 || overBottom > 0) {
+      var trimmed = placed.height - Math.max(overTop, 0) - Math.max(overBottom, 0);
+      pop.style.maxHeight = Math.max(200, trimmed) + "px";
+    }
   }
 
   /* ---------------------------------------------------------------- select */
@@ -126,6 +192,7 @@
     var options = [];
     var index = -1;          /* highlighted option while open */
     var backdrop = null;
+    var stopWatching = null;
     var typed = "";
     var typedAt = 0;
 
@@ -180,10 +247,11 @@
         backdrop.addEventListener("click", function () { close(); button.focus(); });
         document.body.style.overflow = "hidden";
       } else {
-        /* Flip upwards when there is not enough room below. */
-        var space = window.innerHeight - button.getBoundingClientRect().bottom;
-        pop.classList.toggle("is-up", space < Math.min(280, options.length * 46 + 20));
+        placePopup(pop, button);
       }
+      stopWatching = watchPlacement(pop, button, function () {
+        return root.classList.contains("is-sheet");
+      });
       active = controller;
       highlight(select.selectedIndex > -1 ? select.selectedIndex : 0);
       list.focus();
@@ -191,8 +259,10 @@
 
     function close() {
       if (pop.hidden) return;
+      if (stopWatching) { stopWatching(); stopWatching = null; }
       pop.hidden = true;
       pop.classList.remove("is-up");
+      pop.style.maxHeight = "";
       root.classList.remove("is-open", "is-sheet");
       button.setAttribute("aria-expanded", "false");
       button.removeAttribute("aria-activedescendant");
@@ -323,13 +393,28 @@
     var view = null;      /* first day of the month on screen */
     var cursor = null;    /* keyboard-focused day */
     var backdrop = null;
+    var stopWatching = null;
 
     function minDate() {
       return fromIso(input.min) || null;
     }
+    /* The booking window's far edge. booking.js owns the policy and writes it
+       to the input's `max`; the calendar just reads it, so there is one source
+       of truth and the native input carries the same limit. */
+    function maxDate() {
+      return fromIso(input.max) || null;
+    }
+    function windowDays() {
+      var min = minDate();
+      var max = maxDate();
+      if (!min || !max) return null;
+      return Math.round((max.getTime() - min.getTime()) / MS_DAY);
+    }
     function disabled(d) {
       var min = minDate();
+      var max = maxDate();
       if (min && d < min) return true;
+      if (max && d > max) return true;
       var day = d.getDay();
       return day === 0 || day === 6;   /* clinic is closed at weekends */
     }
@@ -353,6 +438,11 @@
 
     function build() {
       pop.textContent = "";
+
+      /* Head, weekday names and grid scroll together when space is tight; the
+         footer below stays put so Clear and the phone link never scroll away. */
+      var body = document.createElement("div");
+      body.className = "cdate__body";
 
       var head = document.createElement("div");
       head.className = "cdate__head";
@@ -379,13 +469,21 @@
       next.setAttribute("aria-label", t("date.nextMonth", "Επόμενος μήνας"));
       next.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-      prev.addEventListener("click", function () { shiftMonth(-1); });
-      next.addEventListener("click", function () { shiftMonth(1); });
+      /* Nothing is selectable outside the window, so let the arrows stop there
+         rather than opening empty months. */
+      var min = minDate();
+      var max = maxDate();
+      var monthIndex = view.getFullYear() * 12 + view.getMonth();
+      if (min) prev.disabled = monthIndex <= min.getFullYear() * 12 + min.getMonth();
+      if (max) next.disabled = monthIndex >= max.getFullYear() * 12 + max.getMonth();
+
+      prev.addEventListener("click", function () { if (!prev.disabled) shiftMonth(-1); });
+      next.addEventListener("click", function () { if (!next.disabled) shiftMonth(1); });
 
       head.appendChild(prev);
       head.appendChild(title);
       head.appendChild(next);
-      pop.appendChild(head);
+      body.appendChild(head);
 
       /* Weekday initials, Monday first (both Greek and UK convention). */
       var names = document.createElement("div");
@@ -402,7 +500,7 @@
         if (w >= 5) cell.className = "is-weekend";
         names.appendChild(cell);
       }
-      pop.appendChild(names);
+      body.appendChild(names);
 
       var grid = document.createElement("div");
       grid.className = "cdate__grid";
@@ -432,12 +530,36 @@
         cellBtn.tabIndex = cursor && d.getTime() === cursor.getTime() ? 0 : -1;
         grid.appendChild(cellBtn);
       }
-      pop.appendChild(grid);
+      body.appendChild(grid);
+      pop.appendChild(body);
 
       var foot = document.createElement("div");
       foot.className = "cdate__foot";
+
+      var notes = document.createElement("div");
+      notes.className = "cdate__notes";
+
       var note = document.createElement("span");
       note.textContent = t("date.closedNote", "Σάββατο και Κυριακή κλειστά");
+      notes.appendChild(note);
+
+      /* Say why the far dates are greyed out, and give a way to book them —
+         a disabled date with no explanation just leaves people stuck. */
+      var days = windowDays();
+      if (days) {
+        var windowNote = document.createElement("span");
+        windowNote.className = "cdate__window";
+        windowNote.appendChild(document.createTextNode(
+          t("date.windowNote", "Ραντεβού έως {days} ημέρες μπροστά. Για αργότερα,")
+            .replace("{days}", String(days)) + " "
+        ));
+        var call = document.createElement("a");
+        call.href = "tel:+302616007142";
+        call.textContent = t("date.windowCall", "καλέστε μας");
+        windowNote.appendChild(call);
+        notes.appendChild(windowNote);
+      }
+
       var clear = document.createElement("button");
       clear.type = "button";
       clear.className = "cdate__clear";
@@ -450,7 +572,7 @@
         close();
         button.focus();
       });
-      foot.appendChild(note);
+      foot.appendChild(notes);
       foot.appendChild(clear);
       pop.appendChild(foot);
     }
@@ -458,6 +580,7 @@
     function shiftMonth(delta) {
       view = new Date(view.getFullYear(), view.getMonth() + delta, 1);
       build();
+      if (!pop.hidden && !root.classList.contains("is-sheet")) placePopup(pop, button);
       var focusable = pop.querySelector(".cdate__day:not(.is-outside):not(:disabled)");
       if (focusable) { focusable.tabIndex = 0; focusable.focus(); cursor = fromIso(focusable.dataset.iso); }
     }
@@ -480,7 +603,12 @@
       var moves = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
       if (moves[event.key] !== undefined) {
         event.preventDefault();
-        cursor = new Date((cursor || new Date()).getTime() + moves[event.key] * MS_DAY);
+        var moved = new Date((cursor || new Date()).getTime() + moves[event.key] * MS_DAY);
+        var lo = minDate();
+        var hi = maxDate();
+        /* Refuse the move rather than landing somewhere unselectable. */
+        if ((lo && moved < lo) || (hi && moved > hi)) return;
+        cursor = moved;
         if (cursor.getMonth() !== view.getMonth() || cursor.getFullYear() !== view.getFullYear()) {
           view = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
         }
@@ -508,9 +636,11 @@
         backdrop.addEventListener("click", function () { close(); button.focus(); });
         document.body.style.overflow = "hidden";
       } else {
-        var space = window.innerHeight - button.getBoundingClientRect().bottom;
-        pop.classList.toggle("is-up", space < 380);
+        placePopup(pop, button);
       }
+      stopWatching = watchPlacement(pop, button, function () {
+        return root.classList.contains("is-sheet");
+      });
       active = controller;
       var focusable = pop.querySelector('.cdate__day[data-iso="' + iso(cursor) + '"]') ||
         pop.querySelector(".cdate__day:not(:disabled)");
@@ -519,8 +649,10 @@
 
     function close() {
       if (pop.hidden) return;
+      if (stopWatching) { stopWatching(); stopWatching = null; }
       pop.hidden = true;
       pop.classList.remove("is-up");
+      pop.style.maxHeight = "";
       root.classList.remove("is-open", "is-sheet");
       button.setAttribute("aria-expanded", "false");
       if (backdrop) { backdrop.remove(); backdrop = null; }
