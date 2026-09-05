@@ -121,9 +121,9 @@ Each entry has:
 | `show` | set to `false` to take one down without deleting it |
 
 `author` and `rating` are optional and **nothing is invented to fill them in**:
-with no name the card shows no name, with no rating it shows no stars. The four
-entries currently have both blank — fill them in from the Google listing and
-the cards fill in with them.
+with no name the card shows no name, with no rating it shows no stars. All four
+entries currently carry the reviewer's name and their 5-star rating, copied
+from the listing.
 
 Only ever paste reviews that are genuinely on the listing. An invented
 testimonial is unlawful under the Unfair Commercial Practices Directive as
@@ -233,7 +233,6 @@ Search the codebase for `TODO (client)` to find each one in place.
 | **Parking note** | `index.html`, Find Us section | A commented-out slot is ready; left out rather than guessed. |
 | **The "everyday services" list** | `index.html`, `.svc-extra` | Vaccinations, microchipping, travel certificates, ultrasound, dental cleaning and "urgent cases by phone" are standard for a clinic of this kind but were **not** individually confirmed. Delete any line you don't actually offer. |
 | **Testimonials** | built | Four real reviews, copied word for word from the Google listing into `curated-reviews.php`, plus the live feed and the site's own form. Nothing is invented: an entry with no name shows no name, and one with no rating shows no stars. |
-| **Reviewer names and star ratings** | `curated-reviews.php` | The four review texts are real and complete; the names and ratings beside them were not to hand. Copy each reviewer's name and star count from the Google listing into the matching entry — the cards then show a name, initials and stars. Until then the cards show the words alone, which is honest but plainer. |
 | **The Google listing address** | `config.php`, `google_listing_url` | The *"see more"* button falls back to a Google Maps search for the clinic by name and street, which lands on the listing. For the exact address: Google Maps → **Share** → copy. No API key needed. |
 
 ---

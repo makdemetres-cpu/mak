@@ -30,8 +30,8 @@ return [
 
     [
         'show'        => true,
-        'author'      => '',          // TODO: the reviewer's name, from Google
-        'rating'      => null,        // TODO: their star rating, 4 or 5
+        'author'      => 'Σαββούλα Νικολοπούλου',
+        'rating'      => 5,
         'date'        => '',          // optional, YYYY-MM-DD, used only for ordering
         'text'        => 'Πολύ καλή εξυπηρέτηση. Είμαι πολύ ικανοποιημένη. Πάντα κάθε απορία ή ερώτηση που έχω είναι πάντα εκεί για να μου την λύσουν. Είναι επαγγελματίες! Σας ευχαριστούμε από καρδιάς που προσέχετε την Minnie μας.',
         'translation' => 'Very good service. I am very satisfied. Whatever query or question I have, they are always there to answer it. They are professionals! Thank you from the bottom of our hearts for looking after our Minnie.',
@@ -39,8 +39,8 @@ return [
 
     [
         'show'        => true,
-        'author'      => '',          // TODO
-        'rating'      => null,        // TODO
+        'author'      => 'Διονύσης Παναγιωτόπουλος',
+        'rating'      => 5,
         'date'        => '',
         'text'        => 'Και οι 3 γιατροί είναι εξαιρετικοί.. Πρόθυμοι, ευγενικοί και υπέροχη συμπεριφορά και φροντίδα προς τα ζωάκια..',
         'translation' => 'All 3 vets are excellent.. Obliging, kind, and a wonderful manner and care towards the animals..',
@@ -48,8 +48,8 @@ return [
 
     [
         'show'        => true,
-        'author'      => '',          // TODO
-        'rating'      => null,        // TODO
+        'author'      => 'tina pap',
+        'rating'      => 5,
         'date'        => '',
         'text'        => 'Πολύ περιποιητικοι και τρυφεροί με τους ασθενείς τους, άψογη εξυπηρέτηση και συνέπεια με τους ιδιοκτήτες. Ευχαριστούμε Ελένη και Γιώργο !',
         'translation' => 'Very attentive and gentle with their patients, impeccable service and reliability towards the owners. Thank you Eleni and Giorgos!',
@@ -57,8 +57,8 @@ return [
 
     [
         'show'        => true,
-        'author'      => '',          // TODO
-        'rating'      => null,        // TODO
+        'author'      => 'Νικος Σπυ',
+        'rating'      => 5,
         'date'        => '',
         'text'        => 'Τούς χρωστάω τήν αρτιμέλεια τού σκύλου μου. Εξαιρετικοί άνθρωποι καί γιατροί !',
         'translation' => 'I owe them the fact that my dog is sound and whole. Exceptional people and exceptional vets!',
