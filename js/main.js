@@ -97,9 +97,26 @@
   (function drawer() {
     var toggle = document.getElementById("nav-toggle");
     var panel = document.getElementById("drawer");
+    var header = document.getElementById("site-header");
     if (!toggle || !panel) return;
 
     var lastFocus = null;
+
+    function isOpen() {
+      return toggle.getAttribute("aria-expanded") === "true";
+    }
+
+    /* The button is the only affordance on a touch screen, so its label has to
+       describe what the next tap does — and stay right through a language
+       switch, which re-applies the markup's default label. */
+    function syncLabel() {
+      var key = isOpen() ? "nav.closeMenu" : "nav.openMenu";
+      var fallback = isOpen() ? "Close menu" : "Open menu";
+      toggle.setAttribute(
+        "aria-label",
+        window.VetCareI18n ? window.VetCareI18n.t(key) : fallback
+      );
+    }
 
     function open() {
       lastFocus = document.activeElement;
@@ -107,40 +124,58 @@
       /* next frame, so the transition has a start state to animate from */
       window.requestAnimationFrame(function () { panel.classList.add("is-open"); });
       toggle.setAttribute("aria-expanded", "true");
-      toggle.setAttribute("aria-label", window.VetCareI18n ? window.VetCareI18n.t("nav.closeMenu") : "Close menu");
+      syncLabel();
+      if (header) header.classList.add("is-drawer-open");
       document.body.style.overflow = "hidden";
       var first = panel.querySelector("a, button");
       if (first) first.focus({ preventScroll: true });
     }
 
-    function close() {
+    function close(restoreFocus) {
       panel.classList.remove("is-open");
       toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", window.VetCareI18n ? window.VetCareI18n.t("nav.openMenu") : "Open menu");
+      syncLabel();
+      if (header) header.classList.remove("is-drawer-open");
       document.body.style.overflow = "";
       window.setTimeout(function () {
         if (!panel.classList.contains("is-open")) panel.hidden = true;
       }, 320);
-      if (lastFocus) lastFocus.focus({ preventScroll: true });
+      /* Closing leaves the page exactly where it was; only the focus ring moves,
+         and only when the visitor closed the menu rather than followed a link. */
+      if (restoreFocus !== false && lastFocus) lastFocus.focus({ preventScroll: true });
     }
 
     toggle.addEventListener("click", function () {
-      if (toggle.getAttribute("aria-expanded") === "true") close();
+      if (isOpen()) close();
       else open();
     });
 
     panel.addEventListener("click", function (event) {
-      if (event.target.closest("a")) close();
+      if (event.target.closest("a")) close(false);
     });
 
+    /* The header stays on top of the open drawer, so its own links are live:
+       tapping the logo or the phone number should take the menu down with it.
+       The language buttons deliberately do not close it. */
+    if (header) {
+      header.addEventListener("click", function (event) {
+        if (event.target.closest("#nav-toggle")) return;
+        if (event.target.closest("a") && isOpen()) close(false);
+      });
+    }
+
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") close();
+      if (event.key === "Escape" && isOpen()) close();
     });
+
+    document.addEventListener("vetcare:langchange", syncLabel);
 
     /* Keep the drawer in step with the layout it belongs to. */
     window.matchMedia("(min-width: 901px)").addEventListener("change", function (mq) {
-      if (mq.matches && toggle.getAttribute("aria-expanded") === "true") close();
+      if (mq.matches && isOpen()) close();
     });
+
+    syncLabel();
   })();
 
   /* ------------------------------------------------------------------ *

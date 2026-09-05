@@ -504,7 +504,9 @@ p { text-wrap: pretty; }
 .header {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 90;
+  /* Above .drawer (95): the drawer is an opaque full-screen panel, so a header
+     underneath it would bury its own close button and leave no way out. */
+  z-index: 96;
   height: var(--header-h);
   display: flex;
   align-items: center;
@@ -514,6 +516,11 @@ p { text-wrap: pretty; }
   border-bottom: 1px solid transparent;
   transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out),
     box-shadow 0.3s var(--ease-out);
+}
+.header.is-drawer-open {
+  background: var(--bone-100);
+  border-bottom-color: var(--line);
+  box-shadow: none;
 }
 .header.is-stuck {
   background: color-mix(in srgb, var(--bone-100) 94%, transparent);
@@ -630,7 +637,7 @@ p { text-wrap: pretty; }
   inset: 0;
   z-index: 95;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;   /* links take the space, foot hugs content */
   padding: calc(var(--header-h) + 0.5rem) 1.35rem 1.6rem;
   background: var(--bone-100);
   visibility: hidden;
@@ -1704,7 +1711,7 @@ a.contact-row:hover {
   .drawer__foot { display: grid; gap: 1rem; }
   .drawer__contact { display: grid; gap: 0.15rem; font-size: 0.95rem; justify-items: start; }
   .drawer__contact a { color: var(--forest-800); font-weight: 600; padding-block: 0.5rem; }
-  .drawer .lang { justify-self: start; }
+  .drawer .lang { justify-self: start; align-self: start; }
   .drawer .lang__btn { min-width: 56px; padding: 0.5rem 0.7rem; font-size: 0.9rem; }
 
   /* Thumb-zone action bar */
