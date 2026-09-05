@@ -1,0 +1,65 @@
+# Vet Care — Apache / LiteSpeed configuration (Hostinger and most shared hosts)
+#
+# netlify.toml, vercel.json and _headers are ignored here; this file is the one
+# that applies on Hostinger. Upload it alongside index.html in public_html.
+# Everything below is optional polish — the site works without it.
+
+# ---------------------------------------------------------------- custom 404
+ErrorDocument 404 /404.html
+
+# ------------------------------------------------------- canonical https/www
+# Uncomment once the domain and its SSL certificate are live, so visitors are
+# not served the site on both http:// and https://.
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} !=on
+#   RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+# </IfModule>
+
+# ------------------------------------------------------------------- headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=(), interest-cohort=()"
+
+  # Everything the site needs comes from this origin, so the policy can stay
+  # tight. Verified in a browser with no violations. If you ever add a
+  # third-party script (analytics, a chat widget), it must be listed here or it
+  # will be blocked.
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; img-src 'self' data:; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; upgrade-insecure-requests"
+
+  # Fonts and artwork never change in place — rename the file if you replace one.
+  <FilesMatch "\.(woff2|svg|png|jpg|jpeg|webp|avif)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # HTML must always be revalidated, or edits appear to "not go live".
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ----------------------------------------------------------------- compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# woff2 is already compressed; make sure it is served with the right type
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/svg+xml .svg
+</IfModule>
+
+# --------------------------------------------------------------------- tidy
+# Hide files that are only meaningful to other hosts or to the repository.
+# Guarded: "Require" is Apache 2.4 syntax and would 500 the whole site on an
+# older server rather than just failing quietly.
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(netlify\.toml|vercel\.json|_headers|README\.md|\.nojekyll)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>

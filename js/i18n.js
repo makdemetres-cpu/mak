@@ -57,7 +57,6 @@
       "action.book": "Ραντεβού",
 
       /* --- hero --- */
-      "hero.eyebrow": "Οβρυά · Πάτρα",
       "hero.title": "Φροντίδα για κάθε ζώο,<br><em class=\"accent-italic\">μικρό ή μεγάλο</em>",
       "hero.lede":
         "Το Κτηνιατρικό Κέντρο Vet Care στην Οβρυά προσφέρει ολοκληρωμένη φροντίδα για ζώα συντροφιάς και παραγωγικά ζώα — από την καθημερινή πρόληψη μέχρι τη διάγνωση και τη χειρουργική.",
@@ -68,7 +67,8 @@
       "hero.ratingAria": "Βαθμολογία 4,7 στα 5 αστέρια από 46 κριτικές στο Google",
       "hero.hoursLabel": "Δευτέρα – Παρασκευή",
       "hero.hoursValue": "09:00–14:00 & 18:00–21:00",
-      "hero.addressChip": "Δημοκρατίας 149, Οβρυά",
+      /* The hero status chip was removed; these remain for the hours table
+         and for re-adding an open/closed indicator later. */
       "status.open": "Ανοιχτά τώρα",
       "status.closed": "Κλειστά τώρα",
       "status.opensAt": "Ανοίγει {time}",
@@ -192,6 +192,14 @@
       "booking.submit": "Αποστολή αιτήματος",
       "booking.note":
         "Ζητάμε μόνο όσα χρειάζονται για να σας απαντήσουμε. Μην στέλνετε ιατρικά αρχεία ή στοιχεία πληρωμής μέσω της φόρμας.",
+      "booking.mailNote": "Το αίτημα αποστέλλεται μέσω του δικού σας προγράμματος email — θα ανοίξει συμπληρωμένο και θα χρειαστεί να πατήσετε «Αποστολή» εκεί.",
+      "booking.status.mailOpened": "Ανοίξαμε το πρόγραμμα email σας με το αίτημα συμπληρωμένο. Πατήστε «Αποστολή» εκεί για να ολοκληρωθεί — αλλιώς χρησιμοποιήστε τους παρακάτω τρόπους.",
+      "booking.status.mailNone": "Δεν φαίνεται να άνοιξε πρόγραμμα email στη συσκευή σας. Αντιγράψτε το αίτημα ή καλέστε μας — τα στοιχεία σας δεν χάθηκαν.",
+      "booking.fallback.title": "Στείλτε το με όποιον τρόπο σας βολεύει",
+      "booking.fallback.copy": "Αντιγραφή αιτήματος",
+      "booking.fallback.copied": "Αντιγράφηκε — επικολλήστε το σε email ή μήνυμα",
+      "booking.fallback.mail": "Άνοιγμα email στο info@vet-care.gr",
+      "booking.fallback.call": "Κλήση 2616 007142",
       "booking.err.required": "Συμπληρώστε αυτό το πεδίο.",
       "booking.err.phone": "Δώστε ένα έγκυρο τηλέφωνο επικοινωνίας.",
       "booking.err.email": "Ελέγξτε τη διεύθυνση email.",
@@ -200,8 +208,6 @@
       "booking.status.sending": "Γίνεται αποστολή…",
       "booking.status.ok":
         "Το αίτημά σας στάλθηκε. Θα επικοινωνήσουμε μαζί σας εντός του ωραρίου λειτουργίας για να επιβεβαιώσουμε την ώρα.",
-      "booking.status.mail":
-        "Ανοίγει το πρόγραμμα email σας με συμπληρωμένο το αίτημα. Πατήστε «Αποστολή» για να μας το στείλετε — ή καλέστε μας στο 2616 007142.",
       "booking.status.err":
         "Κάτι πήγε στραβά με την αποστολή. Δοκιμάστε ξανά ή καλέστε μας στο 2616 007142.",
 
@@ -330,7 +336,6 @@
       "action.book": "Book",
 
       /* --- hero --- */
-      "hero.eyebrow": "Ovria · Patras",
       "hero.title": "Care for every animal,<br><em class=\"accent-italic\">large or small</em>",
       "hero.lede":
         "Vet Care in Ovria offers complete veterinary care for companion animals and livestock alike — from everyday prevention through to diagnostics and surgery.",
@@ -341,7 +346,8 @@
       "hero.ratingAria": "Rated 4.7 out of 5 stars from 46 Google reviews",
       "hero.hoursLabel": "Monday – Friday",
       "hero.hoursValue": "09:00–14:00 & 18:00–21:00",
-      "hero.addressChip": "Dimokratias 149, Ovria",
+      /* The hero status chip was removed; these remain for the hours table
+         and for re-adding an open/closed indicator later. */
       "status.open": "Open now",
       "status.closed": "Closed now",
       "status.opensAt": "Opens {time}",
@@ -465,6 +471,14 @@
       "booking.submit": "Send request",
       "booking.note":
         "We ask only for what we need to reply. Please don't send medical records or payment details through this form.",
+      "booking.mailNote": "The request is sent through your own email app — it opens pre-filled, and you press Send there.",
+      "booking.status.mailOpened": "We've opened your email app with the request filled in. Press Send there to finish — or use one of the options below.",
+      "booking.status.mailNone": "No email app seems to have opened on your device. Copy the request or call us — nothing you typed has been lost.",
+      "booking.fallback.title": "Send it whichever way suits you",
+      "booking.fallback.copy": "Copy the request",
+      "booking.fallback.copied": "Copied — paste it into an email or a message",
+      "booking.fallback.mail": "Open an email to info@vet-care.gr",
+      "booking.fallback.call": "Call +30 2616 007142",
       "booking.err.required": "Please fill in this field.",
       "booking.err.phone": "Please give a valid contact number.",
       "booking.err.email": "Please check the email address.",
@@ -473,8 +487,6 @@
       "booking.status.sending": "Sending…",
       "booking.status.ok":
         "Your request has been sent. We'll contact you within opening hours to confirm the time.",
-      "booking.status.mail":
-        "Your email app is opening with the request filled in. Press Send to deliver it — or call us on +30 2616 007142.",
       "booking.status.err":
         "Something went wrong while sending. Please try again, or call us on +30 2616 007142.",
 

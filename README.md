@@ -23,10 +23,16 @@ The repository root **is** the site. Pick whichever host you prefer:
 
 | Host | What to do | Config already in the repo |
 |---|---|---|
+| **Hostinger** (current target) | Upload the contents of this folder into `public_html` via hPanel → File Manager, or over FTP | `.htaccess` |
 | **Netlify** | Connect the repo, or drag the folder onto the dashboard. No build command, publish directory `.` | `netlify.toml`, `_headers` |
 | **Cloudflare Pages** | Connect the repo. Framework preset "None", build command empty, output directory `/` | `_headers` |
 | **Vercel** | `vercel --prod` from this folder, or connect the repo | `vercel.json` |
-| **GitHub Pages / any static host** | Upload everything as-is | — |
+| **GitHub Pages** | Settings → Pages → branch, folder `/ (root)`. Preview only — it cannot run PHP | `.nojekyll` |
+
+Each host reads only its own file and ignores the others, so they can all live
+in the repo together. On Hostinger that means **`.htaccess`** — it sets the
+custom 404, the security headers, caching and compression, and has a
+commented-out https redirect to switch on once the certificate is live.
 
 `404.html` is picked up automatically by all three as the not-found page.
 
@@ -42,27 +48,51 @@ the top of `index.html`, `privacy.html`, `cookies.html` and `404.html`.
 
 ---
 
-## Making the booking form deliver email
+## The booking form: two modes
 
-Out of the box the form needs **zero configuration**: pressing *Send* opens the
-visitor's own email client with the request pre-filled and addressed to
-`info@vet-care.gr`. Nothing is broken on a fresh deploy, and no data passes
-through a third party.
+**Mode 1 — email app (how it ships).** Pressing *Send request* opens the
+visitor's own mail client with the whole request pre-filled and addressed to
+`info@vet-care.gr`; they press Send there. Nothing is stored anywhere and no
+third party is involved.
 
-To have requests arrive automatically instead:
+Because a visitor may have no mail client set up — common on desktop — the form
+does not simply claim an email is on its way. It watches whether the page
+actually loses focus to another app, and if nothing takes over within a moment
+it says so plainly and shows an escape hatch under the form: **copy the request
+to the clipboard**, **open a mail link**, or **call the clinic**. The typed
+details stay in the form throughout. There is also a line above the button
+telling the visitor this happens, so it is never a surprise.
 
-1. Open **`js/booking.js`** and set the endpoint near the top:
+Honest summary: in this mode nothing arrives automatically. It is a sane
+stopgap, not a long-term answer for a clinic that wants bookings to land in an
+inbox by themselves.
+
+**Mode 2 — the site sends it itself (recommended on Hostinger).**
+`send.php` ships ready to use. To switch over:
+
+1. Make sure `send.php` is uploaded next to `index.html`.
+2. In `js/booking.js`, set:
    ```js
-   var ENDPOINT = "https://formspree.io/f/XXXXXXX";   // or your own /api/booking
+   var ENDPOINT = "send.php";
    ```
-   The form then sends a JSON `POST` with `name`, `phone`, `email`, `animal`,
-   `date`, `slot`, `message`, `language`. A failed request falls back to a clear
-   error telling the visitor to phone instead.
-2. **Update the privacy policy to match.** `privacy.html` currently describes
-   the mailto behaviour truthfully (§ 2.1) and says no data is stored in any
-   database. If you route the form through a service, that service becomes a
-   data processor: name it in § 5, and check in § 6 whether it stores data
-   outside the EEA. There are `TODO` comments at both spots in the HTML.
+3. Open `send.php` and set `FROM` to a mailbox **on your own domain** (create
+   `noreply@vet-care.gr` in hPanel → Emails). Mail sent with a `From:` on
+   gmail.com or similar is rejected or spam-filed by most providers — this is
+   the single most common reason a contact form "doesn't work".
+4. Send yourself a test request.
+
+The script validates the input, strips CR/LF from every header field to close
+the classic `mail()` header-injection hole, honours the same hidden spam trap as
+the browser, and sets `Reply-To` to the visitor so replying in your mail client
+goes straight back to them. It **stores nothing** — no database, no log, no copy
+on disk — which is why turning it on needs only a small edit to `privacy.html`
+§ 2.1 (delivery by the website rather than by your email app) and no new data
+processor anywhere else.
+
+If mail still does not arrive, `mail()` may be disabled on your plan. The fix is
+to send over SMTP with PHPMailer using the mailbox credentials from hPanel; the
+rest of `send.php` is unchanged. If the form ever fails mid-submission it falls
+back to the same escape hatch as mode 1, so a request is never silently lost.
 
 ## Turning on analytics (only if you want it)
 
@@ -98,6 +128,8 @@ index.html            one-page site: hero, story, services, booking, find us, co
 privacy.html          GDPR privacy policy (bilingual)
 cookies.html          cookie / tracker policy (bilingual)
 404.html              custom not-found page
+send.php              optional: makes the form deliver on its own (see above)
+.htaccess             Hostinger/Apache config: 404, headers, caching, gzip
 css/fonts.css         self-hosted Alegreya + Alegreya Sans (Greek + Latin subsets)
 css/style.css         the whole design system — tokens at the top, sections in order
 js/head.js            marks the document script-capable before first paint

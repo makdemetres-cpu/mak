@@ -17,15 +17,21 @@
   /* -------------------------------------------------------------------
      WHERE TO PLUG IN THE REAL BACKEND
      -------------------------------------------------------------------
-     Leave ENDPOINT empty and the form falls back to opening the visitor's
-     email client with everything pre-filled, addressed to the clinic — so a
-     freshly deployed site is never broken.
+     Leave ENDPOINT empty and the form works in "email app" mode: it opens the
+     visitor's own mail client with everything pre-filled, and shows a copy /
+     email / phone escape hatch in case no mail client answers. Nothing is ever
+     silently lost, but nothing arrives automatically either.
 
-     To have requests arrive automatically instead, set ENDPOINT to a form
-     service or your own serverless function, e.g.
+     To have requests arrive by themselves, point ENDPOINT at something that
+     accepts a JSON POST. On Hostinger (or any PHP host) that is one line:
+
+       var ENDPOINT = "send.php";
+
+     send.php ships with this site, ready to use — see the comments at the top
+     of that file for the two things to check before switching it on. Other
+     options, if you ever move host:
 
        Formspree:  https://formspree.io/f/XXXXXXX      (create form → copy ID)
-       Netlify:    /                                    (plus data-netlify)
        Own function: /api/booking
 
      The payload is a plain application/json POST of the fields below.
@@ -44,6 +50,14 @@
   var statusText = document.getElementById("bf-status-text");
   var statusIcon = statusBox ? statusBox.querySelector("use") : null;
   var dateInput = document.getElementById("bf-date");
+  var fallback = document.getElementById("bf-fallback");
+  var copyBtn = document.getElementById("bf-copy");
+  var copiedMsg = document.getElementById("bf-copied");
+  var mailLink = document.getElementById("bf-mailto");
+  var mailNote = document.getElementById("bf-mail-note");
+
+  /* The "we'll open your email app" note only makes sense in email-app mode. */
+  if (mailNote && ENDPOINT) mailNote.hidden = true;
 
   function t(key) {
     return window.VetCareI18n ? window.VetCareI18n.t(key) : "";
@@ -168,9 +182,11 @@
     };
   }
 
-  function mailtoFallback(data) {
-    var subject = "Αίτημα ραντεβού — " + data.name;
-    var lines = [
+  /* One plain-text rendering of the request, reused by the mail body and by
+     the copy button — so whatever route the visitor takes, we send the same
+     thing and the clinic sees a consistent message. */
+  function asText(data) {
+    return [
       "Ονοματεπώνυμο / Name: " + data.name,
       "Τηλέφωνο / Phone: " + data.phone,
       "Email: " + (data.email || "—"),
@@ -180,11 +196,68 @@
       "",
       "Μήνυμα / Message:",
       data.message || "—"
-    ];
-    window.location.href =
-      "mailto:" + CLINIC_EMAIL +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(lines.join("\n"));
+    ].join("\n");
+  }
+
+  function mailtoUrl(data) {
+    return "mailto:" + CLINIC_EMAIL +
+      "?subject=" + encodeURIComponent("Αίτημα ραντεβού — " + data.name) +
+      "&body=" + encodeURIComponent(asText(data));
+  }
+
+  /* Opening a mailto: by assigning location.href can leave the page in a
+     half-navigated state in some browsers; a synthetic anchor click does not. */
+  function openMailClient(url) {
+    var a = document.createElement("a");
+    a.href = url;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    window.setTimeout(function () { document.body.removeChild(a); }, 0);
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+    /* Fallback for plain-http previews, where the async clipboard is blocked. */
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "-1000px";
+      document.body.appendChild(ta);
+      ta.select();
+      var okCopy = false;
+      try { okCopy = document.execCommand("copy"); } catch (e) { okCopy = false; }
+      document.body.removeChild(ta);
+      okCopy ? resolve() : reject(new Error("copy unavailable"));
+    });
+  }
+
+  var lastRequestText = "";
+
+  if (copyBtn) {
+    copyBtn.addEventListener("click", function () {
+      if (!lastRequestText) return;
+      copyText(lastRequestText).then(
+        function () {
+          if (copiedMsg) copiedMsg.hidden = false;
+        },
+        function () {
+          /* Could not copy: select the message so the visitor can do it. */
+          showStatus("err", "booking.status.mailNone");
+        }
+      );
+    });
+  }
+
+  function showFallback(data) {
+    lastRequestText = asText(data);
+    if (mailLink) mailLink.href = mailtoUrl(data);
+    if (copiedMsg) copiedMsg.hidden = true;
+    if (fallback) fallback.hidden = false;
   }
 
   form.addEventListener("submit", function (event) {
@@ -205,12 +278,36 @@
 
     var data = collect();
 
+    /* ---- email-app mode: no server, so be honest about what happened ---- */
     if (!ENDPOINT) {
-      showStatus("info", "booking.status.mail");
-      mailtoFallback(data);
+      showFallback(data);
+
+      /* If a mail client takes over, the page loses focus or is hidden. If
+         neither happens within a moment, nothing opened — say so plainly
+         instead of claiming an email is on its way. */
+      var handedOff = false;
+      var noteHandoff = function () { handedOff = true; };
+      window.addEventListener("blur", noteHandoff, { once: true });
+      window.addEventListener("pagehide", noteHandoff, { once: true });
+      document.addEventListener("visibilitychange", function onVis() {
+        if (document.hidden) {
+          handedOff = true;
+          document.removeEventListener("visibilitychange", onVis);
+        }
+      });
+
+      openMailClient(mailtoUrl(data));
+
+      showStatus("info", "booking.status.mailOpened");
+      window.setTimeout(function () {
+        window.removeEventListener("blur", noteHandoff);
+        window.removeEventListener("pagehide", noteHandoff);
+        if (!handedOff) showStatus("err", "booking.status.mailNone");
+      }, 1500);
       return;
     }
 
+    /* ---- endpoint mode: a real submission ---- */
     showStatus("info", "booking.status.sending");
     submitBtn.disabled = true;
 
@@ -222,12 +319,14 @@
       .then(function (response) {
         if (!response.ok) throw new Error("HTTP " + response.status);
         showStatus("ok", "booking.status.ok");
+        if (fallback) fallback.hidden = true;
         form.reset();
         consentBox.checked = false;
       })
       .catch(function () {
-        /* Never lose the visitor's request: offer the email route instead. */
+        /* Never lose the visitor's request: offer every other route instead. */
         showStatus("err", "booking.status.err");
+        showFallback(data);
       })
       .then(function () {
         syncSubmitState();

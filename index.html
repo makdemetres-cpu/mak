@@ -83,6 +83,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" focusable="false">
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
   <symbol id="i-mobile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 8.1 5.6a1.6 1.6 0 0 0 1.8 0L21 7"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10.5c0 5.6-8 12-8 12s-8-6.4-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10.3" r="3"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.6V12l3.6 2.2"/></symbol>
@@ -186,7 +187,6 @@
 <section class="hero" aria-labelledby="hero-title">
   <div class="container hero__inner">
     <div class="hero__copy">
-      <span class="eyebrow" data-reveal data-i18n="hero.eyebrow">Οβρυά · Πάτρα</span>
       <h1 class="hero__title" id="hero-title" data-reveal style="--reveal-delay:60ms"
           data-i18n-html="hero.title">Φροντίδα για κάθε ζώο,<br><em class="accent-italic">μικρό ή μεγάλο</em></h1>
       <p class="lede hero__lede" data-reveal style="--reveal-delay:140ms" data-i18n="hero.lede">
@@ -202,18 +202,6 @@
           <svg width="19" height="19" aria-hidden="true"><use href="#i-phone"/></svg>
           <span data-i18n="hero.ctaCall">Καλέστε 2616 007142</span>
         </a>
-      </div>
-
-      <div class="hero__facts" data-reveal style="--reveal-delay:300ms">
-        <!-- Live open/closed state, computed in Europe/Athens from the real hours -->
-        <span class="chip" id="status-chip" data-status-chip>
-          <span class="chip__dot" aria-hidden="true"></span>
-          <span data-status-text data-i18n="status.checking">Ωράριο λειτουργίας</span>
-        </span>
-        <span class="chip">
-          <svg width="15" height="15" aria-hidden="true" style="color:var(--sage-500)"><use href="#i-pin"/></svg>
-          <span data-i18n="hero.addressChip">Δημοκρατίας 149, Οβρυά</span>
-        </span>
       </div>
 
       <a class="hero__scroll" href="#story">
@@ -514,12 +502,37 @@
             <span id="bf-status-text"></span>
           </div>
 
+          <!-- Shown only after a send attempt in email-app mode, so a visitor
+               whose device has no mail client is never left with nothing. -->
+          <div class="form-fallback" id="bf-fallback" hidden>
+            <h4 data-i18n="booking.fallback.title">Στείλτε το με όποιον τρόπο σας βολεύει</h4>
+            <div class="form-fallback__actions">
+              <button type="button" class="btn btn--ghost" id="bf-copy">
+                <svg width="18" height="18" aria-hidden="true"><use href="#i-copy"/></svg>
+                <span data-i18n="booking.fallback.copy">Αντιγραφή αιτήματος</span>
+              </button>
+              <a class="btn btn--ghost" id="bf-mailto" href="mailto:info@vet-care.gr">
+                <svg width="18" height="18" aria-hidden="true"><use href="#i-mail"/></svg>
+                <span data-i18n="booking.fallback.mail">Άνοιγμα email στο info@vet-care.gr</span>
+              </a>
+              <a class="btn btn--ghost" href="tel:+302616007142">
+                <svg width="18" height="18" aria-hidden="true"><use href="#i-phone"/></svg>
+                <span data-i18n="booking.fallback.call">Κλήση 2616 007142</span>
+              </a>
+            </div>
+            <p class="form-fallback__copied" id="bf-copied" role="status" aria-live="polite" hidden
+               data-i18n="booking.fallback.copied"></p>
+          </div>
+
           <div class="form-footer">
             <button type="submit" class="btn" id="bf-submit" disabled aria-disabled="true">
               <svg width="19" height="19" aria-hidden="true"><use href="#i-arrow-right"/></svg>
               <span data-i18n="booking.submit">Αποστολή αιτήματος</span>
             </button>
-            <p class="form-note" data-i18n="booking.note"></p>
+            <p class="form-note">
+              <span data-i18n="booking.note"></span>
+              <span class="form-note__mail" id="bf-mail-note" data-i18n="booking.mailNote"></span>
+            </p>
           </div>
         </form>
       </div>
