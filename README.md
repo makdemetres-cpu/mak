@@ -102,12 +102,22 @@ review anywhere pushes the oldest off the page by itself.
 
 ### Google reviews — what you need to set up
 
+**Any Google account will do.** This reads public place data, so you do not need
+to own the clinic's Google Business listing — ownership only matters for replying
+to reviews and editing the listing. Whoever's account holds the billing is the
+one who pays, so moving it to the clinic's own account later is tidier for a
+long-lived site; swapping the key is a one-line change.
+
 1. Copy `config.sample.php` to **`config.php`** (it is git-ignored, because it
    holds an API key).
-2. In Google Cloud: create a project, **enable billing**, enable **Places API
-   (New)**, create an API key, and restrict it — Application restrictions → IP
-   addresses → your Hostinger server IP; API restrictions → Places API (New).
-3. Find the clinic's **Place ID** with Google's
+2. In Google Cloud: create a project, **enable billing** (a card is required
+   even inside the free allowance), enable **Places API (New)** — not the older
+   legacy "Places API" — create an API key, and restrict it: Application
+   restrictions → IP addresses → your Hostinger server IP; API restrictions →
+   Places API (New).
+3. **Cap the daily quota** — APIs & Services → Places API (New) → Quotas → set
+   requests per day to about 30. See the cost note below for why this matters.
+4. Find the clinic's **Place ID** with Google's
    [Place ID Finder](https://developers.google.com/maps/documentation/places/web-service/place-id)
    and paste both values into `config.php`.
 
@@ -116,13 +126,17 @@ Three things worth understanding before you switch it on:
 - **Google's API returns at most 5 reviews, ever.** There is no pagination. That
   is why *"see all reviews"* is a link out to the Google listing rather than a
   longer list on the site — nobody can build the latter from this API.
-- **Review text may not be stored.** Google's policy allows place IDs to be kept
-  indefinitely but requires ratings and reviews to be *"requested live and not
-  warehoused"*. So `reviews.php` calls Google per page view and caches nothing.
-  To keep that cheap, `js/reviews.js` only fetches when the section actually
-  scrolls into view — a visitor who never reaches it costs nothing. A local
-  clinic normally stays inside the monthly free allowance, but billing must
-  exist or the call fails (and the section then simply says so).
+- **Review text may not be stored, and it is the dearest field Google sells.**
+  Their policy allows place IDs to be kept indefinitely but requires ratings and
+  reviews to be *"requested live and not warehoused"*, so `reviews.php` calls
+  Google per page view and caches nothing. `reviews` sits in the **Enterprise +
+  Atmosphere** field tier, and a request is billed at the highest tier it
+  touches; the free allowance there is roughly **1,000 calls a month**, about 33
+  views of the section per day. `js/reviews.js` only fetches once the section
+  scrolls into view, so a visitor who never reaches it costs nothing — but set
+  the daily quota cap in step 3 and the question of a surprise bill goes away
+  entirely. Check *APIs & Services → Metrics* after the first month to learn
+  your real volume before raising it.
 - **The key never reaches the browser.** The page calls our own `reviews.php`,
   which calls Google server-side. Leave `config.php` empty and nothing breaks —
   the section shows the two buttons and no cards. It will never invent reviews.
