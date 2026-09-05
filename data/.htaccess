@@ -1,0 +1,17 @@
+# The stored reviews must never be served over the web: they contain names and
+# unapproved text. Belt and braces — deny the directory outright, on both the
+# Apache 2.4 and the older 2.2 syntax.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>
+
+# Nothing in here is ever meant to be fetched — including .lock and .tmp files.
+<FilesMatch ".*">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>

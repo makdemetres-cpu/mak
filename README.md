@@ -94,6 +94,64 @@ to send over SMTP with PHPMailer using the mailbox credentials from hPanel; the
 rest of `send.php` is unchanged. If the form ever fails mid-submission it falls
 back to the same escape hatch as mode 1, so a request is never silently lost.
 
+## Reviews
+
+The section between Services and Booking shows the **five most recent 4- and
+5-star reviews**, merged from two sources and sorted newest-first, so a new
+review anywhere pushes the oldest off the page by itself.
+
+### Google reviews — what you need to set up
+
+1. Copy `config.sample.php` to **`config.php`** (it is git-ignored, because it
+   holds an API key).
+2. In Google Cloud: create a project, **enable billing**, enable **Places API
+   (New)**, create an API key, and restrict it — Application restrictions → IP
+   addresses → your Hostinger server IP; API restrictions → Places API (New).
+3. Find the clinic's **Place ID** with Google's
+   [Place ID Finder](https://developers.google.com/maps/documentation/places/web-service/place-id)
+   and paste both values into `config.php`.
+
+Three things worth understanding before you switch it on:
+
+- **Google's API returns at most 5 reviews, ever.** There is no pagination. That
+  is why *"see all reviews"* is a link out to the Google listing rather than a
+  longer list on the site — nobody can build the latter from this API.
+- **Review text may not be stored.** Google's policy allows place IDs to be kept
+  indefinitely but requires ratings and reviews to be *"requested live and not
+  warehoused"*. So `reviews.php` calls Google per page view and caches nothing.
+  To keep that cheap, `js/reviews.js` only fetches when the section actually
+  scrolls into view — a visitor who never reaches it costs nothing. A local
+  clinic normally stays inside the monthly free allowance, but billing must
+  exist or the call fails (and the section then simply says so).
+- **The key never reaches the browser.** The page calls our own `reviews.php`,
+  which calls Google server-side. Leave `config.php` empty and nothing breaks —
+  the section shows the two buttons and no cards. It will never invent reviews.
+
+### Reviews left on the website
+
+`review-submit.php` stores submissions as **pending**. They appear publicly only
+after approval in **`review-admin.php`**, which is password-protected — set
+`admin_password_hash` in `config.php`:
+
+```bash
+php -r "echo password_hash('your-password', PASSWORD_DEFAULT), PHP_EOL;"
+```
+
+Moderation is not optional decoration. An unmoderated public form on a real
+clinic's site attracts spam and abuse, and whatever appears there is published
+by the clinic.
+
+The store is a JSON file under `data/`, protected three ways: `data/.htaccess`
+denies the directory, the file is named `.php` and starts with an exit guard so
+a server that ignores `.htaccess` still returns nothing, and you can move it out
+of the web root entirely by pointing `reviews_file` at, say,
+`__DIR__ . '/../vetcare-data/reviews.json.php'` — the safest option on Hostinger.
+
+Reviews are personal data: `privacy.html` § 2.6 covers what is stored, what is
+published, the legal basis, and the right to have one removed. The form takes an
+explicit tick before it can be sent, and only the display name and the text are
+ever shown — the optional email is never published.
+
 ## Turning on analytics (only if you want it)
 
 There is exactly one place where a non-essential script may start:
@@ -129,7 +187,12 @@ index.html            one-page site: hero, story, services, booking, find us, co
 privacy.html          GDPR privacy policy (bilingual)
 cookies.html          cookie / tracker policy (bilingual)
 404.html              custom not-found page
-send.php              optional: makes the form deliver on its own (see above)
+send.php              optional: makes the booking form deliver on its own
+reviews.php           serves the merged review feed (Google + approved site ones)
+review-submit.php     receives a review left on the site, stores it as pending
+review-admin.php      password-protected moderation screen
+review-store.php      shared, guarded read/write for the review store
+config.sample.php     copy to config.php and fill in (git-ignored)
 .htaccess             Hostinger/Apache config: 404, headers, caching, gzip
 css/fonts.css         self-hosted Alegreya + Alegreya Sans (Greek + Latin subsets)
 css/style.css         the whole design system — tokens at the top, sections in order
@@ -138,6 +201,7 @@ js/i18n.js            every string on the site, in Greek and English
 js/consent.js         the cookie banner and preference dialog
 js/booking.js         booking form validation and delivery
 js/ui-controls.js     branded dropdown + date picker (see below)
+js/reviews.js         renders the review section and the "leave a review" form
 js/main.js            reveals, sticky header, mobile drawer, live opening status
 assets/fonts/         12 woff2 files, ~243 KB total
 assets/img/           original SVG artwork, the logo, favicon and the social card

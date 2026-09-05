@@ -59,7 +59,14 @@ ErrorDocument 404 /404.html
 # Guarded: "Require" is Apache 2.4 syntax and would 500 the whole site on an
 # older server rather than just failing quietly.
 <IfModule mod_authz_core.c>
-  <FilesMatch "^(netlify\.toml|vercel\.json|_headers|README\.md|\.nojekyll)$">
+  <FilesMatch "^(netlify\.toml|vercel\.json|_headers|README\.md|\.nojekyll|config\.php|config\.sample\.php|review-store\.php)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# The stored reviews live here and must never be served, whatever the filename.
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(lock|tmp)$">
     Require all denied
   </FilesMatch>
 </IfModule>

@@ -940,6 +940,160 @@ p { text-wrap: pretty; }
 .svc-extra__list svg { width: 19px; height: 19px; margin-top: 0.25em; color: var(--clay-700); flex: none; }
 
 /* ---------------------------------------------------------------------------
+   10b. Reviews
+--------------------------------------------------------------------------- */
+.reviews__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.85rem;
+  margin-bottom: var(--space-l);
+  padding: 0.75rem 1.25rem;
+  width: fit-content;
+  margin-inline: auto;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-s);
+}
+.reviews__score {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--forest-900);
+  line-height: 1;
+}
+.reviews__count { font-size: 0.9rem; color: var(--text-soft); }
+.reviews__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-left: 0.85rem;
+  border-left: 1px solid var(--line);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
+.stars svg { width: 15px; height: 15px; }
+.stars svg.is-empty { color: var(--bone-400); }
+
+.reviews__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: clamp(0.9rem, 1.6vw, 1.35rem);
+  align-items: start;
+}
+/* Five cards in a four-up grid would strand one on its own row, so wide screens
+   get a deliberate 3 + 2, matching the services section. */
+@media (min-width: 1040px) {
+  .reviews__grid { grid-template-columns: repeat(6, 1fr); }
+  .reviews__grid > * { grid-column: span 2; }
+  .reviews__grid > :nth-child(4),
+  .reviews__grid > :nth-child(5) { grid-column: span 3; }
+}
+
+.rvcard {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  padding: 1.5rem 1.4rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-s);
+  animation: rv-in 0.5s var(--ease-out) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+@keyframes rv-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rvcard { animation: none; }
+}
+
+.rvcard__top { display: flex; align-items: center; gap: 0.75rem; }
+.rvcard__avatar {
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--sage-100);
+  color: var(--forest-700);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.rvcard__who { min-width: 0; }
+.rvcard__name { font-weight: 600; color: var(--forest-900); line-height: 1.25; }
+.rvcard__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+.rvcard__src { display: inline-flex; align-items: center; gap: 0.3rem; }
+.rvcard__src--site { font-style: italic; }
+.rvcard__text {
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+  overflow-wrap: break-word;
+}
+.rvcard__link { font-size: 0.85rem; font-weight: 600; justify-self: start; }
+
+.reviews__state {
+  margin-top: var(--space-m);
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 0.97rem;
+}
+.reviews__state[hidden] { display: none; }
+.reviews__attribution {
+  margin-top: var(--space-m);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  max-width: 62ch;
+  margin-inline: auto;
+}
+.reviews__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: center;
+  margin-top: var(--space-xl);
+}
+
+/* --- the star rating input in the review dialog --- */
+.rvstars__label { font-size: 0.92rem; font-weight: 600; color: var(--forest-800); }
+.rvstars { display: flex; gap: 0.3rem; }
+.rvstars__star {
+  display: grid;
+  place-items: center;
+  width: 46px; height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ochre-400);
+  transition: background-color 0.18s var(--ease-out), transform 0.18s var(--ease-out);
+}
+.rvstars__star svg { width: 30px; height: 30px; }
+.rvstars__star[aria-checked="false"] svg { color: var(--bone-400); }
+.rvstars__star:hover { background: var(--bone-200); transform: translateY(-1px); }
+.field.has-error .rvstars { outline: 2px solid #a3291b; outline-offset: 4px; border-radius: 8px; }
+
+.rvdialog { width: min(620px, calc(100vw - 2rem)); }
+.rvdialog .form-grid { gap: var(--space-s) var(--space-m); }
+.rvdialog .prefs__actions { margin-top: var(--space-s); }
+
+/* ---------------------------------------------------------------------------
    11. Booking
 --------------------------------------------------------------------------- */
 .booking__inner {
