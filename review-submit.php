@@ -92,17 +92,27 @@ if ($lock === false || !flock($lock, LOCK_EX)) {
 
 $existing = review_store_load($file);
 
-/* Light rate limit: one submission per address per hour, and the address is
-   stored only as a salted hash so the file never holds a raw IP. */
+/* Light rate limit, sized so it stops a flood without ever standing between a
+   genuine visitor and their first review. One-per-hour was too tight: whole
+   streets and mobile networks share a single public address, so a second real
+   person could be turned away for someone else's submission. Five an hour is
+   still far below what a bot would attempt. The address is stored only as a
+   salted hash, so the file never holds a raw IP. */
+const RATE_LIMIT_PER_HOUR = 5;
+
 $fingerprint = hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . '|vetcare-reviews');
 $hourAgo = time() - 3600;
+$recent = 0;
 foreach ($existing as $row) {
     if (($row['fingerprint'] ?? '') === $fingerprint
         && strtotime((string)($row['created'] ?? '')) > $hourAgo) {
-        flock($lock, LOCK_UN);
-        fclose($lock);
-        reply(429, ['ok' => false, 'error' => 'rate']);
+        $recent++;
     }
+}
+if ($recent >= RATE_LIMIT_PER_HOUR) {
+    flock($lock, LOCK_UN);
+    fclose($lock);
+    reply(429, ['ok' => false, 'error' => 'rate']);
 }
 
 $existing[] = [

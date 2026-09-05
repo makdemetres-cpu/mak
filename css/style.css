@@ -1070,24 +1070,79 @@ p { text-wrap: pretty; }
   justify-content: center;
   margin-top: var(--space-xl);
 }
+@media (max-width: 560px) {
+  /* One full-width action reads as the clear next step on a phone. */
+  .reviews__actions { margin-top: var(--space-l); }
+  .reviews__actions .btn { flex: 1 1 100%; }
+}
 
-/* --- the star rating input in the review dialog --- */
+/* --- the star rating input in the review dialog ---
+   Each star stacks an outline and a solid copy. Lighting one cross-fades
+   between them and lifts it, with a short stagger so the row fills left to
+   right. Everything animated is transform/opacity, so nothing reflows and the
+   row cannot shift under a finger mid-tap. */
 .rvstars__label { font-size: 0.92rem; font-weight: 600; color: var(--forest-800); }
-.rvstars { display: flex; gap: 0.3rem; }
+.rvstars {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.15rem 0;
+  touch-action: manipulation;   /* no double-tap zoom delay on the stars */
+}
 .rvstars__star {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 46px; height: 46px;
+  width: 52px; height: 52px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 14px;
   background: transparent;
-  color: var(--ochre-400);
-  transition: background-color 0.18s var(--ease-out), transform 0.18s var(--ease-out);
+  color: var(--bone-400);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.18s var(--ease-out),
+              transform 0.19s var(--ease-out) var(--star-delay, 0ms);
 }
-.rvstars__star svg { width: 30px; height: 30px; }
-.rvstars__star[aria-checked="false"] svg { color: var(--bone-400); }
-.rvstars__star:hover { background: var(--bone-200); transform: translateY(-1px); }
+.rvstars__star svg {
+  grid-area: 1 / 1;
+  width: 32px; height: 32px;
+  transition: opacity 0.15s var(--ease-out) var(--star-delay, 0ms),
+              transform 0.19s var(--ease-out) var(--star-delay, 0ms);
+}
+.rvstars__outline { color: var(--bone-400); opacity: 1; }
+.rvstars__fill { color: var(--ochre-400); opacity: 0; transform: scale(0.7); }
+
+/* the lit state, used for both hover preview and the actual choice */
+.rvstars__star.is-lit { transform: translateY(-4px); }
+.rvstars__star.is-lit .rvstars__outline { opacity: 0; }
+.rvstars__star.is-lit .rvstars__fill { opacity: 1; transform: scale(1); }
+
+@media (hover: hover) {
+  .rvstars__star:hover { background: var(--bone-200); }
+}
+.rvstars__star:active { transform: translateY(-2px) scale(0.94); }
+.rvstars__star:focus-visible { outline: 3px solid var(--clay-700); outline-offset: 2px; }
+
 .field.has-error .rvstars { outline: 2px solid #a3291b; outline-offset: 4px; border-radius: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rvstars__star,
+  .rvstars__star svg { transition-duration: 0.001ms !important; transition-delay: 0ms !important; }
+  .rvstars__star.is-lit { transform: none; }
+}
+
+/* Phones: bigger targets, and the row centred so it does not sit lost against
+   the left edge of a full-width sheet. */
+@media (max-width: 560px) {
+  .rvstars { gap: 0.2rem; justify-content: space-between; max-width: 20rem; }
+  .rvstars__star { width: 58px; height: 58px; }
+  .rvstars__star svg { width: 36px; height: 36px; }
+}
+/* Narrow phones: five 58px targets plus the dialog's padding no longer fit the
+   width, so step them down — still well past the 44px comfortable minimum. */
+@media (max-width: 380px) {
+  .rvstars { gap: 0.15rem; }
+  .rvstars__star { width: 50px; height: 50px; }
+  .rvstars__star svg { width: 31px; height: 31px; }
+}
 
 .rvdialog { width: min(620px, calc(100vw - 2rem)); }
 .rvdialog .form-grid { gap: var(--space-s) var(--space-m); }
@@ -1894,6 +1949,14 @@ a.contact-row:hover {
 .cookie__link:hover { color: var(--clay-700); }
 
 /* Preferences dialog */
+/* `* { margin: 0 }` in the reset wipes the `margin: auto` a modal <dialog>
+   relies on to centre itself, which left both dialogs pinned to the top-left.
+   Put it back explicitly, and cap the height so a long one scrolls inside
+   rather than running off the screen. */
+dialog.prefs {
+  margin: auto;
+  max-height: min(90svh, 100% - 2rem);
+}
 .prefs {
   width: min(560px, calc(100vw - 2rem));
   padding: 0;

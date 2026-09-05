@@ -18,26 +18,28 @@
   if (!section) return;
 
   var listEl = document.getElementById("reviews-list");
-  var stateEl = document.getElementById("reviews-state");
+  var stateEl = null;   /* the section no longer carries a status line */
   var summaryEl = document.getElementById("reviews-summary");
   var scoreEl = document.getElementById("reviews-score");
   var starsEl = document.getElementById("reviews-stars");
   var countEl = document.getElementById("reviews-count");
   var attributionEl = document.getElementById("reviews-attribution");
-  var allLink = document.getElementById("reviews-all");
 
   var data = null;
 
   function t(key) { return window.VetCareI18n ? window.VetCareI18n.t(key) : ""; }
   function lang() { return window.VetCareI18n ? window.VetCareI18n.lang : "el"; }
 
+  /* The section says nothing about loading, emptiness or failure any more: it
+     simply shows whatever reviews it has. Problems are reported to the console
+     for whoever maintains the site, not as apologetic copy to visitors. */
   function setState(key) {
-    stateEl.hidden = !key;
-    if (key) {
-      stateEl.textContent = t(key);
-      stateEl.setAttribute("data-state-key", key);
-    } else {
-      stateEl.removeAttribute("data-state-key");
+    if (key === "reviews.error") {
+      window.console && console.warn(
+        "[Vet Care] The review feed could not be read. If this host cannot run " +
+        "PHP (GitHub Pages, for example), reviews.php never executes and the " +
+        "section stays empty. It works on any PHP host, such as Hostinger."
+      );
     }
   }
 
@@ -152,8 +154,6 @@
   function render() {
     if (!data) return;
 
-    if (data.googleUrl && allLink) allLink.href = data.googleUrl;
-
     if (data.rating && data.total) {
       scoreEl.textContent = t("reviews.summaryRating")
         .replace("{rating}", data.rating.toFixed(1).replace(".", lang() === "el" ? "," : "."));
@@ -214,11 +214,7 @@
     load();
   }
 
-  document.addEventListener("vetcare:langchange", function () {
-    var key = stateEl.getAttribute("data-state-key");
-    if (key) stateEl.textContent = t(key);
-    render();
-  });
+  document.addEventListener("vetcare:langchange", render);
 
   /* ------------------------------------------------------------ the form */
   var dialog = document.getElementById("review-dialog");
@@ -234,6 +230,9 @@
 
   /* A real radio group behind star buttons: keyboard and screen readers get
      proper semantics, everyone else gets stars. */
+  /* Each star holds both an outline and a solid version, stacked. Lighting a
+     star cross-fades between them and lifts it, which animates far more
+     smoothly than swapping the icon's href would. */
   function buildStars() {
     ratingBox.textContent = "";
     for (var i = 1; i <= 5; i++) {
@@ -241,13 +240,18 @@
         var star = document.createElement("button");
         star.type = "button";
         star.className = "rvstars__star";
+        star.dataset.value = String(value);
         star.setAttribute("role", "radio");
         star.setAttribute("aria-checked", value === chosenRating ? "true" : "false");
         star.setAttribute("aria-label", t("reviews.starsLabel").replace("{n}", String(value)));
         star.tabIndex = value === (chosenRating || 1) ? 0 : -1;
-        star.innerHTML = '<svg aria-hidden="true"><use href="#i-star' +
-          (value <= chosenRating ? "" : "-outline") + '"/></svg>';
+        star.innerHTML =
+          '<svg class="rvstars__outline" aria-hidden="true"><use href="#i-star-outline"/></svg>' +
+          '<svg class="rvstars__fill" aria-hidden="true"><use href="#i-star"/></svg>';
         star.addEventListener("click", function () { setRating(value); });
+        star.addEventListener("mouseenter", function () { preview(value); });
+        star.addEventListener("focus", function () { preview(value); });
+        star.addEventListener("blur", function () { preview(0); });
         star.addEventListener("keydown", function (event) {
           if (event.key === "ArrowRight" || event.key === "ArrowUp") {
             event.preventDefault(); setRating(Math.min(5, (chosenRating || 0) + 1));
@@ -260,13 +264,35 @@
         ratingBox.appendChild(star);
       })(i);
     }
+    paint(chosenRating);
   }
+
+  /* Light every star up to `count`, leaving the rest as outlines. Passing 0
+     falls back to whatever is actually chosen. */
+  function paint(count) {
+    var stars = ratingBox.querySelectorAll(".rvstars__star");
+    for (var i = 0; i < stars.length; i++) {
+      var lit = i < count;
+      stars[i].classList.toggle("is-lit", lit);
+      /* A slight stagger reads as a ripple across the row. Kept small: on
+         hover the whole row has to feel immediate, so the last star must not
+         lag noticeably behind the first. */
+      stars[i].style.setProperty("--star-delay", lit ? i * 14 + "ms" : "0ms");
+    }
+  }
+
+  function preview(count) {
+    paint(count || chosenRating);
+  }
+
+  /* Leaving the row anywhere returns it to the chosen value. */
+  ratingBox.addEventListener("mouseleave", function () { paint(chosenRating); });
 
   function setRating(value) {
     chosenRating = value;
     buildStars();
     var focusTarget = ratingBox.children[value - 1];
-    if (focusTarget) focusTarget.focus();
+    if (focusTarget) focusTarget.focus({ preventScroll: true });
     fieldOf(ratingBox).classList.remove("has-error");
   }
 
@@ -363,10 +389,15 @@
       })
     })
       .then(function (response) {
-        return response.json().catch(function () { return {}; }).then(function (body) {
+        return response.json().catch(function () {
+          /* Not JSON at all: the endpoint did not run. On a host without PHP
+             the server hands back an HTML error page instead. */
+          return { ok: false, error: response.status === 200 ? "no_php" : "no_endpoint" };
+        }).then(function (body) {
           if (!response.ok || !body.ok) {
             var e = new Error(body.error || "http");
             e.code = body.error;
+            e.status = response.status;
             throw e;
           }
         });
@@ -378,7 +409,17 @@
         buildStars();
       })
       .catch(function (err) {
-        showStatus("err", err && err.code === "rate" ? "review.err.rate" : "review.status.err");
+        var code = err && err.code;
+        if (code === "no_php" || code === "no_endpoint") {
+          window.console && console.warn(
+            "[Vet Care] review-submit.php did not run (HTTP " + (err.status || "?") +
+            "). This host cannot execute PHP — GitHub Pages, for instance. " +
+            "The review form works on any PHP host, such as Hostinger."
+          );
+          showStatus("err", "review.status.offline");
+        } else {
+          showStatus("err", code === "rate" ? "review.err.rate" : "review.status.err");
+        }
       })
       .then(function () {
         submitBtn.disabled = false;
