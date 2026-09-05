@@ -1,1 +1,4 @@
 config.php
+# Runtime artefacts of the review store — never part of the source
+data/reviews.json.php.lock
+data/reviews.json.php.tmp
