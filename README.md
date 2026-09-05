@@ -114,7 +114,8 @@ Search the codebase for `TODO (client)` to find each one in place.
 | **Real photographs** | `index.html` — the two `.arch` blocks (hero and Our Story) | No photos of the clinic, interior or team were available. The site ships original illustrations instead; swap the `<img src>` for a real WebP/AVIF and keep the `.arch` wrapper, which does the framing (5:6 crop on desktop, 4:3 on phones). |
 | **Tax details** | `privacy.html` § 1 | ΑΦΜ, ΔΟΥ and the legal form of the business are required on a Greek commercial site and were not known. |
 | **Hosting provider name** | `privacy.html` § 2.4 and § 5 | Fill in once you pick a host, along with where its servers are. |
-| **Social media links** | `index.html`, Contact section | The `href="#"` placeholders and the "links will go live once confirmed" note should both go once the real Facebook / Instagram URLs are known. |
+| **Instagram** | not built | No Instagram account could be found for the clinic, so the button was removed rather than left pointing nowhere. To add one back: copy the Facebook `<a>` in the Contact section, swap the href, and re-add an `i-instagram` symbol to the sprite. |
+| **Facebook link** | `index.html`, Contact section | Points at `facebook.com/kthniatrikokentrovetcare`, found by search and matching the clinic's name and city. It could not be opened from the build environment to confirm the address and phone — **click it once to check** before launch. |
 | **Parking note** | `index.html`, Find Us section | A commented-out slot is ready; left out rather than guessed. |
 | **The "everyday services" list** | `index.html`, `.svc-extra` | Vaccinations, microchipping, travel certificates, ultrasound, dental cleaning and "urgent cases by phone" are standard for a clinic of this kind but were **not** individually confirmed. Delete any line you don't actually offer. |
 | **Testimonials** | not built | The real Google rating (4.7★, 46 reviews) is shown with attribution, but no review text was available, so no testimonials section was invented. If you want one, paste real review text with the reviewer's permission. |
@@ -136,6 +137,7 @@ js/head.js            marks the document script-capable before first paint
 js/i18n.js            every string on the site, in Greek and English
 js/consent.js         the cookie banner and preference dialog
 js/booking.js         booking form validation and delivery
+js/ui-controls.js     branded dropdown + date picker (see below)
 js/main.js            reveals, sticky header, mobile drawer, live opening status
 assets/fonts/         12 woff2 files, ~243 KB total
 assets/img/           original SVG artwork, the logo, favicon and the social card
@@ -155,6 +157,28 @@ The long legal prose is the exception: it is written directly in
 `privacy.html` and `cookies.html` inside `<div data-lang="el">` /
 `<div data-lang="en">` blocks, because splitting it into keys would make it
 unreadable. The same toggle shows and hides them.
+
+### The dropdowns and the date picker
+
+Browsers draw `<select>` popups and the native date calendar with operating-system
+widgets that CSS cannot style, so `js/ui-controls.js` rebuilds both in the page.
+It is an enhancement, not a replacement: the real `<select>` and
+`<input type="date">` stay in the form and remain the source of truth, and the
+custom UI writes back into them and fires the same `input`/`change` events. If
+that script ever fails to load, the native controls simply reappear and the form
+still works.
+
+Two behaviours worth knowing:
+
+- The calendar **greys out Saturdays and Sundays**, because the clinic is closed
+  then, and anything before today. If the opening days ever change, edit
+  `disabled()` in `js/ui-controls.js`.
+- On screens under 620px both controls open as a **bottom sheet** rather than an
+  anchored menu, since a menu near the bottom of a phone is out of thumb reach.
+
+Keyboard support follows the ARIA select-only combobox pattern: arrows, Home/End,
+Enter, Escape and type-ahead on the dropdown; arrows, PageUp/PageDown and Enter
+on the calendar.
 
 ### Keeping the pages in sync
 

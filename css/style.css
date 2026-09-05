@@ -1147,6 +1147,253 @@ p { text-wrap: pretty; }
 }
 .form-note__mail { display: block; margin-top: 0.35rem; }
 
+/* ---------------------------------------------------------------------------
+   Branded dropdown + date picker (js/ui-controls.js)
+   The browser draws native <select> popups and the date calendar with OS
+   widgets that CSS cannot reach, so both are rebuilt in the page. The real
+   controls stay in the form and are only hidden once JS confirms it took over,
+   which is why these rules hang off .has-custom-controls.
+--------------------------------------------------------------------------- */
+.has-custom-controls .cselect__native,
+.has-custom-controls .cdate__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip-path: inset(50%);
+}
+
+.cselect,
+.cdate { position: relative; }
+
+/* The closed field: same shape as every other input in the form. */
+.cselect__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 50px;
+  padding: 0.7rem 0.9rem;
+  background: var(--bone-100);
+  border: 1px solid var(--bone-300);
+  border-radius: var(--radius-m);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink);
+  text-align: left;
+  transition: border-color 0.2s var(--ease-out), background-color 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+}
+.cselect__btn:hover { border-color: var(--bone-400); }
+.cselect__btn:focus-visible {
+  outline: none;
+  background: var(--white);
+  border-color: var(--forest-600);
+  box-shadow: 0 0 0 3px rgba(53, 96, 79, 0.16);
+}
+.cselect__btn.is-empty .cselect__value { color: var(--ink-soft); }
+.cselect__value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cselect__chev {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--ink-soft);
+  transition: rotate 0.28s var(--ease-out), color 0.2s var(--ease-out);
+}
+.cselect.is-open .cselect__chev { rotate: 180deg; color: var(--forest-700); }
+.cdate__icon { rotate: none !important; }
+
+.field.has-error .cselect__btn {
+  border-color: #a3291b;
+  background: #fdf5f3;
+}
+
+/* The popup, shared by both controls. */
+.cpop {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  padding: 0.4rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-l);
+  animation: cpop-in 0.16s var(--ease-out);
+}
+.cpop.is-up { top: auto; bottom: calc(100% + 6px); }
+@keyframes cpop-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cpop { animation: none; }
+}
+
+.cselect__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: min(300px, 50vh);
+  overflow-y: auto;
+  outline: none;
+}
+.cselect__opt {
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  font-size: 0.98rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+.cselect__opt.is-placeholder { color: var(--ink-soft); }
+.cselect__opt.is-active { background: var(--bone-200); }
+.cselect__opt.is-selected {
+  background: var(--forest-700);
+  color: var(--white);
+  font-weight: 600;
+}
+.cselect__opt.is-selected.is-active { background: var(--forest-800); }
+
+/* --- calendar --- */
+.cdate__pop { width: min(340px, calc(100vw - 2rem)); left: 0; right: auto; padding: 0.85rem; }
+.cdate__head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.cdate__title {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--forest-900);
+  text-align: center;
+  text-transform: capitalize;
+}
+.cdate__nav {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--forest-700);
+  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.cdate__nav svg { width: 18px; height: 18px; }
+.cdate__nav:hover { background: var(--forest-700); color: var(--white); }
+
+.cdate__weekdays,
+.cdate__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cdate__weekdays {
+  margin-bottom: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sage-600);
+  text-align: center;
+}
+.cdate__weekdays .is-weekend { color: var(--bone-400); }
+
+.cdate__day {
+  aspect-ratio: 1;
+  min-height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  transition: background-color 0.16s var(--ease-out), color 0.16s var(--ease-out);
+}
+.cdate__day:hover:not(:disabled) { background: var(--bone-200); }
+.cdate__day.is-outside { color: var(--bone-400); }
+.cdate__day.is-off { color: var(--bone-400); cursor: not-allowed; }
+.cdate__day.is-today { box-shadow: inset 0 0 0 1.5px var(--sage-300); font-weight: 700; }
+.cdate__day.is-chosen {
+  background: var(--clay-700);
+  color: var(--white);
+  font-weight: 700;
+}
+.cdate__day:focus-visible { outline: 3px solid var(--clay-700); outline-offset: -2px; }
+
+.cdate__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.7rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+.cdate__clear {
+  border: 0;
+  background: none;
+  padding: 0.35rem 0.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--forest-700);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.cdate__clear:hover { color: var(--clay-700); }
+
+/* --- phones: a bottom sheet, because an anchored menu low on the screen is
+       out of thumb reach and can sit off the bottom edge --- */
+.cpop-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  background: rgba(20, 38, 31, 0.45);
+  backdrop-filter: blur(2px);
+}
+@media (max-width: 620px) {
+  .cselect.is-sheet .cpop,
+  .cdate.is-sheet .cpop {
+    position: fixed;
+    z-index: 120;
+    inset: auto 0 0 0;
+    width: 100%;
+    max-height: 82vh;
+    overflow-y: auto;
+    padding: 0.8rem 0.8rem calc(0.8rem + env(safe-area-inset-bottom));
+    border-radius: var(--radius-l) var(--radius-l) 0 0;
+    border-inline: 0;
+    border-bottom: 0;
+    animation: sheet-in 0.24s var(--ease-out);
+  }
+  @keyframes sheet-in {
+    from { transform: translateY(12%); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+  /* A grab handle, so the sheet reads as something you can dismiss. */
+  .cselect.is-sheet .cpop::before,
+  .cdate.is-sheet .cpop::before {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 4px;
+    margin: 0 auto 0.7rem;
+    border-radius: 999px;
+    background: var(--bone-400);
+  }
+  .cselect.is-sheet .cselect__list { max-height: 70vh; }
+  .cselect.is-sheet .cselect__opt { padding: 0.95rem 0.9rem; font-size: 1.02rem; }
+  .cdate.is-sheet .cdate__pop { width: 100%; }
+  .cdate.is-sheet .cdate__day { min-height: 44px; font-size: 1rem; }
+}
+
 /* Honeypot: off-screen and hidden from assistive tech, never visible */
 .hp { position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
 .hp input { width: 1px; height: 1px; min-height: 0; padding: 0; border: 0; }

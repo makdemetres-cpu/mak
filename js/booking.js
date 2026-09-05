@@ -272,7 +272,10 @@
 
     var problems = validate();
     if (problems.length) {
-      problems[0].focus();
+      /* Selects and the date input are hidden behind branded controls; focus
+         has to land on the visible button, not the element behind it. */
+      var first = problems[0];
+      (first.customFocusTarget || first).focus();
       return;
     }
 
