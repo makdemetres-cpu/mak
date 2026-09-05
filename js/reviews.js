@@ -36,10 +36,11 @@
      for whoever maintains the site, not as apologetic copy to visitors. */
   function setState(key) {
     if (key === "reviews.error") {
-      window.console && console.warn(
-        "[Vet Care] The review feed could not be read. If this host cannot run " +
-        "PHP (GitHub Pages, for example), reviews.php never executes and the " +
-        "section stays empty. It works on any PHP host, such as Hostinger."
+      window.console && console.info(
+        "[Vet Care] reviews.php did not run, so this host cannot serve the live " +
+        "Google feed or reviews left through the form — both need PHP. Falling " +
+        "back to curated-reviews.json, which needs nothing. On a PHP host such " +
+        "as Hostinger the full feed comes back on its own."
       );
     }
   }
@@ -223,11 +224,75 @@
     }
   }
 
+  /* A host that cannot run PHP — GitHub Pages, a plain file server, any static
+     preview — serves reviews.php as text instead of executing it. The reviews
+     quoted from the Google listing must still appear there, so they are read
+     straight from curated-reviews.json, which is the same file reviews.php
+     reads on a PHP host. Same reviews, same order, no second copy to keep in
+     step. What a static host cannot do is the live Google feed or the clinic's
+     own approved reviews, both of which need a server. */
+  /* Used only when nothing else supplies one: a Google Maps search for the
+     clinic by name and street, which lands on the listing. Replace it by
+     filling in "googleUrl" in curated-reviews.json. */
+  var FALLBACK_GOOGLE_URL = "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent("Κτηνιατρικό Κέντρο Vet Care, Δημοκρατίας 149, Οβρυά, Πάτρα");
+
+  function fromCurated(payload) {
+    var list = (payload && payload.reviews) || [];
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i];
+      if (r.show === false) continue;
+      var text = (r.text || "").trim();
+      if (!text) continue;
+      var rating = (r.rating === null || r.rating === undefined) ? null : parseInt(r.rating, 10);
+      if (rating !== null && rating < 4) continue;   /* 4 and 5 stars only */
+      out.push({
+        source: "google",
+        author: (r.author || "").trim(),
+        url: r.url || "",
+        rating: rating,
+        text: text,
+        translation: (r.translation || "").trim(),
+        time: r.date || "",
+        ago: ""
+      });
+      if (out.length === 5) break;                   /* five at most */
+    }
+    return {
+      ok: true,
+      reviews: out,
+      rating: null,
+      total: null,
+      googleUrl: (payload && payload.googleUrl) || FALLBACK_GOOGLE_URL,
+      notice: "static"
+    };
+  }
+
+
+  function loadCurated() {
+    return fetch("curated-reviews.json", { headers: { Accept: "application/json" } })
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      })
+      .then(function (payload) {
+        data = fromCurated(payload);
+        render();
+      })
+      .catch(function () {
+        data = { reviews: [], notice: "google_unavailable" };
+        render();
+      });
+  }
+
   function load() {
     setState("reviews.loading");
     fetch("reviews.php", { headers: { Accept: "application/json" } })
       .then(function (response) {
         if (!response.ok) throw new Error("HTTP " + response.status);
+        /* A static host answers 200 with the PHP source as a download, so a
+           successful response is not proof the endpoint ran. Parsing it is. */
         return response.json();
       })
       .then(function (payload) {
@@ -235,10 +300,8 @@
         render();
       })
       .catch(function () {
-        /* No PHP (a static preview) or the endpoint failed: say so plainly and
-           leave the two buttons, which work regardless. */
-        data = { reviews: [], notice: "google_unavailable" };
-        render();
+        setState("reviews.error");
+        return loadCurated();
       });
   }
 

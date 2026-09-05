@@ -27,7 +27,7 @@ The repository root **is** the site. Pick whichever host you prefer:
 | **Netlify** | Connect the repo, or drag the folder onto the dashboard. No build command, publish directory `.` | `netlify.toml`, `_headers` |
 | **Cloudflare Pages** | Connect the repo. Framework preset "None", build command empty, output directory `/` | `_headers` |
 | **Vercel** | `vercel --prod` from this folder, or connect the repo | `vercel.json` |
-| **GitHub Pages** | Settings → Pages → branch, folder `/ (root)`. Preview only — it cannot run PHP | `.nojekyll` |
+| **GitHub Pages** | Settings → Pages → branch, folder `/ (root)`. Good for previewing: everything works except the parts that need PHP — the live Google feed, and sending a booking request or a review to the server. The four quoted reviews still show, read straight from `curated-reviews.json` | `.nojekyll` |
 
 Each host reads only its own file and ignores the others, so they can all live
 in the repo together. On Hostinger that means **`.htaccess`** — it sets the
@@ -102,12 +102,19 @@ reviews**, from three sources: reviews quoted by hand from the Google listing
 clinic has approved from the website's own form, newest first. A new review
 anywhere pushes the oldest off the page by itself.
 
-### Reviews quoted by hand — `curated-reviews.php`
+### Reviews quoted by hand — `curated-reviews.json`
 
 The four reviews on the site now were copied from the clinic's Google listing
-into **`curated-reviews.php`**. This needs no Google account, no API key, no
-card on file and no monthly quota — it is plain text in a PHP file, and it is
-what makes the section work on any host.
+into **`curated-reviews.json`**. This needs no Google account, no API key, no
+card on file and no monthly quota.
+
+It is also the one part of the section that needs **no server at all**. On a PHP
+host `reviews.php` reads the file and merges it with everything else; on a host
+that cannot run PHP — GitHub Pages, or opening the folder through any static
+file server — `js/reviews.js` reads the very same file directly. One file, one
+set of reviews, and they appear either way. What a static host cannot do is the
+live Google feed or reviews left through the site's own form: both need a
+server, so on GitHub Pages you see these four and nothing else.
 
 Each entry has:
 
@@ -232,8 +239,8 @@ Search the codebase for `TODO (client)` to find each one in place.
 | **Facebook link** | `index.html`, Contact section | Points at `facebook.com/kthniatrikokentrovetcare`, found by search and matching the clinic's name and city. It could not be opened from the build environment to confirm the address and phone — **click it once to check** before launch. |
 | **Parking note** | `index.html`, Find Us section | A commented-out slot is ready; left out rather than guessed. |
 | **The "everyday services" list** | `index.html`, `.svc-extra` | Vaccinations, microchipping, travel certificates, ultrasound, dental cleaning and "urgent cases by phone" are standard for a clinic of this kind but were **not** individually confirmed. Delete any line you don't actually offer. |
-| **Testimonials** | built | Four real reviews, copied word for word from the Google listing into `curated-reviews.php`, plus the live feed and the site's own form. Nothing is invented: an entry with no name shows no name, and one with no rating shows no stars. |
-| **The Google listing address** | `config.php`, `google_listing_url` | The *"see more"* button falls back to a Google Maps search for the clinic by name and street, which lands on the listing. For the exact address: Google Maps → **Share** → copy. No API key needed. |
+| **Testimonials** | built | Four real reviews, copied word for word from the Google listing into `curated-reviews.json`, plus the live feed and the site's own form. Nothing is invented: an entry with no name shows no name, and one with no rating shows no stars. |
+| **The Google listing address** | `curated-reviews.json` → `"googleUrl"`, or `config.php` → `google_listing_url` | The *"see more"* button falls back to a Google Maps search for the clinic by name and street, which lands on the listing. For the exact address: Google Maps → **Share** → copy. No API key needed. Put it in the JSON and it works on a static host too. |
 
 ---
 
@@ -245,7 +252,8 @@ privacy.html          GDPR privacy policy (bilingual)
 cookies.html          cookie / tracker policy (bilingual)
 404.html              custom not-found page
 send.php              optional: makes the booking form deliver on its own
-curated-reviews.php   reviews quoted by hand from the Google listing
+curated-reviews.json  reviews quoted by hand from the Google listing — read by
+                      reviews.php on a PHP host and by js/reviews.js without one
 reviews.php           serves the merged review feed (quoted + Google + site)
 review-submit.php     receives a review left on the site, stores it as pending
 review-admin.php      password-protected moderation screen

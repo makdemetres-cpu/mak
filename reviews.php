@@ -128,39 +128,54 @@ if ($listing !== '') {
 }
 
 /* --------------------------- reviews quoted by hand from the Google listing
-   These are pinned: they always appear, ahead of everything else, which is why
+   They live in curated-reviews.json, not in this file, because a host that
+   cannot run PHP still has to show them: js/reviews.js reads exactly the same
+   file when this endpoint does not execute. One file, one set of reviews,
+   whatever the host.
+
+   They are pinned: they always appear, ahead of everything else, which is why
    they are collected before the sort and re-attached after it. */
 $pinned = [];
-if (is_file(__DIR__ . '/curated-reviews.php')) {
-    foreach ((array)(require __DIR__ . '/curated-reviews.php') as $r) {
-        if (isset($r['show']) && !$r['show']) {
-            continue;
+$curatedFile = __DIR__ . '/curated-reviews.json';
+if (is_file($curatedFile)) {
+    $curated = json_decode((string)file_get_contents($curatedFile), true);
+    if (is_array($curated)) {
+        /* The listing address for the "see more" button can live here too, so a
+           static host has one as well. config.php still wins if it sets one. */
+        $fromFile = trim((string)($curated['googleUrl'] ?? ''));
+        if ($fromFile !== '' && $out['googleUrl'] === null) {
+            $out['googleUrl'] = $fromFile;
         }
-        $author = trim((string)($r['author'] ?? ''));
-        $stars  = $r['rating'] ?? null;
-        $text   = trim((string)($r['text'] ?? ''));
-        /* The words are the review. A missing name or star count is left out
-           of the card rather than guessed at — better an unattributed quote
-           than an invented signature. */
-        if ($text === '') {
-            continue;
-        }
-        if ($stars !== null) {
-            $stars = (int)$stars;
-            if ($stars < MIN_STARS) {
+        foreach ((array)($curated['reviews'] ?? []) as $r) {
+            if (isset($r['show']) && !$r['show']) {
                 continue;
             }
+            $author = trim((string)($r['author'] ?? ''));
+            $stars  = $r['rating'] ?? null;
+            $text   = trim((string)($r['text'] ?? ''));
+            /* The words are the review. A missing name or star count is left
+               out of the card rather than guessed at — better an unattributed
+               quote than an invented signature. */
+            if ($text === '') {
+                continue;
+            }
+            if ($stars !== null) {
+                $stars = (int)$stars;
+                if ($stars < MIN_STARS) {
+                    continue;
+                }
+            }
+            $pinned[] = [
+                'source'      => 'google',
+                'author'      => $author,
+                'url'         => (string)($r['url'] ?? ''),
+                'rating'      => $stars,
+                'text'        => $text,
+                'translation' => trim((string)($r['translation'] ?? '')),
+                'time'        => (string)($r['date'] ?? ''),
+                'ago'         => '',
+            ];
         }
-        $pinned[] = [
-            'source'      => 'google',
-            'author'      => $author,
-            'url'         => (string)($r['url'] ?? ''),
-            'rating'      => $stars,
-            'text'        => $text,
-            'translation' => trim((string)($r['translation'] ?? '')),
-            'time'        => (string)($r['date'] ?? ''),
-            'ago'         => '',
-        ];
     }
 }
 

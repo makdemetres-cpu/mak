@@ -1,0 +1,40 @@
+{
+  "_readme": "Reviews copied by hand from the Vet Care listing on Google. This file is the single source of truth for them: reviews.php reads it on a PHP host, and js/reviews.js reads it directly on a host that cannot run PHP (GitHub Pages, for example), so the same reviews show either way. RULES: copy the wording EXACTLY, punctuation and typos included; only ever quote a review that is genuinely on the listing, never write one; 'author' and 'rating' may be left out and nothing is invented to replace them (no name means no name shown, no rating means no stars); 'translation' is optional and appears, labelled as a translation, only when a visitor switches the site to English; 'date' is optional (YYYY-MM-DD) and is used only for ordering; set 'show' to false to take one down without deleting it. Only 4- and 5-star reviews are shown, five at most.",
+
+  "googleUrl": "",
+
+  "reviews": [
+    {
+      "show": true,
+      "author": "Σαββούλα Νικολοπούλου",
+      "rating": 5,
+      "date": "",
+      "text": "Πολύ καλή εξυπηρέτηση. Είμαι πολύ ικανοποιημένη. Πάντα κάθε απορία ή ερώτηση που έχω είναι πάντα εκεί για να μου την λύσουν. Είναι επαγγελματίες! Σας ευχαριστούμε από καρδιάς που προσέχετε την Minnie μας.",
+      "translation": "Very good service. I am very satisfied. Whatever query or question I have, they are always there to answer it. They are professionals! Thank you from the bottom of our hearts for looking after our Minnie."
+    },
+    {
+      "show": true,
+      "author": "Διονύσης Παναγιωτόπουλος",
+      "rating": 5,
+      "date": "",
+      "text": "Και οι 3 γιατροί είναι εξαιρετικοί.. Πρόθυμοι, ευγενικοί και υπέροχη συμπεριφορά και φροντίδα προς τα ζωάκια..",
+      "translation": "All 3 vets are excellent.. Obliging, kind, and a wonderful manner and care towards the animals.."
+    },
+    {
+      "show": true,
+      "author": "tina pap",
+      "rating": 5,
+      "date": "",
+      "text": "Πολύ περιποιητικοι και τρυφεροί με τους ασθενείς τους, άψογη εξυπηρέτηση και συνέπεια με τους ιδιοκτήτες. Ευχαριστούμε Ελένη και Γιώργο !",
+      "translation": "Very attentive and gentle with their patients, impeccable service and reliability towards the owners. Thank you Eleni and Giorgos!"
+    },
+    {
+      "show": true,
+      "author": "Νικος Σπυ",
+      "rating": 5,
+      "date": "",
+      "text": "Τούς χρωστάω τήν αρτιμέλεια τού σκύλου μου. Εξαιρετικοί άνθρωποι καί γιατροί !",
+      "translation": "I owe them the fact that my dog is sound and whole. Exceptional people and exceptional vets!"
+    }
+  ]
+}
