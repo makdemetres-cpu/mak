@@ -411,6 +411,14 @@ p { text-wrap: pretty; }
 
 .btn--block { width: 100%; }
 
+/* A quieter, secondary action that sits beside a full-size button without
+   competing with it. Still 44px tall, so it stays an easy target on a phone. */
+.btn--small {
+  min-height: 44px;
+  padding: 0.5em 1.2em;
+  font-size: 0.88rem;
+}
+
 .btn[disabled],
 .btn[aria-disabled="true"] {
   opacity: 0.45;
@@ -1047,6 +1055,30 @@ p { text-wrap: pretty; }
   overflow-wrap: break-word;
 }
 .rvcard__link { font-size: 0.85rem; font-weight: 600; justify-self: start; }
+
+/* The English translation of a Greek review. Set apart with a rule and a
+   quieter type size so it reads as a translation of the words above, never as
+   the review itself. */
+.rvcard__translation {
+  display: grid;
+  gap: 0.25rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--line);
+}
+.rvcard__translation-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sage-600);
+}
+.rvcard__translation-text {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-soft);
+  overflow-wrap: break-word;
+}
 
 .reviews__state {
   margin-top: var(--space-m);

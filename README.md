@@ -96,11 +96,52 @@ back to the same escape hatch as mode 1, so a request is never silently lost.
 
 ## Reviews
 
-The section between Services and Booking shows the **five most recent 4- and
-5-star reviews**, merged from two sources and sorted newest-first, so a new
-review anywhere pushes the oldest off the page by itself.
+The section between Services and Booking shows up to **five 4- and 5-star
+reviews**, from three sources: reviews quoted by hand from the Google listing
+(always shown, first), then whatever the Google API returns and whatever the
+clinic has approved from the website's own form, newest first. A new review
+anywhere pushes the oldest off the page by itself.
+
+### Reviews quoted by hand — `curated-reviews.php`
+
+The four reviews on the site now were copied from the clinic's Google listing
+into **`curated-reviews.php`**. This needs no Google account, no API key, no
+card on file and no monthly quota — it is plain text in a PHP file, and it is
+what makes the section work on any host.
+
+Each entry has:
+
+| Field | |
+|---|---|
+| `text` | the review, **word for word**, punctuation and typos included |
+| `author` | the reviewer's name from Google — optional |
+| `rating` | 4 or 5 — optional |
+| `translation` | English, shown labelled as a translation under the Greek when a visitor switches language — optional |
+| `date` | `YYYY-MM-DD`, used only for ordering — optional |
+| `show` | set to `false` to take one down without deleting it |
+
+`author` and `rating` are optional and **nothing is invented to fill them in**:
+with no name the card shows no name, with no rating it shows no stars. The four
+entries currently have both blank — fill them in from the Google listing and
+the cards fill in with them.
+
+Only ever paste reviews that are genuinely on the listing. An invented
+testimonial is unlawful under the Unfair Commercial Practices Directive as
+amended by the Omnibus Directive, and readers spot them anyway.
+
+The **"see more"** button beside *Leave a review* opens the Google listing,
+where every review can be read. Its address comes from `google_listing_url` in
+`config.php` when set, otherwise from the API or Place ID, and failing all of
+those from a Google Maps search for the clinic by name and street. To set it
+exactly: open the clinic on Google Maps, press **Share**, and paste what it
+gives you into `config.php` — no API key needed.
 
 ### Google reviews — what you need to set up
+
+This part is **optional**. Skip it and the section still works: the quoted
+reviews and any left through the site's own form are shown, and the rating
+summary line simply stays hidden. Set it up and the section also carries the
+live 4- and 5-star reviews and the clinic's current score.
 
 **Any Google account will do.** This reads public place data, so you do not need
 to own the clinic's Google Business listing — ownership only matters for replying
@@ -139,7 +180,8 @@ Three things worth understanding before you switch it on:
   your real volume before raising it.
 - **The key never reaches the browser.** The page calls our own `reviews.php`,
   which calls Google server-side. Leave `config.php` empty and nothing breaks —
-  the section shows the two buttons and no cards. It will never invent reviews.
+  the section falls back to the reviews quoted by hand. It will never invent
+  reviews.
 
 ### Reviews left on the website
 
@@ -190,7 +232,9 @@ Search the codebase for `TODO (client)` to find each one in place.
 | **Facebook link** | `index.html`, Contact section | Points at `facebook.com/kthniatrikokentrovetcare`, found by search and matching the clinic's name and city. It could not be opened from the build environment to confirm the address and phone — **click it once to check** before launch. |
 | **Parking note** | `index.html`, Find Us section | A commented-out slot is ready; left out rather than guessed. |
 | **The "everyday services" list** | `index.html`, `.svc-extra` | Vaccinations, microchipping, travel certificates, ultrasound, dental cleaning and "urgent cases by phone" are standard for a clinic of this kind but were **not** individually confirmed. Delete any line you don't actually offer. |
-| **Testimonials** | not built | The real Google rating (4.7★, 46 reviews) is shown with attribution, but no review text was available, so no testimonials section was invented. If you want one, paste real review text with the reviewer's permission. |
+| **Testimonials** | built | Four real reviews, copied word for word from the Google listing into `curated-reviews.php`, plus the live feed and the site's own form. Nothing is invented: an entry with no name shows no name, and one with no rating shows no stars. |
+| **Reviewer names and star ratings** | `curated-reviews.php` | The four review texts are real and complete; the names and ratings beside them were not to hand. Copy each reviewer's name and star count from the Google listing into the matching entry — the cards then show a name, initials and stars. Until then the cards show the words alone, which is honest but plainer. |
+| **The Google listing address** | `config.php`, `google_listing_url` | The *"see more"* button falls back to a Google Maps search for the clinic by name and street, which lands on the listing. For the exact address: Google Maps → **Share** → copy. No API key needed. |
 
 ---
 
@@ -202,7 +246,8 @@ privacy.html          GDPR privacy policy (bilingual)
 cookies.html          cookie / tracker policy (bilingual)
 404.html              custom not-found page
 send.php              optional: makes the booking form deliver on its own
-reviews.php           serves the merged review feed (Google + approved site ones)
+curated-reviews.php   reviews quoted by hand from the Google listing
+reviews.php           serves the merged review feed (quoted + Google + site)
 review-submit.php     receives a review left on the site, stores it as pending
 review-admin.php      password-protected moderation screen
 review-store.php      shared, guarded read/write for the review store

@@ -93,13 +93,14 @@ if ($key !== '' && $placeId !== '') {
                     continue;
                 }
                 $out['reviews'][] = [
-                    'source'  => 'google',
-                    'author'  => (string)($r['authorAttribution']['displayName'] ?? 'Google'),
-                    'url'     => (string)($r['authorAttribution']['uri'] ?? ($r['googleMapsUri'] ?? '')),
-                    'rating'  => $stars,
-                    'text'    => $text,
-                    'time'    => (string)($r['publishTime'] ?? ''),
-                    'ago'     => (string)($r['relativePublishTimeDescription'] ?? ''),
+                    'source'      => 'google',
+                    'author'      => (string)($r['authorAttribution']['displayName'] ?? 'Google'),
+                    'url'         => (string)($r['authorAttribution']['uri'] ?? ($r['googleMapsUri'] ?? '')),
+                    'rating'      => $stars,
+                    'text'        => $text,
+                    'translation' => '',
+                    'time'        => (string)($r['publishTime'] ?? ''),
+                    'ago'         => (string)($r['relativePublishTimeDescription'] ?? ''),
                 ];
             }
         }
@@ -111,6 +112,58 @@ if ($key !== '' && $placeId !== '') {
     $out['notice'] = 'google_not_configured';
 }
 
+/* The "see more" button's destination, in order of preference: the exact
+   listing address set in config.php, then whatever the API or the Place ID
+   gives us, and failing all of those a Google Maps search for the clinic by
+   name and street — which needs no key, no Place ID and no configuration, and
+   lands on the listing where every review can be read. Replace it by pasting
+   the real address into config.php: open the clinic on Google Maps, press
+   Share, and copy what it offers. */
+$listing = trim((string)($config['google_listing_url'] ?? ''));
+if ($listing !== '') {
+    $out['googleUrl'] = $listing;
+} elseif ($out['googleUrl'] === null) {
+    $out['googleUrl'] = 'https://www.google.com/maps/search/?api=1&query='
+        . rawurlencode('Κτηνιατρικό Κέντρο Vet Care, Δημοκρατίας 149, Οβρυά, Πάτρα');
+}
+
+/* --------------------------- reviews quoted by hand from the Google listing
+   These are pinned: they always appear, ahead of everything else, which is why
+   they are collected before the sort and re-attached after it. */
+$pinned = [];
+if (is_file(__DIR__ . '/curated-reviews.php')) {
+    foreach ((array)(require __DIR__ . '/curated-reviews.php') as $r) {
+        if (isset($r['show']) && !$r['show']) {
+            continue;
+        }
+        $author = trim((string)($r['author'] ?? ''));
+        $stars  = $r['rating'] ?? null;
+        $text   = trim((string)($r['text'] ?? ''));
+        /* The words are the review. A missing name or star count is left out
+           of the card rather than guessed at — better an unattributed quote
+           than an invented signature. */
+        if ($text === '') {
+            continue;
+        }
+        if ($stars !== null) {
+            $stars = (int)$stars;
+            if ($stars < MIN_STARS) {
+                continue;
+            }
+        }
+        $pinned[] = [
+            'source'      => 'google',
+            'author'      => $author,
+            'url'         => (string)($r['url'] ?? ''),
+            'rating'      => $stars,
+            'text'        => $text,
+            'translation' => trim((string)($r['translation'] ?? '')),
+            'time'        => (string)($r['date'] ?? ''),
+            'ago'         => '',
+        ];
+    }
+}
+
 /* ------------------------------------------- reviews left on this website */
 foreach (review_store_load(review_store_path($config)) as $r) {
     if (($r['status'] ?? '') !== 'approved') {
@@ -120,18 +173,20 @@ foreach (review_store_load(review_store_path($config)) as $r) {
         continue;
     }
     $out['reviews'][] = [
-        'source' => 'site',
-        'author' => (string)($r['author'] ?? ''),
-        'url'    => '',
-        'rating' => (int)$r['rating'],
-        'text'   => (string)($r['text'] ?? ''),
-        'time'   => (string)($r['created'] ?? ''),
-        'ago'    => '',
+        'source'      => 'site',
+        'author'      => (string)($r['author'] ?? ''),
+        'url'         => '',
+        'rating'      => (int)$r['rating'],
+        'text'        => (string)($r['text'] ?? ''),
+        'translation' => '',
+        'time'        => (string)($r['created'] ?? ''),
+        'ago'         => '',
     ];
 }
 
-/* Newest first, then keep five. A new review anywhere pushes the oldest out. */
+/* Newest first among the rest, then the pinned ones go in front and whatever
+   is newest fills the slots that remain. */
 usort($out['reviews'], static fn(array $a, array $b): int => strcmp($b['time'], $a['time']));
-$out['reviews'] = array_slice($out['reviews'], 0, MAX_SHOWN);
+$out['reviews'] = array_slice(array_merge($pinned, $out['reviews']), 0, MAX_SHOWN);
 
 echo json_encode($out, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

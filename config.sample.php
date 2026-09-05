@@ -47,6 +47,12 @@ return [
     'google_api_key'  => '',
     'google_place_id' => '',
 
+    /* Where the "see more" button under the reviews sends people. This needs
+     * NO API key and no Google Cloud account at all: open the clinic on Google
+     * Maps, press Share, and paste the address here. Leave it empty and the
+     * button simply does not appear. */
+    'google_listing_url' => '',
+
     /* ---------------------------------------------------------------------
      * Moderation for reviews left on the website
      * ---------------------------------------------------------------------

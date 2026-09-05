@@ -24,6 +24,7 @@
   var starsEl = document.getElementById("reviews-stars");
   var countEl = document.getElementById("reviews-count");
   var attributionEl = document.getElementById("reviews-attribution");
+  var moreEl = document.getElementById("reviews-more");
 
   var data = null;
 
@@ -97,20 +98,26 @@
     var top = document.createElement("div");
     top.className = "rvcard__top";
 
-    var avatar = document.createElement("span");
-    avatar.className = "rvcard__avatar";
-    avatar.setAttribute("aria-hidden", "true");
-    avatar.textContent = initials(review.author);
-    top.appendChild(avatar);
+    /* A review whose author we do not know shows no initials and no name line,
+       rather than a placeholder standing in for a real person. */
+    if (review.author) {
+      var avatar = document.createElement("span");
+      avatar.className = "rvcard__avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      avatar.textContent = initials(review.author);
+      top.appendChild(avatar);
+    }
 
     var who = document.createElement("div");
     who.className = "rvcard__who";
 
-    var name = document.createElement("p");
-    name.className = "rvcard__name";
-    /* textContent, never innerHTML: this is text other people wrote. */
-    name.textContent = review.author || "—";
-    who.appendChild(name);
+    if (review.author) {
+      var name = document.createElement("p");
+      name.className = "rvcard__name";
+      /* textContent, never innerHTML: this is text other people wrote. */
+      name.textContent = review.author;
+      who.appendChild(name);
+    }
 
     var meta = document.createElement("p");
     meta.className = "rvcard__meta";
@@ -132,12 +139,36 @@
     top.appendChild(who);
     article.appendChild(top);
 
-    article.appendChild(starRow(review.rating));
+    /* Same rule for the stars: shown when we know the rating, left out when we
+       do not. Never a guessed five. */
+    if (review.rating) {
+      article.appendChild(starRow(review.rating));
+    }
 
     var quote = document.createElement("blockquote");
     quote.className = "rvcard__text";
     quote.textContent = review.text;
     article.appendChild(quote);
+
+    /* The reviews were written in Greek. An English visitor gets a translation
+       underneath, clearly labelled as one — the original stays above it, so
+       nobody is shown words the reviewer did not write as if they had. */
+    if (review.translation && lang() === "en") {
+      var trWrap = document.createElement("div");
+      trWrap.className = "rvcard__translation";
+
+      var trLabel = document.createElement("p");
+      trLabel.className = "rvcard__translation-label";
+      trLabel.textContent = t("reviews.translated");
+      trWrap.appendChild(trLabel);
+
+      var trText = document.createElement("p");
+      trText.className = "rvcard__translation-text";
+      trText.textContent = review.translation;
+      trWrap.appendChild(trText);
+
+      article.appendChild(trWrap);
+    }
 
     if (review.url) {
       var link = document.createElement("a");
@@ -161,6 +192,18 @@
       starsEl.appendChild(starRow(Math.round(data.rating)));
       countEl.textContent = t("reviews.summaryCount").replace("{total}", String(data.total));
       summaryEl.hidden = false;
+    }
+
+    /* "See more" only exists if we actually know where to send people, and
+       only once there are reviews on the page for it to follow. */
+    if (moreEl) {
+      var hasList = !!(data.reviews && data.reviews.length);
+      if (data.googleUrl && hasList) {
+        moreEl.href = data.googleUrl;
+        moreEl.hidden = false;
+      } else {
+        moreEl.hidden = true;
+      }
     }
 
     listEl.textContent = "";

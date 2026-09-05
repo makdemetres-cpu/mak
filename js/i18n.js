@@ -160,6 +160,9 @@
       "reviews.sourceSite": "Μέσω του ιστότοπου",
       "reviews.starsLabel": "{n} στα 5 αστέρια",
       "reviews.attribution": "Οι κριτικές με το σήμα Google προέρχονται από το προφίλ μας στο Google και εμφανίζονται όπως τις έγραψαν οι συντάκτες τους.",
+      "reviews.translated": "Μετάφραση από τα ελληνικά",
+      "reviews.seeMore": "Δείτε περισσότερες",
+      "reviews.seeMoreAria": "Δείτε όλες τις κριτικές στο Google (ανοίγει σε νέα καρτέλα)",
 
       "review.dialogTitle": "Αφήστε μια κριτική",
       "review.dialogIntro": "Θα δημοσιευτεί στην αρχική σελίδα <strong>αφού την ελέγξει το ιατρείο</strong>. Δημοσιεύεται μόνο το όνομα που θα γράψετε εδώ και το κείμενό σας.",
@@ -485,6 +488,9 @@
       "reviews.sourceSite": "Left on this website",
       "reviews.starsLabel": "{n} out of 5 stars",
       "reviews.attribution": "Reviews marked with the Google badge come from our Google profile and appear as their authors wrote them.",
+      "reviews.translated": "Translated from Greek",
+      "reviews.seeMore": "See more",
+      "reviews.seeMoreAria": "See all reviews on Google (opens in a new tab)",
 
       "review.dialogTitle": "Leave a review",
       "review.dialogIntro": "It will appear on the home page <strong>once the clinic has checked it</strong>. Only the name you type here and your text are published.",
