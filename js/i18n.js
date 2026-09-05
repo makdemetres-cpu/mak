@@ -84,7 +84,7 @@
       "map.north": "Β",
       /* --- story --- */
       "story.eyebrow": "Η ιστορία μας",
-      "story.title": "Δύο κτηνίατροι, μία <em class=\"accent-italic\">κοινή φιλοσοφία</em>",
+      "story.title": "Η ομάδα μας, μία <em class=\"accent-italic\">κοινή φιλοσοφία</em>",
       "story.p1":
         "Το Vet Care δημιουργήθηκε από τους κτηνιάτρους <strong>Ελένη Φωτοπούλου</strong> και <strong>Γεώργιο Μαντζούνη</strong>, με μια απλή ιδέα: ότι ένα ζώο φροντίζεται καλύτερα όταν ο άνθρωπός του καταλαβαίνει ακριβώς τι συμβαίνει και γιατί.",
       "story.p2":
@@ -413,7 +413,7 @@
       "map.north": "N",
       /* --- story --- */
       "story.eyebrow": "Our story",
-      "story.title": "Two vets, one <em class=\"accent-italic\">shared philosophy</em>",
+      "story.title": "Our team, one <em class=\"accent-italic\">shared philosophy</em>",
       "story.p1":
         "Vet Care was founded by veterinarians <strong>Eleni Fotopoulou</strong> and <strong>Georgios Mantzounis</strong> on a simple idea: an animal is cared for best when the person beside it understands exactly what is happening, and why.",
       "story.p2":
