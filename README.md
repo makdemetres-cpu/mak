@@ -274,6 +274,30 @@ How it holds up:
 the robots override all disappear with it, because none of them were written into
 the site itself.
 
+### Getting Vercel to deploy *this* branch
+
+This repository holds several unrelated websites, one per branch, and its
+default branch is `claude/athens-cafe-website-wojuts`. Vercel follows the
+default branch for production, so importing the repo and pressing Deploy
+builds **the café site**, not this one. Two ways round it:
+
+1. **Point production at this branch.** In the project's settings, find where
+   the production branch is set — depending on how new the dashboard is, that
+   is either *Settings → Git → Production Branch* or
+   *Settings → Environments → Production → Branch Tracking* — and set it to
+   `claude/new-session-je894w`. Then redeploy, or promote an existing build of
+   that branch to production.
+
+2. **Ignore production and use the branch's own preview URL.** Vercel builds
+   every branch it is pushed and gives each a stable address of the shape
+   `<project>-git-<branch>-<scope>.vercel.app` that always shows the latest
+   push. For sharing a preview with a client this is enough, and it needs no
+   settings change at all.
+
+Either way, `PREVIEW_PASSWORD` must be enabled for whichever environment is
+being used — a variable scoped to Production only will leave a preview
+deployment showing the "password not set" screen.
+
 ### What does *not* work on Vercel
 
 Vercel cannot run PHP, so on that deployment the site behaves exactly like the
