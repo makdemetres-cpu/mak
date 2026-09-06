@@ -589,23 +589,34 @@
         buildStars();
       })
       .catch(function (err) {
+        /* Only two things are the visitor's business: the clinic's queue is
+           full, or they have sent several already. Everything else — no
+           endpoint, a host that cannot run PHP, an HTML or JSON error page, a
+           network failure, a 500 — is our problem, not theirs, and must never
+           be a dead end. Fall back to the email route, which works anywhere.
+
+           This is deliberately a catch-all. Chasing each failure shape one at
+           a time is how "something went wrong" kept coming back. */
+        var known = { rate: "review.err.rate", full: "review.err.full" };
         var code = err && err.code;
-        if (code === "no_php" || code === "no_endpoint") {
-          window.console && console.warn(
-            "[Vet Care] review-submit.php did not run (HTTP " + (err.status || "?") +
-            "). This host cannot execute PHP — GitHub Pages, for instance. " +
-            "The review form works on any PHP host, such as Hostinger."
-          );
-          showStatus("err", "review.status.offline");
-        } else if (code === "full") {
-          /* The clinic's moderation queue is full — the visitor did nothing
-             wrong, so do not tell them to try again in a moment. */
-          showStatus("err", "review.err.full");
-        } else if (code === "rate") {
-          showStatus("err", "review.err.rate");
-        } else {
-          showStatus("err", "review.status.err");
+
+        if (known[code]) {
+          showStatus("err", known[code]);
+          return;
         }
+
+        window.console && console.warn(
+          "[Vet Care] review-submit.php did not accept the review (code " +
+          (code || "none") + ", HTTP " + (err && err.status ? err.status : "?") +
+          "). Falling back to sending it by email. On a PHP host such as " +
+          "Hostinger the review posts to the server instead."
+        );
+        /* Remember, so the dialog offers the email route directly next time
+           rather than trying a post that is not going to work. */
+        backendAvailable = false;
+        applyMode();
+        openMailClient(reviewMailto(payload));
+        showStatus("info", "review.status.mailed");
       })
       .then(function () {
         submitBtn.disabled = false;
