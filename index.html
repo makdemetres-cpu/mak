@@ -1042,8 +1042,34 @@
       </div>
 
       <!-- Shown by js/reviews.js only on a host with no endpoint to post to,
-           where the review is sent through the visitor's own email app. -->
+           where the review cannot be posted to a server. -->
       <p class="field__hint" id="rv-mailnote" hidden data-i18n="review.mailNote"></p>
+
+      <!-- The escape hatch. Opening a mailto: does nothing at all on a machine
+           with no mail app configured, so it can never be the only way out:
+           the text is shown ready to copy, and Google is a destination that
+           always works. Revealed by js/reviews.js, never on a working host. -->
+      <div class="rv-fallback" id="rv-fallback" hidden>
+        <p class="rv-fallback__intro" data-i18n="review.fallback.intro"></p>
+        <textarea class="rv-fallback__text" id="rv-fallback-text" rows="5" readonly
+                  data-i18n-attr="aria-label:review.fallback.textLabel"></textarea>
+        <div class="rv-fallback__actions">
+          <button type="button" class="btn btn--ghost btn--small" id="rv-copy">
+            <svg width="16" height="16" aria-hidden="true"><use href="#i-copy"/></svg>
+            <span data-i18n="review.fallback.copy">Αντιγραφή</span>
+          </button>
+          <a class="btn btn--ghost btn--small" id="rv-google" target="_blank" rel="noopener noreferrer"
+             href="https://www.google.com/maps/search/?api=1&amp;query=%CE%9A%CF%84%CE%B7%CE%BD%CE%B9%CE%B1%CF%84%CF%81%CE%B9%CE%BA%CF%8C+%CE%9A%CE%AD%CE%BD%CF%84%CF%81%CE%BF+Vet+Care+%CE%94%CE%B7%CE%BC%CE%BF%CE%BA%CF%81%CE%B1%CF%84%CE%AF%CE%B1%CF%82+149+%CE%9F%CE%B2%CF%81%CF%85%CE%AC">
+            <svg width="16" height="16" aria-hidden="true"><use href="#i-google"/></svg>
+            <span data-i18n="review.fallback.google">Αφήστε την στο Google</span>
+          </a>
+          <a class="btn btn--ghost btn--small" id="rv-email" href="mailto:info@vet-care.gr">
+            <svg width="16" height="16" aria-hidden="true"><use href="#i-mail"/></svg>
+            <span data-i18n="review.fallback.email">Email</span>
+          </a>
+        </div>
+        <p class="rv-fallback__diag" id="rv-diag" hidden></p>
+      </div>
 
       <div class="prefs__actions">
         <button type="submit" class="btn btn--forest" id="rv-submit"><span data-i18n="review.submit">Αποστολή κριτικής</span></button>

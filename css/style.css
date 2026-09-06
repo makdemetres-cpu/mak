@@ -1257,6 +1257,45 @@ p { text-wrap: pretty; }
 }
 .booking__call p { margin-bottom: 0.75rem; }
 
+/* --- the review escape hatch ---
+   Shown only where a review cannot be posted to a server. Deliberately offers
+   three routes: a mailto does nothing at all on a machine with no mail app,
+   so it can never be the only way out. */
+.rv-fallback {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  background: var(--bone-100, #f6f1e7);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+.rv-fallback__intro { font-size: 0.9rem; color: var(--text-soft); margin: 0; }
+.rv-fallback__text {
+  width: 100%;
+  min-height: 7rem;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--forest-900);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s, 10px);
+  resize: vertical;
+}
+.rv-fallback__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.rv-fallback__diag {
+  margin: 0;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-soft);
+  opacity: 0.75;
+}
+@media (max-width: 560px) {
+  .rv-fallback__actions .btn { flex: 1 1 100%; }
+}
+
 /* --- magnetic drift ---
    js/main.js § 6 writes --mag-x / --mag-y on each [data-magnet] every frame
    while the cursor is inside the panel. Nothing here runs on its own: with

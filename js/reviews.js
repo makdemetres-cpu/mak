@@ -335,8 +335,46 @@
 
   var ratingBox = document.getElementById("rv-rating");
   var submitBtn = document.getElementById("rv-submit");
-  var submitLabel = submitBtn ? submitBtn.querySelector("[data-i18n]") || submitBtn : null;
   var CLINIC_EMAIL = "info@vet-care.gr";
+  var fallbackBox = document.getElementById("rv-fallback");
+  var fallbackText = document.getElementById("rv-fallback-text");
+  var diagEl = document.getElementById("rv-diag");
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+    /* Plain-http previews block the async clipboard. */
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      var done = false;
+      try { done = document.execCommand("copy"); } catch (e) { done = false; }
+      document.body.removeChild(ta);
+      done ? resolve() : reject(new Error("copy failed"));
+    });
+  }
+
+  /* The only outcome that cannot silently fail. A mailto does nothing at all on
+     a machine with no mail app configured, so it is offered as one choice among
+     three rather than being the thing that happens automatically. */
+  function showFallback(r, diagnostic) {
+    if (!fallbackBox) return;
+    if (fallbackText) fallbackText.value = reviewAsText(r);
+    var mail = document.getElementById("rv-email");
+    if (mail) mail.href = reviewMailto(r);
+    if (diagEl) {
+      diagEl.hidden = !diagnostic;
+      diagEl.textContent = diagnostic || "";
+    }
+    fallbackBox.hidden = false;
+    fallbackBox.scrollIntoView({ block: "nearest" });
+  }
 
   /* With no endpoint to post to, the review is sent through the visitor's own
      email app — the same escape hatch the booking form uses. It works on any
@@ -372,10 +410,6 @@
 
   /* Tell people which of the two is about to happen, before they press it. */
   function applyMode() {
-    if (!submitLabel) return;
-    var key = emailMode() ? "review.submitMail" : "review.submit";
-    submitLabel.setAttribute("data-i18n", key);
-    submitLabel.textContent = t(key);
     var note = document.getElementById("rv-mailnote");
     if (note) note.hidden = !emailMode();
   }
@@ -487,6 +521,8 @@
        the note under it explains what is about to happen. */
     submitBtn.disabled = false;
     submitBtn.setAttribute("aria-disabled", "false");
+    if (fallbackBox) fallbackBox.hidden = true;
+    if (diagEl) diagEl.hidden = true;
     applyMode();
 
     if (typeof dialog.showModal === "function") dialog.showModal();
@@ -498,6 +534,19 @@
     if (typeof dialog.close === "function" && dialog.open) dialog.close();
     else dialog.removeAttribute("open");
     openBtn.focus();
+  }
+
+  var copyBtn = document.getElementById("rv-copy");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", function () {
+      copyText(fallbackText ? fallbackText.value : "")
+        .then(function () { showStatus("ok", "review.fallback.copied"); })
+        .catch(function () {
+          /* Even the copy can be refused. Select it so they can copy by hand. */
+          if (fallbackText) { fallbackText.focus(); fallbackText.select(); }
+          showStatus("info", "review.fallback.selectManually");
+        });
+    });
   }
 
   openBtn.addEventListener("click", openDialog);
@@ -549,8 +598,8 @@
     };
 
     if (emailMode()) {
-      openMailClient(reviewMailto(payload));
-      showStatus("info", "review.status.mailed");
+      showStatus("info", "review.status.copy");
+      showFallback(payload, "");
       return;
     }
 
@@ -615,8 +664,9 @@
            rather than trying a post that is not going to work. */
         backendAvailable = false;
         applyMode();
-        openMailClient(reviewMailto(payload));
-        showStatus("info", "review.status.mailed");
+        showStatus("info", "review.status.copy");
+        showFallback(payload, "[" + (code || "no-response") + " / HTTP " +
+          (err && err.status ? err.status : "?") + "]");
       })
       .then(function () {
         submitBtn.disabled = false;
