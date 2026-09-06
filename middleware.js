@@ -138,6 +138,10 @@ function loginPage(message) {
     color: #fffdf9; background: #a4552f; border: 0; border-radius: 999px; cursor: pointer;
   }
   button:hover { background: #8f4826; }
+  .build {
+    margin: -1rem 0 1.2rem; font-size: 0.72rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #9aa89f;
+  }
   .err {
     margin: 0 0 1rem; padding: 0.7rem 0.9rem; border-radius: 10px;
     background: #fdf1ee; border: 1px solid #eec6bd; color: #8c2c1b; font-size: 0.9rem;
@@ -148,6 +152,7 @@ function loginPage(message) {
   <main class="card">
     <h1>Vet Care</h1>
     <p>Προεπισκόπηση για τον πελάτη. Εισάγετε τον κωδικό για να συνεχίσετε.</p>
+    <p class="build">build ${(process.env.VERCEL_GIT_COMMIT_SHA || "local").slice(0, 7)}</p>
     ${message ? `<p class="err">${message}</p>` : ""}
     <form method="post" action="/login">
       <label for="pw">Κωδικός</label>
@@ -164,6 +169,27 @@ export default async function middleware(request) {
   const url = new URL(request.url);
   const path = url.pathname;
   const secret = process.env.PREVIEW_PASSWORD;
+
+  /* ------------------------------------------------------------- /build
+     Which commit is actually being served. Open <the preview URL>/build and
+     it answers in plain text — no sign-in, no developer tools.
+
+     This exists because a Vercel deployment URL containing a hash is pinned
+     to one build for ever: every push creates a new one at a new address, so
+     a link copied once keeps serving the same old files no matter how many
+     times it is reloaded, and no fix can ever appear. If the commit shown
+     here is not the newest one, that is the whole problem. */
+  if (path === "/build") {
+    const sha = process.env.VERCEL_GIT_COMMIT_SHA || "unknown";
+    const branch = process.env.VERCEL_GIT_COMMIT_REF || "unknown";
+    return new Response(
+      "commit:  " + sha.slice(0, 7) + "\n" +
+      "branch:  " + branch + "\n" +
+      "built:   " + (process.env.VERCEL_DEPLOYMENT_ID ? "on Vercel" : "locally") + "\n" +
+      "message: " + (process.env.VERCEL_GIT_COMMIT_MESSAGE || "").split("\n")[0] + "\n",
+      { status: 200, headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" } }
+    );
+  }
 
   /* Fail shut. An unset password must not mean an open site. */
   if (!secret) {
