@@ -84,11 +84,11 @@
       "map.north": "Β",
       /* --- story --- */
       "story.eyebrow": "Η ιστορία μας",
-      "story.title": "Η ομάδα μας, μία <em class=\"accent-italic\">κοινή φιλοσοφία</em>",
+      "story.title": "Δύο κόσμοι, μία <em class=\"accent-italic\">κοινή φιλοσοφία</em>",
       "story.p1":
         "Το Vet Care δημιουργήθηκε από τους κτηνιάτρους <strong>Ελένη Φωτοπούλου</strong> και <strong>Γεώργιο Μαντζούνη</strong>, με μια απλή ιδέα: ότι ένα ζώο φροντίζεται καλύτερα όταν ο άνθρωπός του καταλαβαίνει ακριβώς τι συμβαίνει και γιατί.",
       "story.p2":
-        "Στον χώρο μας στην Οβρυά εξετάζουμε σκύλους, γάτες και μικρά ζώα συντροφιάς, ενώ παράλληλα στηρίζουμε κτηνοτροφικές μονάδες της ευρύτερης Αχαΐας στη διαχείριση και την πρόληψη. Δύο πολύ διαφορετικοί κόσμοι, με την ίδια αρχή: σωστή διάγνωση, καθαρή εξήγηση, ρεαλιστικό πλάνο.",
+        "Στον χώρο μας στην Οβρυά εξετάζουμε σκύλους, γάτες και μικρά ζώα συντροφιάς, ενώ παράλληλα στηρίζουμε κτηνοτροφικές μονάδες της ευρύτερης Αχαΐας στη διαχείριση και την πρόληψη. Πολύ διαφορετικοί κόσμοι, με την ίδια αρχή: σωστή διάγνωση, καθαρή εξήγηση, ρεαλιστικό πλάνο.",
       "story.pillar1.title": "Χρόνος για κάθε περιστατικό",
       "story.pillar1.text":
         "Εξετάζουμε χωρίς βιασύνη και εξηγούμε το εύρημα, τις επιλογές και το κόστος πριν προχωρήσουμε σε οτιδήποτε.",
@@ -413,11 +413,11 @@
       "map.north": "N",
       /* --- story --- */
       "story.eyebrow": "Our story",
-      "story.title": "Our team, one <em class=\"accent-italic\">shared philosophy</em>",
+      "story.title": "Two worlds, one <em class=\"accent-italic\">shared philosophy</em>",
       "story.p1":
         "Vet Care was founded by veterinarians <strong>Eleni Fotopoulou</strong> and <strong>Georgios Mantzounis</strong> on a simple idea: an animal is cared for best when the person beside it understands exactly what is happening, and why.",
       "story.p2":
-        "At our practice in Ovria we see dogs, cats and small companion animals, while also supporting livestock farms across Achaia with herd management and prevention. Two very different worlds, held to the same standard: an accurate diagnosis, a clear explanation, a realistic plan.",
+        "At our practice in Ovria we see dogs, cats and small companion animals, while also supporting livestock farms across Achaia with herd management and prevention. Very different worlds, held to the same standard: an accurate diagnosis, a clear explanation, a realistic plan.",
       "story.pillar1.title": "Time for every case",
       "story.pillar1.text":
         "We examine without rushing, and explain the findings, the options and the cost before anything goes ahead.",
