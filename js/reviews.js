@@ -27,6 +27,9 @@
   var moreEl = document.getElementById("reviews-more");
 
   var data = null;
+  /* null until the feed answers; false once we know this host cannot run
+     PHP, which means a review submitted here would have nowhere to go. */
+  var backendAvailable = null;
 
   function t(key) { return window.VetCareI18n ? window.VetCareI18n.t(key) : ""; }
   function lang() { return window.VetCareI18n ? window.VetCareI18n.lang : "el"; }
@@ -297,10 +300,12 @@
       })
       .then(function (payload) {
         data = payload;
+        backendAvailable = true;
         render();
       })
       .catch(function () {
         setState("reviews.error");
+        backendAvailable = false;
         return loadCurated();
       });
   }
@@ -329,6 +334,7 @@
   if (!dialog || !form || !openBtn) return;
 
   var ratingBox = document.getElementById("rv-rating");
+  var submitBtn = document.getElementById("rv-submit");
   var statusBox = document.getElementById("rv-status");
   var statusText = document.getElementById("rv-status-text");
   var statusIcon = statusBox ? statusBox.querySelector("use") : null;
@@ -429,6 +435,16 @@
     buildStars();
     statusBox.classList.remove("is-visible");
     statusBox.removeAttribute("data-status-key");
+
+    /* On a host that cannot run PHP — a Vercel or GitHub Pages preview — there
+       is nowhere for a review to go. Say so on the way in, as information
+       rather than as a failure, instead of letting someone write a review and
+       only then telling them it cannot be sent. */
+    var offline = backendAvailable === false;
+    submitBtn.disabled = offline;
+    submitBtn.setAttribute("aria-disabled", offline ? "true" : "false");
+    if (offline) showStatus("info", "review.status.offline");
+
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
     var first = document.getElementById("rv-name");
@@ -449,6 +465,11 @@
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+
+    if (backendAvailable === false) {
+      showStatus("info", "review.status.offline");
+      return;
+    }
 
     if (form.elements.website && form.elements.website.value !== "") {
       showStatus("ok", "review.status.ok");
@@ -480,7 +501,6 @@
     if (problems.length) { problems[0].focus(); return; }
 
     showStatus("info", "review.status.sending");
-    var submitBtn = document.getElementById("rv-submit");
     submitBtn.disabled = true;
 
     fetch("review-submit.php", {
@@ -535,6 +555,7 @@
       })
       .then(function () {
         submitBtn.disabled = false;
+        submitBtn.setAttribute("aria-disabled", "false");
       });
   });
 
