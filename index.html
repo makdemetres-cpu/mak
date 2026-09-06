@@ -405,9 +405,88 @@
       </span>
     </div>
 
-    <div class="reviews__grid" id="reviews-list" data-reveal></div>
+    <!-- The four reviews quoted from the Google listing are written out here as
+         real markup, not fetched. A preview host that cannot serve
+         curated-reviews.json — or a visitor with JavaScript off — still sees
+         them, and the section is never empty. js/reviews.js replaces these
+         only when it has reviews of its own to put in their place.
+         KEEP IN STEP WITH curated-reviews.json, which reviews.php reads. -->
+    <div class="reviews__grid" id="reviews-list" data-reveal>
+      <article class="rvcard">
+        <div class="rvcard__top">
+          <span class="rvcard__avatar" aria-hidden="true">ΣΝ</span>
+          <div class="rvcard__who">
+            <p class="rvcard__name">Σαββούλα Νικολοπούλου</p>
+            <p class="rvcard__meta">
+              <span class="rvcard__src"><svg width="13" height="13" aria-hidden="true"><use href="#i-google"/></svg>
+                <span data-i18n="reviews.sourceGoogle">Κριτική στο Google</span></span>
+            </p>
+          </div>
+        </div>
+        <span class="stars" data-i18n-attr="aria-label:reviews.stars5" aria-label="5 στα 5 αστέρια"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+        <blockquote class="rvcard__text">Πολύ καλή εξυπηρέτηση. Είμαι πολύ ικανοποιημένη. Πάντα κάθε απορία ή ερώτηση που έχω είναι πάντα εκεί για να μου την λύσουν. Είναι επαγγελματίες! Σας ευχαριστούμε από καρδιάς που προσέχετε την Minnie μας.</blockquote>
+        <div class="rvcard__translation" data-lang="en" hidden>
+          <p class="rvcard__translation-label" data-i18n="reviews.translated">Translated from Greek</p>
+          <p class="rvcard__translation-text">Very good service. I am very satisfied. Whatever query or question I have, they are always there to answer it. They are professionals! Thank you from the bottom of our hearts for looking after our Minnie.</p>
+        </div>
+      </article>
+      <article class="rvcard">
+        <div class="rvcard__top">
+          <span class="rvcard__avatar" aria-hidden="true">ΔΠ</span>
+          <div class="rvcard__who">
+            <p class="rvcard__name">Διονύσης Παναγιωτόπουλος</p>
+            <p class="rvcard__meta">
+              <span class="rvcard__src"><svg width="13" height="13" aria-hidden="true"><use href="#i-google"/></svg>
+                <span data-i18n="reviews.sourceGoogle">Κριτική στο Google</span></span>
+            </p>
+          </div>
+        </div>
+        <span class="stars" data-i18n-attr="aria-label:reviews.stars5" aria-label="5 στα 5 αστέρια"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+        <blockquote class="rvcard__text">Και οι 3 γιατροί είναι εξαιρετικοί.. Πρόθυμοι, ευγενικοί και υπέροχη συμπεριφορά και φροντίδα προς τα ζωάκια..</blockquote>
+        <div class="rvcard__translation" data-lang="en" hidden>
+          <p class="rvcard__translation-label" data-i18n="reviews.translated">Translated from Greek</p>
+          <p class="rvcard__translation-text">All 3 vets are excellent.. Obliging, kind, and a wonderful manner and care towards the animals..</p>
+        </div>
+      </article>
+      <article class="rvcard">
+        <div class="rvcard__top">
+          <span class="rvcard__avatar" aria-hidden="true">TP</span>
+          <div class="rvcard__who">
+            <p class="rvcard__name">tina pap</p>
+            <p class="rvcard__meta">
+              <span class="rvcard__src"><svg width="13" height="13" aria-hidden="true"><use href="#i-google"/></svg>
+                <span data-i18n="reviews.sourceGoogle">Κριτική στο Google</span></span>
+            </p>
+          </div>
+        </div>
+        <span class="stars" data-i18n-attr="aria-label:reviews.stars5" aria-label="5 στα 5 αστέρια"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+        <blockquote class="rvcard__text">Πολύ περιποιητικοι και τρυφεροί με τους ασθενείς τους, άψογη εξυπηρέτηση και συνέπεια με τους ιδιοκτήτες. Ευχαριστούμε Ελένη και Γιώργο !</blockquote>
+        <div class="rvcard__translation" data-lang="en" hidden>
+          <p class="rvcard__translation-label" data-i18n="reviews.translated">Translated from Greek</p>
+          <p class="rvcard__translation-text">Very attentive and gentle with their patients, impeccable service and reliability towards the owners. Thank you Eleni and Giorgos!</p>
+        </div>
+      </article>
+      <article class="rvcard">
+        <div class="rvcard__top">
+          <span class="rvcard__avatar" aria-hidden="true">ΝΣ</span>
+          <div class="rvcard__who">
+            <p class="rvcard__name">Νικος Σπυ</p>
+            <p class="rvcard__meta">
+              <span class="rvcard__src"><svg width="13" height="13" aria-hidden="true"><use href="#i-google"/></svg>
+                <span data-i18n="reviews.sourceGoogle">Κριτική στο Google</span></span>
+            </p>
+          </div>
+        </div>
+        <span class="stars" data-i18n-attr="aria-label:reviews.stars5" aria-label="5 στα 5 αστέρια"><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg><svg aria-hidden="true"><use href="#i-star"/></svg></span>
+        <blockquote class="rvcard__text">Τούς χρωστάω τήν αρτιμέλεια τού σκύλου μου. Εξαιρετικοί άνθρωποι καί γιατροί !</blockquote>
+        <div class="rvcard__translation" data-lang="en" hidden>
+          <p class="rvcard__translation-label" data-i18n="reviews.translated">Translated from Greek</p>
+          <p class="rvcard__translation-text">I owe them the fact that my dog is sound and whole. Exceptional people and exceptional vets!</p>
+        </div>
+      </article>
+    </div>
 
-    <p class="reviews__attribution" id="reviews-attribution" hidden data-i18n="reviews.attribution"></p>
+    <p class="reviews__attribution" id="reviews-attribution" data-i18n="reviews.attribution"></p>
 
     <div class="reviews__actions" data-reveal>
       <button type="button" class="btn" id="review-open">
@@ -417,7 +496,8 @@
       <!-- Google never returns more than five reviews through its API, so the
            rest can only be read on the listing itself. The link is filled in
            and revealed by js/reviews.js once it knows the address. -->
-      <a class="btn btn--ghost btn--small" id="reviews-more" href="#reviews" hidden
+      <a class="btn btn--ghost btn--small" id="reviews-more"
+         href="https://www.google.com/maps/search/?api=1&amp;query=%CE%9A%CF%84%CE%B7%CE%BD%CE%B9%CE%B1%CF%84%CF%81%CE%B9%CE%BA%CF%8C+%CE%9A%CE%AD%CE%BD%CF%84%CF%81%CE%BF+Vet+Care+%CE%94%CE%B7%CE%BC%CE%BF%CE%BA%CF%81%CE%B1%CF%84%CE%AF%CE%B1%CF%82+149+%CE%9F%CE%B2%CF%81%CF%85%CE%AC"
          target="_blank" rel="noopener noreferrer"
          data-i18n-attr="aria-label:reviews.seeMoreAria">
         <svg width="16" height="16" aria-hidden="true"><use href="#i-google"/></svg>
@@ -961,8 +1041,12 @@
         </div>
       </div>
 
+      <!-- Shown by js/reviews.js only on a host with no endpoint to post to,
+           where the review is sent through the visitor's own email app. -->
+      <p class="field__hint" id="rv-mailnote" hidden data-i18n="review.mailNote"></p>
+
       <div class="prefs__actions">
-        <button type="submit" class="btn btn--forest" id="rv-submit" data-i18n="review.submit">Αποστολή κριτικής</button>
+        <button type="submit" class="btn btn--forest" id="rv-submit"><span data-i18n="review.submit">Αποστολή κριτικής</span></button>
         <button type="button" class="btn btn--ghost" id="rv-cancel" data-i18n="review.cancel">Άκυρο</button>
       </div>
     </form>

@@ -200,18 +200,19 @@
 
     /* "See more" only exists if we actually know where to send people, and
        only once there are reviews on the page for it to follow. */
-    if (moreEl) {
-      var hasList = !!(data.reviews && data.reviews.length);
-      if (data.googleUrl && hasList) {
-        moreEl.href = data.googleUrl;
-        moreEl.hidden = false;
-      } else {
-        moreEl.hidden = true;
-      }
+    /* The button ships in the markup with a Maps search that always works.
+       When the feed knows the exact listing address, take that instead —
+       but never hide a button that is already doing its job. */
+    if (moreEl && data.googleUrl) {
+      moreEl.href = data.googleUrl;
     }
 
-    listEl.textContent = "";
+    /* The four quoted reviews are already in the markup. They are only cleared
+       once there is something to put in their place — otherwise a feed that
+       comes back empty would empty the section, which is worse than showing
+       the reviews we already have. */
     if (data.reviews && data.reviews.length) {
+      listEl.textContent = "";
       data.reviews.forEach(function (review, i) {
         var el = card(review);
         el.style.setProperty("--reveal-delay", i * 60 + "ms");
@@ -223,7 +224,6 @@
       }
     } else {
       setState(data.notice === "google_unavailable" ? "reviews.error" : "reviews.empty");
-      if (attributionEl) attributionEl.hidden = true;
     }
   }
 
@@ -335,6 +335,50 @@
 
   var ratingBox = document.getElementById("rv-rating");
   var submitBtn = document.getElementById("rv-submit");
+  var submitLabel = submitBtn ? submitBtn.querySelector("[data-i18n]") || submitBtn : null;
+  var CLINIC_EMAIL = "info@vet-care.gr";
+
+  /* With no endpoint to post to, the review is sent through the visitor's own
+     email app — the same escape hatch the booking form uses. It works on any
+     host, needs no server and no account, and the review still reaches the
+     clinic. On a PHP host none of this runs. */
+  function emailMode() { return backendAvailable === false; }
+
+  function reviewAsText(r) {
+    return "Κριτική από τον ιστότοπο\n" +
+      "==========================\n\n" +
+      "Όνομα:       " + r.author + "\n" +
+      "Βαθμολογία:  " + r.rating + "/5\n" +
+      (r.email ? "Email:       " + r.email + "\n" : "") +
+      "\nΚριτική:\n" + r.text + "\n";
+  }
+
+  function reviewMailto(r) {
+    return "mailto:" + CLINIC_EMAIL +
+      "?subject=" + encodeURIComponent("Κριτική από τον ιστότοπο — " + r.author) +
+      "&body=" + encodeURIComponent(reviewAsText(r));
+  }
+
+  /* Assigning location.href for a mailto can leave the page half-navigated in
+     some browsers; a synthetic anchor click does not. */
+  function openMailClient(url) {
+    var a = document.createElement("a");
+    a.href = url;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    window.setTimeout(function () { document.body.removeChild(a); }, 0);
+  }
+
+  /* Tell people which of the two is about to happen, before they press it. */
+  function applyMode() {
+    if (!submitLabel) return;
+    var key = emailMode() ? "review.submitMail" : "review.submit";
+    submitLabel.setAttribute("data-i18n", key);
+    submitLabel.textContent = t(key);
+    var note = document.getElementById("rv-mailnote");
+    if (note) note.hidden = !emailMode();
+  }
   var statusBox = document.getElementById("rv-status");
   var statusText = document.getElementById("rv-status-text");
   var statusIcon = statusBox ? statusBox.querySelector("use") : null;
@@ -428,6 +472,7 @@
     var key = statusBox.getAttribute("data-status-key");
     if (key) statusText.textContent = t(key);
     buildStars();
+    applyMode();
   });
 
   function openDialog() {
@@ -437,13 +482,12 @@
     statusBox.removeAttribute("data-status-key");
 
     /* On a host that cannot run PHP — a Vercel or GitHub Pages preview — there
-       is nowhere for a review to go. Say so on the way in, as information
-       rather than as a failure, instead of letting someone write a review and
-       only then telling them it cannot be sent. */
-    var offline = backendAvailable === false;
-    submitBtn.disabled = offline;
-    submitBtn.setAttribute("aria-disabled", offline ? "true" : "false");
-    if (offline) showStatus("info", "review.status.offline");
+       is no endpoint to post to, so the review goes by email instead, exactly
+       as the booking form already does. The button says which it will be, and
+       the note under it explains what is about to happen. */
+    submitBtn.disabled = false;
+    submitBtn.setAttribute("aria-disabled", "false");
+    applyMode();
 
     if (typeof dialog.showModal === "function") dialog.showModal();
     else dialog.setAttribute("open", "");
@@ -466,10 +510,6 @@
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    if (backendAvailable === false) {
-      showStatus("info", "review.status.offline");
-      return;
-    }
 
     if (form.elements.website && form.elements.website.value !== "") {
       showStatus("ok", "review.status.ok");
@@ -499,6 +539,20 @@
     setError(consentEl, !consentOk); if (!consentOk) problems.push(consentEl);
 
     if (problems.length) { problems[0].focus(); return; }
+
+    var payload = {
+      author: nameEl.value.trim(),
+      rating: chosenRating,
+      text: textEl.value.trim(),
+      email: emailEl ? emailEl.value.trim() : "",
+      consent: true
+    };
+
+    if (emailMode()) {
+      openMailClient(reviewMailto(payload));
+      showStatus("info", "review.status.mailed");
+      return;
+    }
 
     showStatus("info", "review.status.sending");
     submitBtn.disabled = true;
