@@ -126,19 +126,19 @@
 
     var nameOk = name.value.trim().length >= 2;
     setError(name, !nameOk);
-    if (!nameOk) problems.push(name);
+    if (!nameOk) problems.push([name, "booking.err.required"]);
 
     var phoneOk = validPhone(phone.value);
     setError(phone, !phoneOk);
-    if (!phoneOk) problems.push(phone);
+    if (!phoneOk) problems.push([phone, "booking.err.phone"]);
 
     var emailOk = email.value.trim() === "" || validEmail(email.value.trim());
     setError(email, !emailOk);
-    if (!emailOk) problems.push(email);
+    if (!emailOk) problems.push([email, "booking.err.email"]);
 
     var animalOk = animal.value !== "";
     setError(animal, !animalOk);
-    if (!animalOk) problems.push(animal);
+    if (!animalOk) problems.push([animal, "booking.err.required"]);
 
     /* Checked again here, not just in the calendar: the underlying input can
        still be set directly, and the message differs for each end. */
@@ -157,11 +157,11 @@
       if (dateErr) dateErr.textContent = t(dateTooFar ? "booking.err.dateMax" : "booking.err.date");
       setError(dateInput, !dateOk);
     }
-    if (!dateOk) problems.push(dateInput);
+    if (!dateOk) problems.push([dateInput, dateTooFar ? "booking.err.dateMax" : "booking.err.date"]);
 
     var consentOk = consentBox.checked;
     setError(consentBox, !consentOk);
-    if (!consentOk) problems.push(consentBox);
+    if (!consentOk) problems.push([consentBox, "booking.err.consent"]);
 
     return problems;
   }
@@ -295,10 +295,14 @@
 
     var problems = validate();
     if (problems.length) {
+      /* Say what is wrong, rather than only marking the field: two of these
+         sit behind branded controls, so a silent rejection looks like the
+         button doing nothing at all. */
+      showStatus("err", problems[0][1]);
       /* Selects and the date input are hidden behind branded controls; focus
          has to land on the visible button, not the element behind it. */
-      var first = problems[0];
-      (first.customFocusTarget || first).focus();
+      var first = problems[0][0];
+      if (first) (first.customFocusTarget || first).focus();
       return;
     }
 

@@ -572,22 +572,30 @@
     var problems = [];
 
     var nameOk = nameEl.value.trim().length >= 2;
-    setError(nameEl, !nameOk); if (!nameOk) problems.push(nameEl);
+    setError(nameEl, !nameOk); if (!nameOk) problems.push([nameEl, "review.err.author"]);
 
     var ratingOk = chosenRating >= 1 && chosenRating <= 5;
     fieldOf(ratingBox).classList.toggle("has-error", !ratingOk);
-    if (!ratingOk) problems.push(ratingBox.querySelector("button"));
+    if (!ratingOk) problems.push([ratingBox.querySelector("button"), "review.err.rating"]);
 
     var textOk = textEl.value.trim().length >= 10;
-    setError(textEl, !textOk); if (!textOk) problems.push(textEl);
+    setError(textEl, !textOk); if (!textOk) problems.push([textEl, "review.err.text"]);
 
     var emailOk = emailEl.value.trim() === "" || /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(emailEl.value.trim());
-    setError(emailEl, !emailOk); if (!emailOk) problems.push(emailEl);
+    setError(emailEl, !emailOk); if (!emailOk) problems.push([emailEl, "review.err.email"]);
 
     var consentOk = consentEl.checked;
-    setError(consentEl, !consentOk); if (!consentOk) problems.push(consentEl);
+    setError(consentEl, !consentOk); if (!consentOk) problems.push([consentEl, "review.err.consent"]);
 
-    if (problems.length) { problems[0].focus(); return; }
+    if (problems.length) {
+      /* Say what is wrong. Marking the field and moving the focus is not
+         enough: with the star rating in particular — which is a row of buttons
+         rather than something that looks like a required field — pressing send
+         appeared to do nothing at all. */
+      showStatus("err", problems[0][1]);
+      if (problems[0][0]) problems[0][0].focus();
+      return;
+    }
 
     var payload = {
       author: nameEl.value.trim(),
