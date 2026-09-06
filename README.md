@@ -235,6 +235,52 @@ compose the two in one rule the way `.is-magnetic .btn[data-magnet]` does in
 `css/style.css` — overriding instead would make the drift snap off exactly when
 the cursor arrives.
 
+## The password gate for client previews
+
+`middleware.js` puts the whole site behind one password on Vercel's free Hobby
+plan, doing the job of Vercel's paid Password Protection add-on. It runs as Edge
+Middleware, so nothing — not a page, not an image, not a font — is served to
+anyone who has not signed in.
+
+**Before the first deploy**, set the password in Vercel → Project → Settings →
+Environment Variables:
+
+| Name | Value |
+|---|---|
+| `PREVIEW_PASSWORD` | the password you want to hand the client |
+
+It is read only from the environment and appears nowhere in this repository. With
+it unset the gate **denies everything** and says so, rather than falling open — a
+preview that loses its password should fail shut.
+
+How it holds up:
+
+- **The cookie is not the password.** It carries an HMAC of it, so it cannot be
+  forged without knowing the password, and changing `PREVIEW_PASSWORD` instantly
+  invalidates every cookie already handed out.
+- `HttpOnly`, `Secure`, `SameSite=Lax`, one week.
+- A wrong password returns **401 and no cookie** — it never looks like success.
+- Comparison is constant-time, so nothing leaks about how much of a guess was
+  right.
+- The login page is entirely self-contained: no stylesheet, script or font from
+  the gated site, so not even an asset URL escapes.
+- Every response carries `X-Robots-Tag: noindex, nofollow, noarchive`,
+  `/robots.txt` becomes disallow-all and `/sitemap.xml` 404s — **without editing
+  the repo's real robots.txt and sitemap**, which the live site still needs.
+- Any `*.php` request 404s. Vercel has no PHP runtime, so those files would be
+  dead at best and served as source at worst.
+
+**For the real launch, delete `middleware.js`.** The gate, the noindex header and
+the robots override all disappear with it, because none of them were written into
+the site itself.
+
+### What does *not* work on Vercel
+
+Vercel cannot run PHP, so on that deployment the site behaves exactly like the
+GitHub Pages preview: the four quoted reviews show, and the live Google feed, the
+review form, the booking send and the moderation page do not. All four need a
+PHP host such as Hostinger. This is a preview, not the launch target.
+
 ## Security
 
 The site was attacked deliberately before launch — the endpoints hammered with
