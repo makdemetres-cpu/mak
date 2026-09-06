@@ -101,21 +101,22 @@
 <!-- ====================================================== HERO -->
 <!-- A tall pinned sequence, NOT a scroll-jack. .hero-stage-wrap is many
      viewport-heights tall; .hero-stage is position:sticky inside it, so it
-     stays on screen for the whole scroll distance while js/camera-3d.js
-     reads how far through that distance the visitor has scrolled and uses
-     it to drive a real, rotatable 3D camera (Three.js, self-hosted, no CDN)
-     apart at the seams. Scrolling back up reverses it for free, because the
-     animation is a pure function of scroll position, not a one-shot trigger.
+     stays on screen for the whole scroll distance while js/hero-video.js
+     reads how far through that distance the visitor has scrolled and maps
+     it directly onto the camera video's timeline (scroll 0% = frame 0,
+     scroll 100% = the last frame, linearly in between) by setting the
+     video's currentTime — the video itself is never played, only scrubbed.
+     Scrolling back up reverses it for free, because it's a pure function of
+     scroll position, not a one-shot animation or trigger.
 
-     The 3D scene only ever replaces the flat SVG glyph below once it has
-     actually built and rendered a frame — no WebGL, prefers-reduced-motion,
-     or no JS at all all leave the SVG in place, assembled and static.
+     Without JS (or with prefers-reduced-motion), the video simply shows its
+     poster frame — the exact assembled first frame — since nothing ever
+     calls .play() on it. No separate fallback markup is needed for that
+     case; a <video> with no autoplay/controls just sits on its poster.
 
      Nav is locked (see body[data-nav-locked]) until the sequence has played
-     through once. Whenever the 3D scene is not running for any reason above,
-     the wrapper collapses to a normal single screen, every line of text is
-     shown at once, and nav is never locked — see the prefers-reduced-motion
-     and .cam-flat blocks in css/style.css. -->
+     through once. See the prefers-reduced-motion and .cam-flat blocks in
+     css/style.css for when that lock is skipped entirely. -->
 <section class="hero-stage-wrap" id="top" data-cam-wrap>
   <div class="hero-stage">
 
@@ -139,61 +140,22 @@
     </div>
 
     <div class="cam-stage" aria-hidden="true">
-      <!-- Real 3D (Three.js), used whenever WebGL + full motion are available.
-           js/camera-3d.js adds .has-3d to <html> once it has actually built
-           and rendered a frame, which is what swaps this in for the SVG
-           below via CSS — never assumed just because the script loaded. -->
-      <canvas class="cam-canvas"></canvas>
-      <!-- Flat, static fallback: prefers-reduced-motion, no WebGL, or no JS
-           at all. Always assembled, never animated. -->
-      <div class="cam-rig">
-        <svg class="cam-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-
-          <g class="cam-part cam-back" data-part="back">
-            <rect x="118" y="126" width="164" height="98" rx="10" class="cam-fill"/>
-            <rect x="132" y="140" width="60" height="42" rx="3"/>
-            <path d="M282 150 l14 -6 v66 l-14 -6 z"/>
-          </g>
-
-          <g class="cam-part cam-body" data-part="body">
-            <rect x="110" y="120" width="180" height="110" rx="16" class="cam-fill"/>
-            <rect x="125" y="106" width="150" height="18" rx="6" class="cam-fill"/>
-            <circle cx="122" cy="116" r="6"/>
-            <circle cx="278" cy="116" r="6"/>
-            <path d="M266 128 q26 2 26 24 v54 q0 22 -26 24"/>
-          </g>
-
-          <g class="cam-part cam-lens" data-part="lens">
-            <circle cx="200" cy="177" r="47" class="cam-fill"/>
-            <circle cx="200" cy="177" r="35"/>
-            <circle cx="200" cy="177" r="22" class="cam-fill-strong"/>
-            <circle cx="200" cy="150" r="2.4" class="cam-dot"/>
-            <g class="cam-ticks">
-              <path d="M200 131v8M219 138l-6 6M238 158l-8 3M241 177h-8M238 196l-8 -3M219 216l-6 -6M200 223v-8M181 216l6 -6M162 196l8 -3M159 177h8M162 158l8 3M181 138l6 6"/>
-            </g>
-          </g>
-
-          <g class="cam-part cam-viewfinder" data-part="viewfinder">
-            <path d="M177 106 L186 76 Q200 66 214 76 L223 106 Z" class="cam-fill"/>
-            <rect x="191" y="68" width="18" height="10" rx="2"/>
-            <rect x="192" y="63" width="16" height="6" rx="1"/>
-          </g>
-
-          <g class="cam-part cam-dial" data-part="dial">
-            <circle cx="256" cy="110" r="10"/>
-            <circle cx="256" cy="110" r="3" class="cam-dot"/>
-            <ellipse cx="239" cy="102" rx="7" ry="9" class="cam-fill"/>
-          </g>
-
-        </svg>
-      </div>
+      <!-- muted+playsinline: required on iOS/Safari before a video's
+           currentTime can be set programmatically without a user gesture.
+           No autoplay, no controls — js/hero-video.js only ever sets
+           .currentTime, it never calls .play(). preload="auto" so scrubbing
+           doesn't hit an unbuffered gap; the file is ~550KB either format. -->
+      <video class="cam-video" muted playsinline preload="auto"
+             poster="assets/video/hero-camera-poster.jpg">
+        <source src="assets/video/hero-camera.webm" type="video/webm">
+        <source src="assets/video/hero-camera.mp4" type="video/mp4">
+      </video>
     </div>
 
-    <!-- Order matters: the first two entries here (1, 2) are the ones
-         mobile's shorter sequence also uses — see STAGE_NAMES_MOBILE in
-         js/camera-3d.js. Desktop's longer sequence reuses those same two
-         slots before continuing on to 3-6, so the text at each numbered
-         stage has to make sense under both. -->
+    <!-- All 6 stages play out identically on mobile and desktop now — a
+         scrubbed video costs the same either way, unlike the old WebGL
+         scene where mobile ran a shorter sequence to stay light. -->
+    <div class="cam-stagetext">
     <div class="cam-stagetext">
       <p class="cam-line" data-stage="1">
         <span data-lang-el>Κάθε γάμος έχει τη δική του ματιά. Επιλέγω τον φακό ανάλογα με το φως, όχι με το πρόγραμμα.</span>
@@ -781,7 +743,7 @@
         <span data-lang-el>Όλες οι φωτογραφίες προστατεύονται από πνευματικά δικαιώματα.</span>
         <span data-lang-en>All photographs are protected by copyright.</span>
       </p>
-      <p><span data-lang-el>Ιωάννινα, Ελλάδα</span><span data-lang-en>Ioannina, Greece</span> · <span class="build-id">build 14</span></p>
+      <p><span data-lang-el>Ιωάννινα, Ελλάδα</span><span data-lang-en>Ioannina, Greece</span> · <span class="build-id">build 15</span></p>
     </div>
   </div>
 </footer>
@@ -922,17 +884,7 @@
 <script src="js/consent.js"></script>
 <script src="js/contact.js"></script>
 <script src="js/tilt.js"></script>
-<script type="module" src="js/camera-3d.js"></script>
-<!-- Belt-and-braces for the handful of very old browsers that support
-     .js/boot.js (a plain script) but not type="module": without this,
-     camera-3d.js would simply never run and the nav would stay locked
-     forever, since nothing else ever calls unlockNav(). -->
-<script nomodule>
-  document.body.removeAttribute("data-nav-locked");
-  Array.prototype.forEach.call(document.querySelectorAll(".nav-desktop a, .nav-mobile a"), function (a) {
-    a.removeAttribute("aria-disabled"); a.removeAttribute("tabindex");
-  });
-</script>
+<script src="js/hero-video.js"></script>
 
 <!-- Structured data. Fill the marked values in before publishing — Google
      will flag placeholder text, and wrong opening/contact data in a
