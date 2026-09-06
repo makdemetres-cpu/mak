@@ -1490,79 +1490,139 @@ body.consent-open .to-top {
 .build-id { opacity: .55; letter-spacing: .1em; }
 
 /* ==========================================================================
-   HERO CAMERA — pinned scroll-scrubbed video
+   HERO CAMERA — fullscreen, scroll-locked, scrubbed video
    --------------------------------------------------------------------------
-   Mechanism: .hero-stage-wrap is many viewport-heights tall. .hero-stage is
-   position:sticky inside it, so it stays pinned on screen for that whole
-   scroll distance. js/hero-video.js reads how far through that distance
-   the visitor has scrolled (0 to 1) and sets that fraction directly as the
-   video's currentTime — the video is never played, only scrubbed frame by
-   frame. Scrolling back up reverses it for free: the frame shown is a pure
-   function of scroll position, not a one-shot trigger, so there is no
-   separate "reverse" branch anywhere in the script.
+   Mechanism: .hero-stage-wrap reserves exactly one viewport of space in the
+   document. js/hero-video.js toggles .hero-stage between two states with a
+   single "is-locked" class:
+     - locked: position:fixed, covering the viewport. Every wheel/touch/
+       keyboard scroll input is captured (preventDefault) and converted into
+       progress (0 to 1) instead of moving the page — this, plus the global
+       html.scroll-locked rule below (which kills scrolling outright), is
+       what makes it physically impossible to reach the next section before
+       the sequence has played through, not just unlikely.
+     - unlocked: position:static, sitting normally inside its 100svh wrap —
+       native scrolling, untouched. The stage just scrolls away like any
+       other section once the sequence finishes.
+   Scrolling back up re-engages the lock the instant the page returns to
+   scrollY 0 (see the rAF poll in hero-video.js), reversing the sequence the
+   same way it played forward — a pure function of progress, not a one-shot
+   trigger, so there is no separate "reverse" branch anywhere in the script.
 
-   The rules below cover: sizing/positioning .cam-video, the flat fallback
-   (prefers-reduced-motion, no JS, or the video failing to load — see the
-   .cam-flat comment below for exactly when it applies), the left-hand
-   stage text, and the nav lock.
+   Without JS (or prefers-reduced-motion/.cam-flat — see below for exactly
+   when those apply), .hero-stage never gains .is-locked at all: it is just
+   a normal, fullscreen, non-jacked section on the video's poster frame.
+
+   The rules below cover: the fullscreen video and its readability scrim,
+   the flat/reduced-motion fallback, the overlay copy and stage text, and
+   the nav lock.
    ========================================================================== */
 
-/* Without JS the wrapper never gets tall, so the section is a single normal
-   screen and every line of copy/text below is simply visible — same
-   progressive-enhancement contract as the scroll reveal in main.js. The
-   tall, scroll-jacked-looking height is therefore only ever applied under
-   the .js class that js/boot.js adds before first paint — never as the
-   base/fallback rule. Both breakpoints get the same 6-stage sequence now:
-   a scrubbed video costs the same regardless of viewport, unlike the old
-   WebGL scene where mobile ran a shorter sequence to stay light. */
-.hero-stage-wrap { position: relative; }
-.js .hero-stage-wrap { height: 420svh; }
+.hero-stage-wrap { position: relative; height: 100svh; }
 
 .hero-stage {
-  position: sticky; top: 0;
-  height: 100svh;
+  position: relative;
+  width: 100%; height: 100svh;
   overflow: hidden;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding-top: var(--header-h);
-  background: radial-gradient(120% 90% at 50% 38%, var(--surface) 0%, var(--paper) 68%);
+  isolation: isolate;
 }
+/* Only ever applied by hero-video.js — never present without JS, so the
+   fallback below (no JS, reduced motion, .cam-flat) can't collide with it. */
+.hero-stage.is-locked { position: fixed; inset: 0; z-index: 5; }
+
+/* Backs up the JS-driven capture: while locked, nothing on the page can
+   scroll at all — the lock is absolute, not just "the wheel handler
+   probably keeps up." */
+html.scroll-locked,
+html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: none; }
+
+.cam-stage { position: absolute; inset: 0; }
+.cam-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;   /* fills edge to edge; crops rather than distorts */
+  /* All touch input on the video is claimed by hero-video.js while locked
+     (it has to be, to drive progress from a finger drag) — pan-y only
+     applies back once the section can no longer be locked in the first
+     place, matching the fallback states below. */
+  touch-action: none;
+}
+@media (prefers-reduced-motion: reduce) { .cam-video { touch-action: pan-y; } }
+.cam-flat .cam-video { touch-action: pan-y; }
+
+/* Darkens the video enough that the light overlay text stays readable
+   against its bright studio background at every frame — heaviest at the
+   top (under the header) and bottom (under the stage text), lighter through
+   the middle so the camera itself still reads clearly. */
+.hero-scrim {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom,
+      rgba(8, 8, 10, .68) 0%, rgba(8, 8, 10, .18) 24%,
+      rgba(8, 8, 10, .18) 60%, rgba(8, 8, 10, .74) 100%),
+    rgba(8, 8, 10, .16);
+}
+
+/* The fullscreen, text-over-video treatment above only works because the
+   JS-driven experience only ever shows ONE short stage line at a time,
+   crossfaded, over a scrim tuned for exactly that. This fallback instead
+   has to show the title block AND all 6 stage lines at once, stacked — so
+   rather than retuning the scrim to somehow support a whole page of text
+   over a photo, the video drops back to a modest, contained card (same
+   idea as the very first version of this hero) and the text stacks
+   normally around it instead of on top of it. flex + order visually
+   reflows the DOM (stage, scrim, copy, stagetext) into (copy, stage,
+   stagetext) without needing different markup for this case. These rules
+   have to come after the base .hero-stage/.hero-scrim/.cam-stage rules
+   above — same specificity, so source order is what lets them win. */
 @media (prefers-reduced-motion: reduce) {
-  .js .hero-stage-wrap { height: auto !important; }
-  .hero-stage { position: static; height: auto; padding-block: calc(var(--header-h) + 3rem) 2rem; }
+  .hero-stage {
+    position: relative; height: auto; min-height: 0;
+    display: flex; flex-direction: column; align-items: center;
+    padding-block: calc(var(--header-h) + 3rem) 2rem;
+  }
+  .hero-scrim { display: none; }
+  .cam-stage { position: relative; inset: auto; order: 2; width: min(78vw, 480px); aspect-ratio: 16 / 9; margin-block: 1.5rem; }
 }
 /* .cam-flat is the same collapse, applied by hero-video.js instead of the
    OS-level motion preference — for when the video fails to load or decode.
    There is no meaningful "pause here" middle ground once that has
-   happened, so it gets the exact same flat, single-screen treatment as
-   reduced motion (the video's poster frame — the assembled first frame —
-   is still shown, since nothing ever called .play() on it). */
-.js.cam-flat .hero-stage-wrap { height: auto !important; }
-.cam-flat .hero-stage { position: static; height: auto; padding-block: calc(var(--header-h) + 3rem) 2rem; }
-
-.cam-stage {
-  position: relative;
-  width: min(78vw, 480px);
-  aspect-ratio: 16 / 9;
-  margin-block: clamp(1.25rem, 3vw, 2rem);
+   happened, so it gets the exact same treatment as reduced motion (the
+   video's poster frame — the assembled first frame — is still shown,
+   since nothing ever called .play() on it). */
+.cam-flat .hero-stage {
+  position: relative; height: auto; min-height: 0;
+  display: flex; flex-direction: column; align-items: center;
+  padding-block: calc(var(--header-h) + 3rem) 2rem;
 }
+.cam-flat .hero-scrim { display: none; }
+.cam-flat .cam-stage { position: relative; inset: auto; order: 2; width: min(78vw, 480px); aspect-ratio: 16 / 9; margin-block: 1.5rem; }
 
-.cam-video {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: contain;
-  touch-action: pan-y;   /* decorative video must never eat a scroll gesture */
+.hero-copy {
+  /* Overrides the general .hero-copy rule's width:100% — with position now
+     absolute, a full-width box would fight the left:50% + translateX(-50%)
+     centering trick (shifting itself half its own width, i.e. half the
+     screen, off to the left). min(92%, ...) keeps it constrained and
+     centred instead. */
+  position: absolute; left: 50%; top: 42%;
+  width: min(92%, var(--max-w));
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  opacity: var(--copy-op, 1);
 }
-
-.hero-copy { opacity: var(--copy-op, 1); transition: opacity .12s linear; }
-@media (prefers-reduced-motion: reduce) { .hero-copy { opacity: 1; } }
-.cam-flat .hero-copy { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
+}
+.cam-flat .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
 
 /* ---- the left-hand (stacked, on mobile) narrative text -------------------- */
 .cam-stagetext {
   position: absolute; left: var(--gutter); top: 50%;
   transform: translateY(-50%);
   max-width: 30ch;
-  z-index: 4;
+  z-index: 3;
 }
 .cam-line {
   font-size: var(--t-md);
@@ -1591,7 +1651,11 @@ body.consent-open .to-top {
 }
 .js .cam-line.is-active { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .js .cam-stagetext { position: static; transform: none; margin-top: 1.5rem; max-width: 46ch; }
+  /* Covers both with and without JS: without it every .cam-line is already
+     visible at once (nothing ever sets opacity:0 on them — that's a .js
+     .cam-line rule below), so this only needs to fix .cam-stagetext's own
+     position/order, not touch the lines themselves. */
+  .cam-stagetext { position: static; order: 3; transform: none; margin-top: 1.5rem; max-width: 46ch; }
   .js .cam-line {
     position: static; opacity: 1;
     display: flex; flex-direction: column; gap: .5em;
@@ -1602,7 +1666,7 @@ body.consent-open .to-top {
 }
 /* Same stacked, all-shown-at-once treatment for .cam-flat — see the
    .hero-stage-wrap comment above for why this mirrors reduced-motion. */
-.js.cam-flat .cam-stagetext { position: static; transform: none; margin-top: 1.5rem; max-width: 46ch; width: auto; min-height: 0; }
+.js.cam-flat .cam-stagetext { position: static; order: 3; transform: none; margin-top: 1.5rem; max-width: 46ch; width: auto; min-height: 0; }
 .js.cam-flat .cam-line {
   position: static; opacity: 1;
   display: flex; flex-direction: column; gap: .5em;
@@ -1612,26 +1676,24 @@ body.consent-open .to-top {
 .js.cam-flat .cam-line:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
 
 @media (max-width: 899px) {
-  .hero-stage { padding-top: calc(var(--header-h) + 1rem); justify-content: flex-start; gap: .5rem; }
-  .cam-stage { width: min(70vw, 320px); margin-block: .5rem 1rem; }
-  /* No room for a side column at phone widths, so the text drops out of the
-     hero's flex layout and centres itself under the camera instead of
-     sitting pinned to the left edge. The is-active toggle logic above needs
-     no change — it already works the same way here. */
+  /* No room for a left column at phone widths, so the stage text moves to
+     a bottom-anchored, centred band instead of sitting pinned to the left
+     edge. Still absolutely positioned (over the fullscreen video, same as
+     desktop) rather than dropped into normal flow — there is no longer any
+     in-flow "camera" to sit under now that .cam-stage is an absolute-
+     positioned full-bleed layer, not a flex sibling. */
   .cam-stagetext {
-    /* relative, not static: it still needs to be the positioning
-       container for the absolutely-stacked .cam-line crossfade above,
-       it just also needs to sit in normal flow (centred under the
-       camera) instead of being pinned to the left edge of the stage. */
-    position: relative; left: auto; top: auto; transform: none;
-    max-width: 34ch; text-align: center; margin: 0 var(--gutter);
+    left: 50%; top: auto; bottom: clamp(1.5rem, 6vh, 3rem);
+    transform: translateX(-50%);
+    max-width: min(34ch, calc(100% - 2 * var(--gutter)));
+    text-align: center;
   }
   /* .js overrides the plain-paragraph max-width with a real, definite
      width: without .js every .cam-line is normal in-flow text and sizes
      itself fine, but with .js every line is permanently position:absolute
      (see the crossfade comment above) with nothing left to size the
      0-margin auto width from. */
-  .js .cam-stagetext { width: min(34ch, calc(100% - 2 * var(--gutter))); max-width: none; margin: 0 auto; }
+  .js .cam-stagetext { width: min(34ch, calc(100% - 2 * var(--gutter))); max-width: none; }
 }
 
 /* ---- nav lock -------------------------------------------------------------

@@ -99,26 +99,44 @@
 <main id="main">
 
 <!-- ====================================================== HERO -->
-<!-- A tall pinned sequence, NOT a scroll-jack. .hero-stage-wrap is many
-     viewport-heights tall; .hero-stage is position:sticky inside it, so it
-     stays on screen for the whole scroll distance while js/hero-video.js
-     reads how far through that distance the visitor has scrolled and maps
-     it directly onto the camera video's timeline (scroll 0% = frame 0,
-     scroll 100% = the last frame, linearly in between) by setting the
-     video's currentTime — the video itself is never played, only scrubbed.
-     Scrolling back up reverses it for free, because it's a pure function of
-     scroll position, not a one-shot animation or trigger.
+<!-- A genuine scroll-jack, not a pinned-distance illusion. .hero-stage-wrap
+     reserves exactly one viewport of space in the document; js/hero-video.js
+     toggles .hero-stage between position:fixed ("locked" — every wheel/
+     touch/keyboard scroll input is captured and converted into progress
+     instead of moving the page, so it is physically impossible to reach the
+     next section before the sequence finishes) and its normal static
+     position inside the wrap ("unlocked" — native scrolling, the stage just
+     scrolls away like any other section). Progress (0 to 1) maps directly
+     onto the camera video's timeline by setting currentTime — the video is
+     never played, only scrubbed. Scrolling back up re-engages the lock the
+     instant the page returns to the very top, reversing the sequence the
+     same way.
 
-     Without JS (or with prefers-reduced-motion), the video simply shows its
-     poster frame — the exact assembled first frame — since nothing ever
-     calls .play() on it. No separate fallback markup is needed for that
-     case; a <video> with no autoplay/controls just sits on its poster.
+     Without JS (or with prefers-reduced-motion), .hero-stage never gets
+     locked at all — it's just a normal, fullscreen, non-jacked section
+     showing the video's poster frame (the exact assembled first frame),
+     since nothing ever calls .play() on it. No separate fallback markup is
+     needed for that case.
 
      Nav is locked (see body[data-nav-locked]) until the sequence has played
      through once. See the prefers-reduced-motion and .cam-flat blocks in
      css/style.css for when that lock is skipped entirely. -->
 <section class="hero-stage-wrap" id="top" data-cam-wrap>
   <div class="hero-stage">
+
+    <div class="cam-stage" aria-hidden="true">
+      <!-- muted+playsinline: required on iOS/Safari before a video's
+           currentTime can be set programmatically without a user gesture.
+           No autoplay, no controls — js/hero-video.js only ever sets
+           .currentTime, it never calls .play(). preload="auto" so scrubbing
+           doesn't hit an unbuffered gap; the file is ~550KB either format. -->
+      <video class="cam-video" muted playsinline preload="auto"
+             poster="assets/video/hero-camera-poster.jpg">
+        <source src="assets/video/hero-camera.webm" type="video/webm">
+        <source src="assets/video/hero-camera.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
 
     <div class="hero-copy">
       <p class="eyebrow">
@@ -139,23 +157,9 @@
       </p>
     </div>
 
-    <div class="cam-stage" aria-hidden="true">
-      <!-- muted+playsinline: required on iOS/Safari before a video's
-           currentTime can be set programmatically without a user gesture.
-           No autoplay, no controls — js/hero-video.js only ever sets
-           .currentTime, it never calls .play(). preload="auto" so scrubbing
-           doesn't hit an unbuffered gap; the file is ~550KB either format. -->
-      <video class="cam-video" muted playsinline preload="auto"
-             poster="assets/video/hero-camera-poster.jpg">
-        <source src="assets/video/hero-camera.webm" type="video/webm">
-        <source src="assets/video/hero-camera.mp4" type="video/mp4">
-      </video>
-    </div>
-
     <!-- All 6 stages play out identically on mobile and desktop now — a
          scrubbed video costs the same either way, unlike the old WebGL
          scene where mobile ran a shorter sequence to stay light. -->
-    <div class="cam-stagetext">
     <div class="cam-stagetext">
       <p class="cam-line" data-stage="1">
         <span data-lang-el>Κάθε γάμος έχει τη δική του ματιά. Επιλέγω τον φακό ανάλογα με το φως, όχι με το πρόγραμμα.</span>
@@ -743,7 +747,7 @@
         <span data-lang-el>Όλες οι φωτογραφίες προστατεύονται από πνευματικά δικαιώματα.</span>
         <span data-lang-en>All photographs are protected by copyright.</span>
       </p>
-      <p><span data-lang-el>Ιωάννινα, Ελλάδα</span><span data-lang-en>Ioannina, Greece</span> · <span class="build-id">build 15</span></p>
+      <p><span data-lang-el>Ιωάννινα, Ελλάδα</span><span data-lang-en>Ioannina, Greece</span> · <span class="build-id">build 16</span></p>
     </div>
   </div>
 </footer>
