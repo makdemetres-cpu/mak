@@ -1,0 +1,14 @@
+# config.php holds live credentials — an API key and the admin password
+# hash — and must never be committed. It is deliberately untracked on every
+# branch in this repository; this rule is what keeps an accidental
+# `git add -A` from changing that.
+config.php
+
+# Runtime data written by the PHP endpoints (submitted reviews, rate-limit
+# and lockout state). Server state, not source, and it carries visitors'
+# submissions and salted IP hashes.
+data/
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
