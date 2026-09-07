@@ -2017,27 +2017,30 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
 .cam-flat .cam-video { touch-action: pan-y; }
 
 /* ---- masking the source resolution --------------------------------------
-   The hero file is only 640x360 (both the .webm and the .mp4 -- checked, not
+   The hero file is 640x360 (both the .webm and the .mp4 -- checked, not
    assumed). Full-bleed on a 1440x900 desktop that is a 2.5x upscale, and
-   about 5x on a 2x display, which is where the "pixelated" look comes from:
-   at that magnification the flat studio gradient behind the camera shows the
-   encoder's 16px blocks as visible steps.
+   about 5x on a 2x display. The encode has already been redone once at a
+   higher bitrate with a mild unsharp pass, which is as far as re-encoding
+   can go: 640x360 is a hard ceiling, and at 2.5x the flat studio gradient
+   behind the camera still steps rather than graduates.
 
-   Nothing in CSS can put detail back. What these two rules do is stop the
-   eye reading the upscale as a fault:
+   Nothing in CSS can put detail back either. What these two rules do is
+   stop the eye reading the upscale as a fault:
 
    - A fine, static grain over the video. Grain is what the eye files under
-     "film", not under "artefact" -- it breaks a flat, 2.5x-wide block into
+     "film", not under "artefact" -- it breaks a flat, 2.5x-wide step into
      texture, and on a photographer's site it reads as a deliberate finish.
      It is an feTurbulence data: URI, so no extra request and no image to
      decode (CSP allows it: img-src 'self' data:).
-   - A small contrast/saturation lift, restoring the punch a low bitrate
-     flattens out of the midtones.
+   - A small contrast/saturation lift, restoring the punch the upscale
+     flattens out of the midtones. Deliberately slight, since the source is
+     now sharpened in the encode as well -- stacking a heavy CSS filter on
+     top of that would ring the edges.
 
-   Neither is a substitute for a higher-resolution master. If one ever turns
-   up, re-export at 1920x1080 with a keyframe every ~6 frames (see the
-   comment in js/hero-video.js about the single keyframe in this file) and
-   both of these can be dialled back or dropped. */
+   Neither is a substitute for a higher-resolution master, which is the only
+   thing that actually removes the softness. If the original footage ever
+   turns up, re-export at 1920x1080 (keeping the current ~6-frame keyframe
+   interval) and both of these can be dialled back or dropped. */
 .cam-video {
   filter: contrast(1.06) saturate(1.08);
 }

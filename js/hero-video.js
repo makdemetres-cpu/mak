@@ -136,10 +136,12 @@
          wheel events inside one 16ms frame, so it queued 20 seeks the
          decoder then had to grind through one after another — which is
          exactly the "laggy" feel: the frame trailed the finger and kept
-         moving after the finger stopped. Worse, this particular file is
-         encoded with a single keyframe across all 8 seconds (verified by
-         reading its stss box), so every backward seek re-decodes from
-         frame 0 and is genuinely expensive.
+         moving after the finger stopped.
+
+         The asset is now encoded with a keyframe every 6 frames (32 of
+         them across its 192, read from the mp4's stss box), which makes
+         any one seek cheap. Twenty of them queued inside one frame still
+         is not, and the throttle costs nothing on top of the re-encode.
 
      seekFrame() therefore does nothing at all while videoEl.seeking is
      true, and is called once per animation frame from poll(). The newest
