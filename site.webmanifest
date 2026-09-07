@@ -4,8 +4,8 @@
   "description": "Φωτογραφία γάμου, βάπτισης και εκδηλώσεων στα Ιωάννινα.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0E0E10",
-  "theme_color": "#0E0E10",
+  "background_color": "#FFFAF3",
+  "theme_color": "#FFFAF3",
   "lang": "el",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }

@@ -9,74 +9,76 @@
    request leaves this domain just to render text. See privacy.html §8.
 
    Both faces were verified to carry a full Greek character set before being
-   adopted. This matters: Cormorant Garamond and Playfair Display — the two
-   faces most wedding templates use — ship no Greek glyphs at all, and would
-   silently fall back to a system font on the first Greek word.
+   adopted — checked against every accented character actually used in this
+   site's copy, not just assumed from the family name. This matters: plenty
+   of trendy display faces (Cormorant Garamond, Playfair Display, and nearly
+   every "condensed display sans" on Google Fonts — Oswald, Anton, Bebas
+   Neue, Archivo Black, Big Shoulders among them) ship no Greek glyphs at
+   all, and would silently fall back to a system font on the first Greek
+   word. Advent Pro and Manrope were two of the few condensed/display-
+   capable and body-capable candidates that actually carry it.
 
    Subsets are split so a Greek visitor never downloads Latin-only glyphs
-   and vice versa. Total across all six files: ~114 KB.
+   and vice versa. Both faces are variable (one file spans their whole
+   weight range) rather than shipping a separate static file per weight.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   GFS Didot — display / headings only.
-   Cut by the Greek Font Society in Athens: a Greek Didone drawn for Greek
-   rather than a Latin face with Greek bolted on. Single weight (400) is the
-   only one published, and the only one the site uses.
+   Advent Pro — display / headings only.
+   A tall, condensed sans with a wide weight range (100–900), used here at
+   its heavier end (700–900) for the bold, structural display character the
+   client asked for. Variable weight axis 100–900; the site uses 400–900.
    -------------------------------------------------------------------------- */
 @font-face {
-  font-family: 'GFS Didot';
+  font-family: 'Advent Pro';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('../assets/fonts/GFSDidot-400-latin.woff2') format('woff2');
+  src: url('../assets/fonts/AdventPro-Variable-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'GFS Didot';
+  font-family: 'Advent Pro';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('../assets/fonts/GFSDidot-400-greek.woff2') format('woff2');
-  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
-}
-/* Polytonic Greek. Not used by the current copy, but present so an accented
-   archaic form in a future caption cannot silently break the typeface. */
-@font-face {
-  font-family: 'GFS Didot';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../assets/fonts/GFSDidot-400-greek-ext.woff2') format('woff2');
-  unicode-range: U+1F00-1FFF;
-}
-
-/* --------------------------------------------------------------------------
-   Commissioner — body, navigation, labels, form controls.
-   Variable weight axis 200–600; the site uses 200 through 500.
-   One variable file per subset replaces what would otherwise be four static
-   weights each, so the whole body face costs ~83 KB for the Latin+Greek pair.
-   -------------------------------------------------------------------------- */
-@font-face {
-  font-family: 'Commissioner';
-  font-style: normal;
-  font-weight: 200 600;
-  font-display: swap;
-  src: url('../assets/fonts/Commissioner-Variable-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Commissioner';
-  font-style: normal;
-  font-weight: 200 600;
-  font-display: swap;
-  src: url('../assets/fonts/Commissioner-Variable-latin-ext.woff2') format('woff2');
+  src: url('../assets/fonts/AdventPro-Variable-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Commissioner';
+  font-family: 'Advent Pro';
   font-style: normal;
-  font-weight: 200 600;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('../assets/fonts/Commissioner-Variable-greek.woff2') format('woff2');
+  src: url('../assets/fonts/AdventPro-Variable-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* --------------------------------------------------------------------------
+   Manrope — body, navigation, labels, form controls.
+   Variable weight axis 200–800; the site uses 400 through 700.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../assets/fonts/Manrope-Variable-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../assets/fonts/Manrope-Variable-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../assets/fonts/Manrope-Variable-greek.woff2') format('woff2');
   unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
 }

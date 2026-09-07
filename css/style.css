@@ -1,47 +1,64 @@
 /* ==========================================================================
    Χρόνης Πέγκας Photography — Ιωάννινα
    --------------------------------------------------------------------------
-   Dark ground with a warm gold accent, following the reference the client
-   supplied. Committed single-theme: it does not follow the visitor's system
-   light/dark setting.
+   Cream ground with a vivid red accent. Committed single-theme: it does not
+   follow the visitor's system light/dark setting.
 
-   TO RETUNE: the five values at the top of the PALETTE block below drive the
-   whole site. Nothing else in this file hard-codes a colour. If you change
-   the gold, re-check its contrast — the measured figures are noted there.
+   TO RETUNE: the values at the top of the PALETTE block below drive the
+   whole site. Nothing else in this file hard-codes a colour EXCEPT a
+   handful of deliberate photo/video-overlay exceptions, each commented
+   where it appears (the lightbox, portfolio image captions, and the hero
+   video's scrim/overlay text) — those stay light-on-dark regardless of the
+   page's own theme because they sit on top of a photograph, not the page
+   background. If you change the red, re-check its contrast — the measured
+   figures are noted there.
 
-   The previous monochrome direction ("Μελάνι" — paper, ink, no accent) is
-   preserved in git history at commit 2c065e4 if it is ever wanted back.
+   The previous dark/gold direction is preserved in git history (the commit
+   that introduced this palette change) if it is ever wanted back.
    ========================================================================== */
 
 /* ============================ PALETTE ==================================== */
-/* Direction: dark ground with a warm gold accent, after the reference the
-   client supplied. This is a COMMITTED single-theme design — it does not
-   follow the visitor's light/dark setting, because a light version of this
-   look would be a different design, not a variant of it. Every colour is
-   therefore painted explicitly; nothing is left to inherit from the host.
+/* Direction: cream ground with a vivid red accent, per the client's brand
+   colours (#F62440 / #FFFAF3). This is a COMMITTED single-theme design — it
+   does not follow the visitor's light/dark setting, because a dark version
+   of this look would be a different design, not a variant of it. Every
+   colour is therefore painted explicitly; nothing is left to inherit from
+   the host.
 
-   Token NAMES are unchanged from the previous monochrome direction on
+   Token NAMES are unchanged from the previous dark/gold direction on
    purpose: every layout rule in this file keeps working untouched, and the
    whole site changes from this one block.
 
-   Contrast measured against the lightest surface (--surface-deep #1E1E22):
-     --ink       16.5:1     --ink-soft   6.7:1     --accent  6.7:1
-     dark text on a gold fill  7.8:1
-   All clear WCAG AA (4.5:1). If you warm the gold further, re-check it. */
+   The brand red only reaches 3.86:1 against the cream ground — enough for
+   WCAG AA's "large text" threshold (3:1: headings, big display numbers,
+   icons, decorative borders) but short of the 4.5:1 normal text needs.
+   --accent is therefore reserved for large/decorative use; --accent-bright
+   is a deepened red (6.43:1) used everywhere red carries small text —
+   buttons, links, labels, eyebrows — or sits as a small-text-bearing fill.
+   Both meanings hold only on the page's own cream ground; the hero video's
+   dark scrim is a separate light-on-dark context with its own comment.
+
+   Contrast against the cream ground (--paper #FFFAF3):
+     --ink        17.0:1    --ink-soft   5.9:1
+     --accent      3.9:1 (large text/decorative only)
+     --accent-bright  6.4:1 (safe for any text size)
+     cream text on --accent-bright fill  6.4:1
+   All clear WCAG AA (4.5:1 normal text / 3:1 large text) for their intended
+   use. If you retune the red, re-check both figures. */
 :root {
-  --paper:        #0E0E10;   /* page ground                                 */
-  --ink:          #EFEDE8;   /* headlines, primary text                     */
-  --ink-soft:     #A7A49C;   /* secondary text, captions, labels            */
-  --rule:         #2A2A2E;   /* hairlines, borders                          */
-  --accent:       #C2A05F;   /* gold — eyebrows, rules, buttons, focus      */
+  --paper:        #FFFAF3;   /* page ground                                 */
+  --ink:          #241417;   /* headlines, primary text                     */
+  --ink-soft:     #6B5F58;   /* secondary text, captions, labels            */
+  --rule:         #E4DACB;   /* hairlines, borders                          */
+  --accent:       #F62440;   /* red — large headings, icons, decoration     */
 
-  --accent-bright:#CDB07A;   /* hover state for the gold                    */
-  --accent-dim:   rgba(194,160,95,.16);  /* gold at card-tint strength      */
+  --accent-bright:#BA081F;   /* deepened red — buttons, links, small labels */
+  --accent-dim:   rgba(246,36,64,.10);   /* red at card-tint strength       */
 
-  --surface:      #17171A;   /* tinted section band                         */
-  --surface-deep: #1E1E22;   /* raised cards sitting on that band           */
-  --focus:        #CDB07A;
-  --shadow-lift:  0 1px 2px rgba(0,0,0,.45), 0 24px 48px -30px rgba(0,0,0,.95);
+  --surface:      #F7EFDF;   /* tinted section band                         */
+  --surface-deep: #F1E6D2;   /* raised cards sitting on that band           */
+  --focus:        #BA081F;
+  --shadow-lift:  0 1px 2px rgba(36,20,23,.08), 0 24px 48px -30px rgba(36,20,23,.4);
 
   /* The reference rounds its cards and images. One scale, used everywhere,
      so nothing looks hand-placed. */
@@ -52,8 +69,8 @@
 
 /* ============================ SCALE ====================================== */
 :root {
-  --font-display: 'GFS Didot', 'Times New Roman', Georgia, serif;
-  --font-body: 'Commissioner', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Advent Pro', 'Arial Narrow', Arial, sans-serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
   /* Type scale — 1.25 minor third, fluid between 360px and 1440px */
   --t-xs:   clamp(0.69rem, 0.67rem + 0.09vw, 0.75rem);
@@ -114,7 +131,11 @@ a { color: inherit; }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 400;
+  /* GFS Didot (the previous display face) only shipped one weight and read
+     as bold regardless, being a high-contrast Didone serif. Advent Pro
+     needs an explicit heavy weight to read as the bold, structural display
+     face the client asked for — at 400 it looks thin, not elegant. */
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.005em;
   text-wrap: balance;
@@ -205,6 +226,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 }
 .wordmark {
   font-family: var(--font-display);
+  font-weight: 600;
   font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.4rem);
   letter-spacing: .04em;
   text-decoration: none;
@@ -340,17 +362,37 @@ html[lang="en"] [data-lang-el] { display: none !important; }
   text-align: center; align-items: center;
   will-change: opacity;
 }
-.hero-copy .eyebrow { color: var(--accent-bright); }
+/* This copy sits over the hero video's dark scrim (see the HERO CAMERA
+   block further down), not over the page's own cream ground — a
+   deliberate light-on-dark exception, same reasoning as the lightbox and
+   the portfolio image captions. It cannot inherit the page's normal --ink/
+   --ink-soft/--accent-bright tokens, which are dark on this cream-themed
+   palette and would go invisible against the scrim; every colour here is
+   set explicitly instead.
+
+   Neither red (--accent or --accent-bright) is used here, even though the
+   eyebrow is exactly where a brand-red label would normally go: red has
+   low luminance to start with, so it only clears 4.5:1 against something
+   near-black. The scrim is that dark at its very top/bottom edges, but the
+   copy sits in its deliberately lighter middle band (so the camera itself
+   stays visible) — composited-pixel-checked at ~rgb(94,95,98), where red
+   measures a failing 1.6:1. Cream at full/partial opacity clears it
+   comfortably there (h1 5.96:1, this line matches at reduced opacity for
+   hierarchy) regardless of exactly where the gradient math puts the copy,
+   which is the more robust property to design around here. */
+.hero-copy .eyebrow { color: rgba(255,250,243,.82); }
 .hero-copy h1 {
   font-size: var(--t-3xl);
+  font-weight: 900;
   margin: .5rem 0 0;
   letter-spacing: -0.012em;
+  color: #FFFAF3;
 }
 .hero-sub {
   margin-top: 1.35rem;
   max-width: 40ch;
   font-size: var(--t-md);
-  color: var(--ink-soft);
+  color: rgba(255,250,243,.82);
   line-height: 1.55;
 }
 .hero-meta {
@@ -358,7 +400,7 @@ html[lang="en"] [data-lang-el] { display: none !important; }
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
   gap: .7rem 1.6rem;
   font-size: var(--t-xs); letter-spacing: .18em; text-transform: uppercase;
-  color: var(--ink-soft);
+  color: rgba(255,250,243,.82);
 }
 .hero-meta .dot { width: 3px; height: 3px; background: currentColor; border-radius: 50%; }
 
@@ -585,10 +627,11 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible {
   outline: 2px solid var(--focus); outline-offset: 4px;
 }
-.field.has-error input, .field.has-error textarea, .field.has-error select { border-bottom-color: #F2B8B5; }
-/* Error red has to be legible on the dark ground: #B3261E measures 2.6:1
-   there and is unreadable. This tint is 8.9:1. */
-.field-error { font-size: var(--t-xs); color: #F2B8B5; min-height: 1em; }
+.field.has-error input, .field.has-error textarea, .field.has-error select { border-bottom-color: #B3261E; }
+/* A standard Material error red — deliberately NOT the brand red, so a
+   validation error never reads as an accent/brand colour. 6.3:1 on the
+   cream ground. */
+.field-error { font-size: var(--t-xs); color: #B3261E; min-height: 1em; }
 
 .field-row { display: grid; gap: 1.4rem; grid-template-columns: 1fr; }
 @media (min-width: 560px) { .field-row { grid-template-columns: 1fr 1fr; } }
@@ -909,6 +952,7 @@ body.consent-open .to-top {
 }
 .notfound .code {
   font-family: var(--font-display);
+  font-weight: 800;
   font-size: clamp(4.5rem, 18vw, 11rem); line-height: .9;
   color: var(--ink);
 }
@@ -937,21 +981,25 @@ body.consent-open .to-top {
    work already tested upstream is untouched.
    ========================================================================== */
 
-/* ---- gold accents on existing furniture ---- */
+/* ---- red accents on existing furniture ----
+   These are all small label-scale text (eyebrows, index numbers, footer
+   headings) — --accent-bright, not --accent, because --accent alone only
+   clears WCAG's large-text contrast threshold (3:1), not the 4.5:1 normal
+   text needs at this size. See the PALETTE comment at the top of the file. */
 .eyebrow,
 .sec-index,
 .step-n,
 .contact-block .eyebrow,
-.footer-col h3 { color: var(--accent); }
+.footer-col h3 { color: var(--accent-bright); }
 
 .sec-index::after { background: linear-gradient(to right, var(--accent), transparent); opacity: .5; }
 
 .split-media figcaption,
-.legal-updated { color: var(--accent); }
+.legal-updated { color: var(--accent-bright); }
 
 .pullquote { border-left-color: var(--accent); }
 
-::selection { background: var(--accent); color: #14120C; }
+::selection { background: var(--accent-bright); color: var(--paper); }
 
 /* ---- rounded, per the reference ---- */
 /* Rounding only. `overflow: hidden` must NOT go on these two: the legal
@@ -974,47 +1022,59 @@ body.consent-open .to-top {
 .to-top { border-radius: 50%; }
 .cookie-banner { border-radius: var(--radius) var(--radius) 0 0; }
 
-/* ---- buttons: solid gold primary, gold-outlined secondary ---- */
+/* ---- buttons: solid red primary, red-outlined secondary ----
+   The solid fill uses --accent-bright, not --accent: button labels are
+   small text (var(--t-xs)), and only --accent-bright clears 4.5:1 with
+   cream text on top. Hover deepens further via color-mix rather than
+   swapping to the brighter --accent, which would move the wrong direction
+   (lighter fill = lower contrast against light cream text). */
 .btn {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #14120C;
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+  color: var(--paper);
   font-weight: 500;
 }
-.btn:hover { background: var(--accent-bright); border-color: var(--accent-bright); color: #14120C; }
+.btn:hover {
+  background: color-mix(in srgb, var(--accent-bright) 82%, black);
+  border-color: color-mix(in srgb, var(--accent-bright) 82%, black);
+  color: var(--paper);
+}
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  .btn:hover { background: #94061A; border-color: #94061A; }
+}
 .btn--ghost {
   background: transparent;
-  color: var(--accent);
+  color: var(--accent-bright);
   border-color: color-mix(in srgb, var(--accent) 45%, transparent);
 }
 .btn--ghost:hover { background: var(--accent-dim); color: var(--accent-bright); border-color: var(--accent); }
 @supports not (color: color-mix(in srgb, red 50%, transparent)) {
-  .btn--ghost { border-color: #6A5836; }
+  .btn--ghost { border-color: rgba(246,36,64,.45); }
 }
 
 /* Consent buttons stay identical to one another — see js/consent.js. The
-   banner must not push "Accept" with the gold fill while "Decline" is a
+   banner must not push "Accept" with the red fill while "Decline" is a
    quiet outline; that asymmetry is the exact dark pattern regulators act on. */
 .cookie-actions .btn,
 .cookie-modal-actions .btn {
   background: transparent;
-  color: var(--accent);
+  color: var(--accent-bright);
   border-color: color-mix(in srgb, var(--accent) 45%, transparent);
   font-weight: 400;
 }
 .cookie-actions .btn:hover,
 .cookie-modal-actions .btn:hover { background: var(--accent-dim); color: var(--accent-bright); border-color: var(--accent); }
 @supports not (color: color-mix(in srgb, red 50%, transparent)) {
-  .cookie-actions .btn, .cookie-modal-actions .btn { border-color: #6A5836; }
+  .cookie-actions .btn, .cookie-modal-actions .btn { border-color: #EC888C; }
 }
 
 /* ---- header + nav ---- */
 .nav-desktop a::after { background: var(--accent); }
-.nav-desktop a:hover, .nav-desktop a.is-active { color: var(--accent); }
+.nav-desktop a:hover, .nav-desktop a.is-active { color: var(--accent-bright); }
 .lang-toggle { border-radius: var(--radius-pill); overflow: hidden; border-color: var(--rule); }
-.lang-toggle button[aria-pressed="true"] { background: var(--accent); color: #14120C; }
-.wordmark .wm-sub { color: var(--accent); }
-.nav-mobile .n-num { color: var(--accent); }
+.lang-toggle button[aria-pressed="true"] { background: var(--accent-bright); color: var(--paper); }
+.wordmark .wm-sub { color: var(--accent-bright); }
+.nav-mobile .n-num { color: var(--accent-bright); }
 
 /* ---- ASSURANCE ROW — the four-item strip under the hero ---- */
 .assure {
@@ -1070,10 +1130,19 @@ body.consent-open .to-top {
 }
 .cat-card-body .k {
   font-size: var(--t-xs); letter-spacing: .2em; text-transform: uppercase;
-  color: var(--accent);
+  /* Not var(--accent): red has low luminance, so it only clears 4.5:1
+     against something near-black, and this sits on the card's own
+     photograph — composited-pixel-checked around rgb(84,84,84), where red
+     measures a failing 1.9:1. Matches h3/p's light treatment instead
+     (6.8:1 there), which is reliable regardless of how dark any given
+     card photo happens to be. */
+  color: #F4F2ED;
 }
 .cat-card-body h3 { font-size: var(--t-lg); color: #F4F2ED; }
-.cat-card-body p { font-size: var(--t-sm); color: rgba(244,242,237,.72); line-height: 1.55; }
+/* .72 (unchanged since the dark-theme original) measured a hair under
+   4.5:1 against this card's actual photo — .85 gives real margin (5.3:1),
+   pixel-checked, not assumed. */
+.cat-card-body p { font-size: var(--t-sm); color: rgba(244,242,237,.85); line-height: 1.55; }
 
 /* ---- PACKAGES ---- */
 .packages { display: grid; gap: clamp(.7rem, 1.6vw, 1.1rem); grid-template-columns: minmax(0, 1fr); }
@@ -1087,9 +1156,9 @@ body.consent-open .to-top {
   display: flex; flex-direction: column; gap: 1rem;
 }
 .package--lead { border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
-@supports not (color: color-mix(in srgb, red 50%, transparent)) { .package--lead { border-color: #6A5836; } }
+@supports not (color: color-mix(in srgb, red 50%, transparent)) { .package--lead { border-color: rgba(246,36,64,.40); } }
 
-.package .k { font-size: var(--t-xs); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+.package .k { font-size: var(--t-xs); letter-spacing: .2em; text-transform: uppercase; color: var(--accent-bright); }
 .package h3 { font-size: var(--t-lg); }
 .package > p { font-size: var(--t-sm); color: var(--ink-soft); line-height: 1.65; }
 .package ul { display: flex; flex-direction: column; gap: .55rem; margin-top: .2rem; }
@@ -1106,7 +1175,7 @@ body.consent-open .to-top {
   margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--rule);
   font-size: var(--t-sm); color: var(--ink);
 }
-.package .price span { color: var(--accent); }
+.package .price span { color: var(--accent-bright); }
 
 /* ---- TESTIMONIALS ---- */
 .quotes { display: grid; gap: clamp(.7rem, 1.6vw, 1.1rem); grid-template-columns: minmax(0, 1fr); }
@@ -1123,7 +1192,7 @@ body.consent-open .to-top {
 .quote blockquote { margin: 0; font-size: var(--t-base); color: var(--ink-soft); line-height: 1.7; }
 .quote figcaption {
   margin-top: auto; padding-top: .9rem; border-top: 1px solid var(--rule);
-  font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-bright);
 }
 /* Empty-by-design notice; removed when real quotes replace the placeholders. */
 .quotes-note {
@@ -1137,12 +1206,12 @@ body.consent-open .to-top {
 .switch span::after { background: var(--paper); }
 .switch input:checked + span { background: var(--accent); border-color: var(--accent); }
 .consent-field input[type="checkbox"] { accent-color: var(--accent); }
-.skip-link { background: var(--accent); color: #14120C; border-radius: var(--radius-sm); }
+.skip-link { background: var(--accent-bright); color: var(--paper); border-radius: var(--radius-sm); }
 .service:first-child { border-top-color: var(--rule); }
 .notfound .code { color: var(--accent); }
-.legal-body a, .cookie-copy a, .consent-field a { color: var(--accent); }
+.legal-body a, .cookie-copy a, .consent-field a { color: var(--accent-bright); }
 .contact-block a:hover { border-color: var(--accent); }
-.footer-col a:hover { color: var(--accent); }
+.footer-col a:hover { color: var(--accent-bright); }
 
 /* The photographs carry the only real colour on a page this dark, so they
    are left ungreyed here — unlike the previous monochrome direction. */
@@ -1221,7 +1290,7 @@ body.consent-open .to-top {
   .js .assure-item.is-tilting,
   .js .package.is-tilting,
   .js .quote.is-tilting,
-  .js .cat-card.is-tilting { border-color: #6A5836; }
+  .js .cat-card.is-tilting { border-color: #ED7F86; }
 }
 
 /* Keyboard users get the lift without the tilt — there is no pointer to
@@ -1251,7 +1320,7 @@ body.consent-open .to-top {
   }
   @supports not (color: color-mix(in srgb, red 50%, transparent)) {
     .js .assure-item.is-pressed, .js .package.is-pressed,
-    .js .quote.is-pressed, .js .cat-card.is-pressed { border-color: #6A5836; }
+    .js .quote.is-pressed, .js .cat-card.is-pressed { border-color: #ED7F86; }
   }
   /* Springs back a touch slower than it presses, which is what makes it
      feel physical rather than mechanical. */
@@ -1315,7 +1384,7 @@ body.consent-open .to-top {
   }
   @supports not (color: color-mix(in srgb, red 50%, transparent)) {
     .assure-item:hover, .package:hover,
-    .quote:hover, .cat-card:hover { border-color: #7A6640; }
+    .quote:hover, .cat-card:hover { border-color: #EE767F; }
   }
 }
 
@@ -1397,13 +1466,15 @@ body.consent-open .to-top {
   .quote:hover .quote-mark { color: var(--accent-bright); }
   .quote:hover blockquote { color: var(--ink); }
 
-  /* Body copy lifts with the card. This is not decoration: the sheen
-     lightens the ground beneath it, so the text has to lift too or the
-     contrast falls as the highlight passes under it. At #BFBCB3 it measures
-     6.4:1 even at the brightest point of the light. */
+  /* Body copy darkens with the card. This is not decoration: the sheen is a
+     warm red glow over a light card, which slightly darkens the ground
+     beneath it — the opposite direction from the dark-theme original this
+     inherited from — so the text has to deepen to --ink to keep up rather
+     than lighten. Measured, not guessed: at the sheen's peak, --ink-soft
+     alone falls to 4.0:1; full --ink stays at 11.4:1 even there. */
   .assure-item:hover p,
   .package:hover > p,
-  .package:hover li { color: #BFBCB3; }
+  .package:hover li { color: var(--ink); }
   .assure-item p, .package > p, .package li { transition: color .12s var(--ease); }
 
   .assure-item h3, .package h3, .cat-card h3,
@@ -1430,13 +1501,15 @@ body.consent-open .to-top {
   pointer-events: none;
   opacity: 0;
   transition: opacity .16s var(--ease);
-  /* Peak alpha is .16, not .20. At .20 the lightened background pushed the
-     card's body text to 4.44:1 — under the 4.5:1 AA minimum — precisely where
-     the reader is looking. Measured, not guessed. */
+  /* A warm red glow, not the card's own --accent-bright: it needs to read as
+     a soft highlight even at low opacity, which the deepened accent is too
+     dark to do. Text contrast is handled separately above (--ink on hover),
+     so this alpha is picked for how the glow looks, not for a contrast
+     ceiling the way the previous dark-theme version's was. */
   background: radial-gradient(
     340px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(205,176,122,.16),
-    rgba(205,176,122,.06) 38%,
+    rgba(246,36,64,.16),
+    rgba(246,36,64,.06) 38%,
     transparent 66%);
 }
 .assure-item::before,
@@ -1612,10 +1685,22 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
   z-index: 3;
   opacity: var(--copy-op, 1);
 }
+/* Both fallbacks below drop the video to a small contained card sitting on
+   the page's own cream ground instead of a fullscreen dark-scrimmed
+   background — so the light-on-dark colours set on .hero-copy/.cam-line
+   above (for the normal video-hero case) have to revert to the page's
+   normal dark-on-cream tokens here, or the text would be near-invisible
+   (light text on light cream). */
 @media (prefers-reduced-motion: reduce) {
   .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
+  .hero-copy .eyebrow { color: var(--accent-bright); }
+  .hero-copy h1 { color: var(--ink); }
+  .hero-sub, .hero-meta { color: var(--ink-soft); }
 }
 .cam-flat .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
+.cam-flat .hero-copy .eyebrow { color: var(--accent-bright); }
+.cam-flat .hero-copy h1 { color: var(--ink); }
+.cam-flat .hero-sub, .cam-flat .hero-meta { color: var(--ink-soft); }
 
 /* ---- the left-hand (stacked, on mobile) narrative text -------------------- */
 .cam-stagetext {
@@ -1626,10 +1711,18 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
 }
 .cam-line {
   font-size: var(--t-md);
-  color: var(--ink-soft);
+  /* Same dark-scrim exception as .hero-copy just above — not var(--ink-soft),
+     which is dark on this palette and would be invisible over the video. */
+  color: rgba(255,250,243,.82);
   line-height: 1.55;
   margin: 0;
 }
+/* Both fallbacks drop the video to a small contained card on the page's own
+   cream ground (see the .hero-copy fallback comment above) — this has to
+   come after the base .cam-line rule just above: equal specificity, so
+   whichever is later in the file wins whenever both could apply. */
+@media (prefers-reduced-motion: reduce) { .cam-line { color: var(--ink-soft); } }
+.cam-flat .cam-line { color: var(--ink-soft); }
 /* Only one line at a time, in the language pair already visible. Hidden by
    default so the page reads cleanly if hero-video.js never runs; only
    .js turns this into a toggled sequence. Every line stays absolutely
