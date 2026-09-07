@@ -654,7 +654,11 @@
           </div>
           <div class="field">
             <label for="f-date"><span data-lang-el>Ημερομηνία</span><span data-lang-en>Date</span></label>
-            <input type="date" id="f-date" name="date">
+            <!-- data-xdate opts this into the branded calendar in
+                 js/fields.js. It stays a real <input type="date"> — that file
+                 only hides it and drives its value, so with JS off this is
+                 still the browser's own working date field. -->
+            <input type="date" id="f-date" name="date" data-xdate>
             <p class="field-error" aria-live="polite"></p>
           </div>
         </div>
@@ -664,7 +668,7 @@
           <!-- An <option> cannot contain the usual per-language <span> pair,
                so these carry both strings as data-* and main.js swaps the
                label text. Without that, English mode would empty the list. -->
-          <select id="f-type" name="type">
+          <select id="f-type" name="type" data-xselect>
             <option value="wedding"     data-el="Γάμος"    data-en="Wedding">Γάμος</option>
             <option value="christening" data-el="Βάπτιση"  data-en="Christening">Βάπτιση</option>
             <option value="event"       data-el="Εκδήλωση" data-en="Event">Εκδήλωση</option>
@@ -883,9 +887,79 @@
   </div>
 </div>
 
+<!-- ==========================================================================
+     THANK-YOU DIALOG
+     Opened by js/thanks.js once js/contact.js reports the enquiry actually
+     went out — never on a validation failure and never on a send error, both
+     of which still report themselves inline in the form where the visitor
+     can act on them.
+
+     The copy lives here as [data-lang-el]/[data-lang-en] pairs like the rest
+     of the page rather than in js/strings.js, so it is real text in the
+     markup in both languages and the existing CSS language swap handles it
+     with no JavaScript involved. Only the close button's aria-label, which
+     has no visible text to swap, goes through strings.js (data-label-key).
+
+     Ships hidden. With JavaScript off the form cannot submit at all, so this
+     can never be reached in that state.
+     ========================================================================== -->
+<div class="thanks" id="thanksDialog" hidden>
+  <div class="thanks__scrim" data-thanks-close></div>
+
+  <div class="thanks__panel" role="dialog" aria-modal="true"
+       aria-labelledby="thanksHeading" aria-describedby="thanksLede">
+    <button class="thanks__x" type="button" data-thanks-close
+            data-label-key="thanksClose" aria-label="Κλείσιμο">
+      <span aria-hidden="true"></span>
+    </button>
+
+    <span class="thanks__mark" aria-hidden="true"></span>
+
+    <h2 id="thanksHeading">
+      <span data-lang-el>Ευχαριστώ!</span>
+      <span data-lang-en>Thank you!</span>
+    </h2>
+
+    <!-- Two readings of the same moment, because pressing "send message"
+         does not mean the same thing in every FORM_MODE (see js/contact.js).
+         On the php / web3forms modes the enquiry really has been sent. In
+         mailto mode all that has happened is that the visitor's own email
+         app has been opened with a draft in it — telling them it is on its
+         way would simply not be true, and they would never press send. -->
+    <p id="thanksLede">
+      <span class="thanks__line" data-thanks-mode="sent">
+        <span data-lang-el>Το μήνυμά σας έφυγε. Απαντάω σε κάθε αίτημα προσωπικά — συνήθως μέσα σε 48 ώρες.</span>
+        <span data-lang-en>Your message is on its way. I answer every enquiry personally — usually within 48 hours.</span>
+      </span>
+      <span class="thanks__line" data-thanks-mode="draft" hidden>
+        <span data-lang-el>Άνοιξα το πρόγραμμα email σας με όλα συμπληρωμένα. Πατήστε «Αποστολή» εκεί και το μήνυμα θα φτάσει σε μένα — απαντάω προσωπικά, συνήθως μέσα σε 48 ώρες.</span>
+        <span data-lang-en>Your email app is open with everything filled in. Press send there and it reaches me — I answer personally, usually within 48 hours.</span>
+      </span>
+    </p>
+
+    <p class="thanks__meta">
+      <span data-lang-el>Αν βιάζεστε, γράψτε μου απευθείας στο</span>
+      <span data-lang-en>In a hurry? Write to me directly at</span>
+      <a href="mailto:xpegkas@gmail.com">xpegkas@gmail.com</a>
+    </p>
+
+    <button class="btn thanks__home" type="button" data-thanks-home>
+      <span data-lang-el>Επιστροφή στην αρχική</span>
+      <span data-lang-en>Back to the homepage</span>
+    </button>
+  </div>
+
+  <!-- Above the panel so the confetti falls in front of it. Purely
+       decorative and never focusable; js/thanks.js leaves it empty entirely
+       when the visitor has asked for reduced motion. -->
+  <canvas class="thanks__confetti" aria-hidden="true"></canvas>
+</div>
+
 <script src="js/strings.js"></script>
 <script src="js/main.js"></script>
 <script src="js/consent.js"></script>
+<script src="js/fields.js"></script>
+<script src="js/thanks.js"></script>
 <script src="js/contact.js"></script>
 <script src="js/tilt.js"></script>
 <script src="js/hero-video.js"></script>

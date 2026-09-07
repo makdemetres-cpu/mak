@@ -32,10 +32,27 @@ window.XP_STRINGS = {
     formSending: "Αποστολή…",
     formSend: "Αποστολή μηνύματος",
     formOkTitle: "Το μήνυμά σας στάλθηκε.",
+    /* mailto mode only: at this point nothing has been transmitted — the
+       visitor's own email app has been opened with a draft in it. */
+    formDraftTitle: "Το μήνυμα είναι έτοιμο να σταλεί.",
     formOkBody: "Ευχαριστούμε. Ο Χρόνης θα σας απαντήσει συνήθως εντός 48 ωρών.",
     formErrTitle: "Το μήνυμα δεν στάλθηκε.",
     formErrBody: "Κάτι πήγε στραβά με την αποστολή. Στείλτε μας απευθείας email στο {email} και θα απαντήσουμε το συντομότερο.",
-    formMailtoBody: "Ανοίγουμε το πρόγραμμα email σας με τα στοιχεία συμπληρωμένα. Αν δεν άνοιξε, στείλτε μας email στο {email}."
+    formMailtoBody: "Ανοίγουμε το πρόγραμμα email σας με τα στοιχεία συμπληρωμένα. Αν δεν άνοιξε, στείλτε μας email στο {email}.",
+
+    datePlaceholder: "Επιλέξτε ημερομηνία",
+    dateOpen: "Άνοιγμα ημερολογίου",
+    datePrev: "Προηγούμενος μήνας",
+    dateNext: "Επόμενος μήνας",
+    dateToday: "Σήμερα",
+    dateClear: "Καθαρισμός",
+    dateChosen: "Επιλέχθηκε {date}",
+    selectPlaceholder: "Επιλέξτε",
+
+    /* The thank-you dialog's visible copy is markup, not strings — see the
+       comment on #thanksDialog in index.html. Only its close button, which
+       is an icon with no text, needs a swappable label. */
+    thanksClose: "Κλείσιμο"
   },
 
   en: {
@@ -64,9 +81,21 @@ window.XP_STRINGS = {
     formSending: "Sending…",
     formSend: "Send message",
     formOkTitle: "Your message has been sent.",
+    formDraftTitle: "Your message is ready to send.",
     formOkBody: "Thank you. Chronis usually replies within 48 hours.",
     formErrTitle: "The message could not be sent.",
     formErrBody: "Something went wrong sending the form. Please email us directly at {email} and we'll reply as soon as we can.",
-    formMailtoBody: "We've opened your email app with the details filled in. If nothing opened, please email us at {email}."
+    formMailtoBody: "We've opened your email app with the details filled in. If nothing opened, please email us at {email}.",
+
+    datePlaceholder: "Choose a date",
+    dateOpen: "Open calendar",
+    datePrev: "Previous month",
+    dateNext: "Next month",
+    dateToday: "Today",
+    dateClear: "Clear",
+    dateChosen: "{date} selected",
+    selectPlaceholder: "Choose",
+
+    thanksClose: "Close"
   }
 };

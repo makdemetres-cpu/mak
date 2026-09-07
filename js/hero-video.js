@@ -99,7 +99,7 @@
   // networkState stuck at NETWORK_NO_SOURCE with readyState 0 forever,
   // with no error event ever reaching the video element itself. Without
   // this timeout, that failure mode would leave both nav and scroll
-  // permanently locked, since render() below never gets past its
+  // permanently locked, since seekFrame() below never gets past its
   // "duration known yet?" guard.
   var loadTimer = window.setTimeout(function () {
     if (!(videoEl.duration > 0)) fallbackFlat();
@@ -122,18 +122,37 @@
   for (var s = 1; s <= STAGE_COUNT; s++) lineEls.push(wrap.querySelector('.cam-line[data-stage="' + s + '"]'));
 
   /* ---- progress → video frame / copy / stage text ------------------------
-     currentTime is set directly from progress with no easing or lag — the
-     brief for this video specifically calls for the frame to track input
-     1:1 and hold exactly wherever input stops, which a lagged/eased value
-     would only approximate. */
+     progress itself is still written synchronously by every input event, so
+     it always holds the very latest input. What changed is WHEN that value
+     is pushed at the two consumers, because they cost wildly different
+     things:
+
+       - The overlay (copy opacity, which stage line is showing) is pure
+         CSS and is repainted once per animation frame from whatever
+         progress currently is.
+
+       - The video frame is a decoder seek, and this file's earlier build
+         issued one per input event. A single trackpad flick fires 20+
+         wheel events inside one 16ms frame, so it queued 20 seeks the
+         decoder then had to grind through one after another — which is
+         exactly the "laggy" feel: the frame trailed the finger and kept
+         moving after the finger stopped. Worse, this particular file is
+         encoded with a single keyframe across all 8 seconds (verified by
+         reading its stss box), so every backward seek re-decodes from
+         frame 0 and is genuinely expensive.
+
+     seekFrame() therefore does nothing at all while videoEl.seeking is
+     true, and is called once per animation frame from poll(). The newest
+     target always wins, so the frame still lands exactly where input
+     stopped — the 1:1 hold the brief asks for is preserved — it just gets
+     there by doing one seek instead of twenty. Gating on the element's own
+     .seeking flag rather than a variable of our own means there is no
+     private state that can wedge shut if a seek never completes. */
   var progress = 0;
   var durationKnown = false;
-  function render() {
-    if (durationKnown) {
-      var target = progress * videoEl.duration;
-      if (Math.abs(videoEl.currentTime - target) > 0.004) videoEl.currentTime = target;
-    }
+  var overlayDirty = true;
 
+  function renderOverlay() {
     copyEl.style.setProperty("--copy-op", (1 - smoothstep(0, 0.08, progress)).toFixed(3));
     for (var i = 0; i < STAGE_COUNT; i++) {
       var line = lineEls[i];
@@ -148,6 +167,16 @@
     if (progress >= 0.985) unlockNav();
   }
 
+  function seekFrame() {
+    if (!durationKnown || videoEl.seeking) return;
+    var target = progress * videoEl.duration;
+    // ~half a frame at this video's 24fps. Anything closer than this would
+    // land on the frame already on screen, so the seek would be pure cost
+    // for no visible change.
+    if (Math.abs(videoEl.currentTime - target) < 0.02) return;
+    videoEl.currentTime = target;
+  }
+
   /* ---- input capture -------------------------------------------------------
      Three input sources feed the same applyDelta(): wheel (desktop mouse/
      trackpad), touch (mobile drag), and keyboard (arrows/space/page keys,
@@ -159,7 +188,10 @@
   function applyDelta(deltaPx) {
     var next = progress + deltaPx / lockDistance();
     progress = Math.min(1, Math.max(0, next));
-    render();
+    // Both consumers are driven from poll() on the next animation frame —
+    // see the comment above renderOverlay() for why nothing is pushed
+    // straight at the video here.
+    overlayDirty = true;
     if (locked && progress >= 1 && deltaPx > 0) setLocked(false);
   }
 
@@ -174,7 +206,7 @@
     return d;
   }
   window.addEventListener("wheel", function (e) {
-    if (!locked) return;
+    if (!locked || modalOwnsPage()) return;
     e.preventDefault();
     applyDelta(normalizeWheelDelta(e));
   }, { passive: false });
@@ -185,7 +217,7 @@
     touchY = e.touches[0].clientY;
   }, { passive: true });
   window.addEventListener("touchmove", function (e) {
-    if (!locked || touchY === null || !e.touches.length) return;
+    if (!locked || modalOwnsPage() || touchY === null || !e.touches.length) return;
     e.preventDefault();
     var y = e.touches[0].clientY;
     // A drag needs to feel like it moves the sequence faster than a
@@ -219,8 +251,17 @@
     var modal = document.querySelector(".cookie-modal");
     return !!modal && !modal.hidden;
   }
+  /* Any overlay that has scroll-locked the page (the mobile nav drawer, the
+     thank-you dialog) sets html.modal-open — see lockScroll() in js/main.js.
+     Those locks work by pinning the body with position:fixed, which drops
+     window.scrollY to 0; without this check the poll below would read that
+     as "back at the very top" and re-lock this stage underneath whatever
+     just opened, pinning a fullscreen video over it and stealing Tab. */
+  function modalOwnsPage() {
+    return html.classList.contains("modal-open");
+  }
   window.addEventListener("keydown", function (e) {
-    if (!locked) return;
+    if (!locked || modalOwnsPage()) return;
     if (e.key === "Tab") {
       if (cookieModalOpen()) return;
       var items = lockFocusables();
@@ -270,15 +311,19 @@
 
     if (!durationKnown && videoEl.duration > 0 && !isNaN(videoEl.duration)) {
       durationKnown = true;
-      render();
+      overlayDirty = true;
     }
 
+    if (overlayDirty) { overlayDirty = false; renderOverlay(); }
+    seekFrame();
+
+    if (modalOwnsPage()) return;
     var y = window.scrollY;
     if (!fellBack && !locked && prevScrollY > 0 && y <= 0) setLocked(true);
     prevScrollY = y;
   }
 
   setLocked(true);
-  render();
+  renderOverlay();
   poll();
 })();

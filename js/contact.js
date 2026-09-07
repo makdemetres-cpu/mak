@@ -160,8 +160,15 @@
       "?subject=" + encodeURIComponent(subject) +
       "&body=" + encodeURIComponent(lines.join("\n"));
 
-    showStatus(t("formOkTitle"), fmt(t("formMailtoBody"), { email: OWNER_EMAIL }), true);
+    // Not formOkTitle: nothing has been sent yet in this mode, and saying
+    // otherwise here would contradict the dialog opened on the next line
+    // as well as being untrue.
+    showStatus(t("formDraftTitle"), fmt(t("formMailtoBody"), { email: OWNER_EMAIL }), true);
     setBusy(false);
+    // "draft", not "sent": in this mode nothing has been transmitted yet —
+    // the visitor's own email app has been opened and they still have to
+    // press send in it. The dialog says exactly that.
+    if (window.XP_thanks) window.XP_thanks.open("draft");
   }
 
   /* --------------------------------------------------------------- submit */
@@ -170,6 +177,11 @@
 
     // Honeypot: a real person never fills a field they cannot see.
     // Silently pretend success so a bot gets no signal about what happened.
+    // Deliberately NOT the thank-you dialog: a bot never renders it anyway,
+    // so it costs nothing here, and on the rare false positive (a password
+    // manager or autofill extension filling a hidden field for a real
+    // person) a quiet inline note is a much smaller lie than a full-screen
+    // celebration.
     var hp = form.querySelector(".hp-field");
     if (hp && hp.value) {
       showStatus(t("formOkTitle"), t("formOkBody"), true);
@@ -251,6 +263,11 @@
           showStatus(t("formOkTitle"), t("formOkBody"), true);
           form.reset();
           fields.forEach(function (f) { setError(f, ""); });
+          // Only here, and only on the server's own success flag: the
+          // thank-you dialog is a claim that the enquiry arrived, so it is
+          // never opened on a validation failure or a failed send. Those
+          // stay inline in the form, next to what the visitor can fix.
+          if (window.XP_thanks) window.XP_thanks.open("sent");
         } else {
           showStatus(t("formErrTitle"), fmt(t("formErrBody"), { email: OWNER_EMAIL }), false);
         }

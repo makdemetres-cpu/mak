@@ -676,6 +676,393 @@ html[lang="en"] [data-lang-el] { display: none !important; }
 /* Honeypot — off-screen, never shown, never announced. */
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
+/* ==================== FORM CONTROLS (branded date + select) ==============
+   Styling for the two widgets js/fields.js builds over the native date
+   input and the native <select>. Both of those are drawn by the operating
+   system rather than by this file, which is why they were the only two
+   things in the enquiry form that didn't look like the rest of the page.
+
+   The TRIGGER deliberately looks like nothing new: it copies the .field
+   input rule above line for line — transparent, no box, one hairline
+   underneath — so the form still reads as one row of quiet fields. All the
+   character sits in the POPUP, which is the part the native controls gave
+   away to the OS: a raised cream card on the page's own palette, with the
+   brand red carrying the current selection.
+
+   The native elements are still in the DOM and still hold the values; they
+   are moved to a 1px transparent box rather than display:none so that
+   js/contact.js's validateField() can still call .focus() on one, which
+   js/fields.js catches and forwards to the visible trigger. tabindex="-1"
+   keeps them out of the tab order regardless.
+   ======================================================================== */
+.xfield { position: relative; }
+.xfield__native {
+  position: absolute; left: 0; top: 0;
+  width: 1px; height: 1px; min-height: 0;
+  margin: 0; padding: 0; border: 0;
+  opacity: 0; pointer-events: none;
+}
+
+.xfield__trigger {
+  display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  width: 100%;
+  background: transparent;
+  border: 0; border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 11px 0;
+  /* Comfortably over the WCAG 2.2 SC 2.5.8 24px floor; matched to the
+     native field height so the two sit level in a .field-row. */
+  min-height: 48px;
+  font-family: var(--font-body);
+  /* 16px minimum for the same reason as the inputs above — iOS Safari zooms
+     the viewport when a control smaller than that takes focus. */
+  font-size: max(16px, var(--t-base));
+  font-weight: 300;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .25s var(--ease);
+  -webkit-appearance: none; appearance: none;
+}
+.xfield__trigger:hover { border-bottom-color: var(--ink-soft); }
+.xfield__trigger:focus { outline: none; border-bottom-color: var(--ink); }
+.xfield--open .xfield__trigger { border-bottom-color: var(--ink); }
+.xfield__trigger:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.field.has-error .xfield__trigger { border-bottom-color: #B3261E; }
+.xfield__value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Nothing chosen yet: the label reads as a prompt, not as a value. */
+.xfield--empty .xfield__value { color: var(--ink-soft); }
+
+/* ---- the shared popup card ---- */
+.xfield__pop {
+  /* Above the sticky header (96) — a popup that flips upwards on a short
+     screen would otherwise slide underneath it — but below the cookie
+     banner (110), which the visitor has not answered yet. */
+  position: absolute; z-index: 100;
+  top: calc(100% + 10px); left: 0;
+  min-width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  padding: 8px;
+  animation: xpop-down .22s var(--ease-out) both;
+}
+.xfield__pop[hidden] { display: none; }
+/* Both flips are set by js/fields.js from the trigger's measured position,
+   so a field low on the screen or hard against the right edge opens back
+   into the viewport instead of off it. */
+.xfield--flip .xfield__pop { top: auto; bottom: calc(100% + 10px); animation-name: xpop-up; }
+.xfield--right .xfield__pop { left: auto; right: 0; }
+@keyframes xpop-down {
+  from { opacity: 0; transform: translateY(-6px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes xpop-up {
+  from { opacity: 0; transform: translateY(6px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xfield__pop { animation: none; }
+}
+
+/* ---- dropdown ---- */
+.xsel__caret {
+  flex: none; width: 8px; height: 8px; margin-right: 3px;
+  border-right: 1.5px solid var(--ink-soft);
+  border-bottom: 1.5px solid var(--ink-soft);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .3s var(--ease), border-color .25s var(--ease);
+}
+.xfield--open .xsel__caret {
+  transform: translateY(2px) rotate(-135deg);
+  border-color: var(--accent-bright);
+}
+.xsel__list { max-height: 264px; overflow-y: auto; }
+.xsel__opt {
+  display: flex; align-items: center; gap: .75rem;
+  padding: 10px 14px; min-height: 44px;
+  border-radius: var(--radius-sm);
+  font-size: var(--t-base); font-weight: 300; color: var(--ink);
+  cursor: pointer;
+}
+/* One highlight for both the pointer and the keyboard: js/fields.js moves
+   .is-active on hover as well as on arrow keys, so a mouse and a keyboard
+   never disagree about which row is "the" row. */
+.xsel__opt.is-active { background: var(--surface); }
+.xsel__opt.is-selected { color: var(--accent-bright); font-weight: 500; }
+.xsel__opt.is-selected::after {
+  content: ""; margin-left: auto; flex: none;
+  width: 6px; height: 11px;
+  border-right: 2px solid var(--accent-bright);
+  border-bottom: 2px solid var(--accent-bright);
+  transform: rotate(45deg) translate(-1px, -2px);
+}
+
+/* ---- calendar ---- */
+.xdate__icon {
+  flex: none; width: 18px; height: 18px;
+  background-color: var(--ink-soft);
+  transition: background-color .25s var(--ease);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2.5'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2.5'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.xfield--open .xdate__icon { background-color: var(--accent-bright); }
+
+.xdate__pop {
+  width: min(324px, calc(100vw - 2 * var(--gutter)));
+  padding: 12px;
+}
+.xdate__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  padding: 2px 2px 12px;
+}
+.xdate__month {
+  font-family: var(--font-display);
+  font-size: var(--t-md); font-weight: 600; letter-spacing: .01em;
+  color: var(--ink);
+  /* Greek month names come out of Intl in the genitive-free nominative and
+     already capitalised; English does too. This only guards a locale that
+     returns them lower-cased. */
+  text-transform: capitalize;
+}
+.xdate__nav {
+  position: relative; flex: none;
+  width: 36px; height: 36px;
+  border: 1px solid var(--rule); border-radius: 50%;
+  background: transparent; cursor: pointer;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+}
+.xdate__nav:hover:not(:disabled) { background: var(--surface); border-color: var(--ink-soft); }
+.xdate__nav:disabled { opacity: .3; cursor: default; }
+.xdate__nav:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.xdate__nav::before {
+  content: ""; position: absolute; inset: 0; margin: auto;
+  width: 7px; height: 7px;
+  border-left: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+}
+.xdate__head .xdate__nav:first-child::before { transform: translateX(1.5px) rotate(45deg); }
+.xdate__head .xdate__nav:last-child::before  { transform: translateX(-1.5px) rotate(-135deg); }
+
+.xdate__week, .xdate__row { display: grid; grid-template-columns: repeat(7, 1fr); }
+.xdate__wd {
+  text-align: center;
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-bottom: 8px;
+}
+.xdate__day {
+  width: 100%; aspect-ratio: 1 / 1; min-height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; background: transparent; border-radius: 50%;
+  font-family: var(--font-body); font-size: var(--t-sm); font-weight: 400;
+  color: var(--ink); cursor: pointer;
+  transition: background .18s var(--ease), color .18s var(--ease);
+}
+.xdate__day:hover:not(:disabled) { background: var(--surface); }
+/* Days spilling in from the neighbouring months stay visible — jumping from
+   the 31st to the 1st reads better with the context than against a blank —
+   but recede so the month on screen is unambiguous. */
+.xdate__day.is-outside { opacity: .38; }
+.xdate__day.is-today { box-shadow: inset 0 0 0 1px var(--rule); }
+.xdate__day.is-selected {
+  background: var(--accent-bright); color: var(--paper); font-weight: 500;
+  box-shadow: none;
+}
+.xdate__day.is-selected.is-outside { opacity: 1; }
+/* Anything before today, or outside an explicit min/max — a wedding that
+   already happened is not an enquiry, and js/contact.js would reject it
+   anyway, so it is never offered in the first place. */
+.xdate__day:disabled { opacity: .22; cursor: default; }
+.xdate__day:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.xdate__foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--rule);
+}
+.xdate__act {
+  border: 0; background: transparent; cursor: pointer;
+  padding: 8px 12px; min-height: 36px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--t-xs); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent-bright);
+}
+.xdate__act:hover { background: var(--surface); }
+.xdate__act:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.xdate__act--quiet { color: var(--ink-soft); }
+
+/* ==================== THANK-YOU DIALOG ==================================
+   Opened by js/thanks.js once an enquiry has actually gone out. Sits above
+   everything else on the page — including the cookie preferences dialog
+   (130), which cannot be open at the same time but would be the wrong thing
+   on top if it somehow were. */
+.thanks {
+  position: fixed; inset: 0; z-index: 140;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--gutter);
+}
+.thanks[hidden] { display: none; }
+.thanks__scrim {
+  position: absolute; inset: 0;
+  background: rgba(36, 20, 23, .58);
+  animation: thanks-fade .28s var(--ease-out) both;
+}
+.thanks__panel {
+  position: relative;
+  width: min(500px, 100%);
+  max-height: calc(100svh - 2 * var(--gutter));
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  padding: clamp(2rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.75rem) clamp(1.75rem, 4vw, 2.5rem);
+  text-align: center;
+  animation: thanks-rise .42s var(--ease-out) both;
+}
+@keyframes thanks-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes thanks-rise {
+  from { opacity: 0; transform: translateY(18px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The tick. Drawn rather than shipped as an icon: two borders on a rotated
+   box, inside a red disc — one element, no request, and it scales with the
+   type instead of pixelating next to it. */
+.thanks__mark {
+  display: block; position: relative;
+  width: 62px; height: 62px; margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  animation: thanks-pop .5s var(--ease-out) .1s both;
+}
+.thanks__mark::after {
+  content: ""; position: absolute;
+  left: 50%; top: 47%;
+  width: 15px; height: 26px;
+  margin: -15px 0 0 -8px;
+  border-right: 3px solid var(--paper);
+  border-bottom: 3px solid var(--paper);
+  transform: rotate(45deg);
+}
+@keyframes thanks-pop {
+  from { opacity: 0; transform: scale(.4); }
+  60%  { transform: scale(1.08); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.thanks__panel h2 {
+  font-size: var(--t-xl);
+  margin: 0;
+  color: var(--ink);
+}
+#thanksLede {
+  margin: .9rem auto 0;
+  max-width: 40ch;
+  font-size: var(--t-base);
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+/* The two readings of "sent" (see the comment on #thanksLede in
+   index.html). Explicit, because the language-pair rules elsewhere in this
+   file set display on spans and would otherwise out-specify [hidden]. */
+.thanks__line { display: inline; }
+.thanks__line[hidden] { display: none; }
+
+.thanks__meta {
+  margin: 1.4rem 0 0;
+  font-size: var(--t-sm);
+  color: var(--ink-soft);
+}
+.thanks__meta a { color: var(--accent-bright); text-underline-offset: 3px; }
+
+.thanks__home { margin-top: 1.9rem; width: 100%; }
+
+.thanks__x {
+  position: absolute; top: 10px; right: 10px;
+  /* WCAG 2.2 SC 2.5.8: 24px is the floor, and this is the control someone
+     reaches for fastest. */
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%;
+  background: transparent; cursor: pointer;
+  transition: background .2s var(--ease);
+}
+.thanks__x:hover { background: var(--surface); }
+.thanks__x:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.thanks__x span {
+  position: relative; display: block; width: 15px; height: 15px;
+}
+.thanks__x span::before, .thanks__x span::after {
+  content: ""; position: absolute; left: 0; top: 50%;
+  width: 100%; height: 1.5px; background: var(--ink-soft);
+}
+.thanks__x span::before { transform: rotate(45deg); }
+.thanks__x span::after  { transform: rotate(-45deg); }
+
+/* Above the panel so the confetti falls in FRONT of the card, not behind
+   it. Never interactive — every click goes through to the panel or the
+   scrim underneath. js/thanks.js leaves it empty under reduced motion. */
+.thanks__confetti {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thanks__scrim, .thanks__panel, .thanks__mark { animation: none; }
+}
+
+/* The calendar is ~430px tall, and on a phone the date field sits low
+   enough in the form that neither side of the trigger leaves room for that:
+   dropped down it runs off the bottom, flipped up it slides under the fixed
+   header. Rather than squeeze it into the gap, below 640px it becomes a
+   centred sheet over a dimmed page — the pattern phones already use for a
+   date picker, and the one that keeps the day targets at a full 44px+.
+
+   js/fields.js decides this, not a media query, because it also has to MOVE
+   the popup to <body> to do it: .form carries the site's reveal animation,
+   whose settled state is a real translate3d(0,0,0) rather than none, and a
+   transformed ancestor becomes the containing block for position:fixed
+   descendants — so a sheet left inside the form centres itself on the form
+   rather than on the screen. Hence .is-sheet as a class on the popup itself:
+   once it is in <body> no selector rooted at .xfield can reach it.
+
+   The dropdown does NOT get this treatment: four options fit under the
+   trigger at any width, and a modal for a four-item list would be heavier
+   than the choice it is asking for. */
+.xdate__pop.is-sheet {
+  /* Above the fixed header (96) and the cookie banner (110), both of which
+     the sheet has to cover to read as modal; still under the cookie
+     preferences dialog (130), which is the one thing on this page that
+     genuinely is one. */
+  position: fixed; z-index: 126;
+  top: 50%; left: 50%; right: auto; bottom: auto;
+  transform: translate(-50%, -50%);
+  width: min(340px, calc(100vw - 32px));
+  min-width: 0;
+  max-height: calc(100svh - 32px);
+  overflow-y: auto;
+  animation-name: xdate-sheet;
+}
+/* A real element rather than a pseudo-element on the popup, so a tap on the
+   dimmed area has the scrim as its event target — which is what lets the
+   shared "clicked outside the popup" handler in js/fields.js see it and
+   close. A ::before would report the popup itself as the target, and the
+   tap would do nothing at all. */
+.xdate__scrim {
+  position: fixed; inset: 0; z-index: 125;
+  background: rgba(36, 20, 23, .45);
+}
+@keyframes xdate-sheet {
+  from { opacity: 0; transform: translate(-50%, -47%) scale(.97); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
 /* ============================ FOOTER ===================================== */
 .site-footer {
   border-top: 1px solid var(--rule);
@@ -1623,6 +2010,47 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
 @media (prefers-reduced-motion: reduce) { .cam-video { touch-action: pan-y; } }
 .cam-flat .cam-video { touch-action: pan-y; }
 
+/* ---- masking the source resolution --------------------------------------
+   The hero file is only 640x360 (both the .webm and the .mp4 -- checked, not
+   assumed). Full-bleed on a 1440x900 desktop that is a 2.5x upscale, and
+   about 5x on a 2x display, which is where the "pixelated" look comes from:
+   at that magnification the flat studio gradient behind the camera shows the
+   encoder's 16px blocks as visible steps.
+
+   Nothing in CSS can put detail back. What these two rules do is stop the
+   eye reading the upscale as a fault:
+
+   - A fine, static grain over the video. Grain is what the eye files under
+     "film", not under "artefact" -- it breaks a flat, 2.5x-wide block into
+     texture, and on a photographer's site it reads as a deliberate finish.
+     It is an feTurbulence data: URI, so no extra request and no image to
+     decode (CSP allows it: img-src 'self' data:).
+   - A small contrast/saturation lift, restoring the punch a low bitrate
+     flattens out of the midtones.
+
+   Neither is a substitute for a higher-resolution master. If one ever turns
+   up, re-export at 1920x1080 with a keyframe every ~6 frames (see the
+   comment in js/hero-video.js about the single keyframe in this file) and
+   both of these can be dialled back or dropped. */
+.cam-video {
+  filter: contrast(1.06) saturate(1.08);
+}
+.cam-stage::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .12;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+/* Grain over a small contained card just looks like a dirty screen, and the
+   flat fallbacks are exactly the case where the video is NOT being upscaled
+   (see .cam-flat / reduced-motion below) -- so there is nothing to mask. */
+@media (prefers-reduced-motion: reduce) { .cam-stage::after { display: none; } }
+.cam-flat .cam-stage::after { display: none; }
+
 /* Darkens the video enough that the light overlay text stays readable
    against its bright studio background at every frame — heaviest at the
    top (under the header) and bottom (under the stage text), lighter through
@@ -1711,9 +2139,14 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
 }
 .cam-line {
   font-size: var(--t-md);
-  /* Same dark-scrim exception as .hero-copy just above — not var(--ink-soft),
-     which is dark on this palette and would be invisible over the video. */
-  color: rgba(255,250,243,.82);
+  /* Heavier than the page's 300 body default. These lines sit on top of a
+     moving video rather than on flat paper, and a 300 weight goes thin and
+     wiry the moment the frame behind it lightens; 500 holds its shape at
+     every frame of the sequence. The opacity lift from .82 to .92 is the
+     same argument — it only raises contrast against the scrim, so the
+     measured figure in the .hero-copy comment above stays a floor. */
+  font-weight: 500;
+  color: rgba(255,250,243,.92);
   line-height: 1.55;
   margin: 0;
 }

@@ -61,6 +61,13 @@
       el.setAttribute("hreflang", lang === "el" ? "en" : "el");
     });
 
+    // Anything built by JavaScript rather than written into the markup as a
+    // [data-lang-el]/[data-lang-en] pair has no CSS rule to swap it, so it
+    // has to be told. js/fields.js (the custom date picker and select) is
+    // the only listener today; keep the event even if that changes, it is
+    // the documented hook for re-labelling generated UI.
+    document.dispatchEvent(new CustomEvent("xp:langchange", { detail: { lang: lang } }));
+
     if (!silent) announce(t("langSwitched"));
   }
 
@@ -95,8 +102,18 @@
   var mobileNav = document.getElementById("navMobile");
   var scrollLockY = 0;
 
+  /* position:fixed rather than overflow:hidden because iOS Safari ignores
+     overflow:hidden on <body>. The side effect is that window.scrollY drops
+     to 0 for as long as the lock is on, which the hero's scroll-jack would
+     otherwise read as "the visitor has scrolled back to the very top" and
+     re-lock itself underneath the thing that just opened — stealing Tab and
+     pinning its own fullscreen stage over the page. html.modal-open is the
+     flag that says an overlay owns the page right now; js/hero-video.js
+     stands down while it is set. Every scroll lock on this site must set
+     it (see js/thanks.js for the other one). */
   function lockScroll() {
     scrollLockY = window.scrollY;
+    document.documentElement.classList.add("modal-open");
     document.body.style.position = "fixed";
     document.body.style.top = -scrollLockY + "px";
     document.body.style.width = "100%";
@@ -106,6 +123,7 @@
     document.body.style.top = "";
     document.body.style.width = "";
     window.scrollTo(0, scrollLockY);
+    document.documentElement.classList.remove("modal-open");
   }
 
   function setMenu(open) {

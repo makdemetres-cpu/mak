@@ -213,6 +213,21 @@ host from the moment the site goes live.
 The catch: some visitors have no mail client configured and will just abandon
 the enquiry. Fine as a launch default, worth upgrading later.
 
+In this mode the thank-you dialog (below) deliberately says the message is
+*ready to send*, not sent — because that is all that has happened. Switching to
+`"php"` is what makes the "it's on its way" wording true.
+
+### The thank-you dialog
+
+On a successful send, `js/thanks.js` opens `#thanksDialog`: a modal thank-you
+with a confetti burst (canvas, no library) and a button that closes it and
+returns the visitor to the top of the page. It is opened **only** on the success
+path — a validation error or a failed send stays inline in the form, next to
+what the visitor can actually fix.
+
+Its copy lives in `index.html` as `data-lang-el` / `data-lang-en` pairs like the
+rest of the page. The confetti never runs under `prefers-reduced-motion`.
+
 ### `"php"` — recommended once he is on a Greek host
 
 Posts to `contact.php` on this same domain, which emails him directly. **Still
@@ -393,10 +408,15 @@ js/boot.js            Runs before first paint: marks JS available, restores lang
 js/strings.js         Strings JavaScript generates itself (ARIA labels, validation)
 js/main.js            Navigation, language, scroll reveals, filtering, lightbox, back-to-top
 js/consent.js         Cookie consent banner and preferences dialog
+js/fields.js          Branded date picker and dropdown over the native form controls
 js/contact.js         Form validation and submission
+js/thanks.js          Thank-you dialog and its confetti, opened only on a real send
+js/tilt.js            Pointer-tracked card tilt (writes custom properties only)
+js/hero-video.js      The scroll-locked, scroll-scrubbed hero camera sequence
 
-assets/fonts/         GFS Didot + Commissioner, split by character subset (~114 KB)
+assets/fonts/         Advent Pro + Manrope, split by character subset
 assets/img/           Placeholder photographs — replace all of these
+assets/video/         The hero camera sequence (webm + mp4 + poster frame)
 ```
 
 ### Bilingual text
