@@ -402,6 +402,12 @@ html[lang="en"] [data-lang-el] { display: none !important; }
   font-size: var(--t-xs); letter-spacing: .18em; text-transform: uppercase;
   color: rgba(255,250,243,.82);
 }
+/* Left-aligned to match the now-left-aligned .hero-copy column — this has
+   to come after the base rule above (same specificity) to win. Reverts to
+   centred in the fallbacks below, where .hero-copy itself is centred too. */
+.hero-meta { justify-content: flex-start; }
+@media (prefers-reduced-motion: reduce) { .hero-meta { justify-content: center; } }
+.cam-flat .hero-meta { justify-content: center; }
 .hero-meta .dot { width: 3px; height: 3px; background: currentColor; border-radius: 50%; }
 
 /* ============================ SECTIONS =================================== */
@@ -2066,6 +2072,66 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
     rgba(8, 8, 10, .16);
 }
 
+/* ---- transparent floating header, home page only -------------------------
+   Removes the header's solid panel while the hero video is behind it,
+   leaving the wordmark/nav/lang-toggle/burger floating directly over the
+   footage — the header's own darkest scrim band (.hero-scrim's 0% stop,
+   .68 alpha, above) sits right underneath it, so light text stays legible
+   without needing a panel at all.
+
+   Scoped four ways: [data-cam-wrap] (the hero section's own marker) keeps
+   every other page — which has no video behind its header — on the normal
+   solid/dark-text header; :not(.is-scrolled) keeps it transparent only
+   until the visitor has genuinely scrolled past the hero, at which point
+   the header sits over the page's own cream ground and needs its usual
+   solid background back (js/main.js toggles .is-scrolled off an
+   IntersectionObserver on #topSentinel, which — thanks to the scroll-lock
+   — only fires once the hero sequence is actually behind the visitor, not
+   partway through the scrub); :not(:has(+ .nav-mobile.is-open)) drops back
+   to solid whenever the mobile drawer is open, since that drawer is an
+   opaque cream panel sitting directly behind the header (z-index 95 vs the
+   header's 96) — light-over-video text would be unreadable against it; and
+   html:not(.cam-flat), plus the reduced-motion media query wrapping this
+   whole block, excludes every case where the fullscreen video isn't what's
+   actually behind the header — reduced motion and .cam-flat (JS-applied
+   when the video fails to load/decode) both collapse the hero to a small
+   in-flow card below the header instead, leaving the header over the
+   page's own plain cream ground, where light text would be invisible.
+
+   Browsers without :has() support simply never match this rule and keep
+   the normal solid header — a safe fallback, not an unstyled guess. */
+@media (prefers-reduced-motion: no-preference) {
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .wordmark {
+  color: #FFFAF3;
+}
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .wordmark .wm-sub,
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .nav-desktop a {
+  color: rgba(255, 250, 243, .82);
+}
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .nav-desktop a:hover,
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .nav-desktop a.is-active {
+  color: #FFFAF3;
+}
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .lang-toggle {
+  border-color: rgba(255, 250, 243, .45);
+}
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .lang-toggle button[aria-pressed="false"] {
+  color: rgba(255, 250, 243, .82);
+}
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .lang-toggle button:hover[aria-pressed="false"] {
+  color: #FFFAF3;
+}
+html:not(.cam-flat) body:has([data-cam-wrap]) .site-header:not(.is-scrolled):not(:has(+ .nav-mobile.is-open)) .burger span {
+  background: #FFFAF3;
+}
+}
+
 /* The fullscreen, text-over-video treatment above only works because the
    JS-driven experience only ever shows ONE short stage line at a time,
    crossfaded, over a scrim tuned for exactly that. This fallback instead
@@ -2102,15 +2168,27 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
 .cam-flat .cam-stage { position: relative; inset: auto; order: 2; width: min(78vw, 480px); aspect-ratio: 16 / 9; margin-block: 1.5rem; }
 
 .hero-copy {
-  /* Overrides the general .hero-copy rule's width:100% — with position now
-     absolute, a full-width box would fight the left:50% + translateX(-50%)
-     centering trick (shifting itself half its own width, i.e. half the
-     screen, off to the left). min(92%, ...) keeps it constrained and
-     centred instead. */
-  position: absolute; left: 50%; top: 42%;
-  width: min(92%, var(--max-w));
-  transform: translate(-50%, -50%);
+  /* Left-aligned, sitting above .cam-stagetext in the same left-hand
+     column, rather than centred over the camera — overrides the general
+     .hero-copy rule's centred text-align/align-items/width:100% (same
+     specificity, so being later here is what makes it win). A capped
+     ch-width keeps it a normal reading measure instead of stretching
+     edge-to-edge now that it's not centred.
+
+     Anchored a fixed distance below the header rather than vertically
+     centred on a percentage: a percentage anchor plus translateY(-50%)
+     means a taller box (e.g. the title wrapping to two lines at a
+     narrower width) grows upward from that centre point too, pushing its
+     top edge under the fixed header. Anchoring the top edge itself and
+     growing downward instead means the box can never collide with the
+     header, whatever its height. */
+  position: absolute; left: var(--gutter);
+  top: calc(var(--header-h) + clamp(1.5rem, 6vh, 3.5rem));
+  width: min(88%, 44ch);
+  transform: none;
   z-index: 3;
+  text-align: left;
+  align-items: flex-start;
   opacity: var(--copy-op, 1);
 }
 /* Both fallbacks below drop the video to a small contained card sitting on
@@ -2120,12 +2198,12 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
    normal dark-on-cream tokens here, or the text would be near-invisible
    (light text on light cream). */
 @media (prefers-reduced-motion: reduce) {
-  .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
+  .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; text-align: center; align-items: center; }
   .hero-copy .eyebrow { color: var(--accent-bright); }
   .hero-copy h1 { color: var(--ink); }
   .hero-sub, .hero-meta { color: var(--ink-soft); }
 }
-.cam-flat .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
+.cam-flat .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; text-align: center; align-items: center; }
 .cam-flat .hero-copy .eyebrow { color: var(--accent-bright); }
 .cam-flat .hero-copy h1 { color: var(--ink); }
 .cam-flat .hero-sub, .cam-flat .hero-meta { color: var(--ink-soft); }
