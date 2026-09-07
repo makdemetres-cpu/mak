@@ -402,6 +402,12 @@ html[lang="en"] [data-lang-el] { display: none !important; }
   font-size: var(--t-xs); letter-spacing: .18em; text-transform: uppercase;
   color: rgba(255,250,243,.82);
 }
+/* Left-aligned to match the now-left-aligned .hero-copy column — this has
+   to come after the base rule above (same specificity) to win. Reverts to
+   centred in the fallbacks below, where .hero-copy itself is centred too. */
+.hero-meta { justify-content: flex-start; }
+@media (prefers-reduced-motion: reduce) { .hero-meta { justify-content: center; } }
+.cam-flat .hero-meta { justify-content: center; }
 .hero-meta .dot { width: 3px; height: 3px; background: currentColor; border-radius: 50%; }
 
 /* ============================ SECTIONS =================================== */
@@ -1674,15 +1680,18 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
 .cam-flat .cam-stage { position: relative; inset: auto; order: 2; width: min(78vw, 480px); aspect-ratio: 16 / 9; margin-block: 1.5rem; }
 
 .hero-copy {
-  /* Overrides the general .hero-copy rule's width:100% — with position now
-     absolute, a full-width box would fight the left:50% + translateX(-50%)
-     centering trick (shifting itself half its own width, i.e. half the
-     screen, off to the left). min(92%, ...) keeps it constrained and
-     centred instead. */
-  position: absolute; left: 50%; top: 42%;
-  width: min(92%, var(--max-w));
-  transform: translate(-50%, -50%);
+  /* Left-aligned, sitting above .cam-stagetext in the same left-hand
+     column, rather than centred over the camera — overrides the general
+     .hero-copy rule's centred text-align/align-items/width:100% (same
+     specificity, so being later here is what makes it win). A capped
+     ch-width keeps it a normal reading measure instead of stretching
+     edge-to-edge now that it's not centred. */
+  position: absolute; left: var(--gutter); top: 30%;
+  width: min(88%, 44ch);
+  transform: translateY(-50%);
   z-index: 3;
+  text-align: left;
+  align-items: flex-start;
   opacity: var(--copy-op, 1);
 }
 /* Both fallbacks below drop the video to a small contained card sitting on
@@ -1692,12 +1701,12 @@ html.scroll-locked body { overflow: hidden; height: 100%; overscroll-behavior: n
    normal dark-on-cream tokens here, or the text would be near-invisible
    (light text on light cream). */
 @media (prefers-reduced-motion: reduce) {
-  .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
+  .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; text-align: center; align-items: center; }
   .hero-copy .eyebrow { color: var(--accent-bright); }
   .hero-copy h1 { color: var(--ink); }
   .hero-sub, .hero-meta { color: var(--ink-soft); }
 }
-.cam-flat .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; }
+.cam-flat .hero-copy { position: static; order: 1; top: auto; left: auto; width: 100%; transform: none; opacity: 1; text-align: center; align-items: center; }
 .cam-flat .hero-copy .eyebrow { color: var(--accent-bright); }
 .cam-flat .hero-copy h1 { color: var(--ink); }
 .cam-flat .hero-sub, .cam-flat .hero-meta { color: var(--ink-soft); }
