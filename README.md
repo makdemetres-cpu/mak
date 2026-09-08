@@ -1,97 +1,149 @@
-# HydroCore — Website
+# Sitrixweb — studio website
 
-A premium, animated, bilingual (Greek/English) marketing site for **HydroCore**, a fictional Thessaloniki-founded plumbing company, built as a static site (plain HTML/CSS/JS — no build step, no framework, no dependencies to install).
+A dark, motion-driven single-page site for **Sitrixweb**, a one-person web development
+studio in Greece (est. 1 June 2026): portfolio, reviews with an on-site submission form,
+a consultation booking flow, and the legal pages an EU/Greek business needs.
 
-> **This is a demo/portfolio build.** HydroCore, its staff, testimonials, and legal identifiers (Tax ID, Company Registry number, addresses, phone numbers) are all fictional. Replace every placeholder marked below with real information before using this in production.
-
-## What's included
-
-- **Homepage** (`index.html`) — hero, company story/timeline, animated stats, services, locations network, testimonials, CTA.
-- **Booking system** (`booking.html`) — a real, working 4-step booking form (service → schedule → contact details → confirm) with client-side validation, spam honeypot, and a GDPR consent checkbox.
-- **Privacy & Cookie Policy** (`privacy.html`) — GDPR (EU 2016/679) + Greek Law 4624/2019 + Law 3471/2006 (e-privacy/cookies) compliant.
-- **Terms of Service** (`terms.html`) — booking terms, pricing, cancellation, warranty, governing law (aligned with Greek consumer law, Law 2251/1994).
-- **Cookie consent banner + preference center** (`js/consent.js`) — granular opt-in (Necessary / Preferences / Analytics / Marketing), nothing non-essential loads before consent.
-- **Greek/English language toggle** — persisted per visitor, defaults to Greek.
-- Self-hosted **Vollkorn** (headings) + **Inter** (body) — nothing is ever requested from Google's CDN, so no visitor IP is shared with a third party just to render text.
-- A split hero (text left, real team/fleet photo right with a slow Ken Burns zoom — see "Hero photography" below), single-curve section divider, borderless circular icon badges, and a floating dark stats banner, following the visual language of a reference design the client supplied.
-
-## Running it locally
-
-No build step. From the project root:
+Plain HTML, CSS and JavaScript. **No build step, no framework, no dependencies, no CDN** —
+every byte the browser loads is served from this repository, which is also what keeps it
+GDPR-clean (see [Privacy by construction](#privacy-by-construction)).
 
 ```bash
-python3 -m http.server 8080
-# then open http://localhost:8080
+python3 -m http.server 8080     # then open http://localhost:8080
 ```
 
-Any static file server works (`npx serve`, VS Code's Live Server, etc.) — just don't open `index.html` directly via `file://`, since the booking form's `fetch`-free JS still expects normal relative paths.
+Any static host works: GitHub Pages, Netlify, Cloudflare Pages, a plain nginx box.
 
-## Making the booking form send real emails
+---
 
-Out of the box, the booking form works with **zero configuration**: on submit it opens the visitor's email client with a pre-filled message addressed to `appointments@hydrocore.gr`, so nothing is broken if you deploy as-is.
+## Before you go live
 
-To have it send automatically (no email client popup) instead:
+Work down this list — everything in it is either legally required or visibly wrong until
+you change it.
 
-1. Create a free account at **[emailjs.com](https://www.emailjs.com)**.
-2. Add an Email Service (e.g. connect a Gmail/Outlook inbox) and note the **Service ID**.
-3. Create an Email Template with variables matching the payload sent by `js/booking.js` (`reference`, `service`, `branch`, `urgency`, `date`, `time`, `full_name`, `phone`, `email`, `address`, `notes`, `to_email`) and note the **Template ID**.
-4. Grab your **Public Key** from Account → API Keys.
-5. Open `js/booking.js` and fill in:
-   ```js
-   const EMAILJS_CONFIG = {
-     publicKey: "YOUR_PUBLIC_KEY",
-     serviceId: "YOUR_SERVICE_ID",
-     templateId: "YOUR_TEMPLATE_ID"
-   };
-   ```
-6. Redeploy. The mailto: fallback stays in place automatically if the EmailJS request ever fails.
+### 1. `js/config.js` — the single edit point
 
-**Data protection note:** if you use EmailJS (or any similar third-party mailer), disclose it as a data processor and check whether it transfers data outside the EEA — `privacy.html` §5 already covers this, but confirm it matches whichever provider you actually pick.
+| Field | What to set |
+|---|---|
+| `instagram` | Your real profile URL. Every Instagram button on the site reads this one value. |
+| `email` | The address you actually read. Drives the footer, the menu and the form fallbacks. |
+| `phone` | Shown in the legal notice. |
+| `formEndpoint` | Where the booking and review forms POST (see below). Leave `""` and they fall back to a pre-filled email. |
+| `booking.workdays` / `slots` / `leadDays` / `horizonDays` | Your real availability. |
 
-## Deploying
+### 2. Replace the placeholder content
 
-This is a plain static site, so it runs anywhere:
+* **Portfolio rows** in `index.html` (marked `PLACEHOLDER PROJECTS`) — four invented
+  projects are in there so the section reads correctly. Swap them for real work and point
+  `href` at real case studies. Replace each row's `data-art` gradient with a screenshot:
+  `data-art="url(assets/img/your-shot.jpg) center/cover"`.
+* **Reviews** in `index.html` (marked `SAMPLE REVIEWS`) — these are illustrative, **not
+  real client feedback**. Delete them and publish only reviews you have actually received
+  and have permission to publish. Publishing invented or incentivised testimonials is an
+  unfair commercial practice under Directive 2005/29/EC and Greek Law 2251/1994, and it is
+  the fastest way to a complaint.
+* **Copy** throughout — the About and Process sections describe how *I* assumed you work.
+  Make them true.
 
-- **Netlify / Vercel** — drag-and-drop the folder or connect the repo; zero config needed. This also unlocks serverless functions later if you outgrow EmailJS (e.g. to store bookings in a real database and avoid double-booked slots).
-- **GitHub Pages / any static host** — works identically; the booking form still functions since email delivery happens client-side.
+### 3. Fill in every `[ ... ]` in the legal pages
 
-## Hero photography
+`imprint.html`, `privacy.html`, `terms.html` and `cookies.html` are written for a Greek
+sole trader working EU-wide, but they contain placeholders that are legally required to be
+accurate:
 
-The hero's right-hand panel (`.hero__visual-frame` in `index.html`) shows a real team/fleet photo (`assets/img/hero-team.jpg`), filling the rounded frame via `object-fit:cover` with a slow continuous "Ken Burns" zoom (`@keyframes hero-kenburns` in `css/style.css`) plus a one-time fade/slide-in on scroll (the existing `[data-reveal]` system). It's shown on both desktop and mobile — see `.hero__visual` in the `@media (max-width:760px)` block if you need to resize it further. The zoom animation is automatically disabled for visitors with `prefers-reduced-motion: reduce`, same as every other animation on the site.
+* registered business name, legal form and address;
+* **ΑΦΜ / VAT number**, ΔΟΥ (tax office), **ΓΕΜΗ** registration number, ΚΑΔ activity code;
+* the names and countries of your **hosting provider**, email provider and (if used) video-call
+  provider — required both for the imprint and for the processor list in the privacy policy;
+* your phone number.
 
-To swap in a different photo, just replace `assets/img/hero-team.jpg` (object-fit:cover means any aspect ratio works — a wide/landscape shot crops best into the portrait frame) and update the `alt` text on the `<img class="hero__visual-photo">` tag in `index.html`.
+Also update the `ΑΦΜ / VAT` line in the footer of every page, and the `canonical`/`og:` URLs
+in `index.html` once the domain is live.
 
-## Before going live — replace these placeholders
+> These documents are a solid, honest starting point written against the GDPR, Greek Law
+> 4624/2019, Law 3471/2006, Law 2251/1994 and P.D. 131/2003 — **they are not legal advice.**
+> Have a Greek lawyer read them once before launch. If most of your clients are Greek
+> consumers, publish a Greek translation too: consumer information has to be in a language
+> your customer understands.
 
-| What | Where | Current placeholder |
-|---|---|---|
-| Legal company name, Tax ID (ΑΦΜ), Company Registry No. (Γ.Ε.ΜΗ.) | `index.html`, `privacy.html`, `terms.html` footers | `099887766` / `123456701000` |
-| Phone numbers & email addresses | site-wide | `+30 2310 555 100`, `800 700 8000`, `info@hydrocore.gr`, `appointments@hydrocore.gr`, `privacy@hydrocore.gr` |
-| Branch addresses | `js/data.js` | 7 fictional addresses |
-| DPO contact | `privacy.html` §1 | `privacy@hydrocore.gr` |
-| EmailJS credentials | `js/booking.js` | blank (mailto fallback active) |
-| Google Analytics ID (optional) | `js/consent.js` (`GA_MEASUREMENT_ID`) | blank (analytics stays off until you set this) |
-| Hero team/fleet photo | `assets/img/hero-team.jpg` | using a real client-supplied photo — replace with your own if this deploy is reused for a different business |
-| Favicon / social share image | inline SVG favicon in each page `<head>` | — |
+### 4. Make the forms actually deliver
 
-## Structure
+With `formEndpoint: ""` the forms validate, confirm, and then offer the visitor a
+pre-filled email — nothing is lost, but nothing is automatic either. To receive submissions
+directly, set `formEndpoint` to an endpoint that accepts a JSON `POST`:
+
+* a form service (Formspree, Basin, Formcarry…), or
+* your own handler — a Cloudflare Worker, a Netlify function, a small PHP script.
+
+Both forms send flat JSON (`type`, the fields, and a `consent` timestamp). If you choose a
+non-EU form service, add it to the processor list in `privacy.html` §6 and check the
+transfer basis in §7 — that is exactly what those sections are for.
+
+Bookings are **not** written to a calendar automatically; you confirm them by email. If you
+later add a real scheduling backend, keep the same three-step UI and just swap what
+`booking.js` does on submit.
+
+---
+
+## What's in here
 
 ```
-index.html          Homepage
-booking.html         4-step booking flow
-privacy.html          Privacy & Cookie Policy (EL/EN)
-terms.html            Terms of Service (EL/EN)
-css/fonts.css         Self-hosted @font-face declarations
-css/style.css         Full design system + components + responsive rules
-js/data.js            Single source of truth for branches & services
-js/strings.js         EL/EN toggle engine + small dynamic-string dictionary
-js/main.js            Nav, scroll reveal, counters, testimonials, locations, services grid
-js/consent.js         GDPR cookie consent banner + preference center
-js/booking.js         Booking form logic, validation, EmailJS + mailto fallback
-assets/fonts/         Vollkorn, Inter & Miama (Latin + Greek subsets), self-hosted
-assets/img/logo-mark.svg
+index.html          the single-page site: hero · about · services · works · process · reviews · booking
+privacy.html        GDPR privacy policy
+cookies.html        cookie / local-storage policy
+terms.html          terms of service (Greek + EU consumer law)
+imprint.html        legal notice — business identification (P.D. 131/2003)
+404.html            branded not-found page
+css/fonts.css       self-hosted Inter (latin + greek subsets)
+css/style.css       the whole design system, in labelled sections
+js/config.js        deployment settings — the only file most changes need
+js/site.js          nav, menu, scroll reveals, hover-peek, shared form helpers
+js/globe.js         the hero globe (canvas, ~6KB, no library)
+js/booking.js       calendar, time slots, stepped mobile flow, validation
+js/reviews.js       star input, review submission, the writer's own copy
+js/consent.js       cookie banner + preference centre
+assets/fonts/       Inter woff2 subsets
 ```
 
-## How the Greek/English toggle works
+## Design system
 
-Nearly every piece of copy on the site exists twice in the HTML, wrapped in `<span data-lang-el>…</span>` / `<span data-lang-en>…</span>` pairs. A CSS rule (`html[data-lang="en"] [data-lang-el]{display:none}` and its mirror) shows only the active language — so the toggle in `js/strings.js` just flips one attribute on `<html>` and everything updates instantly, no page reload, no flash of untranslated content. Dynamic, JS-generated strings (toasts, validation messages) come from the small dictionary in `js/strings.js`.
+* **Palette** — `#1d1b20` base, `#3d3a3f` surfaces, `#565459` borders, `#7b7a83` body copy,
+  `#efe7f9` highlights, `#c8956c` copper for every action and accent, pure white reserved
+  for headlines.
+* **Type** — Inter at 300 / 400 / 600–700 only. Hero 72–84px, section heads 40–56px, body
+  15–17px. Oversized copper punctuation is the recurring signature.
+* **Motion** — 350–600ms, `cubic-bezier(.4,0,.2,1)`, no bounce anywhere. Three layers on
+  every scene: primary (content enters), secondary (shadows and icons settle ~50ms later),
+  ambient (aurora drift, orbit rings, grain). Mobile shortens durations ~20% and tightens
+  stagger ~30%.
+* **Mobile is a redesign, not a squeeze** — the hero stacks headline above a 180px globe
+  you can drag to rotate, portfolio rows swap the cursor-follow thumbnail for tap-to-expand,
+  and the booking panel becomes a stepped date → time → details flow.
+* **`prefers-reduced-motion`** is honoured properly: ambient loops stop, the globe renders a
+  single still frame, entrances become opacity-only.
+
+## Privacy by construction
+
+* Fonts are **self-hosted** — reading a page never discloses a visitor's IP to a font CDN.
+* No analytics, no pixels, no embeds, no third-party requests of any kind out of the box.
+  The Instagram button is an ordinary link.
+* The consent banner offers **Accept / Reject / Customise with equal visual weight**;
+  non-essential categories start unticked and are as easy to withdraw as to give.
+* Nothing non-essential is loaded before a choice — wire any future analytics inside
+  `loadAnalytics()` in `js/consent.js`, never into the page HTML.
+* Both forms require an explicit, unticked-by-default consent box and record a timestamp.
+* Only two local-storage keys are ever written, both documented in `cookies.html`.
+
+## Accessibility
+
+Keyboard-operable throughout, visible focus rings, skip link, labelled form fields with
+inline errors, `aria-live` on the parts that update, and semantic landmarks. Target is
+**WCAG 2.2 AA**. If you change the palette, re-check contrast — the dark ground is less
+forgiving than it looks.
+
+## Browser support
+
+Current Chrome, Firefox, Safari and Edge, desktop and mobile. Uses `IntersectionObserver`,
+CSS custom properties, `clamp()` and canvas 2D — all long-standing baseline features. With
+JavaScript disabled the whole page still reads: only the globe, the reveals and the two
+forms need it.

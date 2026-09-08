@@ -1,168 +1,233 @@
 <!doctype html>
-<html lang="el" data-lang="el"
-      data-title-el="Όροι Χρήσης &amp; Παροχής Υπηρεσιών — HydroCore"
-      data-title-en="Terms of Service — HydroCore"
-      data-desc-el="Όροι Χρήσης του ιστότοπου και όροι παροχής υδραυλικών υπηρεσιών της HydroCore."
-      data-desc-en="Terms of Service for the website and for HydroCore's plumbing services.">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="js/session-gate.js"></script>
-<title>Όροι Χρήσης &amp; Παροχής Υπηρεσιών — HydroCore</title>
-<meta name="description" content="Όροι Χρήσης του ιστότοπου και όροι παροχής υδραυλικών υπηρεσιών της HydroCore.">
-<meta name="theme-color" content="#00308F">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300308F'/%3E%3Cpath d='M50 20 C63 39 74 53 74 64 A24 24 0 1 1 26 64 C26 53 37 39 50 20 Z' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='62' r='9' fill='%2300308F'/%3E%3C/svg%3E">
+<title>Terms of Service — Sitrixweb</title>
+<meta name="description" content="The terms for using the Sitrixweb website and for working together on a project, under Greek and EU law.">
+<meta name="theme-color" content="#1d1b20">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%231d1b20'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23c8956c' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23565459' stroke-width='2' stroke-dasharray='5 7'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="is-ready">
 
-<a href="#main" class="skip-link">Μετάβαση στο περιεχόμενο / Skip to content</a>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<header class="nav" id="siteNav">
-  <div class="nav__inner">
-    <a href="index.html" class="nav__logo">
-      <svg class="nav__logo-mark" viewBox="0 0 100 100" width="34" height="34">
-        <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
-        <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
-        <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+<div class="aurora is-lit" aria-hidden="true">
+  <div class="aurora__blob aurora__blob--purple"></div>
+  <div class="aurora__blob aurora__blob--green"></div>
+  <div class="aurora__blob aurora__blob--pink"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="logo" href="index.html" aria-label="Sitrixweb — home">
+    <svg class="logo__mark" width="26" height="26" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <circle cx="50" cy="50" r="20" stroke="#c8956c" stroke-width="6"/>
+      <circle class="ring" cx="50" cy="50" r="38" stroke="#565459" stroke-width="4" stroke-dasharray="7 11"/>
+    </svg>
+    <span>sitrix<b>web</b><span class="dot">.</span></span>
+  </a>
+  <div class="nav__right">
+    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" aria-label="Sitrixweb on Instagram">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
       </svg>
-      <span class="nav__logo-word">Hydro<b>Core</b></span>
     </a>
-    <nav class="nav__links" id="navLinks">
-      <a href="index.html" data-nav><span data-lang-el>Αρχική</span><span data-lang-en>Home</span></a>
-      <a href="index.html#about" data-nav><span data-lang-el>Σχετικά</span><span data-lang-en>About</span></a>
-      <a href="index.html#services" data-nav><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a>
-      <a href="index.html#locations" data-nav><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a>
-      <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="el" aria-pressed="true">EL</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      </div>
-      <a href="booking.html" class="btn btn-primary btn-sm">
-        <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span>
-      </a>
-    </nav>
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <span class="burger__lines" aria-hidden="true"><span></span><span></span></span>
+    </button>
   </div>
 </header>
-<div class="nav__scrim" id="navScrim"></div>
 
-<main id="main">
-<section class="page-hero">
-  <div class="page-hero__inner">
-    <div class="breadcrumbs">
-      <a href="index.html"><span data-lang-el>Αρχική</span><span data-lang-en>Home</span></a><span>/</span>
-      <span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Service</span>
-    </div>
-    <h1><span data-lang-el>Όροι Χρήσης &amp; Παροχής Υπηρεσιών</span><span data-lang-en>Terms of Service</span></h1>
-    <p><span data-lang-el>Οι όροι που διέπουν τη χρήση του ιστότοπου και την παροχή των υδραυλικών μας υπηρεσιών.</span><span data-lang-en>The terms governing use of this website and the delivery of our plumbing services.</span></p>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container legal">
-    <p class="legal-updated">
-      <span data-lang-el>Τελευταία ενημέρωση: 30 Ιουλίου 2026</span>
-      <span data-lang-en>Last updated: 30 July 2026</span>
-    </p>
-
-    <div class="legal-toc">
-      <h4><span data-lang-el>Περιεχόμενα</span><span data-lang-en>Contents</span></h4>
-      <ol>
-        <li><a href="#t1"><span data-lang-el>Αποδοχή Όρων</span><span data-lang-en>Acceptance of Terms</span></a></li>
-        <li><a href="#t2"><span data-lang-el>Διαδικασία Ραντεβού</span><span data-lang-en>Booking Process</span></a></li>
-        <li><a href="#t3"><span data-lang-el>Τιμολόγηση</span><span data-lang-en>Pricing</span></a></li>
-        <li><a href="#t4"><span data-lang-el>Ακύρωση &amp; Αλλαγή</span><span data-lang-en>Cancellation &amp; Rescheduling</span></a></li>
-        <li><a href="#t5"><span data-lang-el>Εγγύηση &amp; Ευθύνη</span><span data-lang-en>Warranty &amp; Liability</span></a></li>
-        <li><a href="#t6"><span data-lang-el>Υποχρεώσεις Πελάτη</span><span data-lang-en>Customer Obligations</span></a></li>
-        <li><a href="#t7"><span data-lang-el>Πνευματική Ιδιοκτησία</span><span data-lang-en>Intellectual Property</span></a></li>
-        <li><a href="#t8"><span data-lang-el>Εφαρμοστέο Δίκαιο &amp; Επίλυση Διαφορών</span><span data-lang-en>Governing Law &amp; Disputes</span></a></li>
-        <li><a href="#t9"><span data-lang-el>Τροποποιήσεις</span><span data-lang-en>Modifications</span></a></li>
-        <li><a href="#t10"><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></a></li>
-      </ol>
-    </div>
-
-    <h2 id="t1">1. <span data-lang-el>Αποδοχή Όρων</span><span data-lang-en>Acceptance of Terms</span></h2>
-    <p>
-      <span data-lang-el>Με την πλοήγηση στον ιστότοπο hydrocore.gr ή την υποβολή αιτήματος ραντεβού, αποδέχεστε τους παρόντες Όρους Χρήσης. Αν δεν συμφωνείτε, παρακαλούμε μη χρησιμοποιήσετε τον ιστότοπο. Οι παρόντες όροι δεν θίγουν τα δικαιώματά σας ως καταναλωτή βάσει του Ν. 2251/1994 περί προστασίας καταναλωτών.</span>
-      <span data-lang-en>By browsing hydrocore.gr or submitting a booking request, you accept these Terms of Service. If you disagree, please do not use the website. These terms do not affect your statutory consumer rights under Greek Law 2251/1994 on consumer protection.</span>
-    </p>
-
-    <h2 id="t2">2. <span data-lang-el>Διαδικασία Ραντεβού</span><span data-lang-en>Booking Process</span></h2>
-    <p>
-      <span data-lang-el>Η φόρμα ραντεβού συνιστά <strong>αίτημα κράτησης</strong>, όχι δεσμευτική επιβεβαίωση. Κάθε αίτημα επιβεβαιώνεται από το αρμόδιο κατάστημα εντός 2 ωρών εργάσιμου ωραρίου (Δευ–Παρ 08:00–20:00, Σάβ 09:00–15:00), τηλεφωνικά ή με email. Για επείγοντα περιστατικά, η αποστολή συνεργείου ξεκινά άμεσα μετά την επικοινωνία, χωρίς προηγούμενη γραπτή επιβεβαίωση.</span>
-      <span data-lang-en>The booking form constitutes a <strong>reservation request</strong>, not a binding confirmation. Every request is confirmed by the relevant branch within 2 business hours (Mon–Fri 08:00–20:00, Sat 09:00–15:00), by phone or email. For emergencies, crew dispatch begins immediately after contact, without prior written confirmation.</span>
-    </p>
-
-    <h2 id="t3">3. <span data-lang-el>Τιμολόγηση</span><span data-lang-en>Pricing</span></h2>
-    <ul>
-      <li><span data-lang-el>Ο τεχνικός παρέχει γραπτή ή προφορική εκτίμηση κόστους πριν την έναρξη της εργασίας· η εργασία δεν ξεκινά χωρίς τη σύμφωνη γνώμη σας.</span><span data-lang-en>The technician provides a written or verbal cost estimate before work begins; work does not start without your consent.</span></li>
-      <li><span data-lang-el>Όλες οι αναγραφόμενες τιμές περιλαμβάνουν ΦΠΑ, σύμφωνα με την ελληνική νομοθεσία.</span><span data-lang-en>All quoted prices include VAT, in accordance with Greek law.</span></li>
-      <li><span data-lang-el>Για επείγουσα επέμβαση εκτός ωραρίου ενδέχεται να ισχύει πρόσθετη χρέωση μετάβασης, η οποία γνωστοποιείται πριν την αποστολή συνεργείου.</span><span data-lang-en>An additional out-of-hours callout fee may apply for emergencies, disclosed before dispatch.</span></li>
-      <li><span data-lang-el>Σε περίπτωση αδικαιολόγητης ματαίωσης επείγουσας κλήσης μετά την αποστολή συνεργείου, ενδέχεται να χρεωθεί έξοδο μετάβασης.</span><span data-lang-en>An unjustified cancellation of an emergency callout after a crew has been dispatched may incur a callout charge.</span></li>
+<nav class="menu" id="menu" aria-hidden="true" aria-label="Main">
+  <div class="menu__inner">
+    <ul class="menu__list">
+      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> Hi</a></li>
+      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> The studio</a></li>
+      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> What I build</a></li>
+      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> Selected works</a></li>
+      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> Process</a></li>
+      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> Reviews</a></li>
+      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> Book a call</a></li>
     </ul>
-
-    <h2 id="t4">4. <span data-lang-el>Ακύρωση &amp; Αλλαγή Ραντεβού</span><span data-lang-en>Cancellation &amp; Rescheduling</span></h2>
-    <p>
-      <span data-lang-el>Μπορείτε να ακυρώσετε ή να αλλάξετε δωρεάν ένα προγραμματισμένο ραντεβού έως 4 ώρες πριν την προγραμματισμένη ώρα, καλώντας το κατάστημά σας ή απαντώντας στο email επιβεβαίωσης. Επαναλαμβανόμενη μη εμφάνιση (no-show) χωρίς ειδοποίηση ενδέχεται να οδηγήσει σε χρέωση.</span>
-      <span data-lang-en>You may cancel or reschedule a scheduled appointment free of charge up to 4 hours before the scheduled time, by calling your branch or replying to the confirmation email. Repeated no-shows without notice may result in a charge.</span>
-    </p>
-
-    <h2 id="t5">5. <span data-lang-el>Εγγύηση &amp; Ευθύνη</span><span data-lang-en>Warranty &amp; Liability</span></h2>
-    <p>
-      <span data-lang-el>Κάθε εργασία επισκευής ή εγκατάστασης καλύπτεται από γραπτή εγγύηση εργασίας 2 ετών, η οποία δεν καλύπτει: (α) ζημιές από κακή χρήση ή τρίτους, (β) προϋπάρχουσες βλάβες που δεν σχετίζονται με την εκτελεσθείσα εργασία, (γ) ανωτέρα βία. Η ευθύνη της HydroCore περιορίζεται στο μέτρο που επιτρέπεται από την ελληνική νομοθεσία και δεν θίγει τα δικαιώματα του καταναλωτή περί ελαττωματικών υπηρεσιών (άρθρα 214Α επ. Αστικού Κώδικα, Ν. 2251/1994).</span>
-      <span data-lang-en>Every repair or installation is covered by a written 2-year workmanship guarantee, which does not cover: (a) damage from misuse or third parties, (b) pre-existing faults unrelated to the work performed, (c) force majeure. HydroCore's liability is limited to the extent permitted by Greek law and does not affect your statutory rights regarding defective services (Articles 214A et seq. of the Greek Civil Code, Law 2251/1994).</span>
-    </p>
-
-    <h2 id="t6">6. <span data-lang-el>Υποχρεώσεις Πελάτη</span><span data-lang-en>Customer Obligations</span></h2>
-    <p>
-      <span data-lang-el>Ο πελάτης οφείλει να παρέχει ασφαλή και ακριβή πρόσβαση στον χώρο εργασίας, ακριβή στοιχεία επικοινωνίας, και να ενημερώνει για τυχόν ιδιαιτερότητες της εγκατάστασης πριν την επίσκεψη.</span>
-      <span data-lang-en>The customer must provide safe and accurate access to the work site, accurate contact details, and disclose any relevant installation quirks before the visit.</span>
-    </p>
-
-    <h2 id="t7">7. <span data-lang-el>Πνευματική Ιδιοκτησία</span><span data-lang-en>Intellectual Property</span></h2>
-    <p>
-      <span data-lang-el>Το περιεχόμενο του ιστότοπου (κείμενα, λογότυπο, γραφικά) ανήκει στην HydroCore ή σε αδειοδότες της και προστατεύεται από το δίκαιο πνευματικής ιδιοκτησίας. Απαγορεύεται η αναπαραγωγή χωρίς έγγραφη άδεια.</span>
-      <span data-lang-en>The website's content (text, logo, graphics) belongs to HydroCore or its licensors and is protected by intellectual property law. Reproduction without written permission is prohibited.</span>
-    </p>
-
-    <h2 id="t8">8. <span data-lang-el>Εφαρμοστέο Δίκαιο &amp; Επίλυση Διαφορών</span><span data-lang-en>Governing Law &amp; Dispute Resolution</span></h2>
-    <p>
-      <span data-lang-el>Οι παρόντες όροι διέπονται από το ελληνικό δίκαιο. Αρμόδια για κάθε διαφορά ορίζονται τα Δικαστήρια Θεσσαλονίκης, με την επιφύλαξη αναγκαστικών διατάξεων υπέρ του καταναλωτή. Ως καταναλωτής, μπορείτε επίσης να προσφύγετε στην πλατφόρμα Ηλεκτρονικής Επίλυσης Διαφορών της Ευρωπαϊκής Επιτροπής: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>, ή στον Συνήγορο του Καταναλωτή.</span>
-      <span data-lang-en>These terms are governed by Greek law. The courts of Thessaloniki have jurisdiction over any dispute, subject to mandatory consumer-protection provisions. As a consumer, you may also use the European Commission's Online Dispute Resolution platform: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>, or the Greek Consumer Ombudsman.</span>
-    </p>
-
-    <h2 id="t9">9. <span data-lang-el>Τροποποιήσεις</span><span data-lang-en>Modifications</span></h2>
-    <p>
-      <span data-lang-el>Διατηρούμε το δικαίωμα τροποποίησης των παρόντων όρων. Η ισχύουσα έκδοση είναι πάντα αυτή που δημοσιεύεται σε αυτή τη σελίδα.</span>
-      <span data-lang-en>We reserve the right to amend these terms. The version published on this page is always the applicable one.</span>
-    </p>
-
-    <h2 id="t10">10. <span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></h2>
-    <p>
-      <span data-lang-el>HydroCore Υδραυλικές Λύσεις Α.Ε. — Τσιμισκή 45, 546 23 Θεσσαλονίκη · <a href="mailto:info@hydrocore.gr">info@hydrocore.gr</a> · +30 2310 555 100</span>
-      <span data-lang-en>HydroCore Plumbing Solutions S.A. — 45 Tsimiski St, 546 23 Thessaloniki, Greece · <a href="mailto:info@hydrocore.gr">info@hydrocore.gr</a> · +30 2310 555 100</span>
-    </p>
+    <div class="menu__foot">
+      <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram
+      </a>
+      <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="imprint.html">Legal notice</a>
+    </div>
   </div>
-</section>
+</nav>
+
+<main id="main" class="page doc">
+  <div class="wrap">
+    <div class="doc__grid">
+      <aside class="doc__toc" aria-label="On this page">
+        <p class="eyebrow eyebrow--gray">On this page</p>
+        <ul><li><a href="#who">1 · Who you are contracting with</a></li><li><a href="#services">2 · What I do</a></li><li><a href="#quote">3 · Quotes and scope</a></li><li><a href="#price">4 · Prices, VAT and payment</a></li><li><a href="#time">5 · Timelines</a></li><li><a href="#you">6 · What I need from you</a></li><li><a href="#ip">7 · Ownership and licences</a></li><li><a href="#third">8 · Third-party services</a></li><li><a href="#care">9 · Support and maintenance</a></li><li><a href="#warranty">10 · Warranty</a></li><li><a href="#liability">11 · Liability</a></li><li><a href="#cancel">12 · Cancellation</a></li><li><a href="#withdraw">13 · Consumer right of withdrawal</a></li><li><a href="#booking">14 · Consultation bookings and reviews</a></li><li><a href="#force">15 · Force majeure</a></li><li><a href="#law">16 · Governing law and disputes</a></li><li><a href="#changes">17 · Changes</a></li></ul>
+      </aside>
+      <div class="doc__body">
+
+        <h1>Terms of Service<span class="dot">.</span></h1>
+        <p class="doc__meta">Last updated 8 September 2026 · Greek law, including Law 2251/1994 on consumer protection and P.D. 131/2003 on electronic commerce</p>
+        <p class="lead">The rules for using this website and for working together. Written to be read, not to be survived.</p>
+
+        <div class="doc__note">
+          <b>Before you publish:</b> every value written like <b>[ ... ]</b> below is a placeholder.
+          Replace them with your real registered details, and have a Greek lawyer read the finished
+          text once — this is a solid, honest starting point, not legal advice.
+        </div>
+        <h2 id="who">1 · Who you are contracting with</h2>
+        <p><strong>Sitrixweb</strong>, [full registered business name], [street address], [postal code] Thessaloniki, Greece, ΑΦΜ [EL000000000], ΓΕΜΗ [number] — referred to below as "the studio", "I" or "me". Full identification details are in the <a href="imprint.html">legal notice</a>.</p>
+        <p>Browsing this site means you accept these terms. A project is governed by these terms together with the written scope and quote you approve; where the two disagree, the signed scope wins.</p>
+
+        <h2 id="services">2 · What I do</h2>
+        <p>Design, development, maintenance and consulting for websites and web applications, as described on the home page. Free consultations are exactly that — advice given in good faith on incomplete information, not a professional opinion you should rely on without a written scope behind it.</p>
+
+        <h2 id="quote">3 · Quotes and scope</h2>
+        <p>Every project starts with a written scope: the pages, the features, what is explicitly excluded, the price and the dates. A quote is valid for <strong>30 days</strong>. Work begins once you approve the scope in writing (email is fine) and the deposit has cleared. Anything not in the scope is a change request — I will price it before doing it, never after.</p>
+
+        <h2 id="price">4 · Prices, VAT and payment</h2>
+        <ul>
+          <li>Prices are quoted in euro (€) and are <strong>exclusive of Greek VAT (ΦΠΑ)</strong>, which is added at the rate in force on the invoice date.</li>
+          <li>For EU business clients with a valid VIES-registered VAT number, the reverse-charge mechanism applies where the law allows it.</li>
+          <li>Standard terms: <strong>40% deposit</strong> on approval, <strong>60% on delivery</strong>, before the site goes live on your domain. Larger projects may be split into milestones in the scope.</li>
+          <li>Invoices are due within <strong>14 days</strong>. Late payment carries statutory default interest under Greek law (P.D. 166/2003 for business-to-business transactions).</li>
+          <li>Third-party costs you approve — domains, hosting, licences, stock imagery — are billed at cost or paid directly by you.</li>
+        </ul>
+
+        <h2 id="time">5 · Timelines</h2>
+        <p>Dates in a scope assume feedback and content arrive when agreed. If material or approvals are late, delivery dates shift by at least the same amount; I will tell you as soon as that happens rather than at the deadline.</p>
+
+        <h2 id="you">6 · What I need from you</h2>
+        <p>Content, images, logins and approvals, on time — and the confirmation that you own or are licensed to use everything you send me. You are responsible for the legality of the content you supply; I am responsible for the code I write.</p>
+
+        <h2 id="ip">7 · Ownership and licences</h2>
+        <ul>
+          <li>On <strong>full payment</strong>, you own the deliverables built specifically for you: the design, the page templates, the project-specific code and the content.</li>
+          <li>I keep ownership of my <strong>pre-existing tools</strong>, libraries and generic components, and grant you a perpetual, worldwide, non-exclusive licence to use them as part of your project.</li>
+          <li>Third-party components stay under their own licences (typically open source), which pass to you with the project.</li>
+          <li>Until final payment, you have no licence to use the deliverables in production.</li>
+          <li>Unless you ask me not to, I may show the finished work in my portfolio and on social media. Say the word and I will not — no explanation needed.</li>
+        </ul>
+
+        <h2 id="third">8 · Third-party services</h2>
+        <p>Hosting, domains, payment providers, email and similar services are provided by third parties under their own terms. I will recommend and configure them, but I do not control them and cannot be liable for their outages, price changes or policy decisions. Wherever possible the accounts are registered <strong>in your name</strong>, so you are never locked out of your own business.</p>
+
+        <h2 id="care">9 · Support and maintenance</h2>
+        <p>Maintenance plans are monthly, cancellable by either side with <strong>30 days' notice</strong>, and cover what the plan says — updates, backups, monitoring and a defined amount of small-change time. Emergency work outside the plan is billed at the hourly rate in your scope.</p>
+
+        <h2 id="warranty">10 · Warranty</h2>
+        <p>Defects in my work reported within <strong>60 days</strong> of delivery are fixed free of charge. That covers code that does not do what the approved scope says it does. It does not cover changes of mind, new requirements, content edits, or breakage caused by someone else editing the site, by a third-party service changing, or by a plugin you installed. Your statutory rights as a consumer under Law 2251/1994 are unaffected by this clause.</p>
+
+        <h2 id="liability">11 · Liability</h2>
+        <p>Nothing here limits liability for death or personal injury, for fraud, or for wilful misconduct or gross negligence — Greek law does not allow that, and neither would I. Subject to that, my total liability arising from a project is limited to the <strong>fees you actually paid for that project</strong>, and I am not liable for indirect or consequential loss such as lost profit, lost data or lost business, where such limitation is permitted by law.</p>
+        <p>You are responsible for keeping your own backups of content you supply, and for the accuracy of the information published on your site.</p>
+
+        <h2 id="cancel">12 · Cancellation</h2>
+        <p>You can stop a project at any time in writing. You pay for work completed and costs committed up to that point; the deposit covers the initial work and is non-refundable once the project has started. I may stop a project if invoices go unpaid for more than 30 days after a written reminder, or if the work would require me to break the law or infringe someone's rights.</p>
+
+        <h2 id="withdraw">13 · Consumer right of withdrawal</h2>
+        <p>If you are a <strong>consumer</strong> (a natural person acting outside your trade or profession) and the contract is concluded at a distance, you have <strong>14 days</strong> to withdraw without giving a reason, under Law 2251/1994 (implementing Directive 2011/83/EU). Tell me by email within that period.</p>
+        <p>If you expressly ask me to start work during the withdrawal period and acknowledge that you lose the right to withdraw once the service is fully performed, then: withdrawing before completion means paying for the proportion already delivered; once the service is fully performed with your prior express consent, the right of withdrawal no longer applies. Business clients do not have this right.</p>
+
+        <h2 id="booking">14 · Consultation bookings and reviews</h2>
+        <p>A booked consultation is free and non-binding on both sides. Please cancel by email if you cannot make it — a no-show costs someone else the slot.</p>
+        <p>Reviews submitted through this site are read before publication. I publish them <strong>unedited except for obvious typos</strong>, and I do not publish incentivised, purchased or fabricated reviews — that would be an unfair commercial practice under Directive 2005/29/EC as amended and Law 2251/1994. I may decline to publish content that is unlawful, defamatory, contains personal data of third parties, or is not from an actual client. You can ask for your review to be removed at any time.</p>
+
+        <h2 id="force">15 · Force majeure</h2>
+        <p>Neither side is liable for delays caused by events outside reasonable control — infrastructure or provider outages, natural disasters, strikes, war, or serious illness. The affected deadlines move by the length of the event, and the other side is told promptly.</p>
+
+        <h2 id="law">16 · Governing law and disputes</h2>
+        <p>These terms are governed by <strong>Greek law</strong>. If you are a consumer, you keep the protection of the mandatory rules of the country you live in, and you may bring proceedings in your own courts. For business clients, the courts of <strong>Thessaloniki, Greece</strong> have exclusive jurisdiction.</p>
+        <p>Before going to court, consumers can use out-of-court dispute resolution, including the Greek <strong>Consumer Ombudsman</strong> (Συνήγορος του Καταναλωτή, Leof. Alexandras 144, 114 71 Athens, <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener noreferrer">synigoroskatanaloti.gr</a>) or a certified ADR body under Law 4512/2018. I am happy to take part in that process.</p>
+
+        <h2 id="changes">17 · Changes</h2>
+        <p>These terms may change; the version in force is the one published here when your scope was approved, and the date at the top tells you which that is. Changes never apply retroactively to a project already agreed.</p>
+
+      </div>
+    </div>
+  </div>
 </main>
 
-<footer class="site-footer" id="footer">
-  <div class="container">
-    <div class="footer-bottom" style="border-top:none;padding-top:0">
-      <span>© <span data-year>2026</span> HydroCore Υδραυλικές Λύσεις Α.Ε.</span>
-      <div class="footer-bottom__links">
-        <a href="privacy.html"><span data-lang-el>Πολιτική Απορρήτου</span><span data-lang-en>Privacy Policy</span></a>
-        <a href="terms.html"><span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Service</span></a>
-        <a href="#" data-open-cookie-settings><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></a>
+<footer class="footer page">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="logo" href="index.html">
+          <svg class="logo__mark" width="26" height="26" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+            <circle cx="50" cy="50" r="20" stroke="#c8956c" stroke-width="6"/>
+            <circle class="ring" cx="50" cy="50" r="38" stroke="#565459" stroke-width="4" stroke-dasharray="7 11"/>
+          </svg>
+          <span>sitrix<b>web</b><span class="dot">.</span></span>
+        </a>
+        <p>Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" style="margin-top:20px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+            <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+          </svg>
+          Follow on Instagram
+        </a>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#about">The studio</a></li>
+          <li><a href="index.html#services">What I build</a></li>
+          <li><a href="index.html#works">Selected works</a></li>
+          <li><a href="index.html#process">Process</a></li>
+          <li><a href="index.html#reviews">Reviews</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="cookies.html">Cookie Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="imprint.html">Legal notice / Imprint</a></li>
+          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul>
+          <li><a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></li>
+          <li><a href="index.html#booking">Book a free call</a></li>
+        </ul>
+        <p class="footer__vat" style="margin-top:18px;color:var(--muted)">
+          Sitrixweb · Thessaloniki, Greece<br>
+          ΑΦΜ / VAT: <b style="color:var(--gray);font-weight:400">EL000000000</b><br>
+          <span style="opacity:.75">Full details in the legal notice</span>
+        </p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Sitrixweb. All rights reserved.</span>
+      <div class="footer__legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="terms.html">Terms</a>
+        <a href="imprint.html">Legal notice</a>
+        <a href="index.html">Home</a>
       </div>
     </div>
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/strings.js"></script>
-<script src="js/main.js"></script>
-<script src="js/consent.js"></script>
+<script src="js/config.js"></script>
+<script src="js/site.js" defer></script>
+<script src="js/consent.js" defer></script>
 </body>
 </html>

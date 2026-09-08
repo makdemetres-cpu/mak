@@ -1,497 +1,739 @@
 <!doctype html>
-<html lang="el" data-lang="el"
-      data-title-el="HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη"
-      data-title-en="HydroCore — Plumbing Solutions Across Greece | Thessaloniki"
-      data-desc-el="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση."
-      data-desc-en="HydroCore is Greece's largest certified plumbing network since 2007: 7 branches, 38 vehicles, 900+ professionals. Book online, 24/7 emergency response.">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="js/session-gate.js"></script>
-<title>HydroCore — Υδραυλικές Λύσεις Πανελλαδικά | Θεσσαλονίκη</title>
-<meta name="description" content="Η HydroCore είναι το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα από το 2007: 7 καταστήματα, 38 οχήματα, 900+ επαγγελματίες. Κλείστε ραντεβού online, 24/7 επείγουσα εξυπηρέτηση.">
-<meta name="theme-color" content="#00308F">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2300308F'/%3E%3Cpath d='M50 20 C63 39 74 53 74 64 A24 24 0 1 1 26 64 C26 53 37 39 50 20 Z' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='62' r='9' fill='%2300308F'/%3E%3C/svg%3E">
+<title>Sitrixweb — Web development studio, Greece &amp; the EU</title>
+<meta name="description" content="Sitrixweb is a one-person web development studio in Greece building fast, accessible, GDPR-ready websites for businesses across the EU. See selected work and book a free 30-minute consultation.">
+<meta name="theme-color" content="#1d1b20">
+<link rel="canonical" href="https://sitrixweb.com/">
 
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sitrixweb — Web development studio">
+<meta property="og:description" content="Fast, accessible, GDPR-ready websites, built one project at a time. Based in Greece, working across the EU.">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%231d1b20'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23c8956c' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23565459' stroke-width='2' stroke-dasharray='5 7'/%3E%3C/svg%3E">
+
+<link rel="preload" href="assets/fonts/Inter-Variable-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+
+<noscript>
+  <!-- Without JS there is no preloader to dismiss and no observer to reveal
+       anything, so everything that starts hidden is simply shown. -->
+  <style>
+    .preloader { display: none; }
+    .aurora { opacity: 1; }
+    [data-reveal] { opacity: 1; transform: none; }
+    .hero__eyebrow, .hero__title, .hero__sub, .hero__actions,
+    .hero__meta, .hero__stage, .scroll-cue { opacity: 1; transform: none; }
+    .hero__orbit-crop, .hero__stage .orbit { opacity: 1; }
+    .globe-wrap, .bsteps__bar, .bstep__back { display: none; }
+    /* The stepped mobile flow needs JS to advance, so show all three at once. */
+    .bstep { display: block; }
+  </style>
+</noscript>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Μετάβαση στο περιεχόμενο / Skip to content</a>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ============ PRELOADER ============ -->
+<!-- ambient layers ---------------------------------------------------- -->
 <div class="preloader" id="preloader" aria-hidden="true">
-  <svg class="preloader__mark" viewBox="0 0 100 100" width="72" height="72">
-    <circle class="preloader__ring" cx="50" cy="50" r="46" fill="none" stroke="#7CB9E8" stroke-width="2"/>
-    <path class="preloader__drop" d="M50 26 C61 41 70 53 70 64 A20 20 0 1 1 30 64 C30 53 39 41 50 26 Z" fill="#fff"/>
+  <svg class="preloader__mark" width="58" height="58" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="30" stroke="#c8956c" stroke-width="2"/>
+    <circle cx="50" cy="50" r="44" stroke="#565459" stroke-width="1.5" stroke-dasharray="6 9"/>
   </svg>
-  <p class="preloader__label">HydroCore</p>
 </div>
 
-<!-- ============ NAV ============ -->
-<header class="nav" id="siteNav">
-  <div class="nav__inner">
-    <a href="index.html" class="nav__logo">
-      <svg class="nav__logo-mark" viewBox="0 0 100 100" width="34" height="34">
-        <path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#00308F"/>
-        <circle cx="50" cy="68" r="17" fill="none" stroke="#fff" stroke-width="6"/>
-        <path d="M50 51 L50 42" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+<div class="aurora" aria-hidden="true">
+  <div class="aurora__blob aurora__blob--purple"></div>
+  <div class="aurora__blob aurora__blob--green"></div>
+  <div class="aurora__blob aurora__blob--pink"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- navigation -------------------------------------------------------- -->
+<header class="nav" id="nav">
+  <a class="logo" href="index.html" aria-label="Sitrixweb — home">
+    <svg class="logo__mark" width="26" height="26" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <circle cx="50" cy="50" r="20" stroke="#c8956c" stroke-width="6"/>
+      <circle class="ring" cx="50" cy="50" r="38" stroke="#565459" stroke-width="4" stroke-dasharray="7 11"/>
+    </svg>
+    <span>sitrix<b>web</b><span class="dot">.</span></span>
+  </a>
+
+  <div class="nav__right">
+    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" aria-label="Sitrixweb on Instagram">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
       </svg>
-      <span class="nav__logo-word">Hydro<b>Core</b></span>
     </a>
-    <nav class="nav__links" id="navLinks">
-      <a href="index.html" data-nav class="is-active"><span data-lang-el>Αρχική</span><span data-lang-en>Home</span></a>
-      <a href="index.html#about" data-nav><span data-lang-el>Σχετικά</span><span data-lang-en>About</span></a>
-      <a href="index.html#services" data-nav><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a>
-      <a href="index.html#locations" data-nav><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a>
-      <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="el" aria-pressed="true">EL</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-      </div>
-      <a href="booking.html" class="btn btn-primary btn-sm">
-        <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span>
-      </a>
-    </nav>
-    <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
+    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <span class="burger__lines" aria-hidden="true"><span></span><span></span></span>
     </button>
   </div>
 </header>
-<div class="nav__scrim" id="navScrim"></div>
 
-<main id="main">
-
-<!-- ============ HERO ============ -->
-<section class="hero" id="top">
-  <div class="hero__bg" aria-hidden="true">
-    <img class="hero__bg-photo" src="assets/img/hero-team.jpg" alt="" width="736" height="603">
-    <div class="hero__bg-overlay"></div>
-  </div>
-  <div class="hero__inner">
-    <div class="hero__content">
-      <h1 data-reveal="fade">
-        <span data-lang-el>Υδραυλικές λύσεις <em>χωρίς συμβιβασμούς</em></span>
-        <span data-lang-en>Plumbing, done <em>without compromise</em></span>
-      </h1>
-      <p class="lede" data-reveal="fade" style="--i:1">
-        <span data-lang-el>Το μεγαλύτερο δίκτυο πιστοποιημένων υδραυλικών στην Ελλάδα — 7 καταστήματα, 38 οχήματα και πάνω από 900 επαγγελματίες, έτοιμοι να φτάσουν στην πόρτα σας.</span>
-        <span data-lang-en>Greece's largest certified plumbing network — 7 branches, 38 vehicles and over 900 professionals, ready to reach your door.</span>
-      </p>
-      <div class="hero__cta" data-reveal="fade" style="--i:2">
-        <a href="booking.html" class="btn btn-primary">
-          <span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book an Appointment</span>
-        </a>
-        <a href="tel:+308007008000" class="btn btn-light">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-          <span data-lang-el>Επείγον: 800 700 8000</span><span data-lang-en>Emergency: 800 700 8000</span>
-        </a>
-      </div>
-      <div class="hero__meta" data-reveal="fade" style="--i:3">
-        <div><strong data-count="18" data-suffix="+">0</strong><span data-lang-el>Χρόνια Εμπειρίας</span><span data-lang-en>Years of Experience</span></div>
-        <div><strong data-count="7">0</strong><span data-lang-el>Καταστήματα</span><span data-lang-en>Branches</span></div>
-        <div><strong data-count="38">0</strong><span data-lang-el>Οχήματα Συνεργείου</span><span data-lang-en>Service Vehicles</span></div>
-        <div><strong data-count="900" data-suffix="+">0</strong><span data-lang-el>Επαγγελματίες</span><span data-lang-en>Professionals</span></div>
-      </div>
+<nav class="menu" id="menu" aria-hidden="true" aria-label="Main">
+  <div class="menu__inner">
+    <ul class="menu__list">
+      <li style="--i:0"><a href="#hero"><span class="num">01</span> Hi</a></li>
+      <li style="--i:1"><a href="#about"><span class="num">02</span> The studio</a></li>
+      <li style="--i:2"><a href="#services"><span class="num">03</span> What I build</a></li>
+      <li style="--i:3"><a href="#works"><span class="num">04</span> Selected works</a></li>
+      <li style="--i:4"><a href="#process"><span class="num">05</span> Process</a></li>
+      <li style="--i:5"><a href="#reviews"><span class="num">06</span> Reviews</a></li>
+      <li style="--i:6"><a href="#booking"><span class="num">07</span> Book a call</a></li>
+    </ul>
+    <div class="menu__foot">
+      <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram
+      </a>
+      <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="imprint.html">Legal notice</a>
     </div>
   </div>
+</nav>
 
-  <div class="hero__curve" aria-hidden="true">
-    <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
-      <rect class="curve-seal" x="0" y="120" width="1440" height="80"/>
-      <path class="curve-shape" d="M0,20 Q720,220 1440,20 L1440,200 L0,200 Z"/>
-    </svg>
-  </div>
-</section>
+<main id="main" class="page">
 
-<!-- ============ ABOUT / STORY ============ -->
-<section class="section" id="about">
-  <div class="container">
-    <div class="story">
-      <div data-reveal="left">
-        <div class="story__art">
-          <div class="coverflow" id="storyCoverflow" tabindex="0" role="group"
-               aria-label="Φωτογραφικό ταξίδι στην ιστορία της HydroCore, 2007 έως σήμερα. Μετακινήστε το ποντίκι ή σύρετε, ή χρησιμοποιήστε τα βέλη αριστερά/δεξιά.">
-            <div class="coverflow__stage" id="coverflowStage">
-              <figure class="coverflow__slide" data-index="0" style="--grain:1">
-                <img src="assets/img/story-1.jpg" alt="Παλιά, φθαρμένα εργαλεία μέσα σε ξύλινη εργαλειοθήκη — η αρχή της HydroCore, 2007" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">26.06.2007</span>
-                  <span class="coverflow__cap"><span data-lang-el>Η Πρώτη Εργαλειοθήκη</span><span data-lang-en>The First Toolbox</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="1" style="--grain:0.75">
-                <img src="assets/img/story-2.jpg" alt="Εργαλεία κρεμασμένα σε τοίχο μικρού συνεργείου της HydroCore, 2013" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">14.03.2013</span>
-                  <span class="coverflow__cap"><span data-lang-el>Χτίζοντας τις Βάσεις</span><span data-lang-en>Building the Foundations</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="2" style="--grain:0.5">
-                <img src="assets/img/story-3.jpg" alt="Τεχνικός της HydroCore επισκευάζει σωληνώσεις κάτω από νεροχύτη, 2016" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">09.11.2016</span>
-                  <span class="coverflow__cap"><span data-lang-el>Χέρι στη Δουλειά</span><span data-lang-en>Hands at Work</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="3" style="--grain:0.25">
-                <img src="assets/img/story-4.jpg" alt="Τεχνικός εκπαιδεύεται στο εργαστήριο της HydroCore Academy, 2023" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">03.09.2023</span>
-                  <span class="coverflow__cap"><span data-lang-el>Η Ακαδημία μας</span><span data-lang-en>Our Academy</span></span>
-                </figcaption>
-              </figure>
-              <figure class="coverflow__slide" data-index="4" style="--grain:0">
-                <img src="assets/img/story-5.jpg" alt="Χειραψία συνεργασίας με φόντο σύγχρονη πόλη — η HydroCore σήμερα, 2026" loading="lazy">
-                <span class="coverflow__grain" aria-hidden="true"></span>
-                <figcaption>
-                  <span class="coverflow__date">17.01.2026</span>
-                  <span class="coverflow__cap"><span data-lang-el>Σφραγίζοντας το Μέλλον</span><span data-lang-en>Sealing the Future</span></span>
-                </figcaption>
-              </figure>
+  <!-- 01 · Hero ------------------------------------------------------- -->
+  <section class="hero" id="hero">
+    <span class="section-index" aria-hidden="true">01 · Hi</span>
+    <div class="orbit orbit--slow hero__orbit-crop" aria-hidden="true"></div>
+
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <p class="hero__eyebrow eyebrow">Hello, and welcome in</p>
+
+        <h1 class="hero__title">
+          <span class="greet">I design and build the web at</span>
+          <span class="brand">Sitrixweb<span class="dot">.</span></span>
+        </h1>
+
+        <div class="hero__sub">
+          <p class="lead">A one-person studio in Greece making fast, accessible sites for businesses that would rather not guess their way through a web project.</p>
+          <p class="hero__aside"><b>a.k.a.</b> the person who actually answers your emails, before and after launch.</p>
+        </div>
+
+        <div class="hero__actions">
+          <a class="btn" href="#booking">
+            Book a free consultation
+            <svg class="btn__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="#works">See selected work</a>
+        </div>
+
+        <p class="hero__meta">
+          <span><i aria-hidden="true"></i> Taking projects for the next quarter</span>
+          <span>Thessaloniki · working EU-wide</span>
+          <span>Studio est. 01.06.2026</span>
+        </p>
+      </div>
+
+      <div class="hero__stage">
+        <div class="orbit orbit--a" aria-hidden="true"></div>
+        <div class="orbit orbit--slow orbit--b" aria-hidden="true"></div>
+        <div class="globe-wrap">
+          <canvas id="globe" role="img" aria-label="A slowly rotating globe of light points."></canvas>
+        </div>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#about" aria-label="Scroll to the studio">
+      Scroll
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
+    </a>
+  </section>
+
+  <!-- 02 · About ------------------------------------------------------ -->
+  <section class="section" id="about">
+    <span class="section-index" aria-hidden="true">02 · Studio</span>
+    <div class="wrap">
+      <div class="about__grid">
+        <div class="about__body" data-reveal="left">
+          <p class="eyebrow">Why this studio exists</p>
+          <h2 class="section-head">Most people go into a web project <span class="lite">blind</span><span class="dot">.</span></h2>
+          <p class="lead" style="margin-top:24px">
+            They are handed a quote with no scope, a design they only see once it is too late to change,
+            and a login to something they cannot edit. Six months later the site is slow, the agency has
+            moved on, and nobody can say who owns the domain.
+          </p>
+          <p class="lead">
+            Sitrixweb opened on <strong>1 June 2026</strong> as the opposite of that. One developer, one
+            project at a time, everything explained in words you can repeat to your accountant. You see
+            the work as it is built, you own every account it touches, and the thing that goes live is
+            <strong>fast, accessible and legal in the EU</strong> on day one — not after an audit.
+          </p>
+
+          <dl class="about__facts">
+            <div><dt>1<span class="dot">:</span>1</dt><dd>You talk to the person writing the code</dd></div>
+            <div><dt>&lt;1.5s</dt><dd>Load target on a mid-range phone, 4G</dd></div>
+            <div><dt>100%</dt><dd>Your accounts, your domain, your data</dd></div>
+          </dl>
+        </div>
+
+        <div class="about__render" data-reveal="right" role="img" aria-label="Abstract render of a wireframe grid dissolving into light.">
+          <div class="orbit" aria-hidden="true"></div>
+          <span class="about__render__tag">Sitrixweb · control room</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Services --------------------------------------------------- -->
+  <section class="section" id="services">
+    <span class="section-index" aria-hidden="true">03 · Build</span>
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow" data-reveal>What I build</p>
+        <h2 class="section-head" data-reveal>Four things, done properly<span class="dot">.</span></h2>
+      </div>
+
+      <div class="bento">
+        <article class="tile tile--lg" data-reveal>
+          <span class="tile__icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h18v12H3zM8 21h8M12 17v4"/></svg>
+          </span>
+          <h3>Websites that earn their keep</h3>
+          <p>
+            Marketing sites, portfolios and small-business sites built from scratch — no bloated theme,
+            no page builder locking you in. Hand-written HTML, CSS and JavaScript, or a headless CMS when
+            you need to edit things yourself.
+          </p>
+          <ul class="tile__list">
+            <li>Design and build, or build from your designer's files</li>
+            <li>A CMS you can actually use, if you want one</li>
+            <li>Multilingual (Greek / English) where it matters</li>
+            <li>Copy, structure and SEO groundwork included</li>
+          </ul>
+        </article>
+
+        <article class="tile tile--md" data-reveal>
+          <span class="tile__icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l5 5v13H6z"/><path d="M15 3v5h5M9.5 13.5l-2 2 2 2M14.5 13.5l2 2-2 2"/></svg>
+          </span>
+          <h3>Web apps &amp; booking flows</h3>
+          <p>Reservation systems, client portals, dashboards and forms that talk to the tools you already pay for.</p>
+        </article>
+
+        <article class="tile tile--md" data-reveal>
+          <span class="tile__icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l8 4v5c0 5-3.4 8.2-8 9-4.6-.8-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+          </span>
+          <h3>Speed, accessibility &amp; GDPR fixes</h3>
+          <p>An existing site that is slow, unusable on a phone, or quietly non-compliant. I audit it, fix it, and show you what changed.</p>
+        </article>
+
+        <article class="tile tile--wide" data-reveal>
+          <div>
+            <h3>Care after launch</h3>
+            <p>Updates, backups, monitoring and a human on the other end of the email. Month to month — no lock-in, cancel whenever.</p>
+          </div>
+          <div>
+            <span class="tile__stat">48h</span>
+            <small>Typical turnaround on a support request</small>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · Selected works --------------------------------------------- -->
+  <section class="section" id="works">
+    <span class="section-index" aria-hidden="true">04 · Work</span>
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow" data-reveal>Selected works</p>
+        <h2 class="section-head" data-reveal>Recent projects<span class="dot">,</span> and what they had to do</h2>
+      </div>
+
+      <!-- PLACEHOLDER PROJECTS — replace the four rows below with your own
+           real work before launch (see README.md → "Before you go live").
+           `data-art` is the gradient used by the desktop hover thumbnail;
+           swap it for `background-image:url(...)` of a real screenshot. -->
+      <div class="works">
+        <article class="work" data-name="Kyma Studio" data-art="linear-gradient(140deg,#3b3450,#1b1a22 70%)" data-reveal>
+          <div class="work__main">
+            <a class="work__name ulink" href="#works">Kyma Studio</a>
+            <span class="work__tag">Brand site · headless CMS · EL/EN</span>
+          </div>
+          <span class="work__year">2026</span>
+          <a class="work__cta" href="#works">
+            View project
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <button class="work__toggle" type="button" aria-expanded="false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Preview</span>
+          </button>
+          <div class="work__panel">
+            <div class="work__panel__art" style="background:linear-gradient(140deg,#3b3450,#1b1a22 70%)"></div>
+            <p>A design studio that needed its work to load instantly on a phone in a gallery. Static build, images served in three sizes, 0.9s to first paint on 4G.</p>
+          </div>
+        </article>
+
+        <article class="work" data-name="Elaia Table" data-art="linear-gradient(140deg,#3d3a2c,#1c1b1a 70%)" data-reveal>
+          <div class="work__main">
+            <a class="work__name ulink" href="#works">Elaia Table</a>
+            <span class="work__tag">Restaurant · online reservations</span>
+          </div>
+          <span class="work__year">2026</span>
+          <a class="work__cta" href="#works">
+            View project
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <button class="work__toggle" type="button" aria-expanded="false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Preview</span>
+          </button>
+          <div class="work__panel">
+            <div class="work__panel__art" style="background:linear-gradient(140deg,#3d3a2c,#1c1b1a 70%)"></div>
+            <p>Bookings were coming in by phone during service. Now a table picker handles them, syncs to the staff calendar, and confirms by email in both languages.</p>
+          </div>
+        </article>
+
+        <article class="work" data-name="Nomos Legal" data-art="linear-gradient(140deg,#2b3648,#191b20 70%)" data-reveal>
+          <div class="work__main">
+            <a class="work__name ulink" href="#works">Nomos Legal</a>
+            <span class="work__tag">Law firm · accessibility &amp; GDPR rebuild</span>
+          </div>
+          <span class="work__year">2026</span>
+          <a class="work__cta" href="#works">
+            View project
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <button class="work__toggle" type="button" aria-expanded="false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Preview</span>
+          </button>
+          <div class="work__panel">
+            <div class="work__panel__art" style="background:linear-gradient(140deg,#2b3648,#191b20 70%)"></div>
+            <p>An old site loading five third-party trackers before anyone consented. Rebuilt to WCAG 2.2 AA, consent-gated, and 60% lighter.</p>
+          </div>
+        </article>
+
+        <article class="work" data-name="Meltemi Charters" data-art="linear-gradient(140deg,#2c3f45,#181c1f 70%)" data-reveal>
+          <div class="work__main">
+            <a class="work__name ulink" href="#works">Meltemi Charters</a>
+            <span class="work__tag">Bookings · payments · seasonal pricing</span>
+          </div>
+          <span class="work__year">2026</span>
+          <a class="work__cta" href="#works">
+            View project
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <button class="work__toggle" type="button" aria-expanded="false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Preview</span>
+          </button>
+          <div class="work__panel">
+            <div class="work__panel__art" style="background:linear-gradient(140deg,#2c3f45,#181c1f 70%)"></div>
+            <p>Day charters with prices that change by month and boat. One booking flow, deposits taken online, no more spreadsheet.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · Process ---------------------------------------------------- -->
+  <section class="section" id="process">
+    <span class="section-index" aria-hidden="true">05 · Process</span>
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow" data-reveal>How a project runs</p>
+        <h2 class="section-head" data-reveal>Four steps<span class="dot">,</span> no surprises</h2>
+      </div>
+
+      <ol class="steps" style="list-style:none;margin:0;padding:0">
+        <li class="step" data-reveal>
+          <span class="step__num" aria-hidden="true">01</span>
+          <span class="step__label">Step 01 — Call</span>
+          <h3>A free 30-minute call</h3>
+          <p>You tell me what the business needs to happen. I tell you honestly whether a website is the way to get it, and roughly what it costs. No deck, no pitch.</p>
+        </li>
+        <li class="step" data-reveal>
+          <span class="step__num" aria-hidden="true">02</span>
+          <span class="step__label">Step 02 — Scope</span>
+          <h3>A written scope and a fixed price</h3>
+          <p>Every page, every feature, what is not included, and the dates. You approve it before anything starts, and it does not move unless you ask it to.</p>
+        </li>
+        <li class="step" data-reveal>
+          <span class="step__num" aria-hidden="true">03</span>
+          <span class="step__label">Step 03 — Build</span>
+          <h3>Build in the open</h3>
+          <p>You get a live preview link from week one and a short update every Friday. Feedback goes in as we go, not in one painful round at the end.</p>
+        </li>
+        <li class="step" data-reveal>
+          <span class="step__num" aria-hidden="true">04</span>
+          <span class="step__label">Step 04 — Launch</span>
+          <h3>Launch, then hand over the keys</h3>
+          <p>Speed, accessibility and GDPR checks before go-live. Then every account, password and file is transferred to you, with a walkthrough recording you keep.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 06 · Reviews ---------------------------------------------------- -->
+  <section class="section" id="reviews">
+    <span class="section-index" aria-hidden="true">06 · Voices</span>
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow" data-reveal>In their words</p>
+        <h2 class="section-head" data-reveal>What working together felt like<span class="dot">.</span></h2>
+      </div>
+    </div>
+
+    <!-- SAMPLE REVIEWS — these are illustrative, not real client feedback.
+           Delete them and keep only reviews you have actually received and
+           have permission to publish (see README.md). -->
+      <div class="reviews__strip" id="reviewStrip" tabindex="0" role="region" aria-label="Client reviews, scroll horizontally">
+        <article class="review" data-reveal="card">
+          <div class="review__stars" role="img" aria-label="5 out of 5">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+          </div>
+          <p class="review__text">We had been quoted three times what this cost, for less. The site went up on the day it was promised and our phone started ringing the same week.</p>
+          <div class="review__who">
+            <span class="review__avatar" aria-hidden="true">DK</span>
+            <span><span class="review__name">Dimitra Karali</span><span class="review__co">Kyma Studio</span></span>
+          </div>
+        </article>
+
+        <article class="review" data-reveal="card">
+          <div class="review__stars" role="img" aria-label="5 out of 5">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+          </div>
+          <p class="review__text">I understood every invoice and every decision, which had never happened before with a developer. The reservation flow paid for itself in a month.</p>
+          <div class="review__who">
+            <span class="review__avatar" aria-hidden="true">YP</span>
+            <span><span class="review__name">Yiannis Papadakis</span><span class="review__co">Elaia Table</span></span>
+          </div>
+        </article>
+
+        <article class="review" data-reveal="card">
+          <div class="review__stars" role="img" aria-label="4 out of 5">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="off"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+          </div>
+          <p class="review__text">Our old site failed an accessibility check from a client. The rebuild passed, and the report I was handed afterwards was in plain Greek, not jargon.</p>
+          <div class="review__who">
+            <span class="review__avatar" aria-hidden="true">AS</span>
+            <span><span class="review__name">Anna Stefanou</span><span class="review__co">Nomos Legal</span></span>
+          </div>
+        </article>
+
+        <article class="review" data-reveal="card">
+          <div class="review__stars" role="img" aria-label="5 out of 5">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
+          </div>
+          <p class="review__text">Answers within the day, every time — including the two questions I asked six weeks after we were finished.</p>
+          <div class="review__who">
+            <span class="review__avatar" aria-hidden="true">NV</span>
+            <span><span class="review__name">Nikos Vlachos</span><span class="review__co">Meltemi Charters</span></span>
+          </div>
+        </article>
+    </div>
+
+    <div class="wrap">
+      <div class="review-form" data-reveal>
+        <p class="eyebrow eyebrow--plain">Worked with me? Leave a review</p>
+        <h3 style="font-size:22px;margin-bottom:10px">Say it in your own words<span class="dot">.</span></h3>
+        <p class="muted-sm" style="margin-bottom:24px;max-width:60ch">
+          Reviews are read before they appear on the site, so yours will not show up publicly straight away.
+          You will see your own copy of it here in the meantime.
+        </p>
+
+        <form id="reviewForm" novalidate>
+          <!-- honeypot: hidden from people, tempting to bots -->
+          <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          </div>
+
+          <div class="review-form__grid">
+            <div class="field field--full">
+              <span class="field__label" id="ratingLabel">Your rating</span>
+              <div class="stars-input" role="radiogroup" aria-labelledby="ratingLabel">
+                <input type="radio" name="rating" id="star1" value="1"><label for="star1" data-value="1" aria-label="1 star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
+                <input type="radio" name="rating" id="star2" value="2"><label for="star2" data-value="2" aria-label="2 stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
+                <input type="radio" name="rating" id="star3" value="3"><label for="star3" data-value="3" aria-label="3 stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
+                <input type="radio" name="rating" id="star4" value="4"><label for="star4" data-value="4" aria-label="4 stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
+                <input type="radio" name="rating" id="star5" value="5"><label for="star5" data-value="5" aria-label="5 stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
+              </div>
+              <p class="err">Pick a rating from one to five stars.</p>
             </div>
-            <p class="coverflow__hint" id="coverflowHint" aria-hidden="true">
-              <span data-lang-el>Περιηγηθείτε στην ιστορία μας</span>
-              <span data-lang-en>Hover to explore our story</span>
+
+            <div class="field">
+              <label for="rvName">Your name</label>
+              <input type="text" id="rvName" name="name" autocomplete="name" placeholder="Maria K.">
+              <p class="err">A name (or first name) please.</p>
+            </div>
+
+            <div class="field">
+              <label for="rvCompany">Company <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+              <input type="text" id="rvCompany" name="company" autocomplete="organization" placeholder="Kyma Studio">
+              <p class="err"></p>
+            </div>
+
+            <div class="field field--full">
+              <label for="rvText">Your review</label>
+              <textarea id="rvText" name="review" placeholder="What was the project, and how did it go?"></textarea>
+              <p class="err">A sentence or two would help — 15 characters minimum.</p>
+            </div>
+
+            <div class="field field--full">
+              <label class="check">
+                <input type="checkbox" id="rvConsent" name="consent">
+                <span>I agree that Sitrixweb may publish this review together with my name and company on this website, and I have read the <a href="privacy.html">Privacy Policy</a>. I can withdraw this at any time by email.</span>
+              </label>
+              <p class="err">I need your permission before publishing this.</p>
+            </div>
+          </div>
+
+          <button class="btn" type="submit">
+            Send review
+            <svg class="btn__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <div class="success" id="reviewSuccess" role="status">
+          <span class="success__ring" aria-hidden="true">
+            <svg class="success__check" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8956c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+          </span>
+          <h3>Thank you — genuinely</h3>
+          <p>Your review is with me for a quick read before it goes on the site. Your own copy is showing above in the meantime.</p>
+          <p data-fallback hidden style="margin-top:14px">
+            This site has no mail server configured yet —
+            <a class="ulink" href="#">send it as an email instead</a> and it will reach me directly.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 · Booking ---------------------------------------------------- -->
+  <section class="section booking" id="booking">
+    <span class="section-index" aria-hidden="true">07 · Book</span>
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow" data-reveal>Book a consultation</p>
+        <h2 class="section-head" data-reveal>Thirty minutes<span class="dot">,</span> free, no pitch</h2>
+        <p class="lead" data-reveal>
+          Pick a slot that suits you. We talk about what the business needs, I tell you what I would build
+          and what it would cost, and you decide in your own time. Video call or phone — your choice.
+        </p>
+      </div>
+
+      <div class="bsteps__bar" id="bookSteps" aria-hidden="true">
+        <span class="is-done"></span><span></span><span></span>
+      </div>
+
+      <div class="booking__panel" id="bookingPanel" data-step="1" data-reveal>
+        <!-- step 1 — date -->
+        <div class="bstep bstep--date is-active" data-step-panel="1">
+          <p class="bstep__head"><i>1</i> Pick a day</p>
+          <div class="cal__nav">
+            <button class="cal__arrow" id="calPrev" type="button" aria-label="Previous month">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <span class="cal__month" id="calMonth" aria-live="polite">—</span>
+            <button class="cal__arrow" id="calNext" type="button" aria-label="Next month">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+          <div class="cal__dows" aria-hidden="true">
+            <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+          </div>
+          <div class="cal__grid" id="calGrid" role="group" aria-label="Available days"></div>
+        </div>
+
+        <!-- step 2 — time -->
+        <div class="bstep bstep--time" data-step-panel="2">
+          <button class="bstep__back" type="button" data-back="1">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            Change day
+          </button>
+          <p class="bstep__head"><i>2</i> Pick a time</p>
+          <div id="slotBox" aria-live="polite"></div>
+          <p class="slots__tz">All times are shown in Europe/Athens. Tell me your timezone in the notes if it differs and I will match it.</p>
+        </div>
+
+        <!-- step 3 — details -->
+        <div class="bstep bstep--details" data-step-panel="3">
+          <button class="bstep__back" type="button" data-back="2">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            Change time
+          </button>
+          <p class="bstep__head"><i>3</i> Your details</p>
+
+          <form id="bookForm" novalidate>
+            <div style="position:absolute;left:-9999px" aria-hidden="true">
+              <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <p class="booking__summary" id="bookSummary" aria-live="polite">Choose a day and a time and your slot will be summarised here.</p>
+
+            <div class="field" id="bkSlotField" hidden>
+              <p class="err">Pick a day and a time above first.</p>
+            </div>
+
+            <div class="field">
+              <label for="bkName">Name</label>
+              <input type="text" id="bkName" name="name" autocomplete="name" placeholder="Your name">
+              <p class="err">Please tell me what to call you.</p>
+            </div>
+
+            <div class="field">
+              <label for="bkEmail">Email</label>
+              <input type="email" id="bkEmail" name="email" autocomplete="email" placeholder="you@company.com">
+              <p class="err">That email address doesn't look right.</p>
+            </div>
+
+            <div class="field">
+              <label for="bkProject">What is it about? <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+              <textarea id="bkProject" name="project" style="min-height:96px" placeholder="A new site, a fix, an idea you want a second opinion on…"></textarea>
+              <p class="err"></p>
+            </div>
+
+            <div class="field">
+              <label class="check">
+                <input type="checkbox" id="bkConsent" name="consent">
+                <span>I agree that Sitrixweb may store these details and contact me about this consultation, as described in the <a href="privacy.html">Privacy Policy</a>.</span>
+              </label>
+              <p class="err">I need your consent to store these details and contact you about the call.</p>
+            </div>
+
+            <button class="btn btn--block" type="submit">
+              Confirm the booking
+              <svg class="btn__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="muted-sm" style="margin-top:14px">No payment, no card, no automatic newsletter sign-up.</p>
+          </form>
+
+          <div class="success" id="bookSuccess" role="status">
+            <span class="success__ring" aria-hidden="true">
+              <svg class="success__check" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8956c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            </span>
+            <h3>You're booked in</h3>
+            <p><b data-slot style="color:var(--white);font-weight:500"></b></p>
+            <p style="margin-top:8px">I'll confirm by email with a call link. If anything changes, just reply to it.</p>
+            <p data-fallback hidden style="margin-top:14px">
+              This site has no mail server configured yet —
+              <a class="ulink" href="#">send the request as an email instead</a> so it reaches me.
             </p>
           </div>
         </div>
       </div>
-      <div data-reveal="right">
-        <p class="eyebrow"><span data-lang-el>Η Ιστορία μας</span><span data-lang-en>Our Story</span></p>
-        <h2 class="h-lg"><span data-lang-el>Από 3 φίλους σε 900+ επαγγελματίες</span><span data-lang-en>From 3 friends to a 900-strong team</span></h2>
-        <p class="lede" style="margin-top:16px">
-          <span data-lang-el>Το 2007, τρεις φίλοι με πάθος για τη χειροτεχνία της υδραυλικής άνοιξαν ένα μικρό συνεργείο στη Θεσσαλονίκη. Δεκαοχτώ χρόνια μετά, η HydroCore είναι συνώνυμο αξιοπιστίας σε επτά πόλεις της Ελλάδας — χωρίς ποτέ να ξεχάσει τις ρίζες της.</span>
-          <span data-lang-en>In 2007, three friends with a shared obsession for the craft of plumbing opened a small workshop in Thessaloniki. Eighteen years later, HydroCore is synonymous with reliability across seven Greek cities — without ever forgetting where it started.</span>
-        </p>
-
-        <div class="timeline">
-          <div class="timeline__item">
-            <span class="timeline__year">2007</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Η Αρχή</span><span data-lang-en>The Beginning</span></h3>
-              <p><span data-lang-el>Τρεις φίλοι, ένα μικρό συνεργείο και η υπόσχεση για έντιμη δουλειά στη Θεσσαλονίκη.</span><span data-lang-en>Three friends, one small workshop, and a promise of honest work in Thessaloniki.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2013</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Επέκταση στη Θεσσαλονίκη</span><span data-lang-en>Thessaloniki Expansion</span></h3>
-              <p><span data-lang-el>Δύο ακόμη καταστήματα ανοίγουν στην Καλαμαριά και τον Εύοσμο.</span><span data-lang-en>Two more branches open in Kalamaria and Evosmos.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2016</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Άφιξη στην Αθήνα</span><span data-lang-en>Arrival in Athens</span></h3>
-              <p><span data-lang-el>Η HydroCore φτάνει στην πρωτεύουσα, με καταστήματα στην Κηφισιά και τον Πειραιά.</span><span data-lang-en>HydroCore reaches the capital, with branches in Kifisia and Piraeus.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2019</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Πάτρα &amp; Κρήτη</span><span data-lang-en>Patra &amp; Crete</span></h3>
-              <p><span data-lang-el>Το δίκτυο επεκτείνεται στην Πελοπόννησο και το Ηράκλειο.</span><span data-lang-en>The network expands into the Peloponnese and Heraklion.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2023</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>HydroCore Academy</span><span data-lang-en>HydroCore Academy</span></h3>
-              <p><span data-lang-el>Δημιουργούμε το δικό μας πρόγραμμα εκπαίδευσης τεχνιτών, επενδύοντας στην επόμενη γενιά.</span><span data-lang-en>We launch our own technician training programme, investing in the next generation.</span></p>
-            </div>
-          </div>
-          <div class="timeline__item">
-            <span class="timeline__year">2026</span>
-            <div class="timeline__line"><span class="timeline__dot"></span></div>
-            <div class="timeline__body">
-              <h3><span data-lang-el>Σήμερα</span><span data-lang-en>Today</span></h3>
-              <p><span data-lang-el>900+ επαγγελματίες, 38 οχήματα, 7 καταστήματα — ένα σταθερό όνομα σε όλη την Ελλάδα.</span><span data-lang-en>900+ professionals, 38 vehicles, 7 branches — one trusted name across Greece.</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-
-    <div class="stats" data-reveal-group data-reveal>
-      <div class="stats__bg" aria-hidden="true">
-        <img class="stats__bg-photo" src="assets/img/stats-plumber.jpg" alt="">
-        <div class="stats__bg-overlay"></div>
-      </div>
-      <div class="stat" data-reveal style="--i:0"><div class="stat__num" data-count="2007" data-no-group="true">0</div><div class="stat__label"><span data-lang-el>Έτος Ίδρυσης</span><span data-lang-en>Founded</span></div></div>
-      <div class="stat" data-reveal style="--i:1"><div class="stat__num" data-count="50000" data-suffix="+">0</div><div class="stat__label"><span data-lang-el>Ολοκληρωμένες Επισκευές</span><span data-lang-en>Completed Repairs</span></div></div>
-      <div class="stat" data-reveal style="--i:2"><div class="stat__num" data-count="98" data-suffix="%">0</div><div class="stat__label"><span data-lang-el>Ικανοποίηση Πελατών</span><span data-lang-en>Customer Satisfaction</span></div></div>
-      <div class="stat" data-reveal style="--i:3"><div class="stat__num" data-count="45" data-suffix="′">0</div><div class="stat__label"><span data-lang-el>Μ.Ο. Χρόνου Άφιξης</span><span data-lang-en>Avg. Response Time</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SERVICES ============ -->
-<section class="section section-alt" id="services">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Τι Κάνουμε</span><span data-lang-en>What We Do</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Υπηρεσίες για κάθε υδραυλική ανάγκη</span><span data-lang-en>Services for every plumbing need</span></h2>
-    <p class="lede center" style="margin-top:14px">
-      <span data-lang-el>Από ένα σταλάζον βρυσάκι μέχρι πλήρη ανακαίνιση δικτύου — το κατάλληλο συνεργείο φτάνει με τον κατάλληλο εξοπλισμό, την πρώτη φορά.</span>
-      <span data-lang-en>From a dripping tap to a full network overhaul — the right crew arrives with the right equipment, the first time.</span>
-    </p>
-    <div class="services-grid" id="servicesGrid" data-reveal-group></div>
-  </div>
-</section>
-
-<!-- ============ USP ============ -->
-<section class="section">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Γιατί HydroCore</span><span data-lang-en>Why HydroCore</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Το μέγεθος ενός δικτύου, η φροντίδα μιας γειτονιάς</span><span data-lang-en>The reach of a network, the care of a neighbourhood shop</span></h2>
-    <div class="usp-grid" data-reveal-group>
-      <div class="usp" data-reveal style="--i:0">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
-        <h3><span data-lang-el>Πιστοποιημένοι Τεχνικοί</span><span data-lang-en>Certified Technicians</span></h3>
-        <p><span data-lang-el>Όλοι οι τεχνικοί μας είναι αδειοδοτημένοι και εκπαιδευμένοι στο HydroCore Academy, σύμφωνα με το ευρωπαϊκό πρότυπο EN 806.</span><span data-lang-en>Every technician is licensed and trained through HydroCore Academy, to the EN 806 European standard.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:1">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        <h3><span data-lang-el>Απόκριση σε &lt;45 λεπτά</span><span data-lang-en>Under 45-Minute Response</span></h3>
-        <p><span data-lang-el>Μέσος χρόνος άφιξης σε αστικά κέντρα για επείγοντα περιστατικά, χάρη στα 38 οχήματα του στόλου μας.</span><span data-lang-en>Average arrival time in city centres for emergency callouts, backed by our 38-vehicle fleet.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:2">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 6v6c0 6 4 9.5 9 10 5-.5 9-4 9-10V6l-9-4Z"/><path d="M9 12h6M12 9v6"/></svg>
-        <h3><span data-lang-el>Εγγύηση 2 Ετών</span><span data-lang-en>2-Year Guarantee</span></h3>
-        <p><span data-lang-el>Κάθε επισκευή και εγκατάσταση συνοδεύεται από γραπτή εγγύηση εργασίας.</span><span data-lang-en>Every repair and installation comes with a written workmanship guarantee.</span></p>
-      </div>
-      <div class="usp" data-reveal style="--i:3">
-        <svg class="usp__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4-3-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-3 8-7 11Z"/><path d="M9 10c1 2 2 3 3 3"/></svg>
-        <h3><span data-lang-el>Υπεύθυνη Χρήση Νερού</span><span data-lang-en>Responsible Water Use</span></h3>
-        <p><span data-lang-el>Το πρόγραμμα «HydroCore Blue» προσφέρει δωρεάν ελέγχους διαρροών σε σχολεία και ευπαθείς ομάδες.</span><span data-lang-en>Our "HydroCore Blue" programme offers free leak checks to local schools and vulnerable households.</span></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ LOCATIONS ============ -->
-<section class="section section-alt" id="locations">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Το Δίκτυό μας</span><span data-lang-en>Our Network</span></p>
-    <h2 class="h-lg center"><span data-lang-el>7 καταστήματα, 4 περιοχές, μία υπόσχεση</span><span data-lang-en>7 branches, 4 regions, one promise</span></h2>
-
-    <div class="locations">
-      <div data-reveal="fade">
-        <div class="location-switcher" id="locationSwitcher">
-          <div class="location-switcher__bg" id="locationSwitcherBg" aria-hidden="true"></div>
-          <div class="location-switcher__overlay" aria-hidden="true"></div>
-          <div class="location-switcher__list" id="locationSwitcherList"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TESTIMONIALS ============ -->
-<section class="section">
-  <div class="container">
-    <p class="eyebrow center"><span data-lang-el>Μαρτυρίες</span><span data-lang-en>Testimonials</span></p>
-    <h2 class="h-lg center"><span data-lang-el>Τι λένε οι πελάτες μας</span><span data-lang-en>What our customers say</span></h2>
-
-    <div class="testi-cta">
-      <button type="button" class="btn btn-ghost btn-sm" id="openReviewModal">
-        <span data-lang-el>Γράψτε μια Κριτική</span><span data-lang-en>Write a Review</span>
-      </button>
-    </div>
-
-    <div class="testi-track-wrap">
-      <div class="testi-track" id="testiTrack">
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Μας έσωσαν κυριολεκτικά τη νύχτα που έσπασε ο σωλήνας. Ήρθαν σε 25 λεπτά.»</span><span data-lang-en>"They saved us, literally, the night a pipe burst. Arrived in 25 minutes."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΕΠ</div>
-            <div><strong>Ελένη Παπαδοπούλου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Επαγγελματισμός σπάνιος. Άλλαξαν όλη την εγκατάσταση στο διαμέρισμα χωρίς καμία βρωμιά.»</span><span data-lang-en>"Rare professionalism. Re-piped the whole apartment without any mess."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΓΑ</div>
-            <div><strong>Γιώργος Αντωνίου</strong><span data-lang-el>Αθήνα</span><span data-lang-en>Athens</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Το ραντεβού online ήταν παιχνιδάκι, ήρθαν ακριβώς στην ώρα τους.»</span><span data-lang-en>"Booking online was effortless — they showed up exactly on time."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΜΚ</div>
-            <div><strong>Μαρία Κωνσταντίνου</strong><span data-lang-el>Πάτρα</span><span data-lang-en>Patra</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«Ο έξυπνος αισθητήρας διαρροής που εγκατέστησαν μας γλίτωσε από σίγουρη ζημιά.»</span><span data-lang-en>"The smart leak sensor they installed saved us from certain damage."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΝΧ</div>
-            <div><strong>Νίκος Χατζής</strong><span data-lang-el>Ηράκλειο</span><span data-lang-en>Heraklion</span></div>
-          </div>
-        </article>
-        <article class="testi-card">
-          <div class="testi-stars" aria-hidden="true">★★★★★</div>
-          <p><span data-lang-el>«18 χρόνια εμπιστοσύνης. Δεν πάω πουθενά αλλού.»</span><span data-lang-en>"18 years of trust. I wouldn't go anywhere else."</span></p>
-          <div class="testi-person">
-            <div class="testi-avatar">ΣΔ</div>
-            <div><strong>Σοφία Δημητρίου</strong><span data-lang-el>Θεσσαλονίκη</span><span data-lang-en>Thessaloniki</span></div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ WRITE A REVIEW MODAL ============ -->
-<div class="review-modal-overlay" id="reviewModalOverlay"></div>
-<div class="review-modal" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
-  <div class="review-modal__head">
-    <h3 id="reviewModalTitle" class="h-md"><span data-lang-el>Γράψτε μια κριτική</span><span data-lang-en>Write a review</span></h3>
-    <button class="cookie-modal__close" id="reviewModalClose" type="button" aria-label="Close">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-  <form id="reviewForm" novalidate>
-    <div class="field">
-      <label for="reviewName"><span data-lang-el>Το όνομά σας</span><span data-lang-en>Your name</span></label>
-      <input type="text" id="reviewName" autocomplete="name" required>
-      <span class="field__error"><span data-lang-el>Συμπληρώστε το όνομά σας</span><span data-lang-en>Please enter your name</span></span>
-    </div>
-    <div class="field">
-      <label><span data-lang-el>Βαθμολογία</span><span data-lang-en>Rating</span></label>
-      <div class="star-picker" id="starPicker" role="radiogroup" aria-label="Rating">
-        <button type="button" class="star-picker__star" data-value="1" aria-label="1 star">★</button>
-        <button type="button" class="star-picker__star" data-value="2" aria-label="2 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="3" aria-label="3 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="4" aria-label="4 stars">★</button>
-        <button type="button" class="star-picker__star" data-value="5" aria-label="5 stars">★</button>
-      </div>
-      <span class="field__error"><span data-lang-el>Επιλέξτε βαθμολογία</span><span data-lang-en>Please pick a rating</span></span>
-    </div>
-    <div class="field">
-      <label for="reviewText"><span data-lang-el>Η κριτική σας</span><span data-lang-en>Your review</span></label>
-      <textarea id="reviewText" required></textarea>
-      <span class="field__error"><span data-lang-el>Γράψτε λίγα λόγια για την εμπειρία σας</span><span data-lang-en>Tell us a little about your experience</span></span>
-    </div>
-    <div class="review-modal__actions">
-      <button type="button" class="btn btn-ghost" id="reviewCancel"><span data-lang-el>Άκυρο</span><span data-lang-en>Cancel</span></button>
-      <button type="submit" class="btn btn-primary"><span data-lang-el>Υποβολή</span><span data-lang-en>Submit</span></button>
-    </div>
-  </form>
-</div>
-
-<!-- ============ THANK YOU / CONFETTI ============ -->
-<div class="thanks-overlay" id="thanksOverlay">
-  <canvas class="thanks-overlay__canvas" id="confettiCanvas"></canvas>
-  <div class="thanks-panel">
-    <div class="success-panel__icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-    </div>
-    <h3 class="h-md"><span data-lang-el>Ευχαριστούμε!</span><span data-lang-en>Thank you!</span></h3>
-    <p><span data-lang-el>Η κριτική σας προστέθηκε με επιτυχία.</span><span data-lang-en>Your review was added successfully.</span></p>
-  </div>
-</div>
-
-<!-- ============ CTA BANNER ============ -->
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <div class="cta-banner" data-reveal="scale">
-      <div class="cta-banner__bg" aria-hidden="true">
-        <img class="cta-banner__bg-photo" src="assets/img/cta-receptionist.jpg" alt="">
-        <div class="cta-banner__bg-overlay"></div>
-      </div>
-      <div>
-        <h2 class="h-md"><span data-lang-el>Χρειάζεστε άμεση βοήθεια;</span><span data-lang-en>Need help right now?</span></h2>
-        <p><span data-lang-el>Το κοντινότερο συνεργείο μας είναι μόλις λεπτά μακριά, 24 ώρες το 24ωρο.</span><span data-lang-en>Our nearest crew is just minutes away, 24 hours a day.</span></p>
-      </div>
-      <div class="cta-banner__actions">
-        <a href="tel:+308007008000" class="btn btn-white">
-          <span data-lang-el>Καλέστε 800 700 8000</span><span data-lang-en>Call 800 700 8000</span>
-        </a>
-        <a href="booking.html" class="btn btn-light"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Online</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
+  </section>
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer class="site-footer" id="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="footer-logo">
-          <svg width="30" height="30" viewBox="0 0 100 100"><path d="M50 5 C69 32 85 53 85 70 A35 35 0 1 1 15 70 C15 53 31 32 50 5 Z" fill="#7CB9E8"/><circle cx="50" cy="68" r="17" fill="none" stroke="#001240" stroke-width="6"/><path d="M50 51 L50 42" stroke="#001240" stroke-width="6" stroke-linecap="round"/></svg>
-          HydroCore
+<!-- footer ------------------------------------------------------------ -->
+<footer class="footer page">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="logo" href="index.html">
+          <svg class="logo__mark" width="26" height="26" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+            <circle cx="50" cy="50" r="20" stroke="#c8956c" stroke-width="6"/>
+            <circle class="ring" cx="50" cy="50" r="38" stroke="#565459" stroke-width="4" stroke-dasharray="7 11"/>
+          </svg>
+          <span>sitrix<b>web</b><span class="dot">.</span></span>
         </a>
-        <p><span data-lang-el>Πιστοποιημένες υδραυλικές λύσεις για κατοικίες και επιχειρήσεις σε όλη την Ελλάδα, από το 2007.</span><span data-lang-en>Certified plumbing solutions for homes and businesses across Greece, since 2007.</span></p>
-        <div class="footer-social" aria-hidden="false">
-          <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.87v-7H7.9V12h2.5V9.8c0-2.5 1.49-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.87h-2.33v7A10 10 0 0 0 22 12Z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002ZM7 8.48H3V21h4V8.48ZM13.5 8.48H9.75V21h3.75v-6.4c0-1.7.32-3.35 2.43-3.35 2.08 0 2.1 1.94 2.1 3.46V21H22v-6.9c0-3.53-.76-6.24-4.88-6.24-1.98 0-3.31 1.09-3.85 2.12h-.05V8.48Z"/></svg></a>
-        </div>
+        <p>Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" style="margin-top:20px">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
+            <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+          </svg>
+          Follow on Instagram
+        </a>
       </div>
-      <div class="footer-col">
-        <h4><span data-lang-el>Πλοήγηση</span><span data-lang-en>Navigate</span></h4>
+
+      <div>
+        <h4>Explore</h4>
         <ul>
-          <li><a href="index.html#about"><span data-lang-el>Σχετικά με εμάς</span><span data-lang-en>About Us</span></a></li>
-          <li><a href="index.html#services"><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></a></li>
-          <li><a href="index.html#locations"><span data-lang-el>Καταστήματα</span><span data-lang-en>Locations</span></a></li>
-          <li><a href="booking.html"><span data-lang-el>Κλείστε Ραντεβού</span><span data-lang-en>Book Now</span></a></li>
+          <li><a href="#about">The studio</a></li>
+          <li><a href="#services">What I build</a></li>
+          <li><a href="#works">Selected works</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#reviews">Reviews</a></li>
         </ul>
       </div>
-      <div class="footer-col">
-        <h4><span data-lang-el>Υπηρεσίες</span><span data-lang-en>Services</span></h4>
+
+      <div>
+        <h4>Legal</h4>
         <ul>
-          <li><a href="booking.html?service=emergency"><span data-lang-el>Επείγουσα Επέμβαση</span><span data-lang-en>Emergency Response</span></a></li>
-          <li><a href="booking.html?service=leak-detection"><span data-lang-el>Εντοπισμός Διαρροών</span><span data-lang-en>Leak Detection</span></a></li>
-          <li><a href="booking.html?service=boilers"><span data-lang-el>Θερμοσίφωνες &amp; Λέβητες</span><span data-lang-en>Boilers &amp; Heaters</span></a></li>
-          <li><a href="booking.html?service=commercial"><span data-lang-el>Επαγγελματικές Εγκαταστάσεις</span><span data-lang-en>Commercial Contracts</span></a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="cookies.html">Cookie Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="imprint.html">Legal notice / Imprint</a></li>
+          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
         </ul>
       </div>
-      <div class="footer-col">
-        <h4><span data-lang-el>Επικοινωνία</span><span data-lang-en>Contact</span></h4>
-        <ul class="footer-contact">
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg> +30 2310 555 100</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg> info@hydrocore.gr</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span data-lang-el>Τσιμισκή 45, Θεσσαλονίκη</span><span data-lang-en>45 Tsimiski St, Thessaloniki</span></li>
+
+      <div>
+        <h4>Get in touch</h4>
+        <ul>
+          <li><a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></li>
+          <li><a href="#booking">Book a free call</a></li>
         </ul>
+        <p class="footer__vat" style="margin-top:18px;color:var(--muted)">
+          Sitrixweb · Thessaloniki, Greece<br>
+          ΑΦΜ / VAT: <b style="color:var(--gray);font-weight:400">EL000000000</b><br>
+          <span style="opacity:.75">Full details in the legal notice</span>
+        </p>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <span>© <span data-year>2026</span> HydroCore Υδραυλικές Λύσεις Α.Ε. <span data-lang-el>Με επιφύλαξη κάθε νομίμου δικαιώματος.</span><span data-lang-en>All rights reserved.</span></span>
-      <div class="footer-bottom__links">
-        <a href="privacy.html"><span data-lang-el>Πολιτική Απορρήτου</span><span data-lang-en>Privacy Policy</span></a>
-        <a href="terms.html"><span data-lang-el>Όροι Χρήσης</span><span data-lang-en>Terms of Service</span></a>
-        <a href="#" data-open-cookie-settings><span data-lang-el>Ρυθμίσεις Cookies</span><span data-lang-en>Cookie Settings</span></a>
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Sitrixweb. All rights reserved.</span>
+      <div class="footer__legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="terms.html">Terms</a>
+        <a href="imprint.html">Legal notice</a>
+        <a href="#hero">Back to top ↑</a>
       </div>
     </div>
-    <p class="footer-legal-line">
-      <span data-lang-el>HydroCore Υδραυλικές Λύσεις Α.Ε. — Έδρα: Τσιμισκή 45, 546 23 Θεσσαλονίκη, Ελλάδα. ΑΦΜ: 099887766, Δ.Ο.Υ. Φ.Α.Ε. Θεσσαλονίκης, Αρ. Γ.Ε.ΜΗ.: 123456701000. Δεδομένα εταιρείας ενδεικτικά, για τους σκοπούς επίδειξης αυτού του website.</span>
-      <span data-lang-en>HydroCore Plumbing Solutions S.A. — Registered office: 45 Tsimiski St, 546 23 Thessaloniki, Greece. Tax ID: 099887766, Companies Registry No.: 123456701000. Company details are illustrative, for the purposes of this demo website.</span>
-    </p>
   </div>
 </footer>
 
-<script src="js/data.js"></script>
-<script src="js/strings.js"></script>
-<script src="js/main.js"></script>
-<script src="js/consent.js"></script>
-<script src="js/story-coverflow.js"></script>
+<!-- desktop-only portfolio thumbnail that follows the cursor -->
+<div class="work-peek" id="peek" aria-hidden="true">
+  <div class="work-peek__art"></div>
+  <span class="work-peek__label"></span>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/site.js" defer></script>
+<script src="js/globe.js" defer></script>
+<script src="js/booking.js" defer></script>
+<script src="js/reviews.js" defer></script>
+<script src="js/consent.js" defer></script>
 </body>
 </html>
