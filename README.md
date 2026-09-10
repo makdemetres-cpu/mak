@@ -29,7 +29,7 @@ you change it.
 | `email` | The address you actually read. Drives the footer, the menu and the form fallbacks. |
 | `phone` | Shown in the legal notice. |
 | `formEndpoint` | Where the booking and review forms POST (see below). Leave `""` and they fall back to a pre-filled email. |
-| `cursor` | The pointer effect: `"orbit"` (current), `"stardust"`, `"reticle"`, `"field"`, or `"off"`. Desktop only — see below. |
+| `cursor` | The pointer effect: `"field"` (current), `"orbit"`, `"stardust"`, `"reticle"`, or `"off"`. Desktop only — see below. |
 | `booking.workdays` / `slots` / `leadDays` / `horizonDays` | Your real availability. |
 
 ### 2. Replace the placeholder content
@@ -110,8 +110,10 @@ assets/fonts/       Inter woff2 subsets
 
 `js/cursor.js` holds four interchangeable pointer companions; `cursor` in
 `js/config.js` picks one, and that single word changes every page at once.
-**Orbit** is the one in use: a copper point on the pointer with a dashed ring
-trailing behind it, which snaps solid and opens up over anything clickable.
+**Field** is the one in use: an aurora-coloured light lags well behind the
+pointer and uncovers a dot-grid that is otherwise invisible, brightening a
+little over anything clickable. Nothing chases the pointer — the page simply
+lights up where the visitor is looking.
 
 All four leave the real system cursor visible rather than replacing it, so nobody
 loses the pointer or the text caret. They render nothing on touch devices and
