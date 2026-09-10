@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lang="en"
+      data-title-en="Legal notice — SitrixWeb"
+      data-title-el="Νομικές πληροφορίες — SitrixWeb"
+      data-desc-en="Business identification, registration and contact details for SitrixWeb, as required by Greek and EU e-commerce law."
+      data-desc-el="Στοιχεία επιχείρησης, μητρώων και επικοινωνίας της SitrixWeb, όπως απαιτεί το ελληνικό και ενωσιακό δίκαιο ηλεκτρονικού εμπορίου.">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,12 +12,17 @@
 <meta name="theme-color" content="#1d1b20">
 <meta name="robots" content="index,follow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%231d1b20'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23c8956c' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23565459' stroke-width='2' stroke-dasharray='5 7'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jura-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Runs before the first paint so the page never flashes the wrong language. -->
+<script src="js/lang.js"></script>
 </head>
 <body class="is-ready">
 
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main"><span data-l="en">Skip to content</span><span data-l="el">Μετάβαση στο περιεχόμενο</span></a>
 
 <div class="aurora is-lit" aria-hidden="true">
   <div class="aurora__blob aurora__blob--purple"></div>
@@ -31,13 +40,17 @@
     <span>Sitrix<b>Web</b><span class="dot">.</span></span>
   </a>
   <div class="nav__right">
-    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" aria-label="SitrixWeb on Instagram">
+    <div class="lang" role="group" data-aria-en="Language" data-aria-el="Γλώσσα" aria-label="Language">
+      <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+      <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+    </div>
+    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" data-aria-en="SitrixWeb on Instagram" data-aria-el="Η SitrixWeb στο Instagram" aria-label="SitrixWeb on Instagram">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
         <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
       </svg>
     </a>
-    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" data-aria-en="Open menu" data-aria-el="Άνοιγμα μενού" aria-label="Open menu">
       <span class="burger__lines" aria-hidden="true"><span></span><span></span></span>
     </button>
   </div>
@@ -46,15 +59,19 @@
 <nav class="menu" id="menu" aria-hidden="true" aria-label="Main">
   <div class="menu__inner">
     <ul class="menu__list">
-      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> Hi</a></li>
-      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> The studio</a></li>
-      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> What I build</a></li>
-      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> Selected works</a></li>
-      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> Process</a></li>
-      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> Reviews</a></li>
-      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> Book a call</a></li>
+      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> <span data-l="en">Hi</span><span data-l="el">Γεια</span></a></li>
+      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> <span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> <span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> <span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> <span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> <span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
+      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> <span data-l="en">Book a call</span><span data-l="el">Κλείστε κλήση</span></a></li>
     </ul>
     <div class="menu__foot">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+        <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      </div>
       <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
@@ -63,8 +80,8 @@
         Instagram
       </a>
       <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="imprint.html">Legal notice</a>
+      <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
+      <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
     </div>
   </div>
 </nav>
@@ -73,61 +90,68 @@
   <div class="wrap">
     <div class="doc__grid">
       <aside class="doc__toc" aria-label="On this page">
-        <p class="eyebrow eyebrow--gray">On this page</p>
-        <ul><li><a href="#id">1 · Business identification</a></li><li><a href="#contact">2 · Contact</a></li><li><a href="#activity">3 · Activity and registration</a></li><li><a href="#host">4 · Hosting provider</a></li><li><a href="#adr">5 · Dispute resolution</a></li><li><a href="#ip">6 · Copyright</a></li><li><a href="#access">7 · Accessibility</a></li><li><a href="#liability">8 · Liability for links</a></li></ul>
+        <p class="eyebrow eyebrow--gray"><span data-l="en">On this page</span><span data-l="el">Σε αυτή τη σελίδα</span></p>
+        <ul><li><a href="#id"><span data-l="en">1 · Business identification</span><span data-l="el">1 · Στοιχεία επιχείρησης</span></a></li><li><a href="#contact"><span data-l="en">2 · Contact</span><span data-l="el">2 · Επικοινωνία</span></a></li><li><a href="#activity"><span data-l="en">3 · Activity and registration</span><span data-l="el">3 · Δραστηριότητα και μητρώα</span></a></li><li><a href="#host"><span data-l="en">4 · Hosting provider</span><span data-l="el">4 · Πάροχος φιλοξενίας</span></a></li><li><a href="#adr"><span data-l="en">5 · Dispute resolution</span><span data-l="el">5 · Επίλυση διαφορών</span></a></li><li><a href="#ip"><span data-l="en">6 · Copyright</span><span data-l="el">6 · Πνευματικά δικαιώματα</span></a></li><li><a href="#access"><span data-l="en">7 · Accessibility</span><span data-l="el">7 · Προσβασιμότητα</span></a></li><li><a href="#liability"><span data-l="en">8 · Liability for links</span><span data-l="el">8 · Ευθύνη για συνδέσμους</span></a></li></ul>
       </aside>
       <div class="doc__body">
 
-        <h1>Legal notice<span class="dot">.</span></h1>
-        <p class="doc__meta">Information required by Art. 4 of Presidential Decree 131/2003 (transposing the e-Commerce Directive 2000/31/EC) and Law 4727/2020</p>
-
+        <h1 data-l="en">Legal notice<span class="dot">.</span></h1>
+        <h1 data-l="el">Νομικές πληροφορίες<span class="dot">.</span></h1>
+        <p class="doc__meta" data-l="en">Information required by Art. 4 of Presidential Decree 131/2003 (transposing the e-Commerce Directive 2000/31/EC) and Law 4727/2020</p>
+<p class="doc__meta" data-l="el">Πληροφορίες που απαιτεί το άρθρο 4 του Π.Δ. 131/2003 (ενσωμάτωση της Οδηγίας 2000/31/ΕΚ για το ηλεκτρονικό εμπόριο) και ο Ν. 4727/2020</p>
         <div class="doc__note">
-          <b>Before you publish:</b> every value written like <b>[ ... ]</b> below is a placeholder.
-          Replace them with your real registered details, and have a Greek lawyer read the finished
-          text once — this is a solid, honest starting point, not legal advice.
-        </div>
-        <h2 id="id">1 · Business identification</h2>
-        <div class="doc__scroll">
-        <table class="doc__table">
-          <tbody>
-            <tr><th>Trade name</th><td>SitrixWeb</td></tr>
-            <tr><th>Legal / registered name</th><td>[full registered name of the sole proprietorship or company]</td></tr>
-            <tr><th>Legal form</th><td>[e.g. Ατομική Επιχείρηση — sole proprietorship]</td></tr>
-            <tr><th>Registered address</th><td>[street and number], [postal code] Thessaloniki, Greece</td></tr>
-            <tr><th>Tax ID (ΑΦΜ)</th><td>[000000000] · VAT: [EL000000000]</td></tr>
-            <tr><th>Tax office (ΔΟΥ)</th><td>[e.g. Δ' Θεσσαλονίκης]</td></tr>
-            <tr><th>Commercial registry (ΓΕΜΗ)</th><td>[number], Chamber of [Thessaloniki]</td></tr>
-            <tr><th>Date of establishment</th><td>1 June 2026</td></tr>
-            <tr><th>Responsible for the content</th><td>[your full name]</td></tr>
-          </tbody>
-        </table>
+          <p data-l="en"><b>Before you publish:</b> every value written like <b>[ ... ]</b> below is a placeholder. Replace them with your real registered details, and have a Greek lawyer read the finished text once — this is a solid, honest starting point, not legal advice.</p>
+<p data-l="el"><b>Πριν τη δημοσίευση:</b> κάθε τιμή γραμμένη ως <b>[ ... ]</b> είναι placeholder. Αντικαταστήστε τις με τα πραγματικά σας στοιχεία και δώστε το τελικό κείμενο σε Έλληνα δικηγόρο για μία ανάγνωση — αυτό είναι μια σοβαρή, ειλικρινής αφετηρία, όχι νομική συμβουλή.</p>
         </div>
 
-        <h2 id="contact">2 · Contact</h2>
-        <p>
-          Email: <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a><br>
-          Telephone: [+30 000 000 0000]<br>
-          Instagram: <a data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">@sitrixweb</a>
-        </p>
-        <p>Email is answered within one working day. There is a booking form on the <a href="index.html#booking">home page</a> if you would rather talk.</p>
+<section class="doc__sec" id="id">
+  <h2><span data-l="en">1 · Business identification</span><span data-l="el">1 · Στοιχεία επιχείρησης</span></h2>
+<div class="doc__scroll"><table class="doc__table"><tbody><tr><th><span data-l="en">Trade name</span><span data-l="el">Εμπορική ονομασία</span></th><td><span data-l="en">SitrixWeb</span><span data-l="el">SitrixWeb</span></td></tr><tr><th><span data-l="en">Legal / registered name</span><span data-l="el">Νομική επωνυμία</span></th><td><span data-l="en">[full registered name of the sole proprietorship or company]</span><span data-l="el">[πλήρης επωνυμία ατομικής επιχείρησης ή εταιρείας]</span></td></tr><tr><th><span data-l="en">Legal form</span><span data-l="el">Νομική μορφή</span></th><td><span data-l="en">[e.g. Ατομική Επιχείρηση — sole proprietorship]</span><span data-l="el">[π.χ. Ατομική Επιχείρηση]</span></td></tr><tr><th><span data-l="en">Registered address</span><span data-l="el">Έδρα</span></th><td><span data-l="en">[street and number], [postal code] Thessaloniki, Greece</span><span data-l="el">[οδός και αριθμός], [ΤΚ] Θεσσαλονίκη, Ελλάδα</span></td></tr><tr><th><span data-l="en">Tax ID (ΑΦΜ)</span><span data-l="el">ΑΦΜ</span></th><td><span data-l="en">[000000000] · VAT: [EL000000000]</span><span data-l="el">[000000000] · VAT: [EL000000000]</span></td></tr><tr><th><span data-l="en">Tax office (ΔΟΥ)</span><span data-l="el">ΔΟΥ</span></th><td><span data-l="en">[e.g. Δ' Θεσσαλονίκης]</span><span data-l="el">[π.χ. Δ΄ Θεσσαλονίκης]</span></td></tr><tr><th><span data-l="en">Commercial registry (ΓΕΜΗ)</span><span data-l="el">ΓΕΜΗ</span></th><td><span data-l="en">[number], Chamber of [Thessaloniki]</span><span data-l="el">[αριθμός], Επιμελητήριο [Θεσσαλονίκης]</span></td></tr><tr><th><span data-l="en">Date of establishment</span><span data-l="el">Ημερομηνία έναρξης</span></th><td><span data-l="en">1 June 2026</span><span data-l="el">1 Ιουνίου 2026</span></td></tr><tr><th><span data-l="en">Responsible for the content</span><span data-l="el">Υπεύθυνος περιεχομένου</span></th><td><span data-l="en">[your full name]</span><span data-l="el">[ονοματεπώνυμο]</span></td></tr></tbody></table></div>
+</section>
 
-        <h2 id="activity">3 · Activity and registration</h2>
-        <p>Design, development and maintenance of websites and web applications (ΚΑΔ [62.01.11 or as registered]). Web development is not a regulated profession in Greece, so there is no professional chamber licence or supervisory authority to declare for it. VAT registered in Greece; VIES status can be verified through the European Commission's VIES service using the VAT number above.</p>
+<section class="doc__sec" id="contact">
+  <h2><span data-l="en">2 · Contact</span><span data-l="el">2 · Επικοινωνία</span></h2>
+<p data-l="en">Email: <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a><br>Telephone: [+30 000 000 0000]<br>Instagram: <a data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">@sitrixweb</a></p>
+<p data-l="el">Email: <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a><br>Τηλέφωνο: [+30 000 000 0000]<br>Instagram: <a data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">@sitrixweb</a></p>
+<p data-l="en">Email is answered within one working day. There is a booking form on the <a href="index.html#booking">home page</a> if you would rather talk.</p>
+<p data-l="el">Απαντώ σε email εντός μίας εργάσιμης. Υπάρχει φόρμα κράτησης στην <a href="index.html#booking">αρχική σελίδα</a> αν προτιμάτε να μιλήσουμε.</p>
+</section>
 
-        <h2 id="host">4 · Hosting provider</h2>
-        <p>This website is hosted by <strong>[hosting provider name]</strong>, [address, country]. The provider processes server logs on my behalf under a data-processing agreement — see §6 of the <a href="privacy.html">Privacy Policy</a>.</p>
+<section class="doc__sec" id="activity">
+  <h2><span data-l="en">3 · Activity and registration</span><span data-l="el">3 · Δραστηριότητα και μητρώα</span></h2>
+<p data-l="en">Design, development and maintenance of websites and web applications (ΚΑΔ [62.01.11 or as registered]). Web development is not a regulated profession in Greece, so there is no professional chamber licence or supervisory authority to declare for it. VAT registered in Greece; VIES status can be verified through the European Commission's VIES service using the VAT number above.</p>
+<p data-l="el">Σχεδιασμός, ανάπτυξη και συντήρηση ιστοσελίδων και web εφαρμογών (ΚΑΔ [62.01.11 ή όπως έχει δηλωθεί]). Η κατασκευή ιστοσελίδων δεν είναι νομοθετικά ρυθμιζόμενο επάγγελμα στην Ελλάδα, οπότε δεν υπάρχει άδεια επιμελητηρίου ή εποπτεύουσα αρχή προς δήλωση. Εγγεγραμμένη στο ΦΠΑ στην Ελλάδα· η κατάσταση VIES επαληθεύεται μέσω της υπηρεσίας VIES της Ευρωπαϊκής Επιτροπής με τον παραπάνω ΑΦΜ.</p>
+</section>
 
-        <h2 id="adr">5 · Dispute resolution</h2>
-        <p>Consumers may use out-of-court dispute resolution before going to court. In Greece the competent bodies include the <strong>Consumer Ombudsman</strong> (Συνήγορος του Καταναλωτή, Leof. Alexandras 144, 114 71 Athens, <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener noreferrer">synigoroskatanaloti.gr</a>) and ADR entities certified under Law 4512/2018. Complaints about personal data go to the Hellenic Data Protection Authority — details in §10 of the <a href="privacy.html">Privacy Policy</a>.</p>
+<section class="doc__sec" id="host">
+  <h2><span data-l="en">4 · Hosting provider</span><span data-l="el">4 · Πάροχος φιλοξενίας</span></h2>
+<p data-l="en">This website is hosted by <strong>[hosting provider name]</strong>, [address, country]. The provider processes server logs on my behalf under a data-processing agreement — see §6 of the <a href="privacy.html">Privacy Policy</a>.</p>
+<p data-l="el">Ο ιστότοπος φιλοξενείται από την <strong>[επωνυμία παρόχου]</strong>, [διεύθυνση, χώρα]. Ο πάροχος επεξεργάζεται αρχεία καταγραφής για λογαριασμό μου βάσει σύμβασης επεξεργασίας — δείτε §6 της <a href="privacy.html">Πολιτικής Απορρήτου</a>.</p>
+</section>
 
-        <h2 id="ip">6 · Copyright</h2>
-        <p>The text, design, code and graphics on this site are © SitrixWeb, <span data-year>2026</span>, protected by Greek Law 2121/1993 and Directive 2001/29/EC. Client work is shown with permission and remains the property of the respective clients; their names and logos belong to them. You may quote or link to this site with attribution; you may not republish it wholesale.</p>
+<section class="doc__sec" id="adr">
+  <h2><span data-l="en">5 · Dispute resolution</span><span data-l="el">5 · Επίλυση διαφορών</span></h2>
+<p data-l="en">Consumers may use out-of-court dispute resolution before going to court. In Greece the competent bodies include the <strong>Consumer Ombudsman</strong> (Συνήγορος του Καταναλωτή, Leof. Alexandras 144, 114 71 Athens, <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener noreferrer">synigoroskatanaloti.gr</a>) and ADR entities certified under Law 4512/2018. Complaints about personal data go to the Hellenic Data Protection Authority — details in §10 of the <a href="privacy.html">Privacy Policy</a>.</p>
+<p data-l="el">Οι καταναλωτές μπορούν να χρησιμοποιήσουν εξωδικαστική επίλυση πριν προσφύγουν στα δικαστήρια. Στην Ελλάδα αρμόδιοι φορείς είναι μεταξύ άλλων ο <strong>Συνήγορος του Καταναλωτή</strong> (Λ. Αλεξάνδρας 144, 114 71 Αθήνα, <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener noreferrer">synigoroskatanaloti.gr</a>) και οι πιστοποιημένοι φορείς ΕΕΔ κατά τον Ν. 4512/2018. Καταγγελίες για προσωπικά δεδομένα υποβάλλονται στην Αρχή Προστασίας Δεδομένων — στοιχεία στην §10 της <a href="privacy.html">Πολιτικής Απορρήτου</a>.</p>
+</section>
 
-        <h2 id="access">7 · Accessibility</h2>
-        <p>This site is built to <strong>WCAG 2.2 level AA</strong> as a working target: keyboard-operable throughout, visible focus, honest contrast on a dark background, and full respect for the <code>prefers-reduced-motion</code> setting — turn it on in your operating system and every ambient animation here stops. If something is not usable for you, email me and I will fix it; that feedback is genuinely welcome, not a formality.</p>
+<section class="doc__sec" id="ip">
+  <h2><span data-l="en">6 · Copyright</span><span data-l="el">6 · Πνευματικά δικαιώματα</span></h2>
+<p data-l="en">The text, design, code and graphics on this site are © SitrixWeb, <span data-year>2026</span>, protected by Greek Law 2121/1993 and Directive 2001/29/EC. Client work is shown with permission and remains the property of the respective clients; their names and logos belong to them. You may quote or link to this site with attribution; you may not republish it wholesale.</p>
+<p data-l="el">Τα κείμενα, ο σχεδιασμός, ο κώδικας και τα γραφικά του ιστότοπου είναι © SitrixWeb, <span data-year>2026</span>, και προστατεύονται από τον Ν. 2121/1993 και την Οδηγία 2001/29/ΕΚ. Οι δουλειές πελατών προβάλλονται με άδεια και παραμένουν ιδιοκτησία τους· τα ονόματα και τα λογότυπά τους τους ανήκουν. Μπορείτε να παραθέσετε ή να συνδεθείτε με αναφορά στην πηγή· δεν επιτρέπεται η ολική αναδημοσίευση.</p>
+</section>
 
-        <h2 id="liability">8 · Liability for links</h2>
-        <p>External links were checked when added, but I do not control other people's sites and take no responsibility for their content. If a link here has gone somewhere it should not, tell me and it will be removed.</p>
+<section class="doc__sec" id="access">
+  <h2><span data-l="en">7 · Accessibility</span><span data-l="el">7 · Προσβασιμότητα</span></h2>
+<p data-l="en">This site is built to <strong>WCAG 2.2 level AA</strong> as a working target: keyboard-operable throughout, visible focus, honest contrast on a dark background, and full respect for the <code>prefers-reduced-motion</code> setting — turn it on in your operating system and every ambient animation here stops. If something is not usable for you, email me and I will fix it; that feedback is genuinely welcome, not a formality.</p>
+<p data-l="el">Ο ιστότοπος χτίζεται με στόχο το <strong>WCAG 2.2 επίπεδο AA</strong>: πλήρης λειτουργία με πληκτρολόγιο, ορατή εστίαση, ειλικρινής αντίθεση σε σκούρο φόντο και πλήρης σεβασμός στη ρύθμιση <code>prefers-reduced-motion</code> — ενεργοποιήστε την στο λειτουργικό σας και κάθε διακριτική κίνηση εδώ σταματά. Αν κάτι δεν σας είναι προσβάσιμο, στείλτε μου email και θα το διορθώσω· αυτή η ανατροφοδότηση είναι πραγματικά ευπρόσδεκτη, όχι τυπική.</p>
+</section>
+
+<section class="doc__sec" id="liability">
+  <h2><span data-l="en">8 · Liability for links</span><span data-l="el">8 · Ευθύνη για συνδέσμους</span></h2>
+<p data-l="en">External links were checked when added, but I do not control other people's sites and take no responsibility for their content. If a link here has gone somewhere it should not, tell me and it will be removed.</p>
+<p data-l="el">Οι εξωτερικοί σύνδεσμοι ελέγχθηκαν όταν προστέθηκαν, αλλά δεν ελέγχω ξένους ιστότοπους και δεν φέρω ευθύνη για το περιεχόμενό τους. Αν κάποιος σύνδεσμος οδηγεί κάπου που δεν πρέπει, πείτε μου και θα αφαιρεθεί.</p>
+</section>
 
       </div>
     </div>
@@ -145,70 +169,70 @@
           </svg>
           <span>Sitrix<b>Web</b><span class="dot">.</span></span>
         </a>
-        <p>Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="en">Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="el">Στούντιο κατασκευής ιστοσελίδων στην Ελλάδα, με πελάτες σε όλη την ΕΕ από την 1η Ιουνίου 2026.</p>
         <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" style="margin-top:20px">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
             <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
           </svg>
-          Follow on Instagram
+          <span data-l="en">Follow on Instagram</span><span data-l="el">Ακολουθήστε στο Instagram</span>
         </a>
       </div>
       <div>
-        <h4>Explore</h4>
+        <h4><span data-l="en">Explore</span><span data-l="el">Εξερεύνηση</span></h4>
         <ul>
-          <li><a href="index.html#about">The studio</a></li>
-          <li><a href="index.html#services">What I build</a></li>
-          <li><a href="index.html#works">Selected works</a></li>
-          <li><a href="index.html#process">Process</a></li>
-          <li><a href="index.html#reviews">Reviews</a></li>
+          <li><a href="index.html#about"><span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+          <li><a href="index.html#services"><span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+          <li><a href="index.html#works"><span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+          <li><a href="index.html#process"><span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+          <li><a href="index.html#reviews"><span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Legal</h4>
+        <h4><span data-l="en">Legal</span><span data-l="el">Νομικά</span></h4>
         <ul>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="imprint.html">Legal notice / Imprint</a></li>
-          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
+          <li><a href="privacy.html"><span data-l="en">Privacy Policy</span><span data-l="el">Πολιτική Απορρήτου</span></a></li>
+          <li><a href="cookies.html"><span data-l="en">Cookie Policy</span><span data-l="el">Πολιτική Cookies</span></a></li>
+          <li><a href="terms.html"><span data-l="en">Terms of Service</span><span data-l="el">Όροι Χρήσης</span></a></li>
+          <li><a href="imprint.html"><span data-l="en">Legal notice / Imprint</span><span data-l="el">Νομικές πληροφορίες</span></a></li>
+          <li><a href="#" data-cookie-settings><span data-l="en">Cookie settings</span><span data-l="el">Ρυθμίσεις cookies</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Get in touch</h4>
+        <h4><span data-l="en">Get in touch</span><span data-l="el">Επικοινωνία</span></h4>
         <ul>
           <li><a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></li>
-          <li><a href="index.html#booking">Book a free call</a></li>
+          <li><a href="index.html#booking"><span data-l="en">Book a free call</span><span data-l="el">Κλείστε δωρεάν κλήση</span></a></li>
         </ul>
         <p class="footer__vat" style="margin-top:18px;color:var(--muted)">
-          SitrixWeb · Thessaloniki, Greece<br>
+          <span data-l="en">SitrixWeb · Thessaloniki, Greece</span><span data-l="el">SitrixWeb · Θεσσαλονίκη, Ελλάδα</span><br>
           ΑΦΜ / VAT: <b style="color:var(--gray);font-weight:400">EL000000000</b><br>
-          <span style="opacity:.75">Full details in the legal notice</span>
+          <span style="opacity:.75"><span data-l="en">Full details in the legal notice</span><span data-l="el">Πλήρη στοιχεία στις νομικές πληροφορίες</span></span>
         </p>
       </div>
     </div>
     <div class="footer__bottom">
-      <span>© <span data-year>2026</span> SitrixWeb. All rights reserved.</span>
+      <span>© <span data-year>2026</span> SitrixWeb. <span data-l="en">All rights reserved.</span><span data-l="el">Με επιφύλαξη παντός δικαιώματος.</span></span>
       <div class="footer__legal">
-        <a href="privacy.html">Privacy</a>
+        <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
         <a href="cookies.html">Cookies</a>
-        <a href="terms.html">Terms</a>
-        <a href="imprint.html">Legal notice</a>
-        <a href="index.html">Home</a>
+        <a href="terms.html"><span data-l="en">Terms</span><span data-l="el">Όροι</span></a>
+        <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
+        <a href="index.html"><span data-l="en">Home</span><span data-l="el">Αρχική</span></a>
       </div>
     </div>
   </div>
 </footer>
 
-
-<!-- floating scroll-to-top, appears once past the first screen -->
-<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+<button class="to-top" id="toTop" type="button" data-aria-en="Back to top" data-aria-el="Επιστροφή στην κορυφή" aria-label="Back to top">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"/>
   </svg>
 </button>
 
 <script src="js/config.js"></script>
+<script src="js/strings.js" defer></script>
 <script src="js/site.js" defer></script>
 <script src="js/cursor.js" defer></script>
 <script src="js/consent.js" defer></script>

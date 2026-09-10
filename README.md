@@ -98,6 +98,9 @@ imprint.html        legal notice — business identification (P.D. 131/2003)
 css/fonts.css       self-hosted Inter (latin + greek subsets)
 css/style.css       the whole design system, in labelled sections
 js/config.js        deployment settings — the only file most changes need
+js/lang.js          Greek/English switching, before first paint
+js/strings.js       runtime strings in both languages
+js/cursor.js        the four pointer effects
 js/site.js          nav, menu, scroll reveals, hover-peek, shared form helpers
 js/globe.js         the hero globe (canvas, ~6KB, no library)
 js/booking.js       calendar, time slots, stepped mobile flow, validation
@@ -105,6 +108,27 @@ js/reviews.js       star input, review submission, the writer's own copy
 js/consent.js       cookie banner + preference centre
 assets/fonts/       Inter woff2 subsets
 ```
+
+## Greek and English
+
+Every page is bilingual. Both languages ship in the markup, marked
+`data-l="en"` and `data-l="el"`, and the stylesheet shows one and hides the
+other based on `data-lang` on `<html>`. `js/lang.js` stamps that attribute
+synchronously in `<head>`, before the first paint, so the page never flashes
+the wrong language; it also swaps what text nodes cannot hold twice — the
+title, meta description, placeholders and aria-labels — from `data-*-en` /
+`data-*-el` pairs. `js/strings.js` holds what the page writes at runtime:
+month and day names, validation messages, the consent banner.
+
+A first-time visitor gets Greek if their browser asks for Greek, English
+otherwise. The choice is remembered in `localStorage` under `sitrix_lang`,
+which needs no consent (Art. 5(3) of Directive 2002/58/EC excludes storage
+strictly necessary for a service the user asked for) and is listed in the
+cookie policy regardless.
+
+**To edit copy**, change both blocks — they sit next to each other in the
+HTML. Greek runs roughly 10–20% longer than English, so check the layout in
+Greek after any headline change.
 
 ## The cursor effect
 
@@ -131,8 +155,11 @@ unlinked and `noindex`; delete it once you have settled on one.
 * **Palette** — `#1d1b20` base, `#3d3a3f` surfaces, `#565459` borders, `#7b7a83` body copy,
   `#efe7f9` highlights, `#c8956c` copper for every action and accent, pure white reserved
   for headlines.
-* **Type** — Inter at 300 / 400 / 600–700 only. Hero 72–84px, section heads 40–56px, body
-  15–17px. Oversized copper punctuation is the recurring signature.
+* **Type** — Jura for headings and the wordmark, Manrope for body copy, JetBrains Mono for
+  labels, numbers and the section index. All three are self-hosted and carry Greek; the
+  usual "futuristic" faces (Space Grotesk, Exo 2, Orbitron, Oxanium, Geist) ship no Greek
+  at all, which is why none of them are here. Oversized copper punctuation is the
+  recurring signature.
 * **Motion** — 350–600ms, `cubic-bezier(.4,0,.2,1)`, no bounce anywhere. Three layers on
   every scene: primary (content enters), secondary (shadows and icons settle ~50ms later),
   ambient (aurora drift, orbit rings, grain). Mobile shortens durations ~20% and tightens

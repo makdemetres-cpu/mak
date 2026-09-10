@@ -2004,3 +2004,7 @@ html[data-lang="el"] [data-l="en"] { display: none !important; }
   .lang { height: 40px; }
   .lang__btn { padding: 0 11px; font-size: 10.5px; }
 }
+
+/* Sections in the legal documents carry the anchor id (the headings inside
+   them exist twice, once per language, so the id cannot live on them). */
+.doc__sec { scroll-margin-top: 110px; }

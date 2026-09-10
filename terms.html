@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lang="en"
+      data-title-en="Terms of Service — SitrixWeb"
+      data-title-el="Όροι Χρήσης — SitrixWeb"
+      data-desc-en="The terms for using the SitrixWeb website and for working together on a project, under Greek and EU law."
+      data-desc-el="Οι όροι χρήσης του ιστότοπου SitrixWeb και συνεργασίας σε έργο, βάσει ελληνικού και ενωσιακού δικαίου.">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,12 +12,17 @@
 <meta name="theme-color" content="#1d1b20">
 <meta name="robots" content="index,follow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%231d1b20'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23c8956c' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23565459' stroke-width='2' stroke-dasharray='5 7'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jura-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Runs before the first paint so the page never flashes the wrong language. -->
+<script src="js/lang.js"></script>
 </head>
 <body class="is-ready">
 
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main"><span data-l="en">Skip to content</span><span data-l="el">Μετάβαση στο περιεχόμενο</span></a>
 
 <div class="aurora is-lit" aria-hidden="true">
   <div class="aurora__blob aurora__blob--purple"></div>
@@ -31,13 +40,17 @@
     <span>Sitrix<b>Web</b><span class="dot">.</span></span>
   </a>
   <div class="nav__right">
-    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" aria-label="SitrixWeb on Instagram">
+    <div class="lang" role="group" data-aria-en="Language" data-aria-el="Γλώσσα" aria-label="Language">
+      <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+      <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+    </div>
+    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" data-aria-en="SitrixWeb on Instagram" data-aria-el="Η SitrixWeb στο Instagram" aria-label="SitrixWeb on Instagram">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
         <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
       </svg>
     </a>
-    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" data-aria-en="Open menu" data-aria-el="Άνοιγμα μενού" aria-label="Open menu">
       <span class="burger__lines" aria-hidden="true"><span></span><span></span></span>
     </button>
   </div>
@@ -46,15 +59,19 @@
 <nav class="menu" id="menu" aria-hidden="true" aria-label="Main">
   <div class="menu__inner">
     <ul class="menu__list">
-      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> Hi</a></li>
-      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> The studio</a></li>
-      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> What I build</a></li>
-      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> Selected works</a></li>
-      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> Process</a></li>
-      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> Reviews</a></li>
-      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> Book a call</a></li>
+      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> <span data-l="en">Hi</span><span data-l="el">Γεια</span></a></li>
+      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> <span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> <span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> <span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> <span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> <span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
+      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> <span data-l="en">Book a call</span><span data-l="el">Κλείστε κλήση</span></a></li>
     </ul>
     <div class="menu__foot">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+        <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      </div>
       <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
@@ -63,8 +80,8 @@
         Instagram
       </a>
       <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="imprint.html">Legal notice</a>
+      <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
+      <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
     </div>
   </div>
 </nav>
@@ -73,87 +90,133 @@
   <div class="wrap">
     <div class="doc__grid">
       <aside class="doc__toc" aria-label="On this page">
-        <p class="eyebrow eyebrow--gray">On this page</p>
-        <ul><li><a href="#who">1 · Who you are contracting with</a></li><li><a href="#services">2 · What I do</a></li><li><a href="#quote">3 · Quotes and scope</a></li><li><a href="#price">4 · Prices, VAT and payment</a></li><li><a href="#time">5 · Timelines</a></li><li><a href="#you">6 · What I need from you</a></li><li><a href="#ip">7 · Ownership and licences</a></li><li><a href="#third">8 · Third-party services</a></li><li><a href="#care">9 · Support and maintenance</a></li><li><a href="#warranty">10 · Warranty</a></li><li><a href="#liability">11 · Liability</a></li><li><a href="#cancel">12 · Cancellation</a></li><li><a href="#withdraw">13 · Consumer right of withdrawal</a></li><li><a href="#booking">14 · Consultation bookings and reviews</a></li><li><a href="#force">15 · Force majeure</a></li><li><a href="#law">16 · Governing law and disputes</a></li><li><a href="#changes">17 · Changes</a></li></ul>
+        <p class="eyebrow eyebrow--gray"><span data-l="en">On this page</span><span data-l="el">Σε αυτή τη σελίδα</span></p>
+        <ul><li><a href="#who"><span data-l="en">1 · Who you are contracting with</span><span data-l="el">1 · Με ποιον συμβάλλεστε</span></a></li><li><a href="#services"><span data-l="en">2 · What I do</span><span data-l="el">2 · Τι κάνω</span></a></li><li><a href="#quote"><span data-l="en">3 · Quotes and scope</span><span data-l="el">3 · Προσφορές και αντικείμενο</span></a></li><li><a href="#price"><span data-l="en">4 · Prices, VAT and payment</span><span data-l="el">4 · Τιμές, ΦΠΑ και πληρωμή</span></a></li><li><a href="#time"><span data-l="en">5 · Timelines</span><span data-l="el">5 · Χρονοδιαγράμματα</span></a></li><li><a href="#you"><span data-l="en">6 · What I need from you</span><span data-l="el">6 · Τι χρειάζομαι από εσάς</span></a></li><li><a href="#ip"><span data-l="en">7 · Ownership and licences</span><span data-l="el">7 · Κυριότητα και άδειες</span></a></li><li><a href="#third"><span data-l="en">8 · Third-party services</span><span data-l="el">8 · Υπηρεσίες τρίτων</span></a></li><li><a href="#care"><span data-l="en">9 · Support and maintenance</span><span data-l="el">9 · Υποστήριξη και συντήρηση</span></a></li><li><a href="#warranty"><span data-l="en">10 · Warranty</span><span data-l="el">10 · Εγγύηση</span></a></li><li><a href="#liability"><span data-l="en">11 · Liability</span><span data-l="el">11 · Ευθύνη</span></a></li><li><a href="#cancel"><span data-l="en">12 · Cancellation</span><span data-l="el">12 · Ακύρωση</span></a></li><li><a href="#withdraw"><span data-l="en">13 · Consumer right of withdrawal</span><span data-l="el">13 · Δικαίωμα υπαναχώρησης καταναλωτή</span></a></li><li><a href="#booking"><span data-l="en">14 · Consultation bookings and reviews</span><span data-l="el">14 · Κρατήσεις και κριτικές</span></a></li><li><a href="#force"><span data-l="en">15 · Force majeure</span><span data-l="el">15 · Ανωτέρα βία</span></a></li><li><a href="#law"><span data-l="en">16 · Governing law and disputes</span><span data-l="el">16 · Εφαρμοστέο δίκαιο και διαφορές</span></a></li><li><a href="#changes"><span data-l="en">17 · Changes</span><span data-l="el">17 · Αλλαγές</span></a></li></ul>
       </aside>
       <div class="doc__body">
 
-        <h1>Terms of Service<span class="dot">.</span></h1>
-        <p class="doc__meta">Last updated 8 September 2026 · Greek law, including Law 2251/1994 on consumer protection and P.D. 131/2003 on electronic commerce</p>
-        <p class="lead">The rules for using this website and for working together. Written to be read, not to be survived.</p>
-
+        <h1 data-l="en">Terms of Service<span class="dot">.</span></h1>
+        <h1 data-l="el">Όροι Χρήσης<span class="dot">.</span></h1>
+        <p class="doc__meta" data-l="en">Last updated 10 September 2026 · Greek law, including Law 2251/1994 on consumer protection and P.D. 131/2003 on electronic commerce</p>
+<p class="doc__meta" data-l="el">Τελευταία ενημέρωση 10 Σεπτεμβρίου 2026 · Ελληνικό δίκαιο, περιλαμβανομένων του Ν. 2251/1994 για την προστασία του καταναλωτή και του Π.Δ. 131/2003 για το ηλεκτρονικό εμπόριο</p>
+        <p class="lead" data-l="en">The rules for using this website and for working together. Written to be read, not to be survived.</p>
+<p class="lead" data-l="el">Οι κανόνες για τη χρήση του ιστότοπου και για τη συνεργασία μας. Γραμμένοι για να διαβάζονται, όχι για να τους αντέχει κανείς.</p>
         <div class="doc__note">
-          <b>Before you publish:</b> every value written like <b>[ ... ]</b> below is a placeholder.
-          Replace them with your real registered details, and have a Greek lawyer read the finished
-          text once — this is a solid, honest starting point, not legal advice.
+          <p data-l="en"><b>Before you publish:</b> every value written like <b>[ ... ]</b> below is a placeholder. Replace them with your real registered details, and have a Greek lawyer read the finished text once — this is a solid, honest starting point, not legal advice.</p>
+<p data-l="el"><b>Πριν τη δημοσίευση:</b> κάθε τιμή γραμμένη ως <b>[ ... ]</b> είναι placeholder. Αντικαταστήστε τις με τα πραγματικά σας στοιχεία και δώστε το τελικό κείμενο σε Έλληνα δικηγόρο για μία ανάγνωση — αυτό είναι μια σοβαρή, ειλικρινής αφετηρία, όχι νομική συμβουλή.</p>
         </div>
-        <h2 id="who">1 · Who you are contracting with</h2>
-        <p><strong>SitrixWeb</strong>, [full registered business name], [street address], [postal code] Thessaloniki, Greece, ΑΦΜ [EL000000000], ΓΕΜΗ [number] — referred to below as "the studio", "I" or "me". Full identification details are in the <a href="imprint.html">legal notice</a>.</p>
-        <p>Browsing this site means you accept these terms. A project is governed by these terms together with the written scope and quote you approve; where the two disagree, the signed scope wins.</p>
 
-        <h2 id="services">2 · What I do</h2>
-        <p>Design, development, maintenance and consulting for websites and web applications, as described on the home page. Free consultations are exactly that — advice given in good faith on incomplete information, not a professional opinion you should rely on without a written scope behind it.</p>
+<section class="doc__sec" id="who">
+  <h2><span data-l="en">1 · Who you are contracting with</span><span data-l="el">1 · Με ποιον συμβάλλεστε</span></h2>
+<p data-l="en"><strong>SitrixWeb</strong>, [full registered business name], [street address], [postal code] Thessaloniki, Greece, ΑΦΜ [EL000000000], ΓΕΜΗ [number] — referred to below as “the studio”, “I” or “me”. Full identification details are in the <a href="imprint.html">legal notice</a>.</p>
+<p data-l="el"><strong>SitrixWeb</strong>, [πλήρης επωνυμία], [οδός και αριθμός], [ΤΚ] Θεσσαλονίκη, ΑΦΜ [000000000], ΓΕΜΗ [αριθμός] — στο εξής «το στούντιο» ή «εγώ». Πλήρη στοιχεία στις <a href="imprint.html">νομικές πληροφορίες</a>.</p>
+<p data-l="en">Browsing this site means you accept these terms. A project is governed by these terms together with the written scope and quote you approve; where the two disagree, the signed scope wins.</p>
+<p data-l="el">Η περιήγηση στον ιστότοπο σημαίνει ότι αποδέχεστε τους όρους. Κάθε έργο διέπεται από αυτούς τους όρους μαζί με το γραπτό αντικείμενο και την προσφορά που εγκρίνετε· σε περίπτωση διαφωνίας, υπερισχύει το υπογεγραμμένο αντικείμενο.</p>
+</section>
 
-        <h2 id="quote">3 · Quotes and scope</h2>
-        <p>Every project starts with a written scope: the pages, the features, what is explicitly excluded, the price and the dates. A quote is valid for <strong>30 days</strong>. Work begins once you approve the scope in writing (email is fine) and the deposit has cleared. Anything not in the scope is a change request — I will price it before doing it, never after.</p>
+<section class="doc__sec" id="services">
+  <h2><span data-l="en">2 · What I do</span><span data-l="el">2 · Τι κάνω</span></h2>
+<p data-l="en">Design, development, maintenance and consulting for websites and web applications, as described on the home page. Free consultations are exactly that — advice given in good faith on incomplete information, not a professional opinion you should rely on without a written scope behind it.</p>
+<p data-l="el">Σχεδιασμός, ανάπτυξη, συντήρηση και συμβουλευτική για ιστότοπους και web εφαρμογές, όπως περιγράφεται στην αρχική. Οι δωρεάν συμβουλευτικές είναι ακριβώς αυτό — συμβουλή καλή τη πίστει πάνω σε ελλιπή στοιχεία, όχι επαγγελματική γνωμοδότηση στην οποία πρέπει να στηριχθείτε χωρίς γραπτό αντικείμενο.</p>
+</section>
 
-        <h2 id="price">4 · Prices, VAT and payment</h2>
-        <ul>
-          <li>Prices are quoted in euro (€) and are <strong>exclusive of Greek VAT (ΦΠΑ)</strong>, which is added at the rate in force on the invoice date.</li>
-          <li>For EU business clients with a valid VIES-registered VAT number, the reverse-charge mechanism applies where the law allows it.</li>
-          <li>Standard terms: <strong>40% deposit</strong> on approval, <strong>60% on delivery</strong>, before the site goes live on your domain. Larger projects may be split into milestones in the scope.</li>
-          <li>Invoices are due within <strong>14 days</strong>. Late payment carries statutory default interest under Greek law (P.D. 166/2003 for business-to-business transactions).</li>
-          <li>Third-party costs you approve — domains, hosting, licences, stock imagery — are billed at cost or paid directly by you.</li>
-        </ul>
+<section class="doc__sec" id="quote">
+  <h2><span data-l="en">3 · Quotes and scope</span><span data-l="el">3 · Προσφορές και αντικείμενο</span></h2>
+<p data-l="en">Every project starts with a written scope: the pages, the features, what is explicitly excluded, the price and the dates. A quote is valid for <strong>30 days</strong>. Work begins once you approve the scope in writing (email is fine) and the deposit has cleared. Anything not in the scope is a change request — I will price it before doing it, never after.</p>
+<p data-l="el">Κάθε έργο ξεκινά με γραπτό αντικείμενο: σελίδες, λειτουργίες, τι ρητά δεν περιλαμβάνεται, τιμή και ημερομηνίες. Η προσφορά ισχύει για <strong>30 ημέρες</strong>. Η εργασία ξεκινά μόλις εγκρίνετε γραπτώς το αντικείμενο (αρκεί email) και εισπραχθεί η προκαταβολή. Ό,τι δεν περιλαμβάνεται είναι αίτημα αλλαγής — το κοστολογώ πριν το κάνω, ποτέ μετά.</p>
+</section>
 
-        <h2 id="time">5 · Timelines</h2>
-        <p>Dates in a scope assume feedback and content arrive when agreed. If material or approvals are late, delivery dates shift by at least the same amount; I will tell you as soon as that happens rather than at the deadline.</p>
+<section class="doc__sec" id="price">
+  <h2><span data-l="en">4 · Prices, VAT and payment</span><span data-l="el">4 · Τιμές, ΦΠΑ και πληρωμή</span></h2>
+<ul data-l="en"><li>Prices are quoted in euro (€) and are <strong>exclusive of Greek VAT (ΦΠΑ)</strong>, which is added at the rate in force on the invoice date.</li><li>For EU business clients with a valid VIES-registered VAT number, the reverse-charge mechanism applies where the law allows it.</li><li>Standard terms: <strong>40% deposit</strong> on approval, <strong>60% on delivery</strong>, before the site goes live on your domain. Larger projects may be split into milestones in the scope.</li><li>Invoices are due within <strong>14 days</strong>. Late payment carries statutory default interest under Greek law (P.D. 166/2003 for business-to-business transactions).</li><li>Third-party costs you approve — domains, hosting, licences, stock imagery — are billed at cost or paid directly by you.</li></ul>
+<ul data-l="el"><li>Οι τιμές δίνονται σε ευρώ (€) και είναι <strong>χωρίς ΦΠΑ</strong>, ο οποίος προστίθεται με τον συντελεστή που ισχύει κατά την ημερομηνία τιμολόγησης.</li><li>Για επιχειρήσεις εντός ΕΕ με έγκυρο ΑΦΜ/VIES εφαρμόζεται η αντίστροφη επιβάρυνση όπου το επιτρέπει ο νόμος.</li><li>Τυπικοί όροι: <strong>40% προκαταβολή</strong> με την έγκριση, <strong>60% στην παράδοση</strong>, πριν το site βγει live στο domain σας. Μεγαλύτερα έργα μπορούν να χωριστούν σε ορόσημα.</li><li>Τα τιμολόγια εξοφλούνται εντός <strong>14 ημερών</strong>. Η καθυστέρηση επιφέρει νόμιμους τόκους υπερημερίας (Π.Δ. 166/2003 για συναλλαγές μεταξύ επιχειρήσεων).</li><li>Κόστη τρίτων που εγκρίνετε — domains, φιλοξενία, άδειες, φωτογραφικό υλικό — χρεώνονται στο κόστος ή τα πληρώνετε απευθείας.</li></ul>
+</section>
 
-        <h2 id="you">6 · What I need from you</h2>
-        <p>Content, images, logins and approvals, on time — and the confirmation that you own or are licensed to use everything you send me. You are responsible for the legality of the content you supply; I am responsible for the code I write.</p>
+<section class="doc__sec" id="time">
+  <h2><span data-l="en">5 · Timelines</span><span data-l="el">5 · Χρονοδιαγράμματα</span></h2>
+<p data-l="en">Dates in a scope assume feedback and content arrive when agreed. If material or approvals are late, delivery dates shift by at least the same amount; I will tell you as soon as that happens rather than at the deadline.</p>
+<p data-l="el">Οι ημερομηνίες προϋποθέτουν ότι τα σχόλια και το υλικό φτάνουν όπως συμφωνήθηκε. Αν καθυστερήσει υλικό ή έγκριση, οι ημερομηνίες παράδοσης μετατίθενται τουλάχιστον ισόποσα· θα σας το πω μόλις συμβεί, όχι στην προθεσμία.</p>
+</section>
 
-        <h2 id="ip">7 · Ownership and licences</h2>
-        <ul>
-          <li>On <strong>full payment</strong>, you own the deliverables built specifically for you: the design, the page templates, the project-specific code and the content.</li>
-          <li>I keep ownership of my <strong>pre-existing tools</strong>, libraries and generic components, and grant you a perpetual, worldwide, non-exclusive licence to use them as part of your project.</li>
-          <li>Third-party components stay under their own licences (typically open source), which pass to you with the project.</li>
-          <li>Until final payment, you have no licence to use the deliverables in production.</li>
-          <li>Unless you ask me not to, I may show the finished work in my portfolio and on social media. Say the word and I will not — no explanation needed.</li>
-        </ul>
+<section class="doc__sec" id="you">
+  <h2><span data-l="en">6 · What I need from you</span><span data-l="el">6 · Τι χρειάζομαι από εσάς</span></h2>
+<p data-l="en">Content, images, logins and approvals, on time — and the confirmation that you own or are licensed to use everything you send me. You are responsible for the legality of the content you supply; I am responsible for the code I write.</p>
+<p data-l="el">Κείμενα, εικόνες, κωδικούς και εγκρίσεις, στην ώρα τους — και τη βεβαίωση ότι έχετε τα δικαιώματα ή τις άδειες για ό,τι μου στέλνετε. Είστε υπεύθυνοι για τη νομιμότητα του υλικού που παρέχετε· εγώ είμαι υπεύθυνος για τον κώδικα που γράφω.</p>
+</section>
 
-        <h2 id="third">8 · Third-party services</h2>
-        <p>Hosting, domains, payment providers, email and similar services are provided by third parties under their own terms. I will recommend and configure them, but I do not control them and cannot be liable for their outages, price changes or policy decisions. Wherever possible the accounts are registered <strong>in your name</strong>, so you are never locked out of your own business.</p>
+<section class="doc__sec" id="ip">
+  <h2><span data-l="en">7 · Ownership and licences</span><span data-l="el">7 · Κυριότητα και άδειες</span></h2>
+<ul data-l="en"><li>On <strong>full payment</strong>, you own the deliverables built specifically for you: the design, the page templates, the project-specific code and the content.</li><li>I keep ownership of my <strong>pre-existing tools</strong>, libraries and generic components, and grant you a perpetual, worldwide, non-exclusive licence to use them as part of your project.</li><li>Third-party components stay under their own licences (typically open source), which pass to you with the project.</li><li>Until final payment, you have no licence to use the deliverables in production.</li><li>Unless you ask me not to, I may show the finished work in my portfolio and on social media. Say the word and I will not — no explanation needed.</li></ul>
+<ul data-l="el"><li>Με την <strong>πλήρη εξόφληση</strong>, σας ανήκουν τα παραδοτέα που φτιάχτηκαν ειδικά για εσάς: ο σχεδιασμός, τα πρότυπα σελίδων, ο κώδικας του έργου και το περιεχόμενο.</li><li>Διατηρώ την κυριότητα των <strong>προϋπαρχόντων εργαλείων</strong>, βιβλιοθηκών και γενικών στοιχείων μου, και σας παρέχω διαρκή, παγκόσμια, μη αποκλειστική άδεια χρήσης τους στο έργο σας.</li><li>Τα στοιχεία τρίτων παραμένουν υπό τις δικές τους άδειες (συνήθως ανοιχτού κώδικα), οι οποίες μεταβιβάζονται μαζί με το έργο.</li><li>Μέχρι την τελική εξόφληση δεν έχετε άδεια χρήσης των παραδοτέων σε παραγωγή.</li><li>Εκτός αν μου πείτε το αντίθετο, μπορώ να προβάλλω το ολοκληρωμένο έργο στο portfolio και στα κοινωνικά δίκτυα. Πείτε μου και δεν θα το κάνω — χωρίς εξηγήσεις.</li></ul>
+</section>
 
-        <h2 id="care">9 · Support and maintenance</h2>
-        <p>Maintenance plans are monthly, cancellable by either side with <strong>30 days' notice</strong>, and cover what the plan says — updates, backups, monitoring and a defined amount of small-change time. Emergency work outside the plan is billed at the hourly rate in your scope.</p>
+<section class="doc__sec" id="third">
+  <h2><span data-l="en">8 · Third-party services</span><span data-l="el">8 · Υπηρεσίες τρίτων</span></h2>
+<p data-l="en">Hosting, domains, payment providers, email and similar services are provided by third parties under their own terms. I will recommend and configure them, but I do not control them and cannot be liable for their outages, price changes or policy decisions. Wherever possible the accounts are registered <strong>in your name</strong>, so you are never locked out of your own business.</p>
+<p data-l="el">Η φιλοξενία, τα domains, οι πάροχοι πληρωμών, το email και παρόμοιες υπηρεσίες παρέχονται από τρίτους με δικούς τους όρους. Τους προτείνω και τους ρυθμίζω, αλλά δεν τους ελέγχω και δεν ευθύνομαι για διακοπές, αλλαγές τιμών ή αποφάσεις πολιτικής τους. Όπου είναι δυνατόν, οι λογαριασμοί ανοίγονται <strong>στο όνομά σας</strong>, ώστε να μη μείνετε ποτέ κλειδωμένοι έξω από την ίδια σας την επιχείρηση.</p>
+</section>
 
-        <h2 id="warranty">10 · Warranty</h2>
-        <p>Defects in my work reported within <strong>60 days</strong> of delivery are fixed free of charge. That covers code that does not do what the approved scope says it does. It does not cover changes of mind, new requirements, content edits, or breakage caused by someone else editing the site, by a third-party service changing, or by a plugin you installed. Your statutory rights as a consumer under Law 2251/1994 are unaffected by this clause.</p>
+<section class="doc__sec" id="care">
+  <h2><span data-l="en">9 · Support and maintenance</span><span data-l="el">9 · Υποστήριξη και συντήρηση</span></h2>
+<p data-l="en">Maintenance plans are monthly, cancellable by either side with <strong>30 days' notice</strong>, and cover what the plan says — updates, backups, monitoring and a defined amount of small-change time. Emergency work outside the plan is billed at the hourly rate in your scope.</p>
+<p data-l="el">Τα πακέτα συντήρησης είναι μηνιαία, ακυρώνονται και από τις δύο πλευρές με <strong>προειδοποίηση 30 ημερών</strong>, και καλύπτουν όσα ορίζει το πακέτο — ενημερώσεις, αντίγραφα ασφαλείας, παρακολούθηση και συγκεκριμένο χρόνο για μικροαλλαγές. Επείγουσες εργασίες εκτός πακέτου χρεώνονται με την ωριαία χρέωση του αντικειμένου σας.</p>
+</section>
 
-        <h2 id="liability">11 · Liability</h2>
-        <p>Nothing here limits liability for death or personal injury, for fraud, or for wilful misconduct or gross negligence — Greek law does not allow that, and neither would I. Subject to that, my total liability arising from a project is limited to the <strong>fees you actually paid for that project</strong>, and I am not liable for indirect or consequential loss such as lost profit, lost data or lost business, where such limitation is permitted by law.</p>
-        <p>You are responsible for keeping your own backups of content you supply, and for the accuracy of the information published on your site.</p>
+<section class="doc__sec" id="warranty">
+  <h2><span data-l="en">10 · Warranty</span><span data-l="el">10 · Εγγύηση</span></h2>
+<p data-l="en">Defects in my work reported within <strong>60 days</strong> of delivery are fixed free of charge. That covers code that does not do what the approved scope says it does. It does not cover changes of mind, new requirements, content edits, or breakage caused by someone else editing the site, by a third-party service changing, or by a plugin you installed. Your statutory rights as a consumer under Law 2251/1994 are unaffected by this clause.</p>
+<p data-l="el">Ελαττώματα της δουλειάς μου που αναφέρονται εντός <strong>60 ημερών</strong> από την παράδοση διορθώνονται χωρίς χρέωση. Αυτό καλύπτει κώδικα που δεν κάνει όσα ορίζει το εγκεκριμένο αντικείμενο. Δεν καλύπτει αλλαγές γνώμης, νέες απαιτήσεις, αλλαγές περιεχομένου ή βλάβες από επεμβάσεις τρίτων, από αλλαγές σε υπηρεσία τρίτου ή από πρόσθετο που εγκαταστήσατε. Τα νόμιμα δικαιώματά σας ως καταναλωτή κατά τον Ν. 2251/1994 δεν θίγονται.</p>
+</section>
 
-        <h2 id="cancel">12 · Cancellation</h2>
-        <p>You can stop a project at any time in writing. You pay for work completed and costs committed up to that point; the deposit covers the initial work and is non-refundable once the project has started. I may stop a project if invoices go unpaid for more than 30 days after a written reminder, or if the work would require me to break the law or infringe someone's rights.</p>
+<section class="doc__sec" id="liability">
+  <h2><span data-l="en">11 · Liability</span><span data-l="el">11 · Ευθύνη</span></h2>
+<p data-l="en">Nothing here limits liability for death or personal injury, for fraud, or for wilful misconduct or gross negligence — Greek law does not allow that, and neither would I. Subject to that, my total liability arising from a project is limited to the <strong>fees you actually paid for that project</strong>, and I am not liable for indirect or consequential loss such as lost profit, lost data or lost business, where such limitation is permitted by law.</p>
+<p data-l="el">Τίποτα εδώ δεν περιορίζει την ευθύνη για θάνατο ή σωματική βλάβη, για απάτη, ή για δόλο και βαριά αμέλεια — ούτε ο ελληνικός νόμος το επιτρέπει, ούτε εγώ θα το ήθελα. Με αυτή την επιφύλαξη, η συνολική ευθύνη μου από ένα έργο περιορίζεται στις <strong>αμοιβές που πράγματι καταβάλατε για το έργο αυτό</strong>, και δεν ευθύνομαι για έμμεσες ή αποθετικές ζημίες όπως διαφυγόντα κέρδη, απώλεια δεδομένων ή απώλεια πελατείας, στον βαθμό που ο περιορισμός επιτρέπεται από τον νόμο.</p>
+<p data-l="en">You are responsible for keeping your own backups of content you supply, and for the accuracy of the information published on your site.</p>
+<p data-l="el">Είστε υπεύθυνοι για τα δικά σας αντίγραφα ασφαλείας του υλικού που παρέχετε και για την ακρίβεια των πληροφοριών που δημοσιεύονται στο site σας.</p>
+</section>
 
-        <h2 id="withdraw">13 · Consumer right of withdrawal</h2>
-        <p>If you are a <strong>consumer</strong> (a natural person acting outside your trade or profession) and the contract is concluded at a distance, you have <strong>14 days</strong> to withdraw without giving a reason, under Law 2251/1994 (implementing Directive 2011/83/EU). Tell me by email within that period.</p>
-        <p>If you expressly ask me to start work during the withdrawal period and acknowledge that you lose the right to withdraw once the service is fully performed, then: withdrawing before completion means paying for the proportion already delivered; once the service is fully performed with your prior express consent, the right of withdrawal no longer applies. Business clients do not have this right.</p>
+<section class="doc__sec" id="cancel">
+  <h2><span data-l="en">12 · Cancellation</span><span data-l="el">12 · Ακύρωση</span></h2>
+<p data-l="en">You can stop a project at any time in writing. You pay for work completed and costs committed up to that point; the deposit covers the initial work and is non-refundable once the project has started. I may stop a project if invoices go unpaid for more than 30 days after a written reminder, or if the work would require me to break the law or infringe someone's rights.</p>
+<p data-l="el">Μπορείτε να σταματήσετε ένα έργο οποτεδήποτε, γραπτώς. Πληρώνετε την εργασία που έχει ολοκληρωθεί και τα κόστη που έχουν δεσμευτεί μέχρι εκείνο το σημείο· η προκαταβολή καλύπτει την αρχική εργασία και δεν επιστρέφεται αφού ξεκινήσει το έργο. Μπορώ να σταματήσω ένα έργο αν τιμολόγια μείνουν ανεξόφλητα για πάνω από 30 ημέρες μετά από γραπτή υπενθύμιση, ή αν η εργασία θα με ανάγκαζε να παραβώ τον νόμο ή δικαιώματα τρίτων.</p>
+</section>
 
-        <h2 id="booking">14 · Consultation bookings and reviews</h2>
-        <p>A booked consultation is free and non-binding on both sides. Please cancel by email if you cannot make it — a no-show costs someone else the slot.</p>
-        <p>Reviews submitted through this site are read before publication. I publish them <strong>unedited except for obvious typos</strong>, and I do not publish incentivised, purchased or fabricated reviews — that would be an unfair commercial practice under Directive 2005/29/EC as amended and Law 2251/1994. I may decline to publish content that is unlawful, defamatory, contains personal data of third parties, or is not from an actual client. You can ask for your review to be removed at any time.</p>
+<section class="doc__sec" id="withdraw">
+  <h2><span data-l="en">13 · Consumer right of withdrawal</span><span data-l="el">13 · Δικαίωμα υπαναχώρησης καταναλωτή</span></h2>
+<p data-l="en">If you are a <strong>consumer</strong> (a natural person acting outside your trade or profession) and the contract is concluded at a distance, you have <strong>14 days</strong> to withdraw without giving a reason, under Law 2251/1994 (implementing Directive 2011/83/EU). Tell me by email within that period.</p>
+<p data-l="el">Αν είστε <strong>καταναλωτής</strong> (φυσικό πρόσωπο που ενεργεί εκτός της εμπορικής ή επαγγελματικής του δραστηριότητας) και η σύμβαση συνάπτεται από απόσταση, έχετε <strong>14 ημέρες</strong> να υπαναχωρήσετε χωρίς αιτιολογία, κατά τον Ν. 2251/1994 (Οδηγία 2011/83/ΕΕ). Ενημερώστε με με email εντός της προθεσμίας.</p>
+<p data-l="en">If you expressly ask me to start work during the withdrawal period and acknowledge that you lose the right to withdraw once the service is fully performed, then: withdrawing before completion means paying for the proportion already delivered; once the service is fully performed with your prior express consent, the right of withdrawal no longer applies. Business clients do not have this right.</p>
+<p data-l="el">Αν μου ζητήσετε ρητά να ξεκινήσω εντός της προθεσμίας υπαναχώρησης και αναγνωρίσετε ότι χάνετε το δικαίωμα μόλις η υπηρεσία εκτελεστεί πλήρως, τότε: υπαναχώρηση πριν την ολοκλήρωση σημαίνει πληρωμή του τμήματος που έχει ήδη παραδοθεί· μόλις η υπηρεσία εκτελεστεί πλήρως με την προηγούμενη ρητή συγκατάθεσή σας, το δικαίωμα υπαναχώρησης παύει. Οι επιχειρήσεις δεν έχουν αυτό το δικαίωμα.</p>
+</section>
 
-        <h2 id="force">15 · Force majeure</h2>
-        <p>Neither side is liable for delays caused by events outside reasonable control — infrastructure or provider outages, natural disasters, strikes, war, or serious illness. The affected deadlines move by the length of the event, and the other side is told promptly.</p>
+<section class="doc__sec" id="booking">
+  <h2><span data-l="en">14 · Consultation bookings and reviews</span><span data-l="el">14 · Κρατήσεις και κριτικές</span></h2>
+<p data-l="en">A booked consultation is free and non-binding on both sides. Please cancel by email if you cannot make it — a no-show costs someone else the slot.</p>
+<p data-l="el">Η κρατημένη συμβουλευτική είναι δωρεάν και μη δεσμευτική και για τις δύο πλευρές. Ακυρώστε με email αν δεν μπορείτε να έρθετε — μια κενή ώρα στερεί τη θέση από κάποιον άλλον.</p>
+<p data-l="en">Reviews submitted through this site are read before publication. I publish them <strong>unedited except for obvious typos</strong>, and I do not publish incentivised, purchased or fabricated reviews — that would be an unfair commercial practice under Directive 2005/29/EC as amended and Law 2251/1994. I may decline to publish content that is unlawful, defamatory, contains personal data of third parties, or is not from an actual client. You can ask for your review to be removed at any time.</p>
+<p data-l="el">Οι κριτικές που υποβάλλονται διαβάζονται πριν δημοσιευτούν. Τις δημοσιεύω <strong>χωρίς επεξεργασία, πέραν προφανών τυπογραφικών</strong>, και δεν δημοσιεύω κριτικές με αντάλλαγμα, αγορασμένες ή κατασκευασμένες — αυτό θα ήταν αθέμιτη εμπορική πρακτική κατά την Οδηγία 2005/29/ΕΚ όπως ισχύει και τον Ν. 2251/1994. Μπορεί να αρνηθώ δημοσίευση περιεχομένου παράνομου, δυσφημιστικού, που περιέχει προσωπικά δεδομένα τρίτων ή που δεν προέρχεται από πραγματικό πελάτη. Μπορείτε να ζητήσετε την αφαίρεση της κριτικής σας οποτεδήποτε.</p>
+</section>
 
-        <h2 id="law">16 · Governing law and disputes</h2>
-        <p>These terms are governed by <strong>Greek law</strong>. If you are a consumer, you keep the protection of the mandatory rules of the country you live in, and you may bring proceedings in your own courts. For business clients, the courts of <strong>Thessaloniki, Greece</strong> have exclusive jurisdiction.</p>
-        <p>Before going to court, consumers can use out-of-court dispute resolution, including the Greek <strong>Consumer Ombudsman</strong> (Συνήγορος του Καταναλωτή, Leof. Alexandras 144, 114 71 Athens, <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener noreferrer">synigoroskatanaloti.gr</a>) or a certified ADR body under Law 4512/2018. I am happy to take part in that process.</p>
+<section class="doc__sec" id="force">
+  <h2><span data-l="en">15 · Force majeure</span><span data-l="el">15 · Ανωτέρα βία</span></h2>
+<p data-l="en">Neither side is liable for delays caused by events outside reasonable control — infrastructure or provider outages, natural disasters, strikes, war, or serious illness. The affected deadlines move by the length of the event, and the other side is told promptly.</p>
+<p data-l="el">Καμία πλευρά δεν ευθύνεται για καθυστερήσεις από γεγονότα εκτός εύλογου ελέγχου — βλάβες υποδομών ή παρόχων, φυσικές καταστροφές, απεργίες, πόλεμο ή σοβαρή ασθένεια. Οι προθεσμίες μετατίθενται όσο διαρκεί το γεγονός και η άλλη πλευρά ενημερώνεται άμεσα.</p>
+</section>
 
-        <h2 id="changes">17 · Changes</h2>
-        <p>These terms may change; the version in force is the one published here when your scope was approved, and the date at the top tells you which that is. Changes never apply retroactively to a project already agreed.</p>
+<section class="doc__sec" id="law">
+  <h2><span data-l="en">16 · Governing law and disputes</span><span data-l="el">16 · Εφαρμοστέο δίκαιο και διαφορές</span></h2>
+<p data-l="en">These terms are governed by <strong>Greek law</strong>. If you are a consumer, you keep the protection of the mandatory rules of the country you live in, and you may bring proceedings in your own courts. For business clients, the courts of <strong>Thessaloniki, Greece</strong> have exclusive jurisdiction.</p>
+<p data-l="el">Οι όροι διέπονται από το <strong>ελληνικό δίκαιο</strong>. Αν είστε καταναλωτής, διατηρείτε την προστασία των αναγκαστικού δικαίου κανόνων της χώρας διαμονής σας και μπορείτε να προσφύγετε στα δικά σας δικαστήρια. Για επιχειρήσεις, αποκλειστικά αρμόδια είναι τα δικαστήρια της <strong>Θεσσαλονίκης</strong>.</p>
+<p data-l="en">Before going to court, consumers can use out-of-court dispute resolution, including the Greek <strong>Consumer Ombudsman</strong> (Συνήγορος του Καταναλωτή, Leof. Alexandras 144, 114 71 Athens, <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener noreferrer">synigoroskatanaloti.gr</a>) or a certified ADR body under Law 4512/2018. I am happy to take part in that process.</p>
+<p data-l="el">Πριν από τα δικαστήρια, οι καταναλωτές μπορούν να χρησιμοποιήσουν εξωδικαστική επίλυση, όπως τον <strong>Συνήγορο του Καταναλωτή</strong> (Λ. Αλεξάνδρας 144, 114 71 Αθήνα, <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener noreferrer">synigoroskatanaloti.gr</a>) ή πιστοποιημένο φορέα ΕΕΔ κατά τον Ν. 4512/2018. Συμμετέχω πρόθυμα σε αυτή τη διαδικασία.</p>
+</section>
+
+<section class="doc__sec" id="changes">
+  <h2><span data-l="en">17 · Changes</span><span data-l="el">17 · Αλλαγές</span></h2>
+<p data-l="en">These terms may change; the version in force is the one published here when your scope was approved, and the date at the top tells you which that is. Changes never apply retroactively to a project already agreed.</p>
+<p data-l="el">Οι όροι μπορεί να αλλάξουν· ισχύει η έκδοση που ήταν δημοσιευμένη εδώ όταν εγκρίθηκε το αντικείμενό σας, και η ημερομηνία στην κορυφή σας λέει ποια είναι αυτή. Οι αλλαγές δεν ισχύουν αναδρομικά για έργο που έχει ήδη συμφωνηθεί.</p>
+</section>
 
       </div>
     </div>
@@ -171,70 +234,70 @@
           </svg>
           <span>Sitrix<b>Web</b><span class="dot">.</span></span>
         </a>
-        <p>Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="en">Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="el">Στούντιο κατασκευής ιστοσελίδων στην Ελλάδα, με πελάτες σε όλη την ΕΕ από την 1η Ιουνίου 2026.</p>
         <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" style="margin-top:20px">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
             <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
           </svg>
-          Follow on Instagram
+          <span data-l="en">Follow on Instagram</span><span data-l="el">Ακολουθήστε στο Instagram</span>
         </a>
       </div>
       <div>
-        <h4>Explore</h4>
+        <h4><span data-l="en">Explore</span><span data-l="el">Εξερεύνηση</span></h4>
         <ul>
-          <li><a href="index.html#about">The studio</a></li>
-          <li><a href="index.html#services">What I build</a></li>
-          <li><a href="index.html#works">Selected works</a></li>
-          <li><a href="index.html#process">Process</a></li>
-          <li><a href="index.html#reviews">Reviews</a></li>
+          <li><a href="index.html#about"><span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+          <li><a href="index.html#services"><span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+          <li><a href="index.html#works"><span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+          <li><a href="index.html#process"><span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+          <li><a href="index.html#reviews"><span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Legal</h4>
+        <h4><span data-l="en">Legal</span><span data-l="el">Νομικά</span></h4>
         <ul>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="imprint.html">Legal notice / Imprint</a></li>
-          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
+          <li><a href="privacy.html"><span data-l="en">Privacy Policy</span><span data-l="el">Πολιτική Απορρήτου</span></a></li>
+          <li><a href="cookies.html"><span data-l="en">Cookie Policy</span><span data-l="el">Πολιτική Cookies</span></a></li>
+          <li><a href="terms.html"><span data-l="en">Terms of Service</span><span data-l="el">Όροι Χρήσης</span></a></li>
+          <li><a href="imprint.html"><span data-l="en">Legal notice / Imprint</span><span data-l="el">Νομικές πληροφορίες</span></a></li>
+          <li><a href="#" data-cookie-settings><span data-l="en">Cookie settings</span><span data-l="el">Ρυθμίσεις cookies</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Get in touch</h4>
+        <h4><span data-l="en">Get in touch</span><span data-l="el">Επικοινωνία</span></h4>
         <ul>
           <li><a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></li>
-          <li><a href="index.html#booking">Book a free call</a></li>
+          <li><a href="index.html#booking"><span data-l="en">Book a free call</span><span data-l="el">Κλείστε δωρεάν κλήση</span></a></li>
         </ul>
         <p class="footer__vat" style="margin-top:18px;color:var(--muted)">
-          SitrixWeb · Thessaloniki, Greece<br>
+          <span data-l="en">SitrixWeb · Thessaloniki, Greece</span><span data-l="el">SitrixWeb · Θεσσαλονίκη, Ελλάδα</span><br>
           ΑΦΜ / VAT: <b style="color:var(--gray);font-weight:400">EL000000000</b><br>
-          <span style="opacity:.75">Full details in the legal notice</span>
+          <span style="opacity:.75"><span data-l="en">Full details in the legal notice</span><span data-l="el">Πλήρη στοιχεία στις νομικές πληροφορίες</span></span>
         </p>
       </div>
     </div>
     <div class="footer__bottom">
-      <span>© <span data-year>2026</span> SitrixWeb. All rights reserved.</span>
+      <span>© <span data-year>2026</span> SitrixWeb. <span data-l="en">All rights reserved.</span><span data-l="el">Με επιφύλαξη παντός δικαιώματος.</span></span>
       <div class="footer__legal">
-        <a href="privacy.html">Privacy</a>
+        <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
         <a href="cookies.html">Cookies</a>
-        <a href="terms.html">Terms</a>
-        <a href="imprint.html">Legal notice</a>
-        <a href="index.html">Home</a>
+        <a href="terms.html"><span data-l="en">Terms</span><span data-l="el">Όροι</span></a>
+        <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
+        <a href="index.html"><span data-l="en">Home</span><span data-l="el">Αρχική</span></a>
       </div>
     </div>
   </div>
 </footer>
 
-
-<!-- floating scroll-to-top, appears once past the first screen -->
-<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+<button class="to-top" id="toTop" type="button" data-aria-en="Back to top" data-aria-el="Επιστροφή στην κορυφή" aria-label="Back to top">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"/>
   </svg>
 </button>
 
 <script src="js/config.js"></script>
+<script src="js/strings.js" defer></script>
 <script src="js/site.js" defer></script>
 <script src="js/cursor.js" defer></script>
 <script src="js/consent.js" defer></script>

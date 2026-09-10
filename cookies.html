@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lang="en"
+      data-title-en="Cookie Policy — SitrixWeb"
+      data-title-el="Πολιτική Cookies — SitrixWeb"
+      data-desc-en="Exactly what SitrixWeb stores in your browser, why, and how to change or withdraw your consent."
+      data-desc-el="Τι ακριβώς αποθηκεύει η SitrixWeb στον browser σας, γιατί, και πώς να αλλάξετε ή να ανακαλέσετε τη συγκατάθεσή σας.">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,12 +12,17 @@
 <meta name="theme-color" content="#1d1b20">
 <meta name="robots" content="index,follow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%231d1b20'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23c8956c' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23565459' stroke-width='2' stroke-dasharray='5 7'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jura-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Runs before the first paint so the page never flashes the wrong language. -->
+<script src="js/lang.js"></script>
 </head>
 <body class="is-ready">
 
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main"><span data-l="en">Skip to content</span><span data-l="el">Μετάβαση στο περιεχόμενο</span></a>
 
 <div class="aurora is-lit" aria-hidden="true">
   <div class="aurora__blob aurora__blob--purple"></div>
@@ -31,13 +40,17 @@
     <span>Sitrix<b>Web</b><span class="dot">.</span></span>
   </a>
   <div class="nav__right">
-    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" aria-label="SitrixWeb on Instagram">
+    <div class="lang" role="group" data-aria-en="Language" data-aria-el="Γλώσσα" aria-label="Language">
+      <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+      <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+    </div>
+    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" data-aria-en="SitrixWeb on Instagram" data-aria-el="Η SitrixWeb στο Instagram" aria-label="SitrixWeb on Instagram">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
         <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
       </svg>
     </a>
-    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" data-aria-en="Open menu" data-aria-el="Άνοιγμα μενού" aria-label="Open menu">
       <span class="burger__lines" aria-hidden="true"><span></span><span></span></span>
     </button>
   </div>
@@ -46,15 +59,19 @@
 <nav class="menu" id="menu" aria-hidden="true" aria-label="Main">
   <div class="menu__inner">
     <ul class="menu__list">
-      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> Hi</a></li>
-      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> The studio</a></li>
-      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> What I build</a></li>
-      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> Selected works</a></li>
-      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> Process</a></li>
-      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> Reviews</a></li>
-      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> Book a call</a></li>
+      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> <span data-l="en">Hi</span><span data-l="el">Γεια</span></a></li>
+      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> <span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> <span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> <span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> <span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> <span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
+      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> <span data-l="en">Book a call</span><span data-l="el">Κλείστε κλήση</span></a></li>
     </ul>
     <div class="menu__foot">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+        <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      </div>
       <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
@@ -63,8 +80,8 @@
         Instagram
       </a>
       <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="imprint.html">Legal notice</a>
+      <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
+      <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
     </div>
   </div>
 </nav>
@@ -73,43 +90,86 @@
   <div class="wrap">
     <div class="doc__grid">
       <aside class="doc__toc" aria-label="On this page">
-        <p class="eyebrow eyebrow--gray">On this page</p>
-        <ul><li><a href="#what">1 · The short version</a></li><li><a href="#stored">2 · Exactly what is stored</a></li><li><a href="#third">3 · Third parties</a></li><li><a href="#change">4 · Changing your mind</a></li><li><a href="#browser">5 · Browser controls</a></li><li><a href="#law">6 · The law behind this</a></li></ul>
+        <p class="eyebrow eyebrow--gray"><span data-l="en">On this page</span><span data-l="el">Σε αυτή τη σελίδα</span></p>
+        <ul><li><a href="#what"><span data-l="en">1 · The short version</span><span data-l="el">1 · Με λίγα λόγια</span></a></li><li><a href="#stored"><span data-l="en">2 · Exactly what is stored</span><span data-l="el">2 · Τι ακριβώς αποθηκεύεται</span></a></li><li><a href="#third"><span data-l="en">3 · Third parties</span><span data-l="el">3 · Τρίτα μέρη</span></a></li><li><a href="#change"><span data-l="en">4 · Changing your mind</span><span data-l="el">4 · Αν αλλάξετε γνώμη</span></a></li><li><a href="#browser"><span data-l="en">5 · Browser controls</span><span data-l="el">5 · Ρυθμίσεις του browser</span></a></li><li><a href="#law"><span data-l="en">6 · The law behind this</span><span data-l="el">6 · Το νομικό πλαίσιο</span></a></li></ul>
       </aside>
       <div class="doc__body">
 
-        <h1>Cookie Policy<span class="dot">.</span></h1>
-        <p class="doc__meta">Last updated 8 September 2026 · Greek Law 3471/2006 (Art. 4(5)), Directive 2002/58/EC and the GDPR</p>
-        <p class="lead">This site is close to cookie-free by design. Here is everything it stores, without exception.</p>
+        <h1 data-l="en">Cookie Policy<span class="dot">.</span></h1>
+        <h1 data-l="el">Πολιτική Cookies<span class="dot">.</span></h1>
+        <p class="doc__meta" data-l="en">Last updated 10 September 2026 · Greek Law 3471/2006 (Art. 4(5)), Directive 2002/58/EC and the GDPR</p>
+<p class="doc__meta" data-l="el">Τελευταία ενημέρωση 10 Σεπτεμβρίου 2026 · Ν. 3471/2006 (άρθρο 4 παρ. 5), Οδηγία 2002/58/ΕΚ και GDPR</p>
+        <p class="lead" data-l="en">This site is close to cookie-free by design. Here is everything it stores, without exception.</p>
+<p class="lead" data-l="el">Ο ιστότοπος είναι σχεδόν χωρίς cookies εξ ορισμού. Εδώ είναι όλα όσα αποθηκεύει, χωρίς εξαίρεση.</p>
 
-        <h2 id="what">1 · The short version</h2>
-        <p>No advertising cookies. No social media pixels. No third-party analytics running behind your back. Until you make a choice in the banner, the only thing stored is the record of that choice itself — which is <strong>strictly necessary</strong> and permitted without consent under Art. 4(5) of Law 3471/2006.</p>
+<section class="doc__sec" id="what">
+  <h2><span data-l="en">1 · The short version</span><span data-l="el">1 · Με λίγα λόγια</span></h2>
+<p data-l="en">No advertising cookies. No social media pixels. No third-party analytics running behind your back. Until you make a choice in the banner, the only things stored are the record of that choice and the language you are reading in — both <strong>strictly necessary</strong> and permitted without consent under Art. 4(5) of Law 3471/2006.</p>
+<p data-l="el">Καμία διαφημιστική cookie. Κανένα pixel κοινωνικών δικτύων. Κανένα στατιστικό τρίτου που τρέχει στα κρυφά. Μέχρι να επιλέξετε στο banner, τα μόνα που αποθηκεύονται είναι η καταγραφή αυτής της επιλογής και η γλώσσα που διαβάζετε — και τα δύο <strong>απολύτως απαραίτητα</strong> και επιτρεπτά χωρίς συγκατάθεση κατά το άρθρο 4 παρ. 5 του Ν. 3471/2006.</p>
+</section>
 
-        <h2 id="stored">2 · Exactly what is stored</h2>
-        <p>These are entries in your browser's <em>local storage</em>, not classic cookies — they are never sent to a server, and never leave your device.</p>
+<section class="doc__sec" id="stored">
+  <h2><span data-l="en">2 · Exactly what is stored</span><span data-l="el">2 · Τι ακριβώς αποθηκεύεται</span></h2>
+<p data-l="en">These are entries in your browser's <em>local storage</em>, not classic cookies — they are never sent to a server, and never leave your device.</p>
+<p data-l="el">Πρόκειται για εγγραφές στην <em>τοπική αποθήκευση</em> του browser σας, όχι για κλασικά cookies — δεν στέλνονται ποτέ σε διακομιστή και δεν φεύγουν ποτέ από τη συσκευή σας.</p>
         <div class="doc__scroll">
         <table class="doc__table">
-          <thead><tr><th>Name</th><th>Category</th><th>What it holds</th><th>Life</th></tr></thead>
+          <thead><tr>
+            <th><span data-l="en">Name</span><span data-l="el">Όνομα</span></th>
+            <th><span data-l="en">Category</span><span data-l="el">Κατηγορία</span></th>
+            <th><span data-l="en">What it holds</span><span data-l="el">Τι περιέχει</span></th>
+            <th><span data-l="en">Life</span><span data-l="el">Διάρκεια</span></th>
+          </tr></thead>
           <tbody>
-            <tr><td><code>sitrix_consent_v1</code></td><td>Strictly necessary</td><td>Your cookie choice per category, with a timestamp, so the banner stops asking</td><td>Until you clear site data or change your choice</td></tr>
-            <tr><td><code>sitrix_my_reviews_v1</code></td><td>Preferences</td><td>A copy of a review <em>you</em> submitted, so you can still see it while it waits to be published. Local to your device; other visitors never see it.</td><td>Until cleared; only the last 5 are kept</td></tr>
+            <tr>
+              <td><code>sitrix_consent_v1</code></td>
+              <td><span data-l="en">Strictly necessary</span><span data-l="el">Απολύτως απαραίτητο</span></td>
+              <td><span data-l="en">Your cookie choice per category, with a timestamp, so the banner stops asking</span><span data-l="el">Την επιλογή σας ανά κατηγορία, με χρονοσήμανση, ώστε το banner να μη ρωτά ξανά</span></td>
+              <td><span data-l="en">Until you clear site data or change your choice</span><span data-l="el">Μέχρι να διαγράψετε τα δεδομένα του ιστότοπου ή να αλλάξετε επιλογή</span></td>
+            </tr>
+            <tr>
+              <td><code>sitrix_lang</code></td>
+              <td><span data-l="en">Strictly necessary</span><span data-l="el">Απολύτως απαραίτητο</span></td>
+              <td><span data-l="en">Whether you chose Greek or English, so the site opens in the language you picked</span><span data-l="el">Αν επιλέξατε Ελληνικά ή Αγγλικά, ώστε ο ιστότοπος να ανοίγει στη γλώσσα σας</span></td>
+              <td><span data-l="en">Until you clear site data</span><span data-l="el">Μέχρι να διαγράψετε τα δεδομένα του ιστότοπου</span></td>
+            </tr>
+            <tr>
+              <td><code>sitrix_my_reviews_v1</code></td>
+              <td><span data-l="en">Preferences</span><span data-l="el">Προτιμήσεις</span></td>
+              <td><span data-l="en">A copy of a review <em>you</em> submitted, so you can still see it while it waits to be published. Local to your device; other visitors never see it.</span><span data-l="el">Ένα αντίγραφο κριτικής που υποβάλατε <em>εσείς</em>, ώστε να τη βλέπετε όσο περιμένει δημοσίευση. Μένει στη συσκευή σας· κανείς άλλος δεν τη βλέπει.</span></td>
+              <td><span data-l="en">Until cleared; only the last 5 are kept</span><span data-l="el">Μέχρι να διαγραφεί· κρατούνται μόνο οι 5 τελευταίες</span></td>
+            </tr>
           </tbody>
         </table>
         </div>
-        <p>Analytics and marketing appear as switches in the settings panel but load nothing today — the site ships with no analytics provider configured. If that ever changes, it will only run for people who have switched it on, and this table will be updated first.</p>
+        <p data-l="en">Analytics and marketing appear as switches in the settings panel but load nothing today — the site ships with no analytics provider configured. If that ever changes, it will only run for people who have switched it on, and this table will be updated first.</p>
+<p data-l="el">Τα στατιστικά και το μάρκετινγκ εμφανίζονται ως διακόπτες στις ρυθμίσεις αλλά δεν φορτώνουν τίποτα σήμερα — ο ιστότοπος δεν έχει ρυθμισμένο πάροχο στατιστικών. Αν αυτό αλλάξει, θα λειτουργεί μόνο για όσους το ενεργοποιήσουν, και ο πίνακας θα ενημερωθεί πρώτος.</p>
+</section>
 
-        <h2 id="third">3 · Third parties</h2>
-        <p>Fonts are served from this site's own server, so reading a page does not reveal your IP address to a font CDN. There are no embedded maps, videos or social widgets. The Instagram button is a plain hyperlink: nothing is requested from Instagram unless you click it, at which point Instagram's own privacy policy applies.</p>
-        <p>Your hosting provider necessarily sees the request that delivers the page — that is covered in §3 of the <a href="privacy.html">Privacy Policy</a>.</p>
+<section class="doc__sec" id="third">
+  <h2><span data-l="en">3 · Third parties</span><span data-l="el">3 · Τρίτα μέρη</span></h2>
+<p data-l="en">Fonts are served from this site's own server, so reading a page does not reveal your IP address to a font CDN. There are no embedded maps, videos or social widgets. The Instagram button is a plain hyperlink: nothing is requested from Instagram unless you click it, at which point Instagram's own privacy policy applies.</p>
+<p data-l="el">Οι γραμματοσειρές σερβίρονται από τον ίδιο τον ιστότοπο, οπότε η ανάγνωση μιας σελίδας δεν αποκαλύπτει τη διεύθυνση IP σας σε CDN γραμματοσειρών. Δεν υπάρχουν ενσωματωμένοι χάρτες, βίντεο ή widgets κοινωνικών δικτύων. Το κουμπί Instagram είναι απλός σύνδεσμος: τίποτα δεν ζητείται από το Instagram αν δεν το πατήσετε, οπότε και ισχύει η δική του πολιτική απορρήτου.</p>\n<p data-l="en">Your hosting provider necessarily sees the request that delivers the page — that is covered in §3 of the <a href="privacy.html">Privacy Policy</a>.</p>
+<p data-l="el">Ο πάροχος φιλοξενίας βλέπει αναγκαστικά το αίτημα που παραδίδει τη σελίδα — αυτό καλύπτεται στην §3 της <a href="privacy.html">Πολιτικής Απορρήτου</a>.</p>
+</section>
 
-        <h2 id="change">4 · Changing your mind</h2>
-        <p>Open <a href="#" data-cookie-settings>Cookie settings</a> — from here or from the footer of any page — and switch categories on or off. Withdrawing is exactly as easy as consenting, which is the point.</p>
+<section class="doc__sec" id="change">
+  <h2><span data-l="en">4 · Changing your mind</span><span data-l="el">4 · Αν αλλάξετε γνώμη</span></h2>
+<p data-l="en">Open <a href="#" data-cookie-settings>Cookie settings</a> — from here or from the footer of any page — and switch categories on or off. Withdrawing is exactly as easy as consenting, which is the point.</p>
+<p data-l="el">Ανοίξτε τις <a href="#" data-cookie-settings>Ρυθμίσεις cookies</a> — από εδώ ή από το υποσέλιδο κάθε σελίδας — και ενεργοποιήστε ή απενεργοποιήστε κατηγορίες. Η ανάκληση είναι ακριβώς τόσο εύκολη όσο και η συγκατάθεση, και αυτό είναι το ζητούμενο.</p>
+</section>
 
-        <h2 id="browser">5 · Browser controls</h2>
-        <p>You can also clear or block storage for this site in your browser's settings (usually under Privacy → Cookies and site data). Doing so removes your saved choice, so the banner will ask again on your next visit.</p>
+<section class="doc__sec" id="browser">
+  <h2><span data-l="en">5 · Browser controls</span><span data-l="el">5 · Ρυθμίσεις του browser</span></h2>
+<p data-l="en">You can also clear or block storage for this site in your browser's settings (usually under Privacy → Cookies and site data). Doing so removes your saved choice, so the banner will ask again on your next visit.</p>
+<p data-l="el">Μπορείτε επίσης να διαγράψετε ή να αποκλείσετε την αποθήκευση για αυτόν τον ιστότοπο από τις ρυθμίσεις του browser (συνήθως στο Απόρρητο → Cookies και δεδομένα ιστότοπων). Έτσι διαγράφεται η αποθηκευμένη επιλογή σας και το banner θα ρωτήσει ξανά στην επόμενη επίσκεψη.</p>
+</section>
 
-        <h2 id="law">6 · The law behind this</h2>
-        <p>Storing or accessing information on your device requires your prior, informed, freely given consent unless it is strictly necessary for a service you asked for. That comes from Art. 5(3) of the ePrivacy Directive 2002/58/EC, transposed in Greece by Art. 4(5) of Law 3471/2006, with consent measured against the GDPR standard (Art. 4(11) and 7). Consent must be as easy to withdraw as to give, and pre-ticked boxes do not count — so there are none here.</p>
+<section class="doc__sec" id="law">
+  <h2><span data-l="en">6 · The law behind this</span><span data-l="el">6 · Το νομικό πλαίσιο</span></h2>
+<p data-l="en">Storing or accessing information on your device requires your prior, informed, freely given consent unless it is strictly necessary for a service you asked for. That comes from Art. 5(3) of the ePrivacy Directive 2002/58/EC, transposed in Greece by Art. 4(5) of Law 3471/2006, with consent measured against the GDPR standard (Art. 4(11) and 7). Consent must be as easy to withdraw as to give, and pre-ticked boxes do not count — so there are none here.</p>
+<p data-l="el">Η αποθήκευση ή πρόσβαση σε πληροφορίες στη συσκευή σας απαιτεί προηγούμενη, ενημερωμένη και ελεύθερη συγκατάθεση, εκτός αν είναι απολύτως απαραίτητη για υπηρεσία που ζητήσατε. Αυτό προκύπτει από το άρθρο 5 παρ. 3 της Οδηγίας 2002/58/ΕΚ, όπως ενσωματώθηκε με το άρθρο 4 παρ. 5 του Ν. 3471/2006, με τη συγκατάθεση να κρίνεται με βάση τον GDPR (άρθρα 4 παρ. 11 και 7). Η ανάκληση πρέπει να είναι εξίσου εύκολη με την παροχή, και τα προ-επιλεγμένα κουτάκια δεν μετρούν — γι' αυτό εδώ δεν υπάρχουν.</p>
+</section>
 
       </div>
     </div>
@@ -127,70 +187,70 @@
           </svg>
           <span>Sitrix<b>Web</b><span class="dot">.</span></span>
         </a>
-        <p>Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="en">Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="el">Στούντιο κατασκευής ιστοσελίδων στην Ελλάδα, με πελάτες σε όλη την ΕΕ από την 1η Ιουνίου 2026.</p>
         <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" style="margin-top:20px">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
             <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
           </svg>
-          Follow on Instagram
+          <span data-l="en">Follow on Instagram</span><span data-l="el">Ακολουθήστε στο Instagram</span>
         </a>
       </div>
       <div>
-        <h4>Explore</h4>
+        <h4><span data-l="en">Explore</span><span data-l="el">Εξερεύνηση</span></h4>
         <ul>
-          <li><a href="index.html#about">The studio</a></li>
-          <li><a href="index.html#services">What I build</a></li>
-          <li><a href="index.html#works">Selected works</a></li>
-          <li><a href="index.html#process">Process</a></li>
-          <li><a href="index.html#reviews">Reviews</a></li>
+          <li><a href="index.html#about"><span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+          <li><a href="index.html#services"><span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+          <li><a href="index.html#works"><span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+          <li><a href="index.html#process"><span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+          <li><a href="index.html#reviews"><span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Legal</h4>
+        <h4><span data-l="en">Legal</span><span data-l="el">Νομικά</span></h4>
         <ul>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="imprint.html">Legal notice / Imprint</a></li>
-          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
+          <li><a href="privacy.html"><span data-l="en">Privacy Policy</span><span data-l="el">Πολιτική Απορρήτου</span></a></li>
+          <li><a href="cookies.html"><span data-l="en">Cookie Policy</span><span data-l="el">Πολιτική Cookies</span></a></li>
+          <li><a href="terms.html"><span data-l="en">Terms of Service</span><span data-l="el">Όροι Χρήσης</span></a></li>
+          <li><a href="imprint.html"><span data-l="en">Legal notice / Imprint</span><span data-l="el">Νομικές πληροφορίες</span></a></li>
+          <li><a href="#" data-cookie-settings><span data-l="en">Cookie settings</span><span data-l="el">Ρυθμίσεις cookies</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Get in touch</h4>
+        <h4><span data-l="en">Get in touch</span><span data-l="el">Επικοινωνία</span></h4>
         <ul>
           <li><a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></li>
-          <li><a href="index.html#booking">Book a free call</a></li>
+          <li><a href="index.html#booking"><span data-l="en">Book a free call</span><span data-l="el">Κλείστε δωρεάν κλήση</span></a></li>
         </ul>
         <p class="footer__vat" style="margin-top:18px;color:var(--muted)">
-          SitrixWeb · Thessaloniki, Greece<br>
+          <span data-l="en">SitrixWeb · Thessaloniki, Greece</span><span data-l="el">SitrixWeb · Θεσσαλονίκη, Ελλάδα</span><br>
           ΑΦΜ / VAT: <b style="color:var(--gray);font-weight:400">EL000000000</b><br>
-          <span style="opacity:.75">Full details in the legal notice</span>
+          <span style="opacity:.75"><span data-l="en">Full details in the legal notice</span><span data-l="el">Πλήρη στοιχεία στις νομικές πληροφορίες</span></span>
         </p>
       </div>
     </div>
     <div class="footer__bottom">
-      <span>© <span data-year>2026</span> SitrixWeb. All rights reserved.</span>
+      <span>© <span data-year>2026</span> SitrixWeb. <span data-l="en">All rights reserved.</span><span data-l="el">Με επιφύλαξη παντός δικαιώματος.</span></span>
       <div class="footer__legal">
-        <a href="privacy.html">Privacy</a>
+        <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
         <a href="cookies.html">Cookies</a>
-        <a href="terms.html">Terms</a>
-        <a href="imprint.html">Legal notice</a>
-        <a href="index.html">Home</a>
+        <a href="terms.html"><span data-l="en">Terms</span><span data-l="el">Όροι</span></a>
+        <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
+        <a href="index.html"><span data-l="en">Home</span><span data-l="el">Αρχική</span></a>
       </div>
     </div>
   </div>
 </footer>
 
-
-<!-- floating scroll-to-top, appears once past the first screen -->
-<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+<button class="to-top" id="toTop" type="button" data-aria-en="Back to top" data-aria-el="Επιστροφή στην κορυφή" aria-label="Back to top">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"/>
   </svg>
 </button>
 
 <script src="js/config.js"></script>
+<script src="js/strings.js" defer></script>
 <script src="js/site.js" defer></script>
 <script src="js/cursor.js" defer></script>
 <script src="js/consent.js" defer></script>

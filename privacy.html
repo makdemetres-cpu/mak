@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lang="en"
+      data-title-en="Privacy Policy — SitrixWeb"
+      data-title-el="Πολιτική Απορρήτου — SitrixWeb"
+      data-desc-en="How SitrixWeb collects, uses and protects personal data, under the GDPR, Greek Law 4624/2019 and Law 3471/2006."
+      data-desc-el="Πώς η SitrixWeb συλλέγει, χρησιμοποιεί και προστατεύει προσωπικά δεδομένα, βάσει GDPR, Ν. 4624/2019 και Ν. 3471/2006.">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,12 +12,17 @@
 <meta name="theme-color" content="#1d1b20">
 <meta name="robots" content="index,follow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%231d1b20'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23c8956c' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23565459' stroke-width='2' stroke-dasharray='5 7'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jura-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Runs before the first paint so the page never flashes the wrong language. -->
+<script src="js/lang.js"></script>
 </head>
 <body class="is-ready">
 
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main"><span data-l="en">Skip to content</span><span data-l="el">Μετάβαση στο περιεχόμενο</span></a>
 
 <div class="aurora is-lit" aria-hidden="true">
   <div class="aurora__blob aurora__blob--purple"></div>
@@ -31,13 +40,17 @@
     <span>Sitrix<b>Web</b><span class="dot">.</span></span>
   </a>
   <div class="nav__right">
-    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" aria-label="SitrixWeb on Instagram">
+    <div class="lang" role="group" data-aria-en="Language" data-aria-el="Γλώσσα" aria-label="Language">
+      <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+      <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+    </div>
+    <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" data-aria-en="SitrixWeb on Instagram" data-aria-el="Η SitrixWeb στο Instagram" aria-label="SitrixWeb on Instagram">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
         <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
       </svg>
     </a>
-    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+    <button class="icon-btn nav__burger" id="burger" aria-expanded="false" aria-controls="menu" data-aria-en="Open menu" data-aria-el="Άνοιγμα μενού" aria-label="Open menu">
       <span class="burger__lines" aria-hidden="true"><span></span><span></span></span>
     </button>
   </div>
@@ -46,15 +59,19 @@
 <nav class="menu" id="menu" aria-hidden="true" aria-label="Main">
   <div class="menu__inner">
     <ul class="menu__list">
-      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> Hi</a></li>
-      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> The studio</a></li>
-      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> What I build</a></li>
-      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> Selected works</a></li>
-      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> Process</a></li>
-      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> Reviews</a></li>
-      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> Book a call</a></li>
+      <li style="--i:0"><a href="index.html#hero"><span class="num">01</span> <span data-l="en">Hi</span><span data-l="el">Γεια</span></a></li>
+      <li style="--i:1"><a href="index.html#about"><span class="num">02</span> <span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+      <li style="--i:2"><a href="index.html#services"><span class="num">03</span> <span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+      <li style="--i:3"><a href="index.html#works"><span class="num">04</span> <span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+      <li style="--i:4"><a href="index.html#process"><span class="num">05</span> <span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+      <li style="--i:5"><a href="index.html#reviews"><span class="num">06</span> <span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
+      <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> <span data-l="en">Book a call</span><span data-l="el">Κλείστε κλήση</span></a></li>
     </ul>
     <div class="menu__foot">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+        <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      </div>
       <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
@@ -63,8 +80,8 @@
         Instagram
       </a>
       <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="imprint.html">Legal notice</a>
+      <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
+      <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
     </div>
   </div>
 </nav>
@@ -73,138 +90,116 @@
   <div class="wrap">
     <div class="doc__grid">
       <aside class="doc__toc" aria-label="On this page">
-        <p class="eyebrow eyebrow--gray">On this page</p>
-        <ul><li><a href="#who">1 · Who is responsible</a></li><li><a href="#scope">2 · What this covers</a></li><li><a href="#data">3 · What I collect, and why</a></li><li><a href="#basis">4 · Legal bases</a></li><li><a href="#keep">5 · How long I keep it</a></li><li><a href="#share">6 · Who else sees it</a></li><li><a href="#transfer">7 · Transfers outside the EEA</a></li><li><a href="#cookies">8 · Cookies and local storage</a></li><li><a href="#rights">9 · Your rights</a></li><li><a href="#complain">10 · Complaints</a></li><li><a href="#security">11 · Security</a></li><li><a href="#children">12 · Children</a></li><li><a href="#changes">13 · Changes</a></li></ul>
+        <p class="eyebrow eyebrow--gray"><span data-l="en">On this page</span><span data-l="el">Σε αυτή τη σελίδα</span></p>
+        <ul><li><a href="#who"><span data-l="en">1 · Who is responsible</span><span data-l="el">1 · Ποιος είναι υπεύθυνος</span></a></li><li><a href="#scope"><span data-l="en">2 · What this covers</span><span data-l="el">2 · Τι καλύπτει</span></a></li><li><a href="#data"><span data-l="en">3 · What I collect, and why</span><span data-l="el">3 · Τι συλλέγω και γιατί</span></a></li><li><a href="#basis"><span data-l="en">4 · Legal bases</span><span data-l="el">4 · Νομικές βάσεις</span></a></li><li><a href="#keep"><span data-l="en">5 · How long I keep it</span><span data-l="el">5 · Πόσο τα κρατώ</span></a></li><li><a href="#share"><span data-l="en">6 · Who else sees it</span><span data-l="el">6 · Ποιος άλλος τα βλέπει</span></a></li><li><a href="#transfer"><span data-l="en">7 · Transfers outside the EEA</span><span data-l="el">7 · Διαβιβάσεις εκτός ΕΟΧ</span></a></li><li><a href="#cookies"><span data-l="en">8 · Cookies and local storage</span><span data-l="el">8 · Cookies και τοπική αποθήκευση</span></a></li><li><a href="#rights"><span data-l="en">9 · Your rights</span><span data-l="el">9 · Τα δικαιώματά σας</span></a></li><li><a href="#complain"><span data-l="en">10 · Complaints</span><span data-l="el">10 · Καταγγελίες</span></a></li><li><a href="#security"><span data-l="en">11 · Security</span><span data-l="el">11 · Ασφάλεια</span></a></li><li><a href="#children"><span data-l="en">12 · Children</span><span data-l="el">12 · Ανήλικοι</span></a></li><li><a href="#changes"><span data-l="en">13 · Changes</span><span data-l="el">13 · Αλλαγές</span></a></li></ul>
       </aside>
       <div class="doc__body">
 
-        <h1>Privacy Policy<span class="dot">.</span></h1>
-        <p class="doc__meta">Last updated 8 September 2026 · Regulation (EU) 2016/679 (GDPR), Greek Law 4624/2019 and Greek Law 3471/2006</p>
-        <p class="lead">This explains what happens to information about you when you use this website — in plain language, because a policy nobody can read protects nobody.</p>
-
+        <h1 data-l="en">Privacy Policy<span class="dot">.</span></h1>
+        <h1 data-l="el">Πολιτική Απορρήτου<span class="dot">.</span></h1>
+        <p class="doc__meta" data-l="en">Last updated 10 September 2026 · Regulation (EU) 2016/679 (GDPR), Greek Law 4624/2019 and Greek Law 3471/2006</p>
+<p class="doc__meta" data-l="el">Τελευταία ενημέρωση 10 Σεπτεμβρίου 2026 · Κανονισμός (ΕΕ) 2016/679 (GDPR), Ν. 4624/2019 και Ν. 3471/2006</p>
+        <p class="lead" data-l="en">This explains what happens to information about you when you use this website — in plain language, because a policy nobody can read protects nobody.</p>
+<p class="lead" data-l="el">Εδώ εξηγείται τι συμβαίνει με τις πληροφορίες σας όταν χρησιμοποιείτε αυτόν τον ιστότοπο — σε απλή γλώσσα, γιατί μια πολιτική που δεν διαβάζεται δεν προστατεύει κανέναν.</p>
         <div class="doc__note">
-          <b>Before you publish:</b> every value written like <b>[ ... ]</b> below is a placeholder.
-          Replace them with your real registered details — they are legally required, and a wrong
-          or missing identifier is exactly the kind of thing that gets a fine rather than a lawsuit.
+          <p data-l="en"><b>Before you publish:</b> every value written like <b>[ ... ]</b> below is a placeholder. Replace them with your real registered details — they are legally required, and a wrong or missing identifier is exactly the kind of thing that gets a fine rather than a lawsuit.</p>
+<p data-l="el"><b>Πριν τη δημοσίευση:</b> κάθε τιμή γραμμένη ως <b>[ ... ]</b> παρακάτω είναι placeholder. Αντικαταστήστε τις με τα πραγματικά σας στοιχεία — απαιτούνται από τον νόμο, και ένα λάθος ή ελλιπές στοιχείο είναι ακριβώς αυτό που φέρνει πρόστιμο.</p>
         </div>
-        <h2 id="who">1 · Who is responsible</h2>
-        <p>The controller of your personal data is:</p>
-        <p>
-          <strong>SitrixWeb</strong> — [full registered business name]<br>
-          [street address], [postal code] Thessaloniki, Greece<br>
-          ΑΦΜ / VAT: [EL000000000] · ΓΕΜΗ: [number]<br>
-          Email: <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
-        </p>
-        <p>SitrixWeb is a sole-trader studio and is not required to appoint a Data Protection Officer. Every request below is handled by me personally, at the address above.</p>
 
-        <h2 id="scope">2 · What this covers</h2>
-        <p>This policy covers this website and the direct communication that follows from it (email, the consultation call, and the project itself). When I build or maintain a website for a client, I act as a <strong>processor</strong> on that client's behalf for the data on their site, under a separate written agreement (Art. 28 GDPR).</p>
+<section class="doc__sec" id="who">
+  <h2><span data-l="en">1 · Who is responsible</span><span data-l="el">1 · Ποιος είναι υπεύθυνος</span></h2>
+<p data-l="en">The controller of your personal data is:</p>
+<p data-l="el">Υπεύθυνος επεξεργασίας των προσωπικών σας δεδομένων είναι:</p>
+<p data-l="en"><strong>SitrixWeb</strong> — [full registered business name]<br>[street address], [postal code] Thessaloniki, Greece<br>ΑΦΜ / VAT: [EL000000000] · ΓΕΜΗ: [number]<br>Email: <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></p>
+<p data-l="el"><strong>SitrixWeb</strong> — [πλήρης επωνυμία]<br>[οδός και αριθμός], [ΤΚ] Θεσσαλονίκη, Ελλάδα<br>ΑΦΜ: [000000000] · ΓΕΜΗ: [αριθμός]<br>Email: <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></p>
+<p data-l="en">SitrixWeb is a sole-trader studio and is not required to appoint a Data Protection Officer. Every request below is handled by me personally, at the address above.</p>
+<p data-l="el">Η SitrixWeb είναι ατομική επιχείρηση και δεν υποχρεούται να ορίσει Υπεύθυνο Προστασίας Δεδομένων. Κάθε αίτημα παρακάτω το χειρίζομαι προσωπικά, στη διεύθυνση που αναφέρεται.</p>
+</section>
 
-        <h2 id="data">3 · What I collect, and why</h2>
-        <p>There is no account system, no profiling and no advertising on this site. This is the complete list:</p>
-        <div class="doc__scroll">
-        <table class="doc__table">
-          <thead><tr><th>What</th><th>When</th><th>Why</th><th>Legal basis</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Name, email, and anything you type in the notes field, plus the chosen date and time</td>
-              <td>When you book a consultation</td>
-              <td>To hold the slot, confirm it, and have the call</td>
-              <td>Art. 6(1)(b) — steps taken at your request before a contract</td>
-            </tr>
-            <tr>
-              <td>Name, company (optional), rating and review text</td>
-              <td>When you submit a review</td>
-              <td>To read it and, if you allowed it, publish it on this page</td>
-              <td>Art. 6(1)(a) — your consent, given by ticking the box</td>
-            </tr>
-            <tr>
-              <td>A record of that consent — what you agreed to, and when</td>
-              <td>With any form submission</td>
-              <td>So I can demonstrate consent was given, as the GDPR requires</td>
-              <td>Art. 6(1)(c) + Art. 7(1)</td>
-            </tr>
-            <tr>
-              <td>Your email address and message</td>
-              <td>If you email me directly</td>
-              <td>To reply</td>
-              <td>Art. 6(1)(b) / 6(1)(f) — answering an enquiry</td>
-            </tr>
-            <tr>
-              <td>Server access logs kept by the hosting provider: IP address, time, page, browser string</td>
-              <td>Every visit</td>
-              <td>Delivering the page, security, and abuse prevention</td>
-              <td>Art. 6(1)(f) — legitimate interest in a working, secure site</td>
-            </tr>
-            <tr>
-              <td>Your cookie choice, and a copy of a review you submitted</td>
-              <td>Stored in your own browser only</td>
-              <td>So the banner stops asking, and so you can see your own review</td>
-              <td>Art. 6(1)(a) / strictly necessary — see the <a href="cookies.html">Cookie Policy</a></td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-        <p>Nothing on this site is mandatory. If you would rather not use a form, email or call me instead — you will get the same answer.</p>
+<section class="doc__sec" id="scope">
+  <h2><span data-l="en">2 · What this covers</span><span data-l="el">2 · Τι καλύπτει</span></h2>
+<p data-l="en">This policy covers this website and the direct communication that follows from it (email, the consultation call, and the project itself). When I build or maintain a website for a client, I act as a <strong>processor</strong> on that client's behalf for the data on their site, under a separate written agreement (Art. 28 GDPR).</p>
+<p data-l="el">Η πολιτική καλύπτει αυτόν τον ιστότοπο και την άμεση επικοινωνία που προκύπτει από αυτόν (email, τη συμβουλευτική κλήση και το ίδιο το έργο). Όταν κατασκευάζω ή συντηρώ ιστότοπο για πελάτη, ενεργώ ως <strong>εκτελών την επεξεργασία</strong> για λογαριασμό του, βάσει χωριστής γραπτής σύμβασης (άρθρο 28 GDPR).</p>
+</section>
 
-        <h2 id="basis">4 · Legal bases</h2>
-        <p>Where I rely on your <strong>consent</strong>, you can withdraw it at any time by emailing me; withdrawing does not affect anything done before you withdrew. Where I rely on a <strong>legitimate interest</strong>, I have weighed it against your rights and you can object at any time (see §9).</p>
+<section class="doc__sec" id="data">
+  <h2><span data-l="en">3 · What I collect, and why</span><span data-l="el">3 · Τι συλλέγω και γιατί</span></h2>
+<p data-l="en">There is no account system, no profiling and no advertising on this site. This is the complete list:</p>
+<p data-l="el">Δεν υπάρχει σύστημα λογαριασμών, ούτε προφίλ, ούτε διαφήμιση σε αυτόν τον ιστότοπο. Αυτή είναι η πλήρης λίστα:</p>
+<div class="doc__scroll"><table class="doc__table"><thead><tr><th><span data-l="en">What</span><span data-l="el">Τι</span></th><th><span data-l="en">When</span><span data-l="el">Πότε</span></th><th><span data-l="en">Why</span><span data-l="el">Γιατί</span></th><th><span data-l="en">Legal basis</span><span data-l="el">Νομική βάση</span></th></tr></thead><tbody><tr><td><span data-l="en">Name, email, and anything you type in the notes field, plus the chosen date and time</span><span data-l="el">Όνομα, email και ό,τι γράψετε στις σημειώσεις, μαζί με την ημερομηνία και ώρα που επιλέξατε</span></td><td><span data-l="en">When you book a consultation</span><span data-l="el">Όταν κλείνετε συμβουλευτική</span></td><td><span data-l="en">To hold the slot, confirm it, and have the call</span><span data-l="el">Για να κρατηθεί η ώρα, να επιβεβαιωθεί και να γίνει η κλήση</span></td><td><span data-l="en">Art. 6(1)(b) — steps taken at your request before a contract</span><span data-l="el">Άρθρο 6 παρ. 1 στοιχ. β΄ — ενέργειες κατόπιν αιτήματός σας πριν από σύμβαση</span></td></tr><tr><td><span data-l="en">Name, company (optional), rating and review text</span><span data-l="el">Όνομα, εταιρεία (προαιρετικά), βαθμολογία και κείμενο κριτικής</span></td><td><span data-l="en">When you submit a review</span><span data-l="el">Όταν υποβάλλετε κριτική</span></td><td><span data-l="en">To read it and, if you allowed it, publish it on this page</span><span data-l="el">Για να τη διαβάσω και, αν το επιτρέψατε, να τη δημοσιεύσω</span></td><td><span data-l="en">Art. 6(1)(a) — your consent, given by ticking the box</span><span data-l="el">Άρθρο 6 παρ. 1 στοιχ. α΄ — η συγκατάθεσή σας, με επιλογή του κουτιού</span></td></tr><tr><td><span data-l="en">A record of that consent — what you agreed to, and when</span><span data-l="el">Καταγραφή της συγκατάθεσης — τι συμφωνήσατε και πότε</span></td><td><span data-l="en">With any form submission</span><span data-l="el">Με κάθε υποβολή φόρμας</span></td><td><span data-l="en">So I can demonstrate consent was given, as the GDPR requires</span><span data-l="el">Για να μπορώ να αποδείξω ότι δόθηκε συγκατάθεση, όπως απαιτεί ο GDPR</span></td><td><span data-l="en">Art. 6(1)(c) + Art. 7(1)</span><span data-l="el">Άρθρο 6 παρ. 1 στοιχ. γ΄ + άρθρο 7 παρ. 1</span></td></tr><tr><td><span data-l="en">Your email address and message</span><span data-l="el">Η διεύθυνση email και το μήνυμά σας</span></td><td><span data-l="en">If you email me directly</span><span data-l="el">Αν μου στείλετε email απευθείας</span></td><td><span data-l="en">To reply</span><span data-l="el">Για να απαντήσω</span></td><td><span data-l="en">Art. 6(1)(b) / 6(1)(f) — answering an enquiry</span><span data-l="el">Άρθρο 6 παρ. 1 στοιχ. β΄ / στ΄ — απάντηση σε ερώτημα</span></td></tr><tr><td><span data-l="en">Server access logs kept by the hosting provider: IP address, time, page, browser string</span><span data-l="el">Αρχεία καταγραφής του παρόχου φιλοξενίας: διεύθυνση IP, ώρα, σελίδα, τύπος browser</span></td><td><span data-l="en">Every visit</span><span data-l="el">Σε κάθε επίσκεψη</span></td><td><span data-l="en">Delivering the page, security, and abuse prevention</span><span data-l="el">Παράδοση της σελίδας, ασφάλεια και αποτροπή κατάχρησης</span></td><td><span data-l="en">Art. 6(1)(f) — legitimate interest in a working, secure site</span><span data-l="el">Άρθρο 6 παρ. 1 στοιχ. στ΄ — έννομο συμφέρον για λειτουργικό και ασφαλή ιστότοπο</span></td></tr><tr><td><span data-l="en">Your cookie choice, your language, and a copy of a review you submitted</span><span data-l="el">Η επιλογή σας για cookies, η γλώσσα σας και ένα αντίγραφο κριτικής που υποβάλατε</span></td><td><span data-l="en">Stored in your own browser only</span><span data-l="el">Αποθηκεύονται μόνο στον δικό σας browser</span></td><td><span data-l="en">So the banner stops asking, the site opens in your language, and you can see your own review</span><span data-l="el">Για να μη ρωτά ξανά το banner, να ανοίγει ο ιστότοπος στη γλώσσα σας και να βλέπετε την κριτική σας</span></td><td><span data-l="en">Art. 6(1)(a) / strictly necessary — see the <a href="cookies.html">Cookie Policy</a></span><span data-l="el">Άρθρο 6 παρ. 1 στοιχ. α΄ / απολύτως απαραίτητα — δείτε την <a href="cookies.html">Πολιτική Cookies</a></span></td></tr></tbody></table></div>
+<p data-l="en">Nothing on this site is mandatory. If you would rather not use a form, email or call me instead — you will get the same answer.</p>
+<p data-l="el">Τίποτα σε αυτόν τον ιστότοπο δεν είναι υποχρεωτικό. Αν δεν θέλετε να χρησιμοποιήσετε φόρμα, στείλτε email ή τηλεφωνήστε — η απάντηση θα είναι η ίδια.</p>
+</section>
 
-        <h2 id="keep">5 · How long I keep it</h2>
-        <ul>
-          <li><strong>Booking enquiries that do not become projects</strong> — 12 months, then deleted.</li>
-          <li><strong>Client project correspondence and files</strong> — for the length of the engagement and 5 years after, in line with the general limitation period for contractual claims.</li>
-          <li><strong>Invoices and accounting records</strong> — the retention period Greek tax law requires (currently 5 years from the end of the relevant financial year); I cannot delete these on request.</li>
-          <li><strong>Published reviews</strong> — until you ask me to remove them, which I will do without asking why.</li>
-          <li><strong>Consent records</strong> — as long as the consent is relied on, plus 5 years.</li>
-          <li><strong>Server logs</strong> — as set by the hosting provider, typically no more than 30 days.</li>
-        </ul>
+<section class="doc__sec" id="basis">
+  <h2><span data-l="en">4 · Legal bases</span><span data-l="el">4 · Νομικές βάσεις</span></h2>
+<p data-l="en">Where I rely on your <strong>consent</strong>, you can withdraw it at any time by emailing me; withdrawing does not affect anything done before you withdrew. Where I rely on a <strong>legitimate interest</strong>, I have weighed it against your rights and you can object at any time (see §9).</p>
+<p data-l="el">Όπου στηρίζομαι στη <strong>συγκατάθεσή</strong> σας, μπορείτε να την ανακαλέσετε οποτεδήποτε με email· η ανάκληση δεν επηρεάζει όσα έγιναν πριν από αυτήν. Όπου στηρίζομαι σε <strong>έννομο συμφέρον</strong>, το έχω σταθμίσει έναντι των δικαιωμάτων σας και μπορείτε να εναντιωθείτε οποτεδήποτε (βλ. §9).</p>
+</section>
 
-        <h2 id="share">6 · Who else sees it</h2>
-        <p>I do not sell, rent or trade personal data. It is shared only with the providers needed to run the studio, each under a data-processing agreement:</p>
-        <ul>
-          <li>the <strong>hosting provider</strong> for this website — [provider name, country];</li>
-          <li>the <strong>email provider</strong> that carries our correspondence — [provider name, country];</li>
-          <li>if you use it, the <strong>video-call provider</strong> for the consultation — [provider name, country];</li>
-          <li>my <strong>accountant</strong>, for invoices, and public authorities where the law requires it.</li>
-        </ul>
+<section class="doc__sec" id="keep">
+  <h2><span data-l="en">5 · How long I keep it</span><span data-l="el">5 · Πόσο τα κρατώ</span></h2>
+<ul data-l="en"><li><strong>Booking enquiries that do not become projects</strong> — 12 months, then deleted.</li><li><strong>Client project correspondence and files</strong> — for the length of the engagement and 5 years after, in line with the general limitation period for contractual claims.</li><li><strong>Invoices and accounting records</strong> — the retention period Greek tax law requires (currently 5 years from the end of the relevant financial year); I cannot delete these on request.</li><li><strong>Published reviews</strong> — until you ask me to remove them, which I will do without asking why.</li><li><strong>Consent records</strong> — as long as the consent is relied on, plus 5 years.</li><li><strong>Server logs</strong> — as set by the hosting provider, typically no more than 30 days.</li></ul>
+<ul data-l="el"><li><strong>Αιτήματα κράτησης που δεν γίνονται έργα</strong> — 12 μήνες και μετά διαγράφονται.</li><li><strong>Αλληλογραφία και αρχεία έργων πελατών</strong> — για τη διάρκεια της συνεργασίας και 5 έτη μετά, σύμφωνα με τη γενική παραγραφή αξιώσεων από σύμβαση.</li><li><strong>Τιμολόγια και λογιστικά αρχεία</strong> — για όσο απαιτεί η ελληνική φορολογική νομοθεσία (σήμερα 5 έτη από το τέλος της οικείας χρήσης)· αυτά δεν μπορώ να τα διαγράψω κατόπιν αιτήματος.</li><li><strong>Δημοσιευμένες κριτικές</strong> — μέχρι να μου ζητήσετε να τις αφαιρέσω, κάτι που θα κάνω χωρίς να ρωτήσω γιατί.</li><li><strong>Αρχεία συγκατάθεσης</strong> — όσο βασίζομαι στη συγκατάθεση, συν 5 έτη.</li><li><strong>Αρχεία καταγραφής διακομιστή</strong> — όπως ορίζει ο πάροχος φιλοξενίας, συνήθως έως 30 ημέρες.</li></ul>
+</section>
 
-        <h2 id="transfer">7 · Transfers outside the EEA</h2>
-        <p>I choose EU-based providers wherever there is a reasonable one. If a provider processes data outside the EEA, the transfer is covered by an <strong>adequacy decision</strong> or by the European Commission's <strong>Standard Contractual Clauses</strong> with additional safeguards, as required by Chapter V of the GDPR. Ask me and I will tell you exactly which providers are involved and on what basis.</p>
-        <p>The typefaces on this site are served from this website's own server, not from a third-party CDN, so simply reading a page does not disclose your IP address to anyone else. There are no social media pixels, no embedded videos and no advertising trackers. The Instagram link is an ordinary link — nothing loads from Instagram until you choose to click it.</p>
+<section class="doc__sec" id="share">
+  <h2><span data-l="en">6 · Who else sees it</span><span data-l="el">6 · Ποιος άλλος τα βλέπει</span></h2>
+<p data-l="en">I do not sell, rent or trade personal data. It is shared only with the providers needed to run the studio, each under a data-processing agreement:</p>
+<p data-l="el">Δεν πουλώ, δεν ενοικιάζω και δεν ανταλλάσσω προσωπικά δεδομένα. Κοινοποιούνται μόνο στους παρόχους που χρειάζονται για τη λειτουργία του στούντιο, με σύμβαση επεξεργασίας ο καθένας:</p>
+<ul data-l="en"><li>the <strong>hosting provider</strong> for this website — [provider name, country];</li><li>the <strong>email provider</strong> that carries our correspondence — [provider name, country];</li><li>if you use it, the <strong>video-call provider</strong> for the consultation — [provider name, country];</li><li>my <strong>accountant</strong>, for invoices, and public authorities where the law requires it.</li></ul>
+<ul data-l="el"><li>τον <strong>πάροχο φιλοξενίας</strong> αυτού του ιστότοπου — [επωνυμία, χώρα]·</li><li>τον <strong>πάροχο email</strong> που μεταφέρει την αλληλογραφία μας — [επωνυμία, χώρα]·</li><li>αν χρησιμοποιηθεί, τον <strong>πάροχο βιντεοκλήσης</strong> για τη συμβουλευτική — [επωνυμία, χώρα]·</li><li>τον <strong>λογιστή</strong> μου, για τιμολόγια, και δημόσιες αρχές όπου το απαιτεί ο νόμος.</li></ul>
+</section>
 
-        <h2 id="cookies">8 · Cookies and local storage</h2>
-        <p>Everything non-essential is off until you switch it on. The detail — what is stored, for how long, and how to change your mind — is in the <a href="cookies.html">Cookie Policy</a>. You can reopen the choices any time from <a href="#" data-cookie-settings>Cookie settings</a>.</p>
+<section class="doc__sec" id="transfer">
+  <h2><span data-l="en">7 · Transfers outside the EEA</span><span data-l="el">7 · Διαβιβάσεις εκτός ΕΟΧ</span></h2>
+<p data-l="en">I choose EU-based providers wherever there is a reasonable one. If a provider processes data outside the EEA, the transfer is covered by an <strong>adequacy decision</strong> or by the European Commission's <strong>Standard Contractual Clauses</strong> with additional safeguards, as required by Chapter V of the GDPR. Ask me and I will tell you exactly which providers are involved and on what basis.</p>
+<p data-l="el">Επιλέγω παρόχους εντός ΕΕ όπου υπάρχει λογική επιλογή. Αν κάποιος πάροχος επεξεργάζεται δεδομένα εκτός ΕΟΧ, η διαβίβαση καλύπτεται από <strong>απόφαση επάρκειας</strong> ή από τις <strong>Τυποποιημένες Συμβατικές Ρήτρες</strong> της Ευρωπαϊκής Επιτροπής με πρόσθετες εγγυήσεις, όπως απαιτεί το Κεφάλαιο V του GDPR. Ρωτήστε με και θα σας πω ακριβώς ποιοι πάροχοι εμπλέκονται και με ποια βάση.</p>
+<p data-l="en">The typefaces on this site are served from this website's own server, not from a third-party CDN, so simply reading a page does not disclose your IP address to anyone else. There are no social media pixels, no embedded videos and no advertising trackers. The Instagram link is an ordinary link — nothing loads from Instagram until you choose to click it.</p>
+<p data-l="el">Οι γραμματοσειρές σερβίρονται από τον ίδιο τον ιστότοπο και όχι από CDN τρίτου, οπότε η απλή ανάγνωση μιας σελίδας δεν αποκαλύπτει τη διεύθυνση IP σας σε κανέναν άλλον. Δεν υπάρχουν pixels κοινωνικών δικτύων, ενσωματωμένα βίντεο ή διαφημιστικοί ιχνηλάτες. Ο σύνδεσμος Instagram είναι απλός σύνδεσμος — τίποτα δεν φορτώνει από το Instagram αν δεν τον πατήσετε.</p>
+</section>
 
-        <h2 id="rights">9 · Your rights</h2>
-        <p>Under Articles 15–22 GDPR you have the right to:</p>
-        <ul>
-          <li><strong>access</strong> the data I hold about you, and get a copy;</li>
-          <li><strong>correct</strong> anything inaccurate or incomplete;</li>
-          <li><strong>erase</strong> it ("right to be forgotten"), where no legal duty makes me keep it;</li>
-          <li><strong>restrict</strong> processing while a dispute is sorted out;</li>
-          <li><strong>object</strong> to processing based on legitimate interest;</li>
-          <li><strong>portability</strong> — receive your data in a machine-readable format;</li>
-          <li><strong>withdraw consent</strong> at any time;</li>
-          <li>not be subject to automated decision-making — there is none here.</li>
-        </ul>
-        <p>Email <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a> and I will answer within <strong>one month</strong>, free of charge. I may ask a question to confirm it is really you, and nothing more than that.</p>
+<section class="doc__sec" id="cookies">
+  <h2><span data-l="en">8 · Cookies and local storage</span><span data-l="el">8 · Cookies και τοπική αποθήκευση</span></h2>
+<p data-l="en">Everything non-essential is off until you switch it on. The detail — what is stored, for how long, and how to change your mind — is in the <a href="cookies.html">Cookie Policy</a>. You can reopen the choices any time from <a href="#" data-cookie-settings>Cookie settings</a>.</p>
+<p data-l="el">Οτιδήποτε μη απαραίτητο είναι ανενεργό μέχρι να το ενεργοποιήσετε. Οι λεπτομέρειες — τι αποθηκεύεται, για πόσο και πώς αλλάζετε γνώμη — είναι στην <a href="cookies.html">Πολιτική Cookies</a>. Μπορείτε να ανοίξετε ξανά τις επιλογές από τις <a href="#" data-cookie-settings>Ρυθμίσεις cookies</a>.</p>
+</section>
 
-        <h2 id="complain">10 · Complaints</h2>
-        <p>If you think I have handled your data badly, tell me first — I would rather fix it. You also have the right to complain directly to the supervisory authority:</p>
-<p>
-          Hellenic Data Protection Authority (Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα)<br>
-          Kifissias 1–3, 115 23 Athens, Greece · +30 210 6475600 ·
-          <a href="https://www.dpa.gr" target="_blank" rel="noopener noreferrer">www.dpa.gr</a>
-        </p>
-        <h2 id="security">11 · Security</h2>
-        <p>The site is served over HTTPS. Form data is transmitted encrypted, access to the mailbox is protected with two-factor authentication, and only I have access to it. No security is absolute, but if a breach ever put your rights at risk I will notify the authority within 72 hours and tell you directly, as Articles 33–34 require.</p>
+<section class="doc__sec" id="rights">
+  <h2><span data-l="en">9 · Your rights</span><span data-l="el">9 · Τα δικαιώματά σας</span></h2>
+<p data-l="en">Under Articles 15–22 GDPR you have the right to:</p>
+<p data-l="el">Βάσει των άρθρων 15–22 GDPR έχετε δικαίωμα:</p>
+<ul data-l="en"><li><strong>access</strong> the data I hold about you, and get a copy;</li><li><strong>correct</strong> anything inaccurate or incomplete;</li><li><strong>erase</strong> it (“right to be forgotten”), where no legal duty makes me keep it;</li><li><strong>restrict</strong> processing while a dispute is sorted out;</li><li><strong>object</strong> to processing based on legitimate interest;</li><li><strong>portability</strong> — receive your data in a machine-readable format;</li><li><strong>withdraw consent</strong> at any time;</li><li>not be subject to automated decision-making — there is none here.</li></ul>
+<ul data-l="el"><li><strong>πρόσβασης</strong> στα δεδομένα που τηρώ για εσάς και λήψης αντιγράφου·</li><li><strong>διόρθωσης</strong> ό,τι είναι ανακριβές ή ελλιπές·</li><li><strong>διαγραφής</strong> («δικαίωμα στη λήθη»), όπου δεν με υποχρεώνει νόμος να τα κρατήσω·</li><li><strong>περιορισμού</strong> της επεξεργασίας όσο εκκρεμεί μια διαφορά·</li><li><strong>εναντίωσης</strong> σε επεξεργασία που βασίζεται σε έννομο συμφέρον·</li><li><strong>φορητότητας</strong> — να λάβετε τα δεδομένα σε μηχαναγνώσιμη μορφή·</li><li><strong>ανάκλησης της συγκατάθεσης</strong> οποτεδήποτε·</li><li>να μην υπόκεισθε σε αυτοματοποιημένη λήψη αποφάσεων — εδώ δεν υπάρχει καμία.</li></ul>
+<p data-l="en">Email <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a> and I will answer within <strong>one month</strong>, free of charge. I may ask a question to confirm it is really you, and nothing more than that.</p>
+<p data-l="el">Στείλτε email στο <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a> και θα απαντήσω εντός <strong>ενός μήνα</strong>, χωρίς χρέωση. Μπορεί να κάνω μία ερώτηση για να επιβεβαιώσω ότι είστε όντως εσείς, τίποτα περισσότερο.</p>
+</section>
 
-        <h2 id="children">12 · Children</h2>
-        <p>This site is aimed at businesses and is not directed at children. I do not knowingly collect data from anyone under 15 (the age of digital consent under Greek Law 4624/2019). If you believe a child has sent me data, email me and I will delete it.</p>
+<section class="doc__sec" id="complain">
+  <h2><span data-l="en">10 · Complaints</span><span data-l="el">10 · Καταγγελίες</span></h2>
+<p data-l="en">If you think I have handled your data badly, tell me first — I would rather fix it. You also have the right to complain directly to the supervisory authority:</p>
+<p data-l="el">Αν θεωρείτε ότι χειρίστηκα άσχημα τα δεδομένα σας, πείτε το πρώτα σε εμένα — προτιμώ να το διορθώσω. Έχετε επίσης δικαίωμα να προσφύγετε απευθείας στην εποπτική αρχή:</p>
+<p data-l="en">Hellenic Data Protection Authority (Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα)<br>Kifissias 1–3, 115 23 Athens, Greece · +30 210 6475600 · <a href="https://www.dpa.gr" target="_blank" rel="noopener noreferrer">www.dpa.gr</a></p>
+<p data-l="el">Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα<br>Κηφισίας 1–3, 115 23 Αθήνα · +30 210 6475600 · <a href="https://www.dpa.gr" target="_blank" rel="noopener noreferrer">www.dpa.gr</a></p>
+</section>
 
-        <h2 id="changes">13 · Changes</h2>
-        <p>If this policy changes, the date at the top changes with it. Material changes affecting how your data is used will be flagged on the site, and where consent is the basis, asked for again.</p>
+<section class="doc__sec" id="security">
+  <h2><span data-l="en">11 · Security</span><span data-l="el">11 · Ασφάλεια</span></h2>
+<p data-l="en">The site is served over HTTPS. Form data is transmitted encrypted, access to the mailbox is protected with two-factor authentication, and only I have access to it. No security is absolute, but if a breach ever put your rights at risk I will notify the authority within 72 hours and tell you directly, as Articles 33–34 require.</p>
+<p data-l="el">Ο ιστότοπος σερβίρεται μέσω HTTPS. Τα δεδομένα των φορμών μεταδίδονται κρυπτογραφημένα, η πρόσβαση στο γραμματοκιβώτιο προστατεύεται με έλεγχο ταυτότητας δύο παραγόντων και μόνο εγώ έχω πρόσβαση. Καμία ασφάλεια δεν είναι απόλυτη, αλλά αν κάποια παραβίαση θέσει σε κίνδυνο τα δικαιώματά σας, θα ενημερώσω την Αρχή εντός 72 ωρών και θα σας ενημερώσω απευθείας, όπως απαιτούν τα άρθρα 33–34.</p>
+</section>
+
+<section class="doc__sec" id="children">
+  <h2><span data-l="en">12 · Children</span><span data-l="el">12 · Ανήλικοι</span></h2>
+<p data-l="en">This site is aimed at businesses and is not directed at children. I do not knowingly collect data from anyone under 15 (the age of digital consent under Greek Law 4624/2019). If you believe a child has sent me data, email me and I will delete it.</p>
+<p data-l="el">Ο ιστότοπος απευθύνεται σε επιχειρήσεις και όχι σε παιδιά. Δεν συλλέγω εν γνώσει μου δεδομένα από άτομα κάτω των 15 ετών (ηλικία ψηφιακής συναίνεσης κατά τον Ν. 4624/2019). Αν πιστεύετε ότι κάποιο παιδί μου έστειλε δεδομένα, στείλτε μου email και θα τα διαγράψω.</p>
+</section>
+
+<section class="doc__sec" id="changes">
+  <h2><span data-l="en">13 · Changes</span><span data-l="el">13 · Αλλαγές</span></h2>
+<p data-l="en">If this policy changes, the date at the top changes with it. Material changes affecting how your data is used will be flagged on the site, and where consent is the basis, asked for again.</p>
+<p data-l="el">Αν η πολιτική αλλάξει, αλλάζει και η ημερομηνία στην κορυφή. Ουσιώδεις αλλαγές που επηρεάζουν τη χρήση των δεδομένων σας θα επισημαίνονται στον ιστότοπο και, όπου βάση είναι η συγκατάθεση, θα ζητείται εκ νέου.</p>
+</section>
 
       </div>
     </div>
@@ -222,70 +217,70 @@
           </svg>
           <span>Sitrix<b>Web</b><span class="dot">.</span></span>
         </a>
-        <p>Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="en">Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="el">Στούντιο κατασκευής ιστοσελίδων στην Ελλάδα, με πελάτες σε όλη την ΕΕ από την 1η Ιουνίου 2026.</p>
         <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" style="margin-top:20px">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
             <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
           </svg>
-          Follow on Instagram
+          <span data-l="en">Follow on Instagram</span><span data-l="el">Ακολουθήστε στο Instagram</span>
         </a>
       </div>
       <div>
-        <h4>Explore</h4>
+        <h4><span data-l="en">Explore</span><span data-l="el">Εξερεύνηση</span></h4>
         <ul>
-          <li><a href="index.html#about">The studio</a></li>
-          <li><a href="index.html#services">What I build</a></li>
-          <li><a href="index.html#works">Selected works</a></li>
-          <li><a href="index.html#process">Process</a></li>
-          <li><a href="index.html#reviews">Reviews</a></li>
+          <li><a href="index.html#about"><span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+          <li><a href="index.html#services"><span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+          <li><a href="index.html#works"><span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+          <li><a href="index.html#process"><span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+          <li><a href="index.html#reviews"><span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Legal</h4>
+        <h4><span data-l="en">Legal</span><span data-l="el">Νομικά</span></h4>
         <ul>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="imprint.html">Legal notice / Imprint</a></li>
-          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
+          <li><a href="privacy.html"><span data-l="en">Privacy Policy</span><span data-l="el">Πολιτική Απορρήτου</span></a></li>
+          <li><a href="cookies.html"><span data-l="en">Cookie Policy</span><span data-l="el">Πολιτική Cookies</span></a></li>
+          <li><a href="terms.html"><span data-l="en">Terms of Service</span><span data-l="el">Όροι Χρήσης</span></a></li>
+          <li><a href="imprint.html"><span data-l="en">Legal notice / Imprint</span><span data-l="el">Νομικές πληροφορίες</span></a></li>
+          <li><a href="#" data-cookie-settings><span data-l="en">Cookie settings</span><span data-l="el">Ρυθμίσεις cookies</span></a></li>
         </ul>
       </div>
       <div>
-        <h4>Get in touch</h4>
+        <h4><span data-l="en">Get in touch</span><span data-l="el">Επικοινωνία</span></h4>
         <ul>
           <li><a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></li>
-          <li><a href="index.html#booking">Book a free call</a></li>
+          <li><a href="index.html#booking"><span data-l="en">Book a free call</span><span data-l="el">Κλείστε δωρεάν κλήση</span></a></li>
         </ul>
         <p class="footer__vat" style="margin-top:18px;color:var(--muted)">
-          SitrixWeb · Thessaloniki, Greece<br>
+          <span data-l="en">SitrixWeb · Thessaloniki, Greece</span><span data-l="el">SitrixWeb · Θεσσαλονίκη, Ελλάδα</span><br>
           ΑΦΜ / VAT: <b style="color:var(--gray);font-weight:400">EL000000000</b><br>
-          <span style="opacity:.75">Full details in the legal notice</span>
+          <span style="opacity:.75"><span data-l="en">Full details in the legal notice</span><span data-l="el">Πλήρη στοιχεία στις νομικές πληροφορίες</span></span>
         </p>
       </div>
     </div>
     <div class="footer__bottom">
-      <span>© <span data-year>2026</span> SitrixWeb. All rights reserved.</span>
+      <span>© <span data-year>2026</span> SitrixWeb. <span data-l="en">All rights reserved.</span><span data-l="el">Με επιφύλαξη παντός δικαιώματος.</span></span>
       <div class="footer__legal">
-        <a href="privacy.html">Privacy</a>
+        <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
         <a href="cookies.html">Cookies</a>
-        <a href="terms.html">Terms</a>
-        <a href="imprint.html">Legal notice</a>
-        <a href="index.html">Home</a>
+        <a href="terms.html"><span data-l="en">Terms</span><span data-l="el">Όροι</span></a>
+        <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
+        <a href="index.html"><span data-l="en">Home</span><span data-l="el">Αρχική</span></a>
       </div>
     </div>
   </div>
 </footer>
 
-
-<!-- floating scroll-to-top, appears once past the first screen -->
-<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+<button class="to-top" id="toTop" type="button" data-aria-en="Back to top" data-aria-el="Επιστροφή στην κορυφή" aria-label="Back to top">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"/>
   </svg>
 </button>
 
 <script src="js/config.js"></script>
+<script src="js/strings.js" defer></script>
 <script src="js/site.js" defer></script>
 <script src="js/cursor.js" defer></script>
 <script src="js/consent.js" defer></script>
