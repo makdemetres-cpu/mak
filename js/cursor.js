@@ -45,14 +45,23 @@
     down: false,
     target: null,          // the interactive element under the pointer
     inside: false,
-    t: 0,
+    t: 0, dt: 16.67,
   };
 
   const lerp = (a, b, n) => a + (b - a) * n;
 
-  let raf = 0, active = null, running = false;
+  /* Frame-rate independent easing. A plain `a += (b - a) * 0.16` settles at
+     whatever speed the display happens to run at — noticeably slower on a
+     throttled or 30Hz machine, twice as fast on a 120Hz one. Scaling the
+     factor by elapsed time gives every visitor the same settle. */
+  const damp = (a, b, base, dt) =>
+    a + (b - a) * (1 - Math.pow(1 - base, dt / 16.67));
+
+  let raf = 0, active = null, running = false, last = 0;
 
   function loop(now) {
+    state.dt = last ? Math.min(now - last, 64) : 16.67;
+    last = now;
     state.t = now;
     state.vx = state.x - state.px;
     state.vy = state.y - state.py;
@@ -69,6 +78,7 @@
   }
   function stop() {
     running = false;
+    last = 0;
     cancelAnimationFrame(raf);
   }
 
@@ -90,11 +100,11 @@
     frame(s) {
       // Ring lags with an eased follow; the dot is exact, so the gap between
       // them reads as speed.
-      this.rx = lerp(this.rx, s.x, 0.16);
-      this.ry = lerp(this.ry, s.y, 0.16);
+      this.rx = damp(this.rx, s.x, 0.16, s.dt);
+      this.ry = damp(this.ry, s.y, 0.16, s.dt);
       this.aim = s.target ? 1.9 : 1;
       if (s.down) this.aim *= 0.82;
-      this.scale = lerp(this.scale, this.aim, 0.14);
+      this.scale = damp(this.scale, this.aim, 0.14, s.dt);
       this.spin += 0.28;
 
       this.dot.style.transform =
@@ -102,6 +112,12 @@
       this.ring.style.transform =
         "translate3d(" + this.rx + "px," + this.ry + "px,0) translate(-50%,-50%) " +
         "rotate(" + this.spin + "deg) scale(" + this.scale.toFixed(3) + ")";
+    },
+    // Still catching up, so the loop must not park and strand the ring.
+    busy() {
+      return Math.abs(this.rx - state.x) > 0.5 ||
+             Math.abs(this.ry - state.y) > 0.5 ||
+             Math.abs(this.scale - this.aim) > 0.01;
     },
     hover(on) { layer.classList.toggle("is-locked", on); },
   };
@@ -208,8 +224,8 @@
     },
     frame(s) {
       // Hairlines follow closely; the bracket eases onto its target.
-      this.hx = lerp(this.hx, s.x, 0.3);
-      this.hy = lerp(this.hy, s.y, 0.3);
+      this.hx = damp(this.hx, s.x, 0.3, s.dt);
+      this.hy = damp(this.hy, s.y, 0.3, s.dt);
       this.h.style.transform = "translate3d(0," + this.hy.toFixed(1) + "px,0)";
       this.v.style.transform = "translate3d(" + this.hx.toFixed(1) + "px,0,0)";
 
@@ -221,10 +237,10 @@
         tw = r.width + 16;
         th = r.height + 12;
       }
-      this.bx = lerp(this.bx, tx, 0.2);
-      this.by = lerp(this.by, ty, 0.2);
-      this.bw = lerp(this.bw, tw, 0.2);
-      this.bh = lerp(this.bh, th, 0.2);
+      this.bx = damp(this.bx, tx, 0.2, s.dt);
+      this.by = damp(this.by, ty, 0.2, s.dt);
+      this.bw = damp(this.bw, tw, 0.2, s.dt);
+      this.bh = damp(this.bh, th, 0.2, s.dt);
 
       this.box.style.transform =
         "translate3d(" + this.bx.toFixed(1) + "px," + this.by.toFixed(1) + "px,0) translate(-50%,-50%)";
@@ -233,6 +249,10 @@
 
       this.read.style.transform =
         "translate3d(" + (s.x + 18) + "px," + (s.y + 16) + "px,0)";
+    },
+    busy() {
+      return Math.abs(this.hx - state.x) > 0.5 ||
+             Math.abs(this.hy - state.y) > 0.5;
     },
     hover(on, el) {
       layer.classList.toggle("is-locked", on);
@@ -268,9 +288,9 @@
     },
     frame(s) {
       // Heavy lag is the whole character here — light has weight.
-      this.gx = lerp(this.gx, s.x, 0.075);
-      this.gy = lerp(this.gy, s.y, 0.075);
-      this.scale = lerp(this.scale, s.target ? 1.35 : 1, 0.08);
+      this.gx = damp(this.gx, s.x, 0.075, s.dt);
+      this.gy = damp(this.gy, s.y, 0.075, s.dt);
+      this.scale = damp(this.scale, s.target ? 1.35 : 1, 0.08, s.dt);
 
       this.glow.style.transform =
         "translate3d(" + this.gx.toFixed(1) + "px," + this.gy.toFixed(1) + "px,0) " +
@@ -279,6 +299,10 @@
       // be lit rather than drawn.
       this.grid.style.setProperty("--mx", this.gx.toFixed(1) + "px");
       this.grid.style.setProperty("--my", this.gy.toFixed(1) + "px");
+    },
+    busy() {
+      return Math.abs(this.gx - state.x) > 0.5 ||
+             Math.abs(this.gy - state.y) > 0.5;
     },
     hover(on) { layer.classList.toggle("is-locked", on); },
   };
@@ -291,8 +315,11 @@
       state.inside = true;
       state.px = state.x; state.py = state.y;   // no phantom streak on entry
       layer.classList.add("is-on");
-      start();
     }
+    // Always: the loop parks itself after a pause, and only movement can
+    // wake it. Waking it on re-entry alone would leave it parked forever
+    // for anyone who simply stopped moving without leaving the window.
+    start();
     if (active && active.tick) active.tick();
     scheduleIdle();
   }

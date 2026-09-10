@@ -29,6 +29,7 @@ you change it.
 | `email` | The address you actually read. Drives the footer, the menu and the form fallbacks. |
 | `phone` | Shown in the legal notice. |
 | `formEndpoint` | Where the booking and review forms POST (see below). Leave `""` and they fall back to a pre-filled email. |
+| `cursor` | The pointer effect: `"orbit"` (current), `"stardust"`, `"reticle"`, `"field"`, or `"off"`. Desktop only — see below. |
 | `booking.workdays` / `slots` / `leadDays` / `horizonDays` | Your real availability. |
 
 ### 2. Replace the placeholder content
@@ -104,6 +105,22 @@ js/reviews.js       star input, review submission, the writer's own copy
 js/consent.js       cookie banner + preference centre
 assets/fonts/       Inter woff2 subsets
 ```
+
+## The cursor effect
+
+`js/cursor.js` holds four interchangeable pointer companions; `cursor` in
+`js/config.js` picks one, and that single word changes every page at once.
+**Orbit** is the one in use: a copper point on the pointer with a dashed ring
+trailing behind it, which snaps solid and opens up over anything clickable.
+
+All four leave the real system cursor visible rather than replacing it, so nobody
+loses the pointer or the text caret. They render nothing on touch devices and
+nothing under `prefers-reduced-motion`, the easing is frame-rate independent (the
+same settle on a 30Hz laptop and a 144Hz monitor), and the animation loop parks
+itself once movement stops and the effect has finished settling.
+
+`cursor-lab.html` is a working page for comparing the four side by side. It is
+unlinked and `noindex`; delete it once you have settled on one.
 
 ## Design system
 

@@ -23,7 +23,7 @@ window.SITRIX = {
   /* Cursor companion (desktop only — see js/cursor.js and cursor-lab.html).
      One of: "off", "orbit", "stardust", "reticle", "field".
      Changing this one word changes it on every page at once. */
-  cursor: "off",
+  cursor: "orbit",
 
   /* Booking availability, in your local (Europe/Athens) time. */
   booking: {
