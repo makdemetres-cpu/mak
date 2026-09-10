@@ -2008,3 +2008,50 @@ html[data-lang="el"] [data-l="en"] { display: none !important; }
 /* Sections in the legal documents carry the anchor id (the headings inside
    them exist twice, once per language, so the id cannot live on them). */
 .doc__sec { scroll-margin-top: 110px; }
+
+/* ============================ 14. BRAND MARK =============================
+   The studio's own logo, in its light-on-dark variant. The navy half of the
+   original artwork sits at #222933 — nearly the page background — so a
+   recoloured variant is used everywhere on this dark UI, with the brand blue
+   left exactly as drawn. assets/img/logo-*.png (no suffix) keep the original
+   colours for light backgrounds.
+   ========================================================================== */
+.logo__mark {
+  width: 30px;
+  height: auto;
+  flex: none;
+  transition: transform var(--d-2) var(--e);
+}
+.logo:hover .logo__mark { transform: translateY(-1px) scale(1.04); }
+
+/* The footer signs off with the full lockup rather than the symbol. */
+.logo__full {
+  width: clamp(148px, 17vw, 186px);
+  height: auto;
+  display: block;
+}
+.footer__brand .logo { display: block; }
+
+/* The About panel now carries the mark instead of an empty gradient. */
+.about__render__logo {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(52%, 260px);
+  height: auto;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 22px 40px rgba(0,0,0,.55));
+  z-index: 1;
+}
+@media (max-width: 900px) {
+  .about__render__logo { width: min(40%, 220px); }
+}
+
+/* Preloader: the mark held inside the dashed ring that was already spinning. */
+.preloader__stack {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.preloader__stack > * { grid-area: 1 / 1; }
+.preloader__logo { width: 44px; height: auto; }
