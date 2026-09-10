@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05070b">
+<title>MAKIS — Προπόνηση ψυχρής κλήσης</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='11' fill='none' stroke='%2337e5c8' stroke-width='3'/></svg>">
+<link rel="stylesheet" href="/css/hud.css">
+</head>
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<!-- ── ΚΟΝΣΟΛΑ ─────────────────────────────────────────────────────── -->
+<main id="screen-console" class="screen is-active">
+  <header class="masthead">
+    <div class="wordmark">MAKIS<span class="cursor" aria-hidden="true"></span></div>
+    <p class="tagline">Ψυχρή κλήση σε Έλληνα επιχειρηματία. Χωρίς δεύτερη ευκαιρία.</p>
+  </header>
+
+  <section class="panel">
+    <h2 class="panel-title">Επίπεδο</h2>
+    <div id="difficulty-picker" class="chips" role="radiogroup" aria-label="Επίπεδο δυσκολίας"></div>
+
+    <h2 class="panel-title">Επιχείρηση</h2>
+    <div id="scenario-picker" class="chips" role="radiogroup" aria-label="Επιχείρηση"></div>
+
+    <button id="btn-start" class="btn-call" type="button">
+      <span class="btn-call-ring" aria-hidden="true"></span>
+      <span class="btn-call-label">ΕΝΑΡΞΗ ΚΛΗΣΗΣ</span>
+    </button>
+    <p id="mic-note" class="note">Θα ζητηθεί πρόσβαση στο μικρόφωνο.</p>
+  </section>
+
+  <nav class="console-nav">
+    <button class="link-btn" type="button" data-goto="history">ΙΣΤΟΡΙΚΟ ΚΛΗΣΕΩΝ →</button>
+  </nav>
+
+  <footer id="stack-strip" class="stack-strip" aria-live="polite"></footer>
+</main>
+
+<!-- ── ΚΛΗΣΗ ───────────────────────────────────────────────────────── -->
+<main id="screen-call" class="screen screen-call">
+  <header class="call-head">
+    <div class="call-id">
+      <span id="call-business" class="call-business"></span>
+      <span id="call-difficulty" class="tag"></span>
+    </div>
+    <div class="call-clock"><span id="call-timer">00:00</span></div>
+  </header>
+
+  <div class="stage">
+    <canvas id="orb" class="orb" width="640" height="640" aria-hidden="true"></canvas>
+    <div class="stage-readout">
+      <div id="call-status" class="status">ΣΥΝΔΕΣΗ…</div>
+      <div id="call-hint" class="hint"></div>
+    </div>
+  </div>
+
+  <div class="patience-wrap" title="Η υπομονή του Μάκη">
+    <span class="patience-label">ΥΠΟΜΟΝΗ</span>
+    <div class="patience-bar"><i id="patience-fill" style="width:100%"></i></div>
+  </div>
+
+  <section class="transcript" aria-label="Ζωντανή απομαγνητοφώνηση">
+    <div id="transcript-feed" class="transcript-feed"></div>
+  </section>
+
+  <button id="btn-end" class="btn-end" type="button">ΤΕΡΜΑΤΙΣΜΟΣ</button>
+</main>
+
+<!-- ── ΑΝΑΦΟΡΑ ─────────────────────────────────────────────────────── -->
+<main id="screen-report" class="screen">
+  <header class="report-head">
+    <button class="link-btn" type="button" data-goto="console">← ΚΟΝΣΟΛΑ</button>
+    <span id="report-meta" class="report-meta"></span>
+  </header>
+
+  <section class="score-block">
+    <svg class="dial" viewBox="0 0 120 120" aria-hidden="true">
+      <circle class="dial-track" cx="60" cy="60" r="52"></circle>
+      <circle id="dial-value" class="dial-value" cx="60" cy="60" r="52"></circle>
+    </svg>
+    <div class="score-text">
+      <div id="report-score" class="score-number">–</div>
+      <div class="score-of">/ 10</div>
+      <div id="report-verdict" class="verdict"></div>
+    </div>
+  </section>
+
+  <p id="report-headline" class="headline"></p>
+
+  <section class="panel">
+    <h2 class="panel-title">Ανάλυση</h2>
+    <div id="subscores" class="subscores"></div>
+  </section>
+
+  <section class="panel panel-weak">
+    <h2 class="panel-title panel-title-warn">Αδυναμίες</h2>
+    <div id="weaknesses" class="weakness-list"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Τι πήγε καλά</h2>
+    <ul id="strengths" class="strength-list"></ul>
+    <div id="drill" class="drill"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Μετρήσεις</h2>
+    <div id="metrics" class="metrics-grid"></div>
+  </section>
+
+  <section id="playback-panel" class="panel" hidden>
+    <h2 class="panel-title">Ηχογράφηση</h2>
+    <div id="playback" class="playback"></div>
+  </section>
+
+  <div class="report-actions">
+    <button id="btn-again" class="btn-primary" type="button">ΝΕΑ ΚΛΗΣΗ</button>
+    <button class="btn-ghost" type="button" data-goto="history">ΙΣΤΟΡΙΚΟ</button>
+  </div>
+</main>
+
+<!-- ── ΙΣΤΟΡΙΚΟ ────────────────────────────────────────────────────── -->
+<main id="screen-history" class="screen">
+  <header class="report-head">
+    <button class="link-btn" type="button" data-goto="console">← ΚΟΝΣΟΛΑ</button>
+    <span class="report-meta">ΙΣΤΟΡΙΚΟ</span>
+  </header>
+
+  <section id="history-stats" class="stats-row"></section>
+
+  <section class="panel">
+    <h2 class="panel-title">Πρόοδος</h2>
+    <canvas id="progress-chart" class="chart" width="720" height="220"></canvas>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Κλήσεις</h2>
+    <div id="history-list" class="history-list"></div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>
