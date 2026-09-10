@@ -42,7 +42,7 @@
     .hero__eyebrow, .hero__title, .hero__sub, .hero__actions,
     .hero__meta, .hero__stage, .scroll-cue { opacity: 1; transform: none; }
     .hero__orbit-crop, .hero__stage .orbit { opacity: 1; }
-    .console, .bsteps__bar, .bstep__back { display: none; }
+    .hero-object, .bsteps__bar, .bstep__back { display: none; }
     /* The stepped mobile flow needs JS to advance, so show all three at once. */
     .bstep { display: block; }
   </style>
@@ -166,41 +166,12 @@
         <div class="orbit orbit--a" aria-hidden="true"></div>
         <div class="orbit orbit--slow orbit--b" aria-hidden="true"></div>
 
-        <section class="console" id="console"
-                 data-aria-en="SitrixWeb console — ask it something"
-                 data-aria-el="Κονσόλα SitrixWeb — ρωτήστε την κάτι"
-                 aria-label="SitrixWeb console — ask it something">
-          <header class="console__bar">
-            <span class="console__dot" aria-hidden="true"></span>
-            <span class="console__title">sitrixweb ~ console</span>
-            <span class="console__status"><span data-l="en">online</span><span data-l="el">σε σύνδεση</span></span>
-          </header>
-
-          <div class="console__out" role="log" aria-live="polite" aria-atomic="false"></div>
-
-          <form class="console__form" autocomplete="off">
-            <label class="console__prompt" for="consoleInput" aria-hidden="true">&gt;</label>
-            <input class="console__input" id="consoleInput" type="text" name="command"
-                   data-ph-en="type a command, or tap one below"
-                   data-ph-el="γράψτε μια εντολή ή πατήστε μία παρακάτω"
-                   placeholder="type a command, or tap one below"
-                   data-aria-en="Console command" data-aria-el="Εντολή κονσόλας"
-                   aria-label="Console command"
-                   autocapitalize="off" autocorrect="off" spellcheck="false">
-            <button class="console__go" type="submit"
-                    data-aria-en="Run command" data-aria-el="Εκτέλεση εντολής" aria-label="Run command">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </button>
-          </form>
-
-          <div class="console__chips">
-            <button type="button" data-cmd="help">help</button>
-            <button type="button" data-cmd="work">work</button>
-            <button type="button" data-cmd="price">price</button>
-            <button type="button" data-cmd="stack">stack</button>
-            <button type="button" data-cmd="book">book</button>
-          </div>
-        </section>
+        <div class="hero-object" tabindex="0" role="img"
+             data-aria-en="An interactive cloud of points — drag to spin it, click to change its shape."
+             data-aria-el="Ένα διαδραστικό νέφος σημείων — σύρετε για περιστροφή, πατήστε για αλλαγή σχήματος."
+             aria-label="An interactive cloud of points — drag to spin it, click to change its shape.">
+          <canvas id="heroObject"></canvas>
+        </div>
       </div>
     </div>
 
@@ -847,7 +818,7 @@
 <script src="js/strings.js" defer></script>
 <script src="js/site.js" defer></script>
 <script src="js/cursor.js" defer></script>
-<script src="js/console.js" defer></script>
+<script src="js/hero.js" defer></script>
 <script src="js/booking.js" defer></script>
 <script src="js/reviews.js" defer></script>
 <script src="js/consent.js" defer></script>

@@ -102,29 +102,31 @@ js/lang.js          Greek/English switching, before first paint
 js/strings.js       runtime strings in both languages
 js/cursor.js        the four pointer effects
 js/site.js          nav, menu, scroll reveals, hover-peek, shared form helpers
-js/console.js       the hero console — the interactive centrepiece
+js/hero.js          the hero object — a point cloud that morphs into the logo
 js/booking.js       calendar, time slots, stepped mobile flow, validation
 js/reviews.js       star input, review submission, the writer's own copy
 js/consent.js       cookie banner + preference centre
 assets/fonts/       Inter woff2 subsets
 ```
 
-## The hero console
+## The hero object
 
-`js/console.js` is the hero's centrepiece: a small terminal that answers. Type
-`help`, `work`, `price`, `stack`, `about`, `contact`, `book`, `lang` or `clear`
-— or tap the chips, which is how it works on a phone. Commands that map to a
-section print their answer and then scroll there.
+`js/hero.js` draws a cloud of ~1,700 points you can throw around. Drag to spin
+it (mouse or touch) with inertia on release; a click that isn't a drag re-forms
+it into the next shape — sphere, cube, torus, and then the SitrixWeb mark
+itself. Left alone it turns slowly and re-forms on its own every 11 seconds.
 
-To add a command, add an entry to `COMMANDS` in `js/console.js` with its
-`names` (all the spellings that should match, Greek included), its `lines` in
-both languages, and optionally `go` (a section id to scroll to) or `run` (any
-extra behaviour).
+The mark's points were sampled from `assets/img/logo-mark-light.png` on a
+jittered grid — random sampling left holes and the monogram was unreadable —
+and embedded as coordinates, so no image is decoded at runtime. Because the
+mark is flat, the object settles face-on whenever it is the current shape,
+turning to the nearest whole revolution rather than unwinding.
 
-It never autofocuses — that would hijack the first keystroke and throw the
-keyboard over the hero on mobile — output is a live region for screen readers,
-and under `prefers-reduced-motion` every line prints instantly with no blinking
-caret.
+Points are drawn in about two dozen batched fills per frame rather than one
+fill each, which is what keeps it cheap on a phone. The loop parks itself
+off-screen and when the tab is hidden, `prefers-reduced-motion` gets one still
+frame of the logo, and the object is keyboard-operable (Enter cycles shapes,
+arrows spin it).
 
 ## Greek and English
 
