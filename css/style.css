@@ -664,7 +664,7 @@ p:last-child { margin-bottom: 0; }
 }
 @keyframes pulseDot { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
 
-/* The globe zone — bleeds past the content max-width. */
+/* The console zone — bleeds past the content max-width, as the globe did. */
 .hero__stage {
   position: relative;
   justify-self: center;
@@ -673,21 +673,6 @@ p:last-child { margin-bottom: 0; }
   display: grid;
   place-items: center;
   margin-right: clamp(-90px, -4vw, 0px);
-}
-.globe-wrap {
-  position: relative;
-  width: 380px; height: 380px;
-  will-change: transform;
-}
-#globe { width: 100%; height: 100%; }
-/* Soft glow behind the globe. */
-.globe-wrap::before {
-  content: "";
-  position: absolute;
-  inset: -34%;
-  background: radial-gradient(circle at 50% 50%, rgba(200,149,108,.20), rgba(239,231,249,.05) 42%, transparent 68%);
-  filter: blur(12px);
-  pointer-events: none;
 }
 .hero__stage .orbit--a { width: 540px; height: 540px; }
 .hero__stage .orbit--b { width: 700px; height: 700px; opacity: .55; }
@@ -1456,7 +1441,6 @@ p:last-child { margin-bottom: 0; }
 @media (max-width: 1100px) {
   .hero__grid { grid-template-columns: 1.15fr .85fr; gap: 26px; }
   .hero__stage { margin-right: 0; min-height: 380px; }
-  .globe-wrap { width: 300px; height: 300px; }
   .hero__stage .orbit--a { width: 430px; height: 430px; }
   .hero__stage .orbit--b { width: 560px; height: 560px; }
   .section-index { display: none; }
@@ -1486,7 +1470,7 @@ p:last-child { margin-bottom: 0; }
 
   body { font-size: 15.5px; }
 
-  /* Hero: headline first, globe below it, everything given room to breathe. */
+  /* Hero: headline first, console below it, everything given room to breathe. */
   .hero {
     min-height: auto;
     padding: 118px 0 64px;
@@ -1502,7 +1486,6 @@ p:last-child { margin-bottom: 0; }
   .hero__actions .btn { flex: 1 1 100%; }
   .hero__meta { margin-top: 32px; gap: 8px 20px; font-size: 11.5px; }
   .hero__stage { order: 2; min-height: 310px; }
-  .globe-wrap { width: 240px; height: 240px; touch-action: none; }
   .hero__stage .orbit--a { width: 330px; height: 330px; }
   .hero__stage .orbit--b { display: none; }
   .hero__orbit-crop { width: 380px; height: 380px; right: -170px; top: -120px; }
@@ -2055,3 +2038,166 @@ html[data-lang="el"] [data-l="en"] { display: none !important; }
 }
 .preloader__stack > * { grid-area: 1 / 1; }
 .preloader__logo { width: 44px; height: auto; }
+
+/* ========================== 15. HERO CONSOLE =============================
+   The hero's interactive centrepiece: a small terminal that answers.
+   ========================================================================== */
+.console {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 420px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--surface);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(31,29,35,.92), rgba(24,22,27,.88));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 40px 80px -50px #000, 0 0 60px -30px rgba(200,149,108,.35);
+  overflow: hidden;
+  transition: border-color var(--d-2) var(--e), box-shadow var(--d-2) var(--e);
+}
+.console.is-live {
+  border-color: rgba(200,149,108,.55);
+  box-shadow: 0 40px 80px -50px #000, 0 0 70px -26px rgba(200,149,108,.5);
+}
+
+.console__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--surface);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.console__dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--copper);
+  box-shadow: 0 0 10px 1px rgba(200,149,108,.7);
+  animation: pulseDot 3.4s var(--e) infinite;
+}
+.console__title { color: var(--gray); }
+.console__status { margin-left: auto; color: var(--copper); }
+
+.console__out {
+  padding: 16px 16px 8px;
+  height: 224px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.62;
+  color: var(--gray);
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface) transparent;
+  overscroll-behavior: contain;
+}
+.console__out::-webkit-scrollbar { width: 5px; }
+.console__out::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 99px; }
+
+.console__line { margin: 0 0 7px; overflow-wrap: anywhere; }
+.console__line b { color: var(--copper); font-weight: 500; }
+.console__line--sys { color: var(--muted); }
+.console__line--echo { color: var(--bright); }
+.console__line--echo span { color: var(--copper); }
+.console__line--err { color: #d98f86; }
+.console__line--link a { color: var(--bright); }
+
+.console__form {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--surface);
+  background: rgba(61,58,63,.22);
+}
+.console__prompt {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--copper);
+  margin: 0;
+  /* The blinking block after the prompt is the caret people expect. */
+  position: relative;
+}
+.console__prompt::after {
+  content: "";
+  position: absolute;
+  right: -6px; top: 50%;
+  width: 6px; height: 2px;
+  background: var(--copper);
+  transform: translateY(6px);
+  animation: caret 1.1s steps(2) infinite;
+}
+@keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+.console__input {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  padding: 6px 0 6px 6px;
+}
+.console__input::placeholder { color: var(--muted); }
+.console__input:focus { outline: none; }
+
+.console__go {
+  flex: none;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border: 1px solid var(--surface);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  transition: color var(--d-fast) var(--e), border-color var(--d-fast) var(--e), transform 200ms var(--e);
+}
+.console__go:hover { color: var(--white); border-color: var(--copper); }
+.console__go:active { transform: scale(.94); transition-duration: 50ms; }
+
+.console__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid rgba(61,58,63,.6);
+}
+.console__chips button {
+  border: 1px solid var(--surface);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--gray);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  padding: 7px 13px;
+  cursor: pointer;
+  transition: color var(--d-fast) var(--e), border-color var(--d-fast) var(--e),
+              background var(--d-fast) var(--e), transform 200ms var(--e);
+  -webkit-tap-highlight-color: transparent;
+}
+.console__chips button:hover { color: var(--white); border-color: var(--copper); background: rgba(200,149,108,.12); }
+.console__chips button:active { transform: scale(.96); transition-duration: 50ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .console__prompt::after { animation: none; opacity: 1; }
+}
+
+@media (max-width: 1100px) {
+  .console { width: min(100%, 380px); }
+  .console__out { height: 190px; }
+}
+@media (max-width: 720px) {
+  .console { width: 100%; }
+  .console__out { height: 200px; font-size: 12px; }
+  .console__chips { padding: 10px 12px 12px; }
+  /* Bigger tap targets on touch. */
+  .console__chips button { padding: 9px 14px; font-size: 11.5px; }
+  .console__input { font-size: 16px; }   /* stops iOS zooming on focus */
+}

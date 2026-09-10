@@ -102,12 +102,29 @@ js/lang.js          Greek/English switching, before first paint
 js/strings.js       runtime strings in both languages
 js/cursor.js        the four pointer effects
 js/site.js          nav, menu, scroll reveals, hover-peek, shared form helpers
-js/globe.js         the hero globe (canvas, ~6KB, no library)
+js/console.js       the hero console — the interactive centrepiece
 js/booking.js       calendar, time slots, stepped mobile flow, validation
 js/reviews.js       star input, review submission, the writer's own copy
 js/consent.js       cookie banner + preference centre
 assets/fonts/       Inter woff2 subsets
 ```
+
+## The hero console
+
+`js/console.js` is the hero's centrepiece: a small terminal that answers. Type
+`help`, `work`, `price`, `stack`, `about`, `contact`, `book`, `lang` or `clear`
+— or tap the chips, which is how it works on a phone. Commands that map to a
+section print their answer and then scroll there.
+
+To add a command, add an entry to `COMMANDS` in `js/console.js` with its
+`names` (all the spellings that should match, Greek included), its `lines` in
+both languages, and optionally `go` (a section id to scroll to) or `run` (any
+extra behaviour).
+
+It never autofocuses — that would hijack the first keystroke and throw the
+keyboard over the hero on mobile — output is a live region for screen readers,
+and under `prefers-reduced-motion` every line prints instantly with no blinking
+caret.
 
 ## Greek and English
 
@@ -164,9 +181,10 @@ unlinked and `noindex`; delete it once you have settled on one.
   every scene: primary (content enters), secondary (shadows and icons settle ~50ms later),
   ambient (aurora drift, orbit rings, grain). Mobile shortens durations ~20% and tightens
   stagger ~30%.
-* **Mobile is a redesign, not a squeeze** — the hero stacks headline above a 180px globe
-  you can drag to rotate, portfolio rows swap the cursor-follow thumbnail for tap-to-expand,
-  and the booking panel becomes a stepped date → time → details flow.
+* **Mobile is a redesign, not a squeeze** — the hero stacks the headline above the console
+  (driven by tappable command chips rather than typing), portfolio rows swap the
+  cursor-follow thumbnail for tap-to-expand, and the booking panel becomes a stepped
+  date → time → details flow.
 * **`prefers-reduced-motion`** is honoured properly: ambient loops stop, the globe renders a
   single still frame, entrances become opacity-only.
 
