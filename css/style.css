@@ -1786,13 +1786,13 @@ p:last-child { margin-bottom: 0; }
 /* --- Field: lagging aurora light that uncovers a hidden dot-grid ---------- */
 .cur-field__glow {
   position: absolute; top: 0; left: 0;
-  width: 420px; height: 420px;
+  width: 310px; height: 310px;
   border-radius: 50%;
   background:
     radial-gradient(circle at 42% 40%, rgba(150,108,214,.20), transparent 62%),
     radial-gradient(circle at 62% 58%, rgba(200,149,108,.18), transparent 60%),
     radial-gradient(circle at 50% 50%, rgba(96,190,150,.10), transparent 66%);
-  filter: blur(26px);
+  filter: blur(19px);
   mix-blend-mode: screen;
   will-change: transform;
 }
@@ -1802,8 +1802,8 @@ p:last-child { margin-bottom: 0; }
   position: absolute; inset: 0;
   background-image: radial-gradient(circle, rgba(239,231,249,.55) 1px, transparent 1.4px);
   background-size: 26px 26px;
-  -webkit-mask-image: radial-gradient(210px 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.4) 44%, transparent 72%);
-  mask-image: radial-gradient(210px 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.4) 44%, transparent 72%);
+  -webkit-mask-image: radial-gradient(155px 155px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.4) 44%, transparent 72%);
+  mask-image: radial-gradient(155px 155px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.4) 44%, transparent 72%);
   opacity: .5;
   transition: opacity 300ms var(--e);
 }

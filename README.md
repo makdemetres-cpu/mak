@@ -112,7 +112,9 @@ assets/fonts/       Inter woff2 subsets
 `js/config.js` picks one, and that single word changes every page at once.
 **Field** is the one in use: an aurora-coloured light lags well behind the
 pointer and uncovers a dot-grid that is otherwise invisible, brightening a
-little over anything clickable. Nothing chases the pointer — the page simply
+little over anything clickable. Its size lives in `css/style.css` §10 — the
+`.cur-field__glow` box and the matching mask radius on `.cur-field__grid`,
+which are kept in proportion to each other. Nothing chases the pointer — the page simply
 lights up where the visitor is looking.
 
 All four leave the real system cursor visible rather than replacing it, so nobody
