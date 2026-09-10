@@ -15,28 +15,12 @@
   "use strict";
 
   const KEY = "sitrix_consent_v1";
+  const T = (k) => window.SitrixLang.t(window.SITRIX_STRINGS[k]);
   const CATS = [
-    {
-      id: "necessary",
-      title: "Strictly necessary",
-      desc: "Keeps your cookie choice and lets forms work. These cannot be switched off and never identify you.",
-      locked: true,
-    },
-    {
-      id: "preferences",
-      title: "Preferences",
-      desc: "Remembers small choices you make on the site — such as a review you submitted — on this device only.",
-    },
-    {
-      id: "analytics",
-      title: "Analytics",
-      desc: "Anonymous, aggregated statistics about which pages get read, so I can improve them. Nothing is loaded unless you allow it.",
-    },
-    {
-      id: "marketing",
-      title: "Marketing",
-      desc: "Would allow advertising or remarketing tags. None are used on this site today; the switch is here so the choice stays yours if that ever changes.",
-    },
+    { id: "necessary",   title: "catNecessary",   desc: "catNecessaryD", locked: true },
+    { id: "preferences", title: "catPreferences", desc: "catPreferencesD" },
+    { id: "analytics",   title: "catAnalytics",   desc: "catAnalyticsD" },
+    { id: "marketing",   title: "catMarketing",   desc: "catMarketingD" },
   ];
 
   function read() {
@@ -77,20 +61,25 @@
     el.id = "cookieBanner";
     el.setAttribute("role", "dialog");
     el.setAttribute("aria-live", "polite");
-    el.setAttribute("aria-label", "Cookie choices");
-    el.innerHTML =
-      "<h3>Cookies, honestly</h3>" +
-      "<p>This site uses one strictly necessary cookie-equivalent to remember this choice. " +
-      "Anything else — preferences and anonymous analytics — only runs if you say yes. " +
-      "You can change your mind at any time from the footer. " +
-      '<a href="cookies.html">Cookie Policy</a> · <a href="privacy.html">Privacy Policy</a></p>' +
-      '<div class="cc__actions">' +
-        '<button type="button" class="btn" data-cc="accept">Accept all</button>' +
-        '<button type="button" class="btn" data-cc="reject">Reject non-essential</button>' +
-        '<button type="button" class="btn" data-cc="prefs">Customise</button>' +
-      "</div>";
     document.body.appendChild(el);
+    fillBanner(el);
     return el;
+  }
+
+  /* Written as a function so the banner can be refilled when the visitor
+     switches language while it is still on screen. */
+  function fillBanner(el) {
+    el.setAttribute("aria-label", T("ccDialogLabel"));
+    el.innerHTML =
+      "<h3>" + T("ccTitle") + "</h3>" +
+      "<p>" + T("ccBody") + " " +
+      '<a href="cookies.html">' + T("ccPolicyLink") + "</a> · " +
+      '<a href="privacy.html">' + T("ccPrivacyLink") + "</a></p>" +
+      '<div class="cc__actions">' +
+        '<button type="button" class="btn" data-cc="accept">' + T("ccAccept") + "</button>" +
+        '<button type="button" class="btn" data-cc="reject">' + T("ccReject") + "</button>" +
+        '<button type="button" class="btn" data-cc="prefs">' + T("ccCustomise") + "</button>" +
+      "</div>";
   }
 
   function buildPrefs() {
@@ -99,35 +88,51 @@
     el.id = "cookiePrefs";
     el.setAttribute("role", "dialog");
     el.setAttribute("aria-modal", "true");
-    el.setAttribute("aria-label", "Cookie settings");
+    document.body.appendChild(el);
+    fillPrefs(el);
+    return el;
+  }
+
+  function fillPrefs(el) {
+    el.setAttribute("aria-label", T("ccPrefsTitle"));
 
     const rows = CATS.map((c) =>
       '<div class="cc-cat">' +
-        '<div class="cc-cat__body"><h4>' + c.title + "</h4><p>" + c.desc + "</p></div>" +
+        '<div class="cc-cat__body"><h4>' + T(c.title) + "</h4><p>" + T(c.desc) + "</p></div>" +
         '<label class="check"><input type="checkbox" data-cat="' + c.id + '"' +
           (c.locked ? " checked disabled" : "") + '>' +
-          '<span class="muted-sm">' + (c.locked ? "Always on" : "Allow") + "</span>" +
+          '<span class="muted-sm">' + (c.locked ? T("ccAlwaysOn") : T("ccAllow")) + "</span>" +
         "</label>" +
       "</div>"
     ).join("");
 
     el.innerHTML =
       '<div class="cc-prefs__box">' +
-        "<h3>Cookie settings</h3>" +
-        '<p class="muted-sm" style="margin-bottom:18px">Switch on only what you are comfortable with. ' +
-        'Full detail in the <a href="cookies.html" style="color:var(--bright)">Cookie Policy</a>.</p>' +
+        "<h3>" + T("ccPrefsTitle") + "</h3>" +
+        '<p class="muted-sm" style="margin-bottom:18px">' + T("ccPrefsIntro") +
+        '<a href="cookies.html" style="color:var(--bright)">' + T("ccPolicyLink") + "</a>.</p>" +
         rows +
         '<div class="cc-prefs__actions">' +
-          '<button type="button" class="btn" data-cc="save">Save my choices</button>' +
-          '<button type="button" class="btn btn--ghost" data-cc="close">Cancel</button>' +
+          '<button type="button" class="btn" data-cc="save">' + T("ccSave") + "</button>" +
+          '<button type="button" class="btn btn--ghost" data-cc="close">' + T("ccCancel") + "</button>" +
         "</div>" +
       "</div>";
-    document.body.appendChild(el);
-    return el;
   }
 
   const banner = buildBanner();
   const prefs = buildPrefs();
+
+  // Switching language rewrites whichever of the two is on screen, keeping
+  // any ticks the visitor has already made in the preference panel.
+  document.addEventListener("sitrix:lang", () => {
+    const ticked = {};
+    prefs.querySelectorAll("input[data-cat]").forEach((i) => { ticked[i.dataset.cat] = i.checked; });
+    fillBanner(banner);
+    fillPrefs(prefs);
+    prefs.querySelectorAll("input[data-cat]").forEach((i) => {
+      if (!i.disabled && ticked[i.dataset.cat] !== undefined) i.checked = ticked[i.dataset.cat];
+    });
+  });
 
   function openBanner() {
     document.body.classList.add("cc-open");

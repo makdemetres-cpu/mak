@@ -17,6 +17,7 @@
   if (!form || !strip) return;
 
   const F = window.SitrixForm;
+  const T = (k) => window.SitrixLang.t(window.SITRIX_STRINGS[k]);
   const KEY = "sitrix_my_reviews_v1";
 
   /* ---------------- star input ---------------- */
@@ -52,13 +53,13 @@
   function cardHtml(r) {
     let s = "";
     for (let i = 1; i <= 5; i++) s += starSvg(i <= r.rating);
-    return '<div class="review__stars" role="img" aria-label="' + r.rating + ' out of 5">' + s + "</div>" +
+    return '<div class="review__stars" role="img" aria-label="' + r.rating + T("outOfFive") + '">' + s + "</div>" +
       '<p class="review__text">' + escapeHtml(r.text) + "</p>" +
       '<div class="review__who">' +
         '<span class="review__avatar" aria-hidden="true">' + escapeHtml(initials(r.name)) + "</span>" +
         "<span><span class=\"review__name\">" + escapeHtml(r.name) + "</span>" +
         (r.company ? '<span class="review__co">' + escapeHtml(r.company) + "</span>" : "") + "</span>" +
-        '<span class="review__pending">Awaiting publication</span>' +
+        '<span class="review__pending">' + T("rvPending") + "</span>" +
       "</div>";
   }
 
@@ -89,6 +90,10 @@
   stored().slice().reverse().forEach(addCard);
 
   /* ---------------- submit ---------------- */
+  document.addEventListener("sitrix:lang", () => {
+    strip.querySelectorAll(".review__pending").forEach((el) => { el.textContent = T("rvPending"); });
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (F.isBot(form)) return;
@@ -102,14 +107,10 @@
     const rating = Number((starInputs.find((i) => i.checked) || {}).value || 0);
 
     let ok = true;
-    if (!rating) ok = F.invalid(stars.closest(".field"), "Pick a rating from one to five stars.");
-    if (!name.value.trim()) ok = F.invalid(name.closest(".field"), "A name (or first name) please.");
-    if (text.value.trim().length < 15) {
-      ok = F.invalid(text.closest(".field"), "A sentence or two would help — 15 characters minimum.");
-    }
-    if (!consent.checked) {
-      ok = F.invalid(consent.closest(".field"), "I need your permission before publishing this.");
-    }
+    if (!rating) ok = F.invalid(stars.closest(".field"), T("rvRating"));
+    if (!name.value.trim()) ok = F.invalid(name.closest(".field"), T("rvName"));
+    if (text.value.trim().length < 15) ok = F.invalid(text.closest(".field"), T("rvText"));
+    if (!consent.checked) ok = F.invalid(consent.closest(".field"), T("rvConsent"));
     if (!ok) return;
 
     const review = {
@@ -123,7 +124,7 @@
     const submit = form.querySelector('button[type="submit"]');
     const label = submit.textContent;
     submit.disabled = true;
-    submit.textContent = "Sending…";
+    submit.textContent = T("rvSending");
 
     try {
       const res = await F.send({
@@ -161,7 +162,7 @@
     } catch (err) {
       submit.disabled = false;
       submit.textContent = label;
-      F.invalid(text.closest(".field"), "That didn't send. Please email it to me instead and I'll add it.");
+      F.invalid(text.closest(".field"), T("rvFailed"));
     }
   });
 })();

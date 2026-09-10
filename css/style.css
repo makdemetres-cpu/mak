@@ -1898,7 +1898,12 @@ h1, h2, h3, h4,
 
 /* Jura's lighter weights read thin at body sizes, so headings hold 600–700
    and the "light" lead words sit at 400 rather than 300. */
-.hero__title .greet { font-weight: 400; }
+.hero__title .greet {
+  font-weight: 400;
+  /* Greek runs longer than English here and was orphaning its last word
+     onto a line of its own. Balancing splits the two lines evenly. */
+  text-wrap: balance;
+}
 .section-head .lite { font-weight: 400; }
 .menu__list a { font-family: var(--font-display); font-weight: 500; }
 
@@ -1957,4 +1962,45 @@ body.cc-open .to-top {
 
 @media (max-width: 720px) {
   .to-top { width: 44px; height: 44px; }
+}
+
+/* ========================= 13. LANGUAGE TOGGLE ============================
+   Both languages ship in the markup; this decides which one is on screen.
+   The default in the HTML is data-lang="en", so with JavaScript disabled the
+   page still reads as a normal English page rather than showing both.
+   ========================================================================== */
+html[data-lang="en"] [data-l="el"],
+html[data-lang="el"] [data-l="en"] { display: none !important; }
+
+.lang {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--surface);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 42px;
+}
+.lang__btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  padding: 0 12px;
+  height: 100%;
+  cursor: pointer;
+  transition: color var(--d-1) var(--e), background var(--d-1) var(--e);
+  -webkit-tap-highlight-color: transparent;
+}
+.lang__btn:hover { color: var(--white); }
+.lang__btn.is-on { color: #16141a; background: var(--copper); }
+
+/* In the fullscreen menu it sits with the other footer links, a size up. */
+.menu__foot .lang { height: 38px; }
+
+@media (max-width: 720px) {
+  .lang { height: 40px; }
+  .lang__btn { padding: 0 11px; font-size: 10.5px; }
 }

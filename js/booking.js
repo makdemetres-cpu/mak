@@ -36,9 +36,11 @@
   const success = document.getElementById("bookSuccess");
   const stepBar = $$("#bookSteps span");
 
-  const MONTHS = ["January", "February", "March", "April", "May", "June",
-                  "July", "August", "September", "October", "November", "December"];
-  const DOWS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  /* Names and messages come from js/strings.js so the calendar speaks
+     whichever language is on screen. Greek needs two forms of the month:
+     genitive inside a date ("9 Σεπτεμβρίου") and nominative as a heading
+     ("Σεπτέμβριος 2026"). */
+  const T = (k) => window.SitrixLang.t(window.SITRIX_STRINGS[k]);
 
   const today = startOfDay(new Date());
   const minDate = addDays(today, LEAD);
@@ -59,7 +61,8 @@
       + "-" + String(d.getDate()).padStart(2, "0");
   }
   function pretty(d) {
-    return DOWS[(d.getDay() + 6) % 7] + " " + d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+    return T("days")[(d.getDay() + 6) % 7] + " " + d.getDate() + " " +
+           T("months")[d.getMonth()] + " " + d.getFullYear();
   }
   function bookable(d) {
     if (d < minDate || d > maxDate) return false;
@@ -68,7 +71,7 @@
 
   /* ---------------- calendar ---------------- */
   function renderMonth() {
-    monthLabel.textContent = MONTHS[view.getMonth()] + " " + view.getFullYear();
+    monthLabel.textContent = T("monthsStandalone")[view.getMonth()] + " " + view.getFullYear();
     grid.innerHTML = "";
 
     const first = new Date(view.getFullYear(), view.getMonth(), 1);
@@ -96,7 +99,7 @@
       }
       if (!bookable(d)) {
         btn.disabled = true;
-        btn.setAttribute("aria-label", pretty(d) + " — unavailable");
+        btn.setAttribute("aria-label", pretty(d) + T("unavailable"));
       } else {
         btn.setAttribute("aria-label", pretty(d));
         btn.addEventListener("click", () => pickDate(d));
@@ -122,7 +125,7 @@
   /* ---------------- time slots ---------------- */
   function renderSlots() {
     if (!chosenDate) {
-      slotBox.innerHTML = '<p class="slots__empty">Pick a day first and the open times will appear here.</p>';
+      slotBox.innerHTML = '<p class="slots__empty">' + T("pickDayFirst") + "</p>";
       return;
     }
     const now = new Date();
@@ -142,7 +145,7 @@
       when.setHours(h, m, 0, 0);
       if (when <= now) {
         btn.disabled = true;
-        btn.setAttribute("aria-label", time + " — no longer available");
+        btn.setAttribute("aria-label", time + T("slotGone"));
       } else {
         btn.addEventListener("click", () => {
           chosenSlot = time;
@@ -164,16 +167,18 @@
       const p = document.createElement("p");
       p.className = "slots__empty";
       p.style.marginTop = "14px";
-      p.textContent = "Nothing left on this day — try the next one.";
+      p.textContent = T("dayFull");
       slotBox.appendChild(p);
     }
   }
 
   function updateSummary() {
     if (!summary) return;
-    summary.innerHTML = chosenDate && chosenSlot
-      ? "A 30-minute call on <b>" + pretty(chosenDate) + "</b> at <b>" + chosenSlot + "</b>."
-      : "Choose a day and a time and your slot will be summarised here.";
+    if (!chosenDate || !chosenSlot) { summary.innerHTML = T("summaryEmpty"); return; }
+    const d = "<b>" + pretty(chosenDate) + "</b>", t = "<b>" + chosenSlot + "</b>";
+    summary.innerHTML = window.SitrixLang.get() === "el"
+      ? "Κλήση 30 λεπτών στις " + d + " στις " + t + "."
+      : "A 30-minute call on " + d + " at " + t + ".";
   }
 
   /* ---------------- stepped flow (phones) ---------------- */
@@ -209,26 +214,24 @@
 
       let ok = true;
       if (!chosenDate || !chosenSlot) {
-        ok = F.invalid($("#bkSlotField") || fields.name.closest(".field"),
-          "Pick a day and a time above first.");
+        ok = F.invalid($("#bkSlotField") || fields.name.closest(".field"), T("bkNoSlot"));
         goStep(1);
       }
       if (!fields.name.value.trim()) {
-        ok = F.invalid(fields.name.closest(".field"), "Please tell me what to call you.");
+        ok = F.invalid(fields.name.closest(".field"), T("bkName"));
       }
       if (!F.email(fields.email.value)) {
-        ok = F.invalid(fields.email.closest(".field"), "That email address doesn't look right.");
+        ok = F.invalid(fields.email.closest(".field"), T("bkEmail"));
       }
       if (!fields.consent.checked) {
-        ok = F.invalid(fields.consent.closest(".field"),
-          "I need your consent to store these details and contact you about the call.");
+        ok = F.invalid(fields.consent.closest(".field"), T("bkConsent"));
       }
       if (!ok) return;
 
       const submit = form.querySelector('button[type="submit"]');
       const label = submit.textContent;
       submit.disabled = true;
-      submit.textContent = "Booking…";
+      submit.textContent = T("bkSending");
 
       const payload = {
         type: "consultation-booking",
@@ -261,8 +264,7 @@
       } catch (err) {
         submit.disabled = false;
         submit.textContent = label;
-        F.invalid(fields.email.closest(".field"),
-          "Something went wrong sending that. Please email me directly instead.");
+        F.invalid(fields.email.closest(".field"), T("bkFailed"));
       }
     });
   }
@@ -277,7 +279,25 @@
     renderMonth();
   });
 
-  renderMonth();
-  renderSlots();
-  updateSummary();
+  function renderDows() {
+    const box = panel.querySelector(".cal__dows");
+    if (!box) return;
+    const ini = T("dayInitials");
+    Array.from(box.children).forEach((el, i) => { el.textContent = ini[i]; });
+  }
+
+  function renderAll() {
+    renderDows();
+    renderMonth();
+    renderSlots();
+    updateSummary();
+    const prev = panel.querySelector("#calPrev"), next = panel.querySelector("#calNext");
+    if (prev) prev.setAttribute("aria-label", T("prevMonth"));
+    if (next) next.setAttribute("aria-label", T("nextMonth"));
+  }
+
+  // Rebuild in place when the visitor switches language.
+  document.addEventListener("sitrix:lang", renderAll);
+
+  renderAll();
 })();

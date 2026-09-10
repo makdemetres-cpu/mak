@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lang="en"
+      data-title-en="SitrixWeb — Web development studio, Greece &amp; the EU"
+      data-title-el="SitrixWeb — Στούντιο κατασκευής ιστοσελίδων, Ελλάδα &amp; ΕΕ"
+      data-desc-en="SitrixWeb is a one-person web development studio in Greece building fast, accessible, GDPR-ready websites for businesses across the EU. See selected work and book a free 30-minute consultation."
+      data-desc-el="Η SitrixWeb είναι ένα στούντιο ενός ατόμου στην Ελλάδα που φτιάχνει γρήγορα, προσβάσιμα και συμβατά με τον GDPR websites για επιχειρήσεις σε όλη την ΕΕ. Δείτε δουλειές και κλείστε δωρεάν συμβουλευτική 30 λεπτών.">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -21,6 +25,9 @@
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/style.css">
 
+<!-- Runs before the first paint so the page never flashes the wrong language. -->
+<script src="js/lang.js"></script>
+
 <noscript>
   <!-- Without JS there is no preloader to dismiss and no observer to reveal
        anything, so everything that starts hidden is simply shown. -->
@@ -39,7 +46,7 @@
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main"><span data-l="en">Skip to content</span><span data-l="el">Μετάβαση στο περιεχόμενο</span></a>
 
 <!-- ambient layers ---------------------------------------------------- -->
 <div class="preloader" id="preloader" aria-hidden="true">
@@ -67,6 +74,10 @@
   </a>
 
   <div class="nav__right">
+    <div class="lang" role="group" data-aria-en="Language" data-aria-el="Γλώσσα" aria-label="Language">
+      <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+      <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+    </div>
     <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" aria-label="SitrixWeb on Instagram">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5"/>
@@ -83,15 +94,19 @@
 <nav class="menu" id="menu" aria-hidden="true" aria-label="Main">
   <div class="menu__inner">
     <ul class="menu__list">
-      <li style="--i:0"><a href="#hero"><span class="num">01</span> Hi</a></li>
-      <li style="--i:1"><a href="#about"><span class="num">02</span> The studio</a></li>
-      <li style="--i:2"><a href="#services"><span class="num">03</span> What I build</a></li>
-      <li style="--i:3"><a href="#works"><span class="num">04</span> Selected works</a></li>
-      <li style="--i:4"><a href="#process"><span class="num">05</span> Process</a></li>
-      <li style="--i:5"><a href="#reviews"><span class="num">06</span> Reviews</a></li>
-      <li style="--i:6"><a href="#booking"><span class="num">07</span> Book a call</a></li>
+      <li style="--i:0"><a href="#hero"><span class="num">01</span> <span data-l="en">Hi</span><span data-l="el">Γεια</span></a></li>
+      <li style="--i:1"><a href="#about"><span class="num">02</span> <span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+      <li style="--i:2"><a href="#services"><span class="num">03</span> <span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+      <li style="--i:3"><a href="#works"><span class="num">04</span> <span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+      <li style="--i:4"><a href="#process"><span class="num">05</span> <span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+      <li style="--i:5"><a href="#reviews"><span class="num">06</span> <span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
+      <li style="--i:6"><a href="#booking"><span class="num">07</span> <span data-l="en">Book a call</span><span data-l="el">Κλείστε κλήση</span></a></li>
     </ul>
     <div class="menu__foot">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
+        <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+      </div>
       <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
@@ -100,8 +115,8 @@
         Instagram
       </a>
       <a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="imprint.html">Legal notice</a>
+      <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
+      <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
     </div>
   </div>
 </nav>
@@ -110,35 +125,37 @@
 
   <!-- 01 · Hero ------------------------------------------------------- -->
   <section class="hero" id="hero">
-    <span class="section-index" aria-hidden="true">01 · Hi</span>
+    <span class="section-index" aria-hidden="true">01 · <span data-l="en">Hi</span><span data-l="el">Γεια</span></span>
     <div class="orbit orbit--slow hero__orbit-crop" aria-hidden="true"></div>
 
     <div class="hero__grid">
       <div class="hero__copy">
-        <p class="hero__eyebrow eyebrow">Hello, and welcome in</p>
+        <p class="hero__eyebrow eyebrow"><span data-l="en">Hello, and welcome in</span><span data-l="el">Γεια σας, καλώς ήρθατε</span></p>
 
         <h1 class="hero__title">
-          <span class="greet">I design and build the web at</span>
+          <span class="greet"><span data-l="en">I design and build the web at</span><span data-l="el">Σχεδιάζω και φτιάχνω το web στη</span></span>
           <span class="brand">SitrixWeb<span class="dot">.</span></span>
         </h1>
 
         <div class="hero__sub">
-          <p class="lead">A one-person studio in Greece making fast, accessible sites for businesses that would rather not guess their way through a web project.</p>
-          <p class="hero__aside"><b>a.k.a.</b> the person who actually answers your emails, before and after launch.</p>
+          <p class="lead" data-l="en">A one-person studio in Greece making fast, accessible sites for businesses that would rather not guess their way through a web project.</p>
+          <p class="lead" data-l="el">Ένα στούντιο ενός ατόμου στην Ελλάδα, που φτιάχνει γρήγορα και προσβάσιμα sites για επιχειρήσεις που δεν θέλουν να προχωρούν στα τυφλά σε ένα web project.</p>
+          <p class="hero__aside" data-l="en"><b>a.k.a.</b> the person who actually answers your emails, before and after launch.</p>
+          <p class="hero__aside" data-l="el"><b>αλλιώς:</b> ο άνθρωπος που απαντάει όντως στα email σας, πριν και μετά το launch.</p>
         </div>
 
         <div class="hero__actions">
           <a class="btn" href="#booking">
-            Book a free consultation
+            <span data-l="en">Book a free consultation</span><span data-l="el">Δωρεάν συμβουλευτική</span>
             <svg class="btn__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a class="btn btn--ghost" href="#works">See selected work</a>
+          <a class="btn btn--ghost" href="#works"><span data-l="en">See selected work</span><span data-l="el">Δείτε δουλειές</span></a>
         </div>
 
         <p class="hero__meta">
-          <span><i aria-hidden="true"></i> Taking projects for the next quarter</span>
-          <span>Thessaloniki · working EU-wide</span>
-          <span>Studio est. 01.06.2026</span>
+          <span><i aria-hidden="true"></i> <span data-l="en">Taking projects for the next quarter</span><span data-l="el">Δέχομαι έργα για το επόμενο τρίμηνο</span></span>
+          <span><span data-l="en">Thessaloniki · working EU-wide</span><span data-l="el">Θεσσαλονίκη · σε όλη την ΕΕ</span></span>
+          <span><span data-l="en">Studio est. 01.06.2026</span><span data-l="el">Έναρξη 01.06.2026</span></span>
         </p>
       </div>
 
@@ -146,47 +163,60 @@
         <div class="orbit orbit--a" aria-hidden="true"></div>
         <div class="orbit orbit--slow orbit--b" aria-hidden="true"></div>
         <div class="globe-wrap">
-          <canvas id="globe" role="img" aria-label="A slowly rotating globe of light points."></canvas>
+          <canvas id="globe" role="img" data-aria-en="A slowly rotating globe of light points." data-aria-el="Μια αργά περιστρεφόμενη σφαίρα από φωτεινά σημεία." aria-label="A slowly rotating globe of light points."></canvas>
         </div>
       </div>
     </div>
 
-    <a class="scroll-cue" href="#about" aria-label="Scroll to the studio">
-      Scroll
+    <a class="scroll-cue" href="#about" data-aria-en="Scroll to the studio" data-aria-el="Κάντε κύλιση στο στούντιο" aria-label="Scroll to the studio">
+      <span data-l="en">Scroll</span><span data-l="el">Κύλιση</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
     </a>
   </section>
 
   <!-- 02 · About ------------------------------------------------------ -->
   <section class="section" id="about">
-    <span class="section-index" aria-hidden="true">02 · Studio</span>
+    <span class="section-index" aria-hidden="true">02 · <span data-l="en">Studio</span><span data-l="el">Στούντιο</span></span>
     <div class="wrap">
       <div class="about__grid">
         <div class="about__body" data-reveal="left">
-          <p class="eyebrow">Why this studio exists</p>
-          <h2 class="section-head">Most people go into a web project <span class="lite">blind</span><span class="dot">.</span></h2>
-          <p class="lead" style="margin-top:24px">
+          <p class="eyebrow"><span data-l="en">Why this studio exists</span><span data-l="el">Γιατί υπάρχει αυτό το στούντιο</span></p>
+          <h2 class="section-head" data-l="en">Most people go into a web project <span class="lite">blind</span><span class="dot">.</span></h2>
+          <h2 class="section-head" data-l="el">Οι περισσότεροι μπαίνουν σε ένα web project <span class="lite">στα τυφλά</span><span class="dot">.</span></h2>
+          <p class="lead" style="margin-top:24px" data-l="en">
             They are handed a quote with no scope, a design they only see once it is too late to change,
             and a login to something they cannot edit. Six months later the site is slow, the agency has
             moved on, and nobody can say who owns the domain.
           </p>
-          <p class="lead">
+          <p class="lead" style="margin-top:24px" data-l="el">
+            Τους δίνουν μια προσφορά χωρίς αντικείμενο, ένα σχέδιο που το βλέπουν όταν πια είναι αργά για
+            αλλαγές, κι έναν κωδικό για κάτι που δεν μπορούν να επεξεργαστούν. Έξι μήνες μετά το site είναι
+            αργό, η εταιρεία έχει προχωρήσει αλλού και κανείς δεν ξέρει σε ποιον ανήκει το domain.
+          </p>
+          <p class="lead" data-l="en">
             SitrixWeb opened on <strong>1 June 2026</strong> as the opposite of that. One developer, one
             project at a time, everything explained in words you can repeat to your accountant. You see
             the work as it is built, you own every account it touches, and the thing that goes live is
             <strong>fast, accessible and legal in the EU</strong> on day one — not after an audit.
           </p>
+          <p class="lead" data-l="el">
+            Η SitrixWeb ξεκίνησε την <strong>1η Ιουνίου 2026</strong> ως το ακριβώς αντίθετο. Ένας
+            προγραμματιστής, ένα έργο κάθε φορά, και όλα εξηγημένα με λόγια που μπορείτε να επαναλάβετε
+            στον λογιστή σας. Βλέπετε τη δουλειά όσο χτίζεται, οι λογαριασμοί είναι όλοι δικοί σας, και
+            αυτό που βγαίνει live είναι <strong>γρήγορο, προσβάσιμο και νόμιμο στην ΕΕ</strong> από την
+            πρώτη μέρα — όχι μετά από έλεγχο.
+          </p>
 
           <dl class="about__facts">
-            <div><dt>1<span class="dot">:</span>1</dt><dd>You talk to the person writing the code</dd></div>
-            <div><dt>&lt;1.5s</dt><dd>Load target on a mid-range phone, 4G</dd></div>
-            <div><dt>100%</dt><dd>Your accounts, your domain, your data</dd></div>
+            <div><dt>1<span class="dot">:</span>1</dt><dd><span data-l="en">You talk to the person writing the code</span><span data-l="el">Μιλάτε με αυτόν που γράφει τον κώδικα</span></dd></div>
+            <div><dt>&lt;1.5s</dt><dd><span data-l="en">Load target on a mid-range phone, 4G</span><span data-l="el">Στόχος φόρτωσης σε μεσαίο κινητό, 4G</span></dd></div>
+            <div><dt>100%</dt><dd><span data-l="en">Your accounts, your domain, your data</span><span data-l="el">Δικοί σας λογαριασμοί, domain, δεδομένα</span></dd></div>
           </dl>
         </div>
 
-        <div class="about__render" data-reveal="right" role="img" aria-label="Abstract render of a wireframe grid dissolving into light.">
+        <div class="about__render" data-reveal="right" role="img" data-aria-en="Abstract render of a wireframe grid dissolving into light." data-aria-el="Αφηρημένη απεικόνιση πλέγματος που διαλύεται σε φως." aria-label="Abstract render of a wireframe grid dissolving into light.">
           <div class="orbit" aria-hidden="true"></div>
-          <span class="about__render__tag">SitrixWeb · control room</span>
+          <span class="about__render__tag"><span data-l="en">SitrixWeb · control room</span><span data-l="el">SitrixWeb · κέντρο ελέγχου</span></span>
         </div>
       </div>
     </div>
@@ -194,11 +224,12 @@
 
   <!-- 03 · Services --------------------------------------------------- -->
   <section class="section" id="services">
-    <span class="section-index" aria-hidden="true">03 · Build</span>
+    <span class="section-index" aria-hidden="true">03 · <span data-l="en">Build</span><span data-l="el">Κατασκευή</span></span>
     <div class="wrap">
       <div class="section__head">
-        <p class="eyebrow" data-reveal>What I build</p>
-        <h2 class="section-head" data-reveal>Four things, done properly<span class="dot">.</span></h2>
+        <p class="eyebrow" data-reveal><span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></p>
+        <h2 class="section-head" data-reveal data-l="en">Four things, done properly<span class="dot">.</span></h2>
+        <h2 class="section-head" data-reveal data-l="el">Τέσσερα πράγματα, σωστά<span class="dot">.</span></h2>
       </div>
 
       <div class="bento">
@@ -206,17 +237,22 @@
           <span class="tile__icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h18v12H3zM8 21h8M12 17v4"/></svg>
           </span>
-          <h3>Websites that earn their keep</h3>
-          <p>
+          <h3><span data-l="en">Websites that earn their keep</span><span data-l="el">Sites που αποδίδουν</span></h3>
+          <p data-l="en">
             Marketing sites, portfolios and small-business sites built from scratch — no bloated theme,
             no page builder locking you in. Hand-written HTML, CSS and JavaScript, or a headless CMS when
             you need to edit things yourself.
           </p>
+          <p data-l="el">
+            Εταιρικά sites, portfolio και sites μικρών επιχειρήσεων, φτιαγμένα από το μηδέν — χωρίς βαρύ
+            έτοιμο theme, χωρίς page builder που σας εγκλωβίζει. Γραμμένα στο χέρι σε HTML, CSS και
+            JavaScript, ή με headless CMS όταν θέλετε να τα αλλάζετε μόνοι σας.
+          </p>
           <ul class="tile__list">
-            <li>Design and build, or build from your designer's files</li>
-            <li>A CMS you can actually use, if you want one</li>
-            <li>Multilingual (Greek / English) where it matters</li>
-            <li>Copy, structure and SEO groundwork included</li>
+            <li><span data-l="en">Design and build, or build from your designer's files</span><span data-l="el">Σχεδιασμός και κατασκευή, ή κατασκευή από τα αρχεία του designer σας</span></li>
+            <li><span data-l="en">A CMS you can actually use, if you want one</span><span data-l="el">Ένα CMS που όντως μπορείτε να χρησιμοποιήσετε, αν το θέλετε</span></li>
+            <li><span data-l="en">Multilingual (Greek / English) where it matters</span><span data-l="el">Πολύγλωσσο (Ελληνικά / Αγγλικά) όπου χρειάζεται</span></li>
+            <li><span data-l="en">Copy, structure and SEO groundwork included</span><span data-l="el">Κείμενα, δομή και βάσεις SEO συμπεριλαμβάνονται</span></li>
           </ul>
         </article>
 
@@ -224,26 +260,29 @@
           <span class="tile__icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l5 5v13H6z"/><path d="M15 3v5h5M9.5 13.5l-2 2 2 2M14.5 13.5l2 2-2 2"/></svg>
           </span>
-          <h3>Web apps &amp; booking flows</h3>
-          <p>Reservation systems, client portals, dashboards and forms that talk to the tools you already pay for.</p>
+          <h3><span data-l="en">Web apps &amp; booking flows</span><span data-l="el">Web apps &amp; κρατήσεις</span></h3>
+          <p data-l="en">Reservation systems, client portals, dashboards and forms that talk to the tools you already pay for.</p>
+          <p data-l="el">Συστήματα κρατήσεων, πύλες πελατών, dashboards και φόρμες που συνεργάζονται με τα εργαλεία που ήδη πληρώνετε.</p>
         </article>
 
         <article class="tile tile--md" data-reveal>
           <span class="tile__icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l8 4v5c0 5-3.4 8.2-8 9-4.6-.8-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
           </span>
-          <h3>Speed, accessibility &amp; GDPR fixes</h3>
-          <p>An existing site that is slow, unusable on a phone, or quietly non-compliant. I audit it, fix it, and show you what changed.</p>
+          <h3><span data-l="en">Speed, accessibility &amp; GDPR fixes</span><span data-l="el">Ταχύτητα, προσβασιμότητα &amp; GDPR</span></h3>
+          <p data-l="en">An existing site that is slow, unusable on a phone, or quietly non-compliant. I audit it, fix it, and show you what changed.</p>
+          <p data-l="el">Ένα υπάρχον site που είναι αργό, δύσχρηστο στο κινητό ή σιωπηλά μη συμμορφούμενο. Το ελέγχω, το διορθώνω και σας δείχνω τι άλλαξε.</p>
         </article>
 
         <article class="tile tile--wide" data-reveal>
           <div>
-            <h3>Care after launch</h3>
-            <p>Updates, backups, monitoring and a human on the other end of the email. Month to month — no lock-in, cancel whenever.</p>
+            <h3><span data-l="en">Care after launch</span><span data-l="el">Υποστήριξη μετά το launch</span></h3>
+            <p data-l="en">Updates, backups, monitoring and a human on the other end of the email. Month to month — no lock-in, cancel whenever.</p>
+            <p data-l="el">Ενημερώσεις, αντίγραφα ασφαλείας, παρακολούθηση και ένας άνθρωπος στην άλλη άκρη του email. Μηνιαία — χωρίς δέσμευση, ακυρώνετε όποτε θέλετε.</p>
           </div>
           <div>
             <span class="tile__stat">48h</span>
-            <small>Typical turnaround on a support request</small>
+            <small><span data-l="en">Typical turnaround on a support request</span><span data-l="el">Τυπικός χρόνος απόκρισης σε αίτημα υποστήριξης</span></small>
           </div>
         </article>
       </div>
@@ -252,11 +291,12 @@
 
   <!-- 04 · Selected works --------------------------------------------- -->
   <section class="section" id="works">
-    <span class="section-index" aria-hidden="true">04 · Work</span>
+    <span class="section-index" aria-hidden="true">04 · <span data-l="en">Work</span><span data-l="el">Έργα</span></span>
     <div class="wrap">
       <div class="section__head">
-        <p class="eyebrow" data-reveal>Selected works</p>
-        <h2 class="section-head" data-reveal>Recent projects<span class="dot">,</span> and what they had to do</h2>
+        <p class="eyebrow" data-reveal><span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></p>
+        <h2 class="section-head" data-reveal data-l="en">Recent projects<span class="dot">,</span> and what they had to do</h2>
+        <h2 class="section-head" data-reveal data-l="el">Πρόσφατα έργα<span class="dot">,</span> και τι έπρεπε να κάνουν</h2>
       </div>
 
       <!-- PLACEHOLDER PROJECTS — replace the four rows below with your own
@@ -267,80 +307,84 @@
         <article class="work" data-name="Kyma Studio" data-art="linear-gradient(140deg,#3b3450,#1b1a22 70%)" data-reveal>
           <div class="work__main">
             <a class="work__name ulink" href="#works">Kyma Studio</a>
-            <span class="work__tag">Brand site · headless CMS · EL/EN</span>
+            <span class="work__tag"><span data-l="en">Brand site · headless CMS · EL/EN</span><span data-l="el">Εταιρικό site · headless CMS · EL/EN</span></span>
           </div>
           <span class="work__year">2026</span>
           <a class="work__cta" href="#works">
-            View project
+            <span data-l="en">View project</span><span data-l="el">Δείτε το έργο</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
           </a>
           <button class="work__toggle" type="button" aria-expanded="false">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-            <span>Preview</span>
+            <span><span data-l="en">Preview</span><span data-l="el">Προεπισκόπηση</span></span>
           </button>
           <div class="work__panel">
             <div class="work__panel__art" style="background:linear-gradient(140deg,#3b3450,#1b1a22 70%)"></div>
-            <p>A design studio that needed its work to load instantly on a phone in a gallery. Static build, images served in three sizes, 0.9s to first paint on 4G.</p>
+            <p data-l="en">A design studio that needed its work to load instantly on a phone in a gallery. Static build, images served in three sizes, 0.9s to first paint on 4G.</p>
+            <p data-l="el">Ένα στούντιο σχεδιασμού που ήθελε η δουλειά του να φορτώνει ακαριαία σε κινητό μέσα σε γκαλερί. Στατική κατασκευή, εικόνες σε τρία μεγέθη, 0,9 δευτ. για το πρώτο render σε 4G.</p>
           </div>
         </article>
 
         <article class="work" data-name="Elaia Table" data-art="linear-gradient(140deg,#3d3a2c,#1c1b1a 70%)" data-reveal>
           <div class="work__main">
             <a class="work__name ulink" href="#works">Elaia Table</a>
-            <span class="work__tag">Restaurant · online reservations</span>
+            <span class="work__tag"><span data-l="en">Restaurant · online reservations</span><span data-l="el">Εστιατόριο · online κρατήσεις</span></span>
           </div>
           <span class="work__year">2026</span>
           <a class="work__cta" href="#works">
-            View project
+            <span data-l="en">View project</span><span data-l="el">Δείτε το έργο</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
           </a>
           <button class="work__toggle" type="button" aria-expanded="false">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-            <span>Preview</span>
+            <span><span data-l="en">Preview</span><span data-l="el">Προεπισκόπηση</span></span>
           </button>
           <div class="work__panel">
             <div class="work__panel__art" style="background:linear-gradient(140deg,#3d3a2c,#1c1b1a 70%)"></div>
-            <p>Bookings were coming in by phone during service. Now a table picker handles them, syncs to the staff calendar, and confirms by email in both languages.</p>
+            <p data-l="en">Bookings were coming in by phone during service. Now a table picker handles them, syncs to the staff calendar, and confirms by email in both languages.</p>
+            <p data-l="el">Οι κρατήσεις έρχονταν τηλεφωνικά μέσα στην υπηρεσία. Τώρα τις αναλαμβάνει ένας επιλογέας τραπεζιών, συγχρονίζεται με το ημερολόγιο του προσωπικού και επιβεβαιώνει με email και στις δύο γλώσσες.</p>
           </div>
         </article>
 
         <article class="work" data-name="Nomos Legal" data-art="linear-gradient(140deg,#2b3648,#191b20 70%)" data-reveal>
           <div class="work__main">
             <a class="work__name ulink" href="#works">Nomos Legal</a>
-            <span class="work__tag">Law firm · accessibility &amp; GDPR rebuild</span>
+            <span class="work__tag"><span data-l="en">Law firm · accessibility &amp; GDPR rebuild</span><span data-l="el">Δικηγορικό γραφείο · προσβασιμότητα &amp; GDPR</span></span>
           </div>
           <span class="work__year">2026</span>
           <a class="work__cta" href="#works">
-            View project
+            <span data-l="en">View project</span><span data-l="el">Δείτε το έργο</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
           </a>
           <button class="work__toggle" type="button" aria-expanded="false">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-            <span>Preview</span>
+            <span><span data-l="en">Preview</span><span data-l="el">Προεπισκόπηση</span></span>
           </button>
           <div class="work__panel">
             <div class="work__panel__art" style="background:linear-gradient(140deg,#2b3648,#191b20 70%)"></div>
-            <p>An old site loading five third-party trackers before anyone consented. Rebuilt to WCAG 2.2 AA, consent-gated, and 60% lighter.</p>
+            <p data-l="en">An old site loading five third-party trackers before anyone consented. Rebuilt to WCAG 2.2 AA, consent-gated, and 60% lighter.</p>
+            <p data-l="el">Ένα παλιό site που φόρτωνε πέντε trackers τρίτων πριν συναινέσει κανείς. Ξαναχτίστηκε κατά WCAG 2.2 AA, με έλεγχο συγκατάθεσης και 60% ελαφρύτερο.</p>
           </div>
         </article>
 
         <article class="work" data-name="Meltemi Charters" data-art="linear-gradient(140deg,#2c3f45,#181c1f 70%)" data-reveal>
           <div class="work__main">
             <a class="work__name ulink" href="#works">Meltemi Charters</a>
-            <span class="work__tag">Bookings · payments · seasonal pricing</span>
+            <span class="work__tag"><span data-l="en">Bookings · payments · seasonal pricing</span><span data-l="el">Κρατήσεις · πληρωμές · εποχική τιμολόγηση</span></span>
           </div>
           <span class="work__year">2026</span>
           <a class="work__cta" href="#works">
-            View project
+            <span data-l="en">View project</span><span data-l="el">Δείτε το έργο</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
           </a>
           <button class="work__toggle" type="button" aria-expanded="false">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-            <span>Preview</span>
+            <span><span data-l="en">Preview</span><span data-l="el">Προεπισκόπηση</span></span>
           </button>
           <div class="work__panel">
             <div class="work__panel__art" style="background:linear-gradient(140deg,#2c3f45,#181c1f 70%)"></div>
-            <p>Day charters with prices that change by month and boat. One booking flow, deposits taken online, no more spreadsheet.</p>
+            <p data-l="en">Day charters with prices that change by month and boat. One booking flow, deposits taken online, no more spreadsheet.</p>
+            <p data-l="el">Ημερήσιες ναυλώσεις με τιμές που αλλάζουν ανά μήνα και σκάφος. Μία ροή κράτησης, προκαταβολές online, τέλος το υπολογιστικό φύλλο.</p>
           </div>
         </article>
       </div>
@@ -349,37 +393,42 @@
 
   <!-- 05 · Process ---------------------------------------------------- -->
   <section class="section" id="process">
-    <span class="section-index" aria-hidden="true">05 · Process</span>
+    <span class="section-index" aria-hidden="true">05 · <span data-l="en">Process</span><span data-l="el">Διαδικασία</span></span>
     <div class="wrap">
       <div class="section__head">
-        <p class="eyebrow" data-reveal>How a project runs</p>
-        <h2 class="section-head" data-reveal>Four steps<span class="dot">,</span> no surprises</h2>
+        <p class="eyebrow" data-reveal><span data-l="en">How a project runs</span><span data-l="el">Πώς τρέχει ένα έργο</span></p>
+        <h2 class="section-head" data-reveal data-l="en">Four steps<span class="dot">,</span> no surprises</h2>
+        <h2 class="section-head" data-reveal data-l="el">Τέσσερα βήματα<span class="dot">,</span> καμία έκπληξη</h2>
       </div>
 
       <ol class="steps" style="list-style:none;margin:0;padding:0">
         <li class="step" data-reveal>
           <span class="step__num" aria-hidden="true">01</span>
-          <span class="step__label">Step 01 — Call</span>
-          <h3>A free 30-minute call</h3>
-          <p>You tell me what the business needs to happen. I tell you honestly whether a website is the way to get it, and roughly what it costs. No deck, no pitch.</p>
+          <span class="step__label"><span data-l="en">Step 01 — Call</span><span data-l="el">Βήμα 01 — Κλήση</span></span>
+          <h3><span data-l="en">A free 30-minute call</span><span data-l="el">Μια δωρεάν κλήση 30 λεπτών</span></h3>
+          <p data-l="en">You tell me what the business needs to happen. I tell you honestly whether a website is the way to get it, and roughly what it costs. No deck, no pitch.</p>
+          <p data-l="el">Μου λέτε τι χρειάζεται να πετύχει η επιχείρηση. Σας λέω ειλικρινά αν ένα website είναι ο τρόπος να γίνει, και περίπου τι κοστίζει. Χωρίς παρουσίαση, χωρίς πίεση.</p>
         </li>
         <li class="step" data-reveal>
           <span class="step__num" aria-hidden="true">02</span>
-          <span class="step__label">Step 02 — Scope</span>
-          <h3>A written scope and a fixed price</h3>
-          <p>Every page, every feature, what is not included, and the dates. You approve it before anything starts, and it does not move unless you ask it to.</p>
+          <span class="step__label"><span data-l="en">Step 02 — Scope</span><span data-l="el">Βήμα 02 — Αντικείμενο</span></span>
+          <h3><span data-l="en">A written scope and a fixed price</span><span data-l="el">Γραπτό αντικείμενο και σταθερή τιμή</span></h3>
+          <p data-l="en">Every page, every feature, what is not included, and the dates. You approve it before anything starts, and it does not move unless you ask it to.</p>
+          <p data-l="el">Κάθε σελίδα, κάθε λειτουργία, τι δεν περιλαμβάνεται και οι ημερομηνίες. Το εγκρίνετε πριν ξεκινήσει οτιδήποτε, και δεν αλλάζει αν δεν το ζητήσετε.</p>
         </li>
         <li class="step" data-reveal>
           <span class="step__num" aria-hidden="true">03</span>
-          <span class="step__label">Step 03 — Build</span>
-          <h3>Build in the open</h3>
-          <p>You get a live preview link from week one and a short update every Friday. Feedback goes in as we go, not in one painful round at the end.</p>
+          <span class="step__label"><span data-l="en">Step 03 — Build</span><span data-l="el">Βήμα 03 — Κατασκευή</span></span>
+          <h3><span data-l="en">Build in the open</span><span data-l="el">Κατασκευή στα ανοιχτά</span></h3>
+          <p data-l="en">You get a live preview link from week one and a short update every Friday. Feedback goes in as we go, not in one painful round at the end.</p>
+          <p data-l="el">Παίρνετε ζωντανό preview link από την πρώτη εβδομάδα και μια σύντομη ενημέρωση κάθε Παρασκευή. Τα σχόλια μπαίνουν στην πορεία, όχι σε έναν επώδυνο γύρο στο τέλος.</p>
         </li>
         <li class="step" data-reveal>
           <span class="step__num" aria-hidden="true">04</span>
-          <span class="step__label">Step 04 — Launch</span>
-          <h3>Launch, then hand over the keys</h3>
-          <p>Speed, accessibility and GDPR checks before go-live. Then every account, password and file is transferred to you, with a walkthrough recording you keep.</p>
+          <span class="step__label"><span data-l="en">Step 04 — Launch</span><span data-l="el">Βήμα 04 — Launch</span></span>
+          <h3><span data-l="en">Launch, then hand over the keys</span><span data-l="el">Launch, και μετά σας δίνω τα κλειδιά</span></h3>
+          <p data-l="en">Speed, accessibility and GDPR checks before go-live. Then every account, password and file is transferred to you, with a walkthrough recording you keep.</p>
+          <p data-l="el">Έλεγχοι ταχύτητας, προσβασιμότητας και GDPR πριν βγει live. Μετά κάθε λογαριασμός, κωδικός και αρχείο μεταφέρεται σε εσάς, μαζί με μια βιντεοσκοπημένη ξενάγηση που κρατάτε.</p>
         </li>
       </ol>
     </div>
@@ -387,11 +436,12 @@
 
   <!-- 06 · Reviews ---------------------------------------------------- -->
   <section class="section" id="reviews">
-    <span class="section-index" aria-hidden="true">06 · Voices</span>
+    <span class="section-index" aria-hidden="true">06 · <span data-l="en">Voices</span><span data-l="el">Φωνές</span></span>
     <div class="wrap">
       <div class="section__head">
-        <p class="eyebrow" data-reveal>In their words</p>
-        <h2 class="section-head" data-reveal>What working together felt like<span class="dot">.</span></h2>
+        <p class="eyebrow" data-reveal><span data-l="en">In their words</span><span data-l="el">Με δικά τους λόγια</span></p>
+        <h2 class="section-head" data-reveal data-l="en">What working together felt like<span class="dot">.</span></h2>
+        <h2 class="section-head" data-reveal data-l="el">Πώς ήταν η συνεργασία<span class="dot">.</span></h2>
       </div>
     </div>
 
@@ -407,7 +457,8 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
           </div>
-          <p class="review__text">We had been quoted three times what this cost, for less. The site went up on the day it was promised and our phone started ringing the same week.</p>
+          <p class="review__text" data-l="en">We had been quoted three times what this cost, for less. The site went up on the day it was promised and our phone started ringing the same week.</p>
+          <p class="review__text" data-l="el">Μας είχαν δώσει προσφορά τριπλάσια από αυτό το κόστος, για λιγότερα. Το site ανέβηκε την ημέρα που υποσχέθηκε και το τηλέφωνο άρχισε να χτυπάει την ίδια εβδομάδα.</p>
           <div class="review__who">
             <span class="review__avatar" aria-hidden="true">DK</span>
             <span><span class="review__name">Dimitra Karali</span><span class="review__co">Kyma Studio</span></span>
@@ -422,7 +473,8 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
           </div>
-          <p class="review__text">I understood every invoice and every decision, which had never happened before with a developer. The reservation flow paid for itself in a month.</p>
+          <p class="review__text" data-l="en">I understood every invoice and every decision, which had never happened before with a developer. The reservation flow paid for itself in a month.</p>
+          <p class="review__text" data-l="el">Καταλάβαινα κάθε τιμολόγιο και κάθε απόφαση, κάτι που δεν είχε ξανασυμβεί με προγραμματιστή. Η ροή κρατήσεων αποσβέστηκε μέσα σε έναν μήνα.</p>
           <div class="review__who">
             <span class="review__avatar" aria-hidden="true">YP</span>
             <span><span class="review__name">Yiannis Papadakis</span><span class="review__co">Elaia Table</span></span>
@@ -437,7 +489,8 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor" class="off"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
           </div>
-          <p class="review__text">Our old site failed an accessibility check from a client. The rebuild passed, and the report I was handed afterwards was in plain Greek, not jargon.</p>
+          <p class="review__text" data-l="en">Our old site failed an accessibility check from a client. The rebuild passed, and the report I was handed afterwards was in plain Greek, not jargon.</p>
+          <p class="review__text" data-l="el">Το παλιό μας site κόπηκε σε έλεγχο προσβασιμότητας από πελάτη. Το νέο πέρασε, και η αναφορά που πήρα μετά ήταν σε απλά ελληνικά, όχι σε ορολογία.</p>
           <div class="review__who">
             <span class="review__avatar" aria-hidden="true">AS</span>
             <span><span class="review__name">Anna Stefanou</span><span class="review__co">Nomos Legal</span></span>
@@ -452,7 +505,8 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg>
           </div>
-          <p class="review__text">Answers within the day, every time — including the two questions I asked six weeks after we were finished.</p>
+          <p class="review__text" data-l="en">Answers within the day, every time — including the two questions I asked six weeks after we were finished.</p>
+          <p class="review__text" data-l="el">Απαντήσεις μέσα στην ημέρα, κάθε φορά — ακόμη και στις δύο ερωτήσεις που έκανα έξι εβδομάδες μετά το τέλος.</p>
           <div class="review__who">
             <span class="review__avatar" aria-hidden="true">NV</span>
             <span><span class="review__name">Nikos Vlachos</span><span class="review__co">Meltemi Charters</span></span>
@@ -462,11 +516,14 @@
 
     <div class="wrap">
       <div class="review-form" data-reveal>
-        <p class="eyebrow eyebrow--plain">Worked with me? Leave a review</p>
-        <h3 style="font-size:22px;margin-bottom:10px">Say it in your own words<span class="dot">.</span></h3>
+        <p class="eyebrow eyebrow--plain"><span data-l="en">Worked with me? Leave a review</span><span data-l="el">Συνεργαστήκαμε; Αφήστε κριτική</span></p>
+        <h3 style="font-size:22px;margin-bottom:10px" data-l="en">Say it in your own words<span class="dot">.</span></h3>
+        <h3 style="font-size:22px;margin-bottom:10px" data-l="el">Πείτε το με δικά σας λόγια<span class="dot">.</span></h3>
         <p class="muted-sm" style="margin-bottom:24px;max-width:60ch">
-          Reviews are read before they appear on the site, so yours will not show up publicly straight away.
-          You will see your own copy of it here in the meantime.
+          <span data-l="en">Reviews are read before they appear on the site, so yours will not show up publicly straight away.
+          You will see your own copy of it here in the meantime.</span>
+          <span data-l="el">Οι κριτικές διαβάζονται πριν εμφανιστούν στο site, οπότε η δική σας δεν θα φανεί δημόσια αμέσως.
+          Στο μεταξύ θα βλέπετε εδώ το δικό σας αντίγραφο.</span>
         </p>
 
         <form id="reviewForm" novalidate>
@@ -477,7 +534,7 @@
 
           <div class="review-form__grid">
             <div class="field field--full">
-              <span class="field__label" id="ratingLabel">Your rating</span>
+              <span class="field__label" id="ratingLabel"><span data-l="en">Your rating</span><span data-l="el">Η βαθμολογία σας</span></span>
               <div class="stars-input" role="radiogroup" aria-labelledby="ratingLabel">
                 <input type="radio" name="rating" id="star1" value="1"><label for="star1" data-value="1" aria-label="1 star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
                 <input type="radio" name="rating" id="star2" value="2"><label for="star2" data-value="2" aria-label="2 stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
@@ -485,38 +542,39 @@
                 <input type="radio" name="rating" id="star4" value="4"><label for="star4" data-value="4" aria-label="4 stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
                 <input type="radio" name="rating" id="star5" value="5"><label for="star5" data-value="5" aria-label="5 stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.6 6 6.5.5-4.9 4.2 1.5 6.3L12 16.2l-5.7 3.4 1.5-6.3L2.9 9.1l6.5-.5z"/></svg></label>
               </div>
-              <p class="err">Pick a rating from one to five stars.</p>
+              <p class="err"><span data-l="en">Pick a rating from one to five stars.</span><span data-l="el">Επιλέξτε βαθμολογία από ένα έως πέντε αστέρια.</span></p>
             </div>
 
             <div class="field">
-              <label for="rvName">Your name</label>
-              <input type="text" id="rvName" name="name" autocomplete="name" placeholder="Maria K.">
-              <p class="err">A name (or first name) please.</p>
+              <label for="rvName"><span data-l="en">Your name</span><span data-l="el">Το όνομά σας</span></label>
+              <input type="text" id="rvName" name="name" autocomplete="name" data-ph-en="Maria K." data-ph-el="Μαρία Κ." placeholder="Maria K.">
+              <p class="err"><span data-l="en">A name (or first name) please.</span><span data-l="el">Ένα όνομα (ή μικρό όνομα) παρακαλώ.</span></p>
             </div>
 
             <div class="field">
-              <label for="rvCompany">Company <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+              <label for="rvCompany"><span data-l="en">Company</span><span data-l="el">Εταιρεία</span> <span style="text-transform:none;letter-spacing:0"><span data-l="en">(optional)</span><span data-l="el">(προαιρετικό)</span></span></label>
               <input type="text" id="rvCompany" name="company" autocomplete="organization" placeholder="Kyma Studio">
               <p class="err"></p>
             </div>
 
             <div class="field field--full">
-              <label for="rvText">Your review</label>
-              <textarea id="rvText" name="review" placeholder="What was the project, and how did it go?"></textarea>
-              <p class="err">A sentence or two would help — 15 characters minimum.</p>
+              <label for="rvText"><span data-l="en">Your review</span><span data-l="el">Η κριτική σας</span></label>
+              <textarea id="rvText" name="review" data-ph-en="What was the project, and how did it go?" data-ph-el="Ποιο ήταν το έργο και πώς πήγε;" placeholder="What was the project, and how did it go?"></textarea>
+              <p class="err"><span data-l="en">A sentence or two would help — 15 characters minimum.</span><span data-l="el">Μία-δύο προτάσεις θα βοηθούσαν — τουλάχιστον 15 χαρακτήρες.</span></p>
             </div>
 
             <div class="field field--full">
               <label class="check">
                 <input type="checkbox" id="rvConsent" name="consent">
-                <span>I agree that SitrixWeb may publish this review together with my name and company on this website, and I have read the <a href="privacy.html">Privacy Policy</a>. I can withdraw this at any time by email.</span>
+                <span data-l="en">I agree that SitrixWeb may publish this review together with my name and company on this website, and I have read the <a href="privacy.html"><span data-l="en">Privacy Policy</span><span data-l="el">Πολιτική Απορρήτου</span></a>. I can withdraw this at any time by email.</span>
+                <span data-l="el">Συμφωνώ η SitrixWeb να δημοσιεύσει αυτή την κριτική μαζί με το όνομα και την εταιρεία μου σε αυτόν τον ιστότοπο και έχω διαβάσει την <a href="privacy.html">Πολιτική Απορρήτου</a>. Μπορώ να το ανακαλέσω οποιαδήποτε στιγμή με email.</span>
               </label>
-              <p class="err">I need your permission before publishing this.</p>
+              <p class="err"><span data-l="en">I need your permission before publishing this.</span><span data-l="el">Χρειάζομαι την άδειά σας πριν το δημοσιεύσω.</span></p>
             </div>
           </div>
 
           <button class="btn" type="submit">
-            Send review
+            <span data-l="en">Send review</span><span data-l="el">Αποστολή κριτικής</span>
             <svg class="btn__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
         </form>
@@ -525,11 +583,14 @@
           <span class="success__ring" aria-hidden="true">
             <svg class="success__check" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8956c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
           </span>
-          <h3>Thank you — genuinely</h3>
-          <p>Your review is with me for a quick read before it goes on the site. Your own copy is showing above in the meantime.</p>
+          <h3><span data-l="en">Thank you — genuinely</span><span data-l="el">Ευχαριστώ — ειλικρινά</span></h3>
+          <p data-l="en">Your review is with me for a quick read before it goes on the site. Your own copy is showing above in the meantime.</p>
+          <p data-l="el">Η κριτική σας είναι σε εμένα για μια γρήγορη ανάγνωση πριν μπει στο site. Στο μεταξύ, το δικό σας αντίγραφο φαίνεται παραπάνω.</p>
           <p data-fallback hidden style="margin-top:14px">
-            This site has no mail server configured yet —
-            <a class="ulink" href="#">send it as an email instead</a> and it will reach me directly.
+            <span data-l="en">This site has no mail server configured yet —
+            <a class="ulink" href="#">send it as an email instead</a> and it will reach me directly.</span>
+            <span data-l="el">Ο ιστότοπος δεν έχει ακόμη ρυθμισμένο διακομιστή email —
+            <a class="ulink" href="#">στείλτε το ως email</a> και θα φτάσει απευθείας σε εμένα.</span>
           </p>
         </div>
       </div>
@@ -538,14 +599,17 @@
 
   <!-- 07 · Booking ---------------------------------------------------- -->
   <section class="section booking" id="booking">
-    <span class="section-index" aria-hidden="true">07 · Book</span>
+    <span class="section-index" aria-hidden="true">07 · <span data-l="en">Book</span><span data-l="el">Κράτηση</span></span>
     <div class="wrap">
       <div class="section__head">
-        <p class="eyebrow" data-reveal>Book a consultation</p>
-        <h2 class="section-head" data-reveal>Thirty minutes<span class="dot">,</span> free, no pitch</h2>
+        <p class="eyebrow" data-reveal><span data-l="en">Book a consultation</span><span data-l="el">Κλείστε συμβουλευτική</span></p>
+        <h2 class="section-head" data-reveal data-l="en">Thirty minutes<span class="dot">,</span> free, no pitch</h2>
+        <h2 class="section-head" data-reveal data-l="el">Τριάντα λεπτά<span class="dot">,</span> δωρεάν, χωρίς πίεση</h2>
         <p class="lead" data-reveal>
-          Pick a slot that suits you. We talk about what the business needs, I tell you what I would build
-          and what it would cost, and you decide in your own time. Video call or phone — your choice.
+          <span data-l="en">Pick a slot that suits you. We talk about what the business needs, I tell you what I would build
+          and what it would cost, and you decide in your own time. Video call or phone — your choice.</span>
+          <span data-l="el">Διαλέξτε ώρα που σας βολεύει. Μιλάμε για το τι χρειάζεται η επιχείρηση, σας λέω τι θα έφτιαχνα
+          και τι θα κόστιζε, και αποφασίζετε με την ησυχία σας. Βιντεοκλήση ή τηλέφωνο — όπως προτιμάτε.</span>
         </p>
       </div>
 
@@ -556,7 +620,7 @@
       <div class="booking__panel" id="bookingPanel" data-step="1" data-reveal>
         <!-- step 1 — date -->
         <div class="bstep bstep--date is-active" data-step-panel="1">
-          <p class="bstep__head"><i>1</i> Pick a day</p>
+          <p class="bstep__head"><i>1</i> <span data-l="en">Pick a day</span><span data-l="el">Επιλέξτε ημέρα</span></p>
           <div class="cal__nav">
             <button class="cal__arrow" id="calPrev" type="button" aria-label="Previous month">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
@@ -569,27 +633,28 @@
           <div class="cal__dows" aria-hidden="true">
             <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
           </div>
-          <div class="cal__grid" id="calGrid" role="group" aria-label="Available days"></div>
+          <div class="cal__grid" id="calGrid" role="group" data-aria-en="Available days" data-aria-el="Διαθέσιμες ημέρες" aria-label="Available days"></div>
         </div>
 
         <!-- step 2 — time -->
         <div class="bstep bstep--time" data-step-panel="2">
           <button class="bstep__back" type="button" data-back="1">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-            Change day
+            <span data-l="en">Change day</span><span data-l="el">Αλλαγή ημέρας</span>
           </button>
-          <p class="bstep__head"><i>2</i> Pick a time</p>
+          <p class="bstep__head"><i>2</i> <span data-l="en">Pick a time</span><span data-l="el">Επιλέξτε ώρα</span></p>
           <div id="slotBox" aria-live="polite"></div>
-          <p class="slots__tz">All times are shown in Europe/Athens. Tell me your timezone in the notes if it differs and I will match it.</p>
+          <p class="slots__tz" data-l="en">All times are shown in Europe/Athens. Tell me your timezone in the notes if it differs and I will match it.</p>
+          <p class="slots__tz" data-l="el">Όλες οι ώρες είναι σε ώρα Ελλάδας. Αν είστε σε άλλη ζώνη ώρας, γράψτε το στις σημειώσεις και θα προσαρμοστώ.</p>
         </div>
 
         <!-- step 3 — details -->
         <div class="bstep bstep--details" data-step-panel="3">
           <button class="bstep__back" type="button" data-back="2">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-            Change time
+            <span data-l="en">Change time</span><span data-l="el">Αλλαγή ώρας</span>
           </button>
-          <p class="bstep__head"><i>3</i> Your details</p>
+          <p class="bstep__head"><i>3</i> <span data-l="en">Your details</span><span data-l="el">Τα στοιχεία σας</span></p>
 
           <form id="bookForm" novalidate>
             <div style="position:absolute;left:-9999px" aria-hidden="true">
@@ -599,52 +664,56 @@
             <p class="booking__summary" id="bookSummary" aria-live="polite">Choose a day and a time and your slot will be summarised here.</p>
 
             <div class="field" id="bkSlotField" hidden>
-              <p class="err">Pick a day and a time above first.</p>
+              <p class="err"><span data-l="en">Pick a day and a time above first.</span><span data-l="el">Επιλέξτε πρώτα ημέρα και ώρα παραπάνω.</span></p>
             </div>
 
             <div class="field">
-              <label for="bkName">Name</label>
-              <input type="text" id="bkName" name="name" autocomplete="name" placeholder="Your name">
-              <p class="err">Please tell me what to call you.</p>
+              <label for="bkName"><span data-l="en">Name</span><span data-l="el">Όνομα</span></label>
+              <input type="text" id="bkName" name="name" autocomplete="name" data-ph-en="Your name" data-ph-el="Το όνομά σας" placeholder="Your name">
+              <p class="err"><span data-l="en">Please tell me what to call you.</span><span data-l="el">Πείτε μου πώς να σας αποκαλώ.</span></p>
             </div>
 
             <div class="field">
               <label for="bkEmail">Email</label>
               <input type="email" id="bkEmail" name="email" autocomplete="email" placeholder="you@company.com">
-              <p class="err">That email address doesn't look right.</p>
+              <p class="err"><span data-l="en">That email address doesn't look right.</span><span data-l="el">Αυτή η διεύθυνση email δεν φαίνεται σωστή.</span></p>
             </div>
 
             <div class="field">
-              <label for="bkProject">What is it about? <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
-              <textarea id="bkProject" name="project" style="min-height:96px" placeholder="A new site, a fix, an idea you want a second opinion on…"></textarea>
+              <label for="bkProject"><span data-l="en">What is it about?</span><span data-l="el">Για τι πρόκειται;</span> <span style="text-transform:none;letter-spacing:0"><span data-l="en">(optional)</span><span data-l="el">(προαιρετικό)</span></span></label>
+              <textarea id="bkProject" name="project" style="min-height:96px" data-ph-en="A new site, a fix, an idea you want a second opinion on…" data-ph-el="Ένα νέο site, μια διόρθωση, μια ιδέα για δεύτερη γνώμη…" placeholder="A new site, a fix, an idea you want a second opinion on…"></textarea>
               <p class="err"></p>
             </div>
 
             <div class="field">
               <label class="check">
                 <input type="checkbox" id="bkConsent" name="consent">
-                <span>I agree that SitrixWeb may store these details and contact me about this consultation, as described in the <a href="privacy.html">Privacy Policy</a>.</span>
+                <span data-l="en">I agree that SitrixWeb may store these details and contact me about this consultation, as described in the <a href="privacy.html">Privacy Policy</a>.</span>
+                <span data-l="el">Συμφωνώ η SitrixWeb να αποθηκεύσει αυτά τα στοιχεία και να επικοινωνήσει μαζί μου για τη συμβουλευτική, όπως περιγράφεται στην <a href="privacy.html">Πολιτική Απορρήτου</a>.</span>
               </label>
-              <p class="err">I need your consent to store these details and contact you about the call.</p>
+              <p class="err"><span data-l="en">I need your consent to store these details and contact you about the call.</span><span data-l="el">Χρειάζομαι τη συγκατάθεσή σας για να αποθηκεύσω τα στοιχεία και να επικοινωνήσω μαζί σας.</span></p>
             </div>
 
             <button class="btn btn--block" type="submit">
-              Confirm the booking
+              <span data-l="en">Confirm the booking</span><span data-l="el">Επιβεβαίωση κράτησης</span>
               <svg class="btn__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </button>
-            <p class="muted-sm" style="margin-top:14px">No payment, no card, no automatic newsletter sign-up.</p>
+            <p class="muted-sm" style="margin-top:14px"><span data-l="en">No payment, no card, no automatic newsletter sign-up.</span><span data-l="el">Καμία πληρωμή, καμία κάρτα, καμία αυτόματη εγγραφή σε newsletter.</span></p>
           </form>
 
           <div class="success" id="bookSuccess" role="status">
             <span class="success__ring" aria-hidden="true">
               <svg class="success__check" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8956c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
             </span>
-            <h3>You're booked in</h3>
+            <h3><span data-l="en">You&#39;re booked in</span><span data-l="el">Η κράτησή σας καταχωρήθηκε</span></h3>
             <p><b data-slot style="color:var(--white);font-weight:500"></b></p>
-            <p style="margin-top:8px">I'll confirm by email with a call link. If anything changes, just reply to it.</p>
+            <p style="margin-top:8px" data-l="en">I&#39;ll confirm by email with a call link. If anything changes, just reply to it.</p>
+            <p style="margin-top:8px" data-l="el">Θα επιβεβαιώσω με email και σύνδεσμο κλήσης. Αν αλλάξει κάτι, απλώς απαντήστε σε αυτό.</p>
             <p data-fallback hidden style="margin-top:14px">
-              This site has no mail server configured yet —
-              <a class="ulink" href="#">send the request as an email instead</a> so it reaches me.
+              <span data-l="en">This site has no mail server configured yet —
+              <a class="ulink" href="#">send the request as an email instead</a> so it reaches me.</span>
+              <span data-l="el">Ο ιστότοπος δεν έχει ακόμη ρυθμισμένο διακομιστή email —
+              <a class="ulink" href="#">στείλτε το αίτημα ως email</a> για να φτάσει σε εμένα.</span>
             </p>
           </div>
         </div>
@@ -665,59 +734,60 @@
           </svg>
           <span>Sitrix<b>Web</b><span class="dot">.</span></span>
         </a>
-        <p>Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="en">Web development studio in Greece, working with businesses across the EU since 1 June 2026.</p>
+        <p data-l="el">Στούντιο κατασκευής ιστοσελίδων στην Ελλάδα, με πελάτες σε όλη την ΕΕ από την 1η Ιουνίου 2026.</p>
         <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" style="margin-top:20px">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
             <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
           </svg>
-          Follow on Instagram
+          <span data-l="en">Follow on Instagram</span><span data-l="el">Ακολουθήστε στο Instagram</span>
         </a>
       </div>
 
       <div>
-        <h4>Explore</h4>
+        <h4><span data-l="en">Explore</span><span data-l="el">Εξερεύνηση</span></h4>
         <ul>
-          <li><a href="#about">The studio</a></li>
-          <li><a href="#services">What I build</a></li>
-          <li><a href="#works">Selected works</a></li>
-          <li><a href="#process">Process</a></li>
-          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#about"><span data-l="en">The studio</span><span data-l="el">Το στούντιο</span></a></li>
+          <li><a href="#services"><span data-l="en">What I build</span><span data-l="el">Τι φτιάχνω</span></a></li>
+          <li><a href="#works"><span data-l="en">Selected works</span><span data-l="el">Επιλεγμένα έργα</span></a></li>
+          <li><a href="#process"><span data-l="en">Process</span><span data-l="el">Διαδικασία</span></a></li>
+          <li><a href="#reviews"><span data-l="en">Reviews</span><span data-l="el">Κριτικές</span></a></li>
         </ul>
       </div>
 
       <div>
-        <h4>Legal</h4>
+        <h4><span data-l="en">Legal</span><span data-l="el">Νομικά</span></h4>
         <ul>
           <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="imprint.html">Legal notice / Imprint</a></li>
-          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
+          <li><a href="cookies.html"><span data-l="en">Cookie Policy</span><span data-l="el">Πολιτική Cookies</span></a></li>
+          <li><a href="terms.html"><span data-l="en">Terms of Service</span><span data-l="el">Όροι Χρήσης</span></a></li>
+          <li><a href="imprint.html"><span data-l="en">Legal notice / Imprint</span><span data-l="el">Νομικές πληροφορίες</span></a></li>
+          <li><a href="#" data-cookie-settings><span data-l="en">Cookie settings</span><span data-l="el">Ρυθμίσεις cookies</span></a></li>
         </ul>
       </div>
 
       <div>
-        <h4>Get in touch</h4>
+        <h4><span data-l="en">Get in touch</span><span data-l="el">Επικοινωνία</span></h4>
         <ul>
           <li><a data-mail="text" href="mailto:hello@sitrixweb.com">hello@sitrixweb.com</a></li>
-          <li><a href="#booking">Book a free call</a></li>
+          <li><a href="#booking"><span data-l="en">Book a free call</span><span data-l="el">Κλείστε δωρεάν κλήση</span></a></li>
         </ul>
         <p class="footer__vat" style="margin-top:18px;color:var(--muted)">
-          SitrixWeb · Thessaloniki, Greece<br>
+          <span data-l="en">SitrixWeb · Thessaloniki, Greece</span><span data-l="el">SitrixWeb · Θεσσαλονίκη, Ελλάδα</span><br>
           ΑΦΜ / VAT: <b style="color:var(--gray);font-weight:400">EL000000000</b><br>
-          <span style="opacity:.75">Full details in the legal notice</span>
+          <span style="opacity:.75"><span data-l="en">Full details in the legal notice</span><span data-l="el">Πλήρη στοιχεία στις νομικές πληροφορίες</span></span>
         </p>
       </div>
     </div>
 
     <div class="footer__bottom">
-      <span>© <span data-year>2026</span> SitrixWeb. All rights reserved.</span>
+      <span>© <span data-year>2026</span> SitrixWeb. <span data-l="en">All rights reserved.</span><span data-l="el">Με επιφύλαξη παντός δικαιώματος.</span></span>
       <div class="footer__legal">
-        <a href="privacy.html">Privacy</a>
-        <a href="cookies.html">Cookies</a>
-        <a href="terms.html">Terms</a>
-        <a href="imprint.html">Legal notice</a>
+        <a href="privacy.html"><span data-l="en">Privacy</span><span data-l="el">Απόρρητο</span></a>
+        <a href="cookies.html"><span data-l="en">Cookies</span><span data-l="el">Cookies</span></a>
+        <a href="terms.html"><span data-l="en">Terms</span><span data-l="el">Όροι</span></a>
+        <a href="imprint.html"><span data-l="en">Legal notice</span><span data-l="el">Νομικές πληροφορίες</span></a>
       </div>
     </div>
   </div>
@@ -731,13 +801,14 @@
 
 
 <!-- floating scroll-to-top, appears once past the first screen -->
-<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+<button class="to-top" id="toTop" type="button" data-aria-en="Back to top" data-aria-el="Επιστροφή στην κορυφή" aria-label="Back to top">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"/>
   </svg>
 </button>
 
 <script src="js/config.js"></script>
+<script src="js/strings.js" defer></script>
 <script src="js/site.js" defer></script>
 <script src="js/cursor.js" defer></script>
 <script src="js/globe.js" defer></script>
