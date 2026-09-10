@@ -59,9 +59,31 @@
   /* ---------------- scroll to top ---------------- */
   const toTop = $("#toTop");
   if (toTop) {
+    const bar = toTop.querySelector(".to-top__bar");
+    // 2πr for the r=22 circle in the markup; set here rather than read back
+    // so no layout is forced on every scroll event.
+    const LEN = 2 * Math.PI * 22;
+    if (bar) {
+      bar.style.strokeDasharray = LEN.toFixed(2);
+      bar.style.strokeDashoffset = LEN.toFixed(2);
+    }
+
     const threshold = () => window.innerHeight * 0.6;
-    const sync = () => toTop.classList.toggle("is-on", window.scrollY > threshold());
-    window.addEventListener("scroll", sync, { passive: true });
+    let ticking = false;
+    const sync = () => {
+      toTop.classList.toggle("is-on", window.scrollY > threshold());
+      if (bar) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        bar.style.strokeDashoffset = (LEN * (1 - p)).toFixed(2);
+      }
+      ticking = false;
+    };
+    const onScrollTop = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(sync); }
+    };
+    window.addEventListener("scroll", onScrollTop, { passive: true });
+    window.addEventListener("resize", onScrollTop, { passive: true });
     sync();
     toTop.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: reduced.matches ? "auto" : "smooth" });

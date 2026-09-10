@@ -1863,7 +1863,7 @@ h1, h2, h3, h4,
 .doc__meta,
 .doc__table th,
 .cur-ret__read,
-.lang__btn {
+.lang-swap {
   font-family: var(--font-mono);
 }
 
@@ -1933,8 +1933,32 @@ h1, h2, h3, h4,
 }
 /* Anticipation compress on press, matching every other button on the site. */
 .to-top:active { transform: scale(.94); transition-duration: 50ms; }
-.to-top svg { transition: transform var(--d-1) var(--e); }
-.to-top:hover svg { transform: translateY(-2px); }
+.to-top__arrow { transition: transform var(--d-1) var(--e); }
+.to-top:hover .to-top__arrow { transform: translateY(-2px); }
+
+/* The ring reports how far down the page the visitor is, so the button is a
+   reading indicator that also happens to take them back up. */
+.to-top__ring {
+  position: absolute;
+  inset: -1px;                    /* sit on the border, not inside it */
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  transform: rotate(-90deg);      /* start the sweep at twelve o'clock */
+  pointer-events: none;
+  overflow: visible;
+}
+.to-top__track,
+.to-top__bar {
+  fill: none;
+  stroke-width: 1.5;
+}
+.to-top__track { stroke: transparent; }
+.to-top__bar {
+  stroke: var(--copper);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 120ms linear;
+}
+.to-top:hover .to-top__bar { stroke: #d9a67c; }
 
 /* The consent banner owns the bottom of the screen until it is answered. */
 body.cc-open .to-top {
@@ -1955,37 +1979,41 @@ body.cc-open .to-top {
 html[data-lang="en"] [data-l="el"],
 html[data-lang="el"] [data-l="en"] { display: none !important; }
 
-.lang {
+/* One button, labelled with the language you would switch TO. A control that
+   shows the state you are already in reads as a status light, not a switch. */
+.lang-swap {
   display: inline-flex;
   align-items: center;
+  gap: 7px;
+  height: 42px;
+  padding: 0 14px 0 12px;
   border: 1px solid var(--surface);
   border-radius: 999px;
-  overflow: hidden;
-  height: 42px;
-}
-.lang__btn {
-  appearance: none;
-  border: 0;
   background: transparent;
-  color: var(--muted);
+  color: var(--gray);
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: .1em;
-  padding: 0 12px;
-  height: 100%;
   cursor: pointer;
-  transition: color var(--d-1) var(--e), background var(--d-1) var(--e);
+  transition: color var(--d-1) var(--e), border-color var(--d-1) var(--e),
+              background var(--d-1) var(--e), transform 200ms var(--e);
   -webkit-tap-highlight-color: transparent;
 }
-.lang__btn:hover { color: var(--white); }
-.lang__btn.is-on { color: #16141a; background: var(--copper); }
+.lang-swap:hover {
+  color: var(--white);
+  border-color: var(--copper);
+  background: rgba(200,149,108,.1);
+}
+.lang-swap:active { transform: scale(.96); transition-duration: 50ms; }
+.lang-swap svg { flex: none; transition: transform var(--d-2) var(--e); }
+.lang-swap:hover svg { transform: rotate(28deg); }
+.lang-swap__label { line-height: 1; }
 
-/* In the fullscreen menu it sits with the other footer links, a size up. */
-.menu__foot .lang { height: 38px; }
+.menu__foot .lang-swap { height: 38px; }
 
 @media (max-width: 720px) {
-  .lang { height: 40px; }
-  .lang__btn { padding: 0 11px; font-size: 10.5px; }
+  .lang-swap { height: 40px; padding: 0 12px 0 10px; gap: 6px; font-size: 10.5px; }
 }
 
 /* Sections in the legal documents carry the anchor id (the headings inside

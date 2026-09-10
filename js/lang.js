@@ -72,6 +72,18 @@
       b.setAttribute("aria-pressed", String(on));
     });
 
+    /* The swap button shows the language you would move TO, not the one you
+       are in — a control labelled with the state you are already in reads as
+       a status light rather than a switch. */
+    const other = lang === "el" ? "en" : "el";
+    document.querySelectorAll("[data-lang-swap]").forEach((b) => {
+      const label = b.querySelector(".lang-swap__label");
+      if (label) label.textContent = other === "el" ? "ΕΛ" : "EN";
+      b.setAttribute("aria-label", other === "el"
+        ? "Αλλαγή στα Ελληνικά — switch to Greek"
+        : "Switch to English — αλλαγή στα Αγγλικά");
+    });
+
     document.dispatchEvent(new CustomEvent("sitrix:lang", { detail: lang }));
   }
 
@@ -97,6 +109,12 @@
   apply(current);
 
   document.addEventListener("click", (e) => {
+    const swap = e.target.closest("[data-lang-swap]");
+    if (swap) {
+      e.preventDefault();
+      set(root.getAttribute("data-lang") === "el" ? "en" : "el");
+      return;
+    }
     const btn = e.target.closest("[data-lang-btn]");
     if (!btn) return;
     e.preventDefault();

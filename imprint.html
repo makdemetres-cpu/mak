@@ -38,10 +38,7 @@
     <span>Sitrix<b>Web</b><span class="dot">.</span></span>
   </a>
   <div class="nav__right">
-    <div class="lang" role="group" data-aria-en="Language" data-aria-el="Γλώσσα" aria-label="Language">
-      <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
-      <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
-    </div>
+    <button class="lang-swap" type="button" data-lang-swap aria-label="Switch language"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span class="lang-swap__label">ΕΛ</span></button>
     <a class="icon-btn" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer" data-aria-en="SitrixWeb on Instagram" data-aria-el="Η SitrixWeb στο Instagram" aria-label="SitrixWeb on Instagram">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
@@ -66,10 +63,7 @@
       <li style="--i:6"><a href="index.html#booking"><span class="num">07</span> <span data-l="en">Book a call</span><span data-l="el">Κλείστε κλήση</span></a></li>
     </ul>
     <div class="menu__foot">
-      <div class="lang" role="group" aria-label="Language">
-        <button class="lang__btn" type="button" data-lang-btn="el" aria-pressed="false">EL</button>
-        <button class="lang__btn" type="button" data-lang-btn="en" aria-pressed="true">EN</button>
-      </div>
+      <button class="lang-swap" type="button" data-lang-swap aria-label="Switch language"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span class="lang-swap__label">ΕΛ</span></button>
       <a class="ig" data-ig href="https://www.instagram.com/sitrixweb/" target="_blank" rel="noopener noreferrer">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>
@@ -221,7 +215,11 @@
 </footer>
 
 <button class="to-top" id="toTop" type="button" data-aria-en="Back to top" data-aria-el="Επιστροφή στην κορυφή" aria-label="Back to top">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <svg class="to-top__ring" viewBox="0 0 48 48" aria-hidden="true">
+    <circle class="to-top__track" cx="24" cy="24" r="22"/>
+    <circle class="to-top__bar" cx="24" cy="24" r="22"/>
+  </svg>
+  <svg class="to-top__arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M12 19V5M5 12l7-7 7 7"/>
   </svg>
 </button>
