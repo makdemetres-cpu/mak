@@ -7,6 +7,7 @@ import * as sttGroq from './stt-groq.js';
 import * as llmGemini from './llm-gemini.js';
 import * as llmGroq from './llm-groq.js';
 import * as ttsGoogle from './tts-google.js';
+import * as ttsGemini from './tts-gemini.js';
 import * as ttsEleven from './tts-elevenlabs.js';
 import { offlineReply } from './offline-brain.js';
 
@@ -95,6 +96,7 @@ export async function speak(text) {
   if (config.tts.provider === 'browser') return null;
   try {
     if (config.tts.provider === 'google') return await ttsGoogle.synthesize(text);
+    if (config.tts.provider === 'gemini') return await ttsGemini.synthesize(text);
     if (config.tts.provider === 'elevenlabs') return await ttsEleven.synthesize(text);
   } catch (err) {
     // Quota exhausted, bad key, network — the call carries on with a lesser voice.

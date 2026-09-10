@@ -48,6 +48,7 @@ const llmAvailable = [
 const ttsAvailable = [
   'browser',
   ...(googleTtsKey ? ['google'] : []),
+  ...(geminiKey ? ['gemini'] : []),
   ...(elevenKey ? ['elevenlabs'] : []),
 ];
 
@@ -72,10 +73,20 @@ export const config = {
     groqModel: env('GROQ_LLM_MODEL', 'llama-3.3-70b-versatile'),
   },
   tts: {
-    provider: pick(env('TTS_PROVIDER', 'google'), ttsAvailable, 'browser'),
+    // No Google Cloud key but a Gemini key present? Speak with Gemini rather
+    // than dropping to the browser voice.
+    provider: pick(
+      env('TTS_PROVIDER', 'google'),
+      ttsAvailable,
+      geminiKey ? 'gemini' : 'browser'
+    ),
     googleKey: googleTtsKey,
     googleVoice: env('GOOGLE_TTS_VOICE', 'el-GR-Chirp3-HD-Charon'),
     googleRate: Number(env('GOOGLE_TTS_SPEAKING_RATE', '1.0')),
+    geminiKey,
+    geminiModel: env('GEMINI_TTS_MODEL', 'gemini-2.5-flash-preview-tts'),
+    geminiVoice: env('GEMINI_TTS_VOICE', 'Charon'),
+    geminiStyle: env('GEMINI_TTS_STYLE', 'Πες το με βαριεστημένη, βιαστική φωνή ενός μεσήλικα Έλληνα καταστηματάρχη στο τηλέφωνο'),
     elevenKey,
     elevenVoice: env('ELEVENLABS_VOICE_ID', ''),
     elevenModel: env('ELEVENLABS_MODEL', 'eleven_multilingual_v2'),

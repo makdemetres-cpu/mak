@@ -5,6 +5,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { config } from '../config.js';
+import { concatAudio } from '../audio.js';
 import * as db from '../db.js';
 import * as providers from '../providers/index.js';
 import { getDifficulty, applyDeltas, shouldHangUp, DEFAULT_DIFFICULTY } from '../persona/difficulty.js';
@@ -118,10 +119,12 @@ export async function handleTurn(session, { audio, mimeType, text, durationMs = 
   // 4. Speak it, sentence by sentence, so the wait is short.
   const chunks = chunkForSpeech(say);
   const parts = [];
+  let spokenMime = 'audio/mpeg';
   for (let i = 0; i < chunks.length; i += 1) {
     const spoken = await providers.speak(chunks[i]);
     if (spoken) {
       parts.push(spoken.audio);
+      spokenMime = spoken.mime;
       stream.send('audio', { index: i, mime: spoken.mime, data: spoken.audio.toString('base64') });
     } else {
       // No server voice available — the browser says this piece out loud.
@@ -129,7 +132,7 @@ export async function handleTurn(session, { audio, mimeType, text, durationMs = 
     }
   }
 
-  const file = parts.length ? saveAudio(session.id, `m-${session.idx}`, { audio: Buffer.concat(parts), mime: 'audio/mpeg' }) : null;
+  const file = parts.length ? saveAudio(session.id, `m-${session.idx}`, { audio: concatAudio(parts, spokenMime), mime: spokenMime }) : null;
   recordTurn(session, { speaker: 'makis', text: say, durationMs: 0, audioFile: file, objection: reply.objection });
 
   if (hangup) {
@@ -204,8 +207,10 @@ function recordTurn(session, turn) {
   session.idx += 1;
 }
 
+const EXT_BY_MIME = { webm: 'webm', wav: 'wav', ogg: 'ogg', mp4: 'm4a' };
+
 function saveAudio(sessionId, name, { audio, mime }) {
-  const ext = mime?.includes('webm') ? 'webm' : 'mp3';
+  const ext = Object.entries(EXT_BY_MIME).find(([key]) => mime?.includes(key))?.[1] ?? 'mp3';
   const file = `${name}.${ext}`;
   writeFileSync(join(config.recordingsDir, sessionId, file), audio);
   return file;

@@ -4,6 +4,7 @@
 import { config } from '../server/config.js';
 import * as gemini from '../server/providers/llm-gemini.js';
 import * as ttsGoogle from '../server/providers/tts-google.js';
+import * as ttsGemini from '../server/providers/tts-gemini.js';
 
 const ok = (m) => console.log(`  \x1b[32m✓\x1b[0m ${m}`);
 const bad = (m) => console.log(`  \x1b[31m✗\x1b[0m ${m}`);
@@ -65,6 +66,23 @@ if (config.tts.provider === 'google') {
   } catch (err) {
     bad(`Google TTS: ${err.message}`);
     info('Βεβαιώσου ότι ενεργοποίησες το "Cloud Text-to-Speech API" στο project σου.');
+  }
+} else if (config.tts.provider === 'gemini') {
+  try {
+    const models = await ttsGemini.listTtsModels();
+    if (models.includes(config.tts.geminiModel)) {
+      ok(`Gemini TTS συνδέθηκε · μοντέλο ${config.tts.geminiModel} · φωνή ${config.tts.geminiVoice}`);
+      info('Χωρίς κάρτα — αλλά το ημερήσιο δωρεάν όριο είναι μικρό. Σε εξάντληση, μιλάει ο browser.');
+    } else if (models.length) {
+      bad(`Το μοντέλο "${config.tts.geminiModel}" δεν είναι διαθέσιμο με αυτό το κλειδί.`);
+      info(`Διαθέσιμα TTS μοντέλα: ${models.join(', ')}`);
+      info('Βάλε ένα από αυτά στο GEMINI_TTS_MODEL στο .env.');
+    } else {
+      bad('Αυτό το κλειδί δεν έχει πρόσβαση σε μοντέλο TTS.');
+      info('Χρησιμοποίησε TTS_PROVIDER=google (Google Cloud) ή TTS_PROVIDER=browser.');
+    }
+  } catch (err) {
+    bad(`Gemini TTS: ${err.message}`);
   }
 } else if (config.tts.provider === 'elevenlabs') {
   ok(`ElevenLabs · φωνή ${config.tts.elevenVoice || '(δεν έχει οριστεί ELEVENLABS_VOICE_ID)'}`);

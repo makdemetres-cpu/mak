@@ -33,12 +33,16 @@ export function remove(id) {
   db.deleteSession(id);
 }
 
+const AUDIO_MIME = {
+  mp3: 'audio/mpeg', wav: 'audio/wav', webm: 'audio/webm', ogg: 'audio/ogg', m4a: 'audio/mp4',
+};
+
 export function recording(res, sessionId, file) {
-  if (!/^[a-z]-\d+\.(mp3|webm)$/.test(file)) return false;
+  if (!/^[a-z]-\d+\.(mp3|wav|webm|ogg|m4a)$/.test(file)) return false;
   const path = join(config.recordingsDir, sessionId, file);
   if (!existsSync(path)) return false;
   res.writeHead(200, {
-    'Content-Type': file.endsWith('.mp3') ? 'audio/mpeg' : 'audio/webm',
+    'Content-Type': AUDIO_MIME[file.split('.').pop()] ?? 'application/octet-stream',
     'Cache-Control': 'private, max-age=3600',
   });
   createReadStream(path).pipe(res);

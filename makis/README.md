@@ -20,7 +20,7 @@ open http://localhost:3000
 
 1. [What you need to install](#1-what-you-need-to-install)
 2. [Rehearsal mode — run it right now, no accounts](#2-rehearsal-mode--run-it-right-now-no-accounts)
-3. [The three accounts, step by step](#3-the-three-accounts-step-by-step)
+3. [The accounts, step by step](#3-the-accounts-step-by-step)
 4. [Picking his voice](#4-picking-his-voice)
 5. [What it costs (it is free)](#5-what-it-costs-it-is-free)
 6. [How it works](#6-how-it-works)
@@ -60,9 +60,13 @@ it becomes a real conversation.
 
 ---
 
-## 3. The three accounts, step by step
+## 3. The accounts, step by step
 
-All three have free tiers. Copy `.env.example` to `.env` first:
+**Two accounts, neither of which asks for a card, are enough to run the real thing.**
+A third (Google Cloud) buys a better voice and still costs nothing, but it does require a
+card on file — take it or leave it, §3.3 covers both.
+
+Copy `.env.example` to `.env` first:
 
 ```bash
 cp .env.example .env
@@ -112,28 +116,52 @@ GEMINI_MODEL=gemini-flash-latest
 If `npm run doctor` says the model is not available, it prints the list of models your key
 *can* use — put one of those in `GEMINI_MODEL`.
 
-### 3.3 Google Cloud — his voice (free tier, needs a card on file)
+### 3.3 His voice — pick one
 
-This is the one place that asks for a credit card. Google requires a billing account to
-exist before it will serve Text-to-Speech, **but Chirp 3: HD gives you 1 million
-characters per month free** — roughly 300 ten-minute calls. You would have to practise for
-eight hours a day to leave the free tier.
+You have already created everything you strictly need. The question now is only how human
+he sounds.
 
-If you would rather not put a card down at all, skip this step: the app falls back to your
-browser's Greek voice, and everything else still works. See [alternatives](#if-you-do-not-want-to-add-a-card) below.
+#### Option A — Gemini voice (no card, nothing more to create)
+
+The key from step 3.2 can speak as well as think. Nothing to sign up for, no billing
+account, no card. Put this in `.env`:
+
+```
+TTS_PROVIDER=gemini
+GEMINI_TTS_MODEL=gemini-2.5-flash-preview-tts
+GEMINI_TTS_VOICE=Charon
+```
+
+Then `npm run doctor`. If it says that model is not available on your key, it prints the
+TTS models that *are* — copy one into `GEMINI_TTS_MODEL` and run it again.
+
+The catch is quota: the preview TTS models have a much smaller daily allowance than the
+text models, so a long practice session can exhaust it. When that happens the call does not
+break — the browser speaks his lines instead, and the next day you are back to the real
+voice. `GEMINI_TTS_VOICE` accepts any of Gemini's prebuilt voices (`Charon`, `Orus`,
+`Fenrir`, `Puck`, `Kore`…); `GEMINI_TTS_STYLE` is a plain-Greek instruction for how he
+should sound, and is worth playing with.
+
+#### Option B — Google Cloud Chirp 3 HD (needs a card, still free)
+
+The best free Greek voice there is: a native `el-GR` HD voice with **1 million characters
+per month free**, about 300 ten-minute calls. Google will not serve Text-to-Speech at all
+without a billing account, which means a card on file even though you never leave the free
+tier. While your account is still on the Free Trial, Google does not charge that card —
+services stop instead of billing you, and moving to a paid account is a button you have to
+press yourself.
 
 1. Go to <https://console.cloud.google.com> (same Google account is fine).
 2. Top bar → project dropdown → **New Project** → name it `makis` → **Create**.
 3. Make sure the new project is selected in the top bar.
-4. **Billing**: menu → **Billing** → **Link a billing account** → **Create billing
-   account** → add your card. New accounts also come with free trial credit.
+4. Menu → **Billing** → **Link a billing account** → **Create billing account** → add your
+   card. You stay on the Free Trial until you explicitly upgrade.
 5. Enable the API: search bar → *Cloud Text-to-Speech API* → **Enable**.
    Direct link: <https://console.cloud.google.com/apis/library/texttospeech.googleapis.com>
-6. Create the key: menu → **APIs & Services** → **Credentials** → **Create credentials** →
-   **API key**. Copy it.
-7. **Restrict it** (30 seconds, worth it): on the key → **Edit API key** → *API
-   restrictions* → **Restrict key** → tick **Cloud Text-to-Speech API** → **Save**. Now the
-   key is useless for anything else, even if it leaks.
+6. Menu → **APIs & Services** → **Credentials** → **Create credentials** → **API key**. Copy it.
+7. **Restrict it** (worth the 30 seconds): on the key → **Edit API key** → *API
+   restrictions* → **Restrict key** → tick **Cloud Text-to-Speech API** → **Save**. The key
+   is now useless for anything else, even if it leaks.
 8. In `.env`:
 
 ```
@@ -142,17 +170,19 @@ GOOGLE_TTS_API_KEY=your_key_here
 GOOGLE_TTS_VOICE=el-GR-Chirp3-HD-Charon
 ```
 
-Then run `npm run doctor` to confirm all three, and `npm start`.
+9. Optional belt and braces: **Billing → Budgets & alerts → Create budget**, set it to €1,
+   so you hear about it long before anything could ever be charged.
 
-#### If you do not want to add a card
+#### Option C — no voice API at all
 
-Two options, both one line in `.env`:
+`TTS_PROVIDER=browser`. Free forever, no account, no quota. He sounds robotic, but every
+other part of the app — the reasoning, the objections, the coaching — is unaffected.
 
-* **Browser voice** — `TTS_PROVIDER=browser`. Free forever, no account. Robotic Greek.
-* **ElevenLabs** — the most human Greek voice there is, free plan ≈ 10,000 characters per
-  month, which is roughly one practice call. Get a key at
-  <https://elevenlabs.io> → Profile → API Key, pick a multilingual voice ID from the Voice
-  Library, then:
+#### Option D — ElevenLabs
+
+The most human Greek voice money can buy, and the free plan is about 10,000 characters a
+month, i.e. roughly one practice call. Key from <https://elevenlabs.io> → Profile → API
+Key, voice ID from the Voice Library:
 
 ```
 TTS_PROVIDER=elevenlabs
@@ -160,9 +190,13 @@ ELEVENLABS_API_KEY=your_key
 ELEVENLABS_VOICE_ID=the_voice_id
 ```
 
+When you are done, run `npm run doctor` to confirm everything, then `npm start`.
+
 ---
 
 ## 4. Picking his voice
+
+For the Google Cloud voice (§3.3 option B):
 
 ```bash
 npm run voices            # lists every Greek voice your key can use
@@ -176,19 +210,28 @@ the character; `Charon` is the default because it is the flattest and least "ass
 You can also slow him down slightly — `GOOGLE_TTS_SPEAKING_RATE=0.95` reads as more
 sceptical and less scripted.
 
+On the Gemini voice (§3.3 option A) there is no sample script: swap `GEMINI_TTS_VOICE`
+between the prebuilt names and listen on a real call. `GEMINI_TTS_STYLE` matters more than
+the voice name — it is a plain-Greek direction, so "βαριεστημένη, βιαστική φωνή" gets you
+much closer to a real shop owner than any voice choice does.
+
 ---
 
 ## 5. What it costs (it is free)
 
-| | Free allowance | A 10-minute call uses |
-|---|---|---|
-| Groq Whisper (hearing) | 2,000 requests/day, 8h audio/day | ~20 requests, ~4 min audio |
-| Gemini Flash (brain + coach) | 1,500 requests/day | ~21 requests |
-| Google Chirp 3 HD (voice) | 1,000,000 chars/month | ~3,000 chars |
+| | Card? | Free allowance | A 10-minute call uses |
+|---|---|---|---|
+| Groq Whisper (hearing) | no | 2,000 requests/day, 8h audio/day | ~20 requests, ~4 min audio |
+| Gemini Flash (brain + coach) | no | 1,500 requests/day | ~21 requests |
+| Gemini TTS (voice, option A) | no | small daily quota on preview models | ~21 requests |
+| Google Chirp 3 HD (voice, option B) | yes | 1,000,000 chars/month | ~3,000 chars |
+| Browser voice (option C) | no | unlimited | — |
 
-Roughly **300 calls a month inside the free tiers**. The only thing that can bill you is
-Google Cloud TTS past a million characters, and if you are worried, set a budget alert in
-Billing → Budgets & alerts.
+**Nothing here bills you by accident.** Groq and Gemini have no card attached, so they
+cannot charge — they simply stop serving when the daily quota is spent, and MAKIS falls
+back to the browser voice. The only account that *could* ever bill is Google Cloud, and
+only past a million characters a month; a €1 budget alert in Billing → Budgets & alerts
+makes that impossible to miss.
 
 ---
 
@@ -275,8 +318,16 @@ quota to reset.
 **Nothing is spoken, but the text appears** — TTS failed and the browser fell back. Check
 the server log; it prints exactly which provider failed and why.
 
-**His voice sounds robotic** — you are on the browser fallback. `TTS_PROVIDER=google` plus
-a working key fixes it.
+**His voice sounds robotic** — you are on the browser fallback: either `TTS_PROVIDER=browser`,
+or your voice provider errored or ran out of quota. The server log names the provider and
+the reason on the line starting `[tts]`.
+
+**Gemini TTS says the model is not available** — run `npm run doctor`; it lists the TTS
+models your key can reach. Put one of them in `GEMINI_TTS_MODEL`.
+
+**Gemini TTS worked and then stopped mid-session** — the preview TTS quota is small and you
+spent it. The call keeps going with the browser voice; the real voice is back tomorrow. If
+that annoys you, switch to Google Cloud (§3.3 option B).
 
 **Speech recognition does nothing in Safari/Firefox** — those browsers have no Web Speech
 API. Add a Groq key (step 3.1) and recognition moves to the server, where every browser
