@@ -20,6 +20,11 @@ window.SITRIX = {
      they will POST JSON to it instead. */
   formEndpoint: "",
 
+  /* Cursor companion (desktop only — see js/cursor.js and cursor-lab.html).
+     One of: "off", "orbit", "stardust", "reticle", "field".
+     Changing this one word changes it on every page at once. */
+  cursor: "off",
+
   /* Booking availability, in your local (Europe/Athens) time. */
   booking: {
     /* 0 = Sunday … 6 = Saturday. Days not listed are shown as unavailable. */

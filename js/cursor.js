@@ -184,6 +184,7 @@
       }
       ctx.globalCompositeOperation = "source-over";
     },
+    busy() { return this.parts.length > 0; },
     destroy() { window.removeEventListener("resize", this._onResize); },
   };
 
@@ -293,14 +294,36 @@
       start();
     }
     if (active && active.tick) active.tick();
+    scheduleIdle();
   }
-  function onLeave(e) {
-    if (e.relatedTarget || e.toElement) return;  // still inside the document
-    state.inside = false;
+  /* Parking, without trusting leave events.
+     Every "the pointer left" event lies on this page: `mouseout` fires with
+     a null relatedTarget during ordinary movement, and `mouseleave` on
+     <html> fires spuriously — with (0,0) coordinates, so position cannot be
+     checked — because the page has fixed layers (the grain, the aurora) that
+     extend past the root element's box. Acting on either faded the effect
+     out while the pointer was still on a button.
+
+     So none of them are used. Movement is the only signal: the effect
+     appears on the first move and the animation loop parks itself once
+     movement stops and the variant has nothing left to draw. Losing window
+     focus is the one unambiguous exit, and that does fade it out. */
+  let idle = 0;
+  function scheduleIdle() {
+    clearTimeout(idle);
+    idle = setTimeout(park, 600);
+  }
+  function park() {
+    // A trail with particles still alive needs the loop a little longer.
+    if (active && active.busy && active.busy()) { scheduleIdle(); return; }
+    stop();
+  }
+  function onBlur() {
     layer.classList.remove("is-on");
-    // Let the trail finish drawing itself out before the loop parks.
-    setTimeout(() => { if (!state.inside) stop(); }, 700);
+    state.inside = false;
+    setTimeout(park, 700);
   }
+
   function onOver(e) {
     const el = e.target.closest ? e.target.closest(INTERACTIVE) : null;
     if (el === state.target) return;
@@ -334,7 +357,7 @@
     document.addEventListener("pointerover", onOver, { passive: true });
     document.addEventListener("pointerdown", onDown, { passive: true });
     document.addEventListener("pointerup", onUp, { passive: true });
-    document.addEventListener("mouseout", onLeave, { passive: true });
+    window.addEventListener("blur", onBlur, { passive: true });
     document.addEventListener("visibilitychange", () => {
       document.hidden ? stop() : (state.inside && start());
     });
