@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cursor lab — Sitrixweb</title>
+<meta name="description" content="Try the four cursor effects and pick one.">
+<meta name="theme-color" content="#1d1b20">
+<!-- A working page for choosing, not part of the public site. -->
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%231d1b20'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%23c8956c' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23565459' stroke-width='2' stroke-dasharray='5 7'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .lab { padding: 92px 0 120px; }
+  .lab__head { max-width: 62ch; margin-bottom: 40px; }
+  .lab__pick {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .pick {
+    text-align: left;
+    padding: 20px 20px 22px;
+    border: 1px solid rgba(86,84,89,.45);
+    border-radius: var(--radius);
+    background: linear-gradient(150deg, rgba(61,58,63,.42), rgba(61,58,63,.16));
+    color: var(--gray);
+    font: inherit;
+    cursor: pointer;
+    transition: border-color var(--d-2) var(--e), background var(--d-2) var(--e), transform 200ms var(--e);
+  }
+  .pick:hover { border-color: rgba(200,149,108,.55); }
+  .pick:active { transform: scale(.985); transition-duration: 50ms; }
+  .pick.is-on {
+    border-color: var(--copper);
+    background: linear-gradient(150deg, rgba(200,149,108,.16), rgba(61,58,63,.2));
+  }
+  .pick__n {
+    font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--muted); display: block; margin-bottom: 10px;
+  }
+  .pick.is-on .pick__n { color: var(--copper); }
+  .pick h3 { font-size: 19px; margin-bottom: 8px; }
+  .pick p { font-size: 13px; font-weight: 300; line-height: 1.5; margin: 0; }
+
+  .lab__off {
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    margin-bottom: 54px; font-size: 13px;
+  }
+
+  .stage {
+    border: 1px solid rgba(86,84,89,.4);
+    border-radius: var(--radius);
+    padding: clamp(28px, 5vw, 64px);
+    background: linear-gradient(160deg, rgba(61,58,63,.28), transparent 72%);
+    margin-bottom: 30px;
+  }
+  .stage h2 { font-size: clamp(30px, 5vw, 52px); margin-bottom: 18px; }
+  .stage__row {
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+    margin: 30px 0;
+  }
+  .stage__links { display: flex; flex-wrap: wrap; gap: 26px; font-size: 15px; }
+  .stage__grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px; margin-top: 34px;
+  }
+  .swatch {
+    border: 1px solid rgba(86,84,89,.4);
+    border-radius: 10px;
+    padding: 26px 18px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .lab__note {
+    border: 1px solid rgba(200,149,108,.35);
+    background: rgba(200,149,108,.06);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    font-size: 13.5px;
+    max-width: 78ch;
+  }
+  .lab__note b { color: var(--copper); }
+  .lab__warn { display: none; }
+  .lab__warn.is-on { display: block; }
+  @media (max-width: 900px) { .lab__pick { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .lab__pick { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="is-ready">
+
+<div class="aurora is-lit" aria-hidden="true">
+  <div class="aurora__blob aurora__blob--purple"></div>
+  <div class="aurora__blob aurora__blob--green"></div>
+  <div class="aurora__blob aurora__blob--pink"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<main class="page lab" id="main">
+  <div class="wrap">
+
+    <div class="lab__head">
+      <p class="eyebrow">Cursor lab</p>
+      <h1 class="section-head">Four ways to follow the pointer<span class="dot">.</span></h1>
+      <p class="lead" style="margin-top:18px">
+        Pick one below and then move around this page — hover the buttons, the links and the tiles.
+        Each option is the finished thing, not a mock-up, so whatever you choose drops straight into
+        the site.
+      </p>
+    </div>
+
+    <div class="lab__pick" role="group" aria-label="Cursor effect">
+      <button class="pick" type="button" data-set="orbit">
+        <span class="pick__n">Option 01</span>
+        <h3>Orbit</h3>
+        <p>A copper point on the pointer, with a dashed ring trailing behind it that snaps solid and opens up over anything clickable. Echoes the rings around the hero globe.</p>
+      </button>
+      <button class="pick" type="button" data-set="stardust">
+        <span class="pick__n">Option 02</span>
+        <h3>Stardust</h3>
+        <p>A comet trail built from the same particles as the globe. Quiet while you read, flaring when you move fast, drifting upward as it fades.</p>
+      </button>
+      <button class="pick" type="button" data-set="reticle">
+        <span class="pick__n">Option 03</span>
+        <h3>Reticle</h3>
+        <p>Control-room framing: hairlines across the screen, a live coordinate readout, and corner brackets that lock onto whatever you are about to click.</p>
+      </button>
+      <button class="pick" type="button" data-set="field">
+        <span class="pick__n">Option 04</span>
+        <h3>Field</h3>
+        <p>The subtle one. An aurora-coloured light lags behind the pointer and uncovers a dot-grid hidden in the background as it passes.</p>
+      </button>
+    </div>
+
+    <p class="lab__off">
+      <button class="btn btn--ghost btn--sm" type="button" data-set="off" style="padding:11px 20px">Turn it off</button>
+      <span class="muted-sm">Currently showing: <b id="current" style="color:var(--copper);font-weight:500">—</b></span>
+    </p>
+
+    <div class="lab__note lab__warn" id="warn" style="margin-bottom:30px">
+      <b>No pointer detected.</b> These effects are desktop-only by design — there is no cursor to
+      follow on a touchscreen, so nothing will happen here on a phone or tablet. Open this page on a
+      computer to try them. (They are also switched off entirely for anyone whose system asks for
+      reduced motion.)
+    </div>
+
+    <section class="stage">
+      <p class="eyebrow">Test surface</p>
+      <h2>Move across this<span class="dot">.</span></h2>
+      <p class="lead">
+        This block uses the real components from the site, so the effect is being judged against the
+        type, spacing and colour it will actually live with — not against a blank page.
+      </p>
+
+      <div class="stage__row">
+        <button class="btn" type="button">
+          A primary button
+          <svg class="btn__icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button class="btn btn--ghost" type="button">A secondary button</button>
+      </div>
+
+      <div class="stage__links">
+        <a class="ulink" href="#main">A link that underlines</a>
+        <a class="ulink" href="#main">Another one</a>
+        <a class="ulink" href="index.html">Back to the site</a>
+      </div>
+
+      <div class="stage__grid">
+        <div class="swatch" data-cursor-target data-cursor-label="Tile 01">Tile 01</div>
+        <div class="swatch" data-cursor-target data-cursor-label="Tile 02">Tile 02</div>
+        <div class="swatch" data-cursor-target data-cursor-label="Tile 03">Tile 03</div>
+      </div>
+
+      <div style="margin-top:34px;max-width:420px">
+        <div class="field">
+          <label for="demoField">And a form field, to check the text caret still works</label>
+          <input type="text" id="demoField" placeholder="Type here — the real cursor is never hidden">
+          <p class="err"></p>
+        </div>
+      </div>
+    </section>
+
+    <div class="works" style="border-top:1px solid var(--surface)">
+      <article class="work" data-name="A portfolio row">
+        <div class="work__main">
+          <a class="work__name ulink" href="#main">A portfolio row</a>
+          <span class="work__tag">The tall hover targets are the real test</span>
+        </div>
+        <span class="work__year">2026</span>
+        <a class="work__cta" href="#main">
+          View project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </article>
+      <article class="work" data-name="And a second one">
+        <div class="work__main">
+          <a class="work__name ulink" href="#main">And a second one</a>
+          <span class="work__tag">Watch how the effect moves between them</span>
+        </div>
+        <span class="work__year">2026</span>
+        <a class="work__cta" href="#main">
+          View project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </article>
+    </div>
+
+    <div class="lab__note" style="margin-top:44px">
+      <b>When you have picked one:</b> tell me the name, or set it yourself — open
+      <code style="color:var(--bright)">js/config.js</code> and change
+      <code style="color:var(--bright)">cursor: "off"</code> to
+      <code style="color:var(--bright)">cursor: "orbit"</code> (or
+      <code>"stardust"</code>, <code>"reticle"</code>, <code>"field"</code>). That single word is the
+      only edit — it applies to every page at once. This lab page is not linked from the site and is
+      marked noindex; delete <code style="color:var(--bright)">cursor-lab.html</code> whenever you are done with it.
+    </div>
+
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/cursor.js"></script>
+<script>
+  /* Lab-only: swap variants live and keep the choice in the URL so a
+     particular option can be shared or reloaded. */
+  (function () {
+    var out = document.getElementById("current");
+    var picks = Array.prototype.slice.call(document.querySelectorAll("[data-set]"));
+
+    if (!window.SitrixCursor || !window.SitrixCursor.available()) {
+      document.getElementById("warn").classList.add("is-on");
+    }
+
+    function paint(name) {
+      picks.forEach(function (b) { b.classList.toggle("is-on", b.dataset.set === name); });
+      out.textContent = name === "off" ? "nothing" : name;
+      var url = new URL(location.href);
+      url.searchParams.set("cursor", name);
+      history.replaceState(null, "", url);
+    }
+
+    picks.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var name = b.dataset.set;
+        if (window.SitrixCursor) window.SitrixCursor.set(name);
+        paint(name);
+      });
+    });
+
+    var start = new URLSearchParams(location.search).get("cursor") || "orbit";
+    if (window.SitrixCursor) window.SitrixCursor.set(start);
+    paint(start);
+  })();
+</script>
+</body>
+</html>

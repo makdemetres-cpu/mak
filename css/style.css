@@ -1689,3 +1689,126 @@ p:last-child { margin-bottom: 0; }
 .work__main { min-width: 0; }
 /* The "pick a slot first" error lives in an otherwise hidden field. */
 #bkSlotField[hidden].is-invalid { display: block; }
+
+/* ========================= 10. CURSOR COMPANIONS ==========================
+   Styles for js/cursor.js. The layer never takes pointer events and never
+   hides the real system cursor — it draws behind it. Everything here is
+   transform-driven so the compositor does the work, not the layout engine.
+   ========================================================================== */
+.cur {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 260ms var(--e);
+}
+.cur.is-on { opacity: 1; }
+
+/* --- Orbit: exact copper point + trailing dashed ring --------------------- */
+.cur-orbit__dot {
+  position: absolute; top: 0; left: 0;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--copper);
+  box-shadow: 0 0 12px 1px rgba(200,149,108,.75);
+  transition: width 200ms var(--e), height 200ms var(--e);
+  will-change: transform;
+}
+.cur--orbit.is-locked .cur-orbit__dot { width: 4px; height: 4px; }
+
+.cur-orbit__ring {
+  position: absolute; top: 0; left: 0;
+  width: 34px; height: 34px;
+  border: 1px dashed rgba(239,231,249,.45);
+  border-radius: 50%;
+  transition: border-color 260ms var(--e), opacity 260ms var(--e);
+  will-change: transform;
+}
+.cur--orbit.is-locked .cur-orbit__ring {
+  border-color: rgba(200,149,108,.85);
+  border-style: solid;
+}
+.cur--orbit.is-down .cur-orbit__ring { border-color: rgba(200,149,108,1); }
+
+/* --- Stardust: canvas trail ---------------------------------------------- */
+.cur-star__canvas { position: absolute; inset: 0; }
+
+/* --- Reticle: hairlines, snapping bracket, coordinate readout ------------- */
+.cur-ret__h, .cur-ret__v {
+  position: absolute;
+  background: rgba(239,231,249,.10);
+  will-change: transform;
+  transition: background 260ms var(--e);
+}
+.cur-ret__h { top: 0; left: 0; width: 100%; height: 1px; }
+.cur-ret__v { top: 0; left: 0; width: 1px; height: 100%; }
+.cur--reticle.is-locked .cur-ret__h,
+.cur--reticle.is-locked .cur-ret__v { background: rgba(200,149,108,.28); }
+
+.cur-ret__box {
+  position: absolute; top: 0; left: 0;
+  width: 26px; height: 26px;
+  will-change: transform, width, height;
+}
+/* Four corner brackets rather than a full outline — reads as targeting,
+   not as a selection box. */
+.cur-ret__box i {
+  position: absolute;
+  width: 9px; height: 9px;
+  border: 1px solid rgba(239,231,249,.5);
+  transition: border-color 260ms var(--e), width 260ms var(--e), height 260ms var(--e);
+}
+.cur-ret__box i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.cur-ret__box i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.cur-ret__box i:nth-child(3) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+.cur-ret__box i:nth-child(4) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.cur--reticle.is-locked .cur-ret__box i {
+  border-color: var(--copper);
+  width: 13px; height: 13px;
+}
+.cur--reticle.is-down .cur-ret__box i { border-color: #efe7f9; }
+
+.cur-ret__read {
+  position: absolute; top: 0; left: 0;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transition: color 260ms var(--e);
+  will-change: transform;
+}
+.cur--reticle.is-locked .cur-ret__read { color: var(--copper); }
+
+/* --- Field: lagging aurora light that uncovers a hidden dot-grid ---------- */
+.cur-field__glow {
+  position: absolute; top: 0; left: 0;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 42% 40%, rgba(150,108,214,.20), transparent 62%),
+    radial-gradient(circle at 62% 58%, rgba(200,149,108,.18), transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(96,190,150,.10), transparent 66%);
+  filter: blur(26px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.cur-field__grid {
+  --mx: 50%;
+  --my: 50%;
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(239,231,249,.55) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(210px 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.4) 44%, transparent 72%);
+  mask-image: radial-gradient(210px 210px at var(--mx) var(--my), #000 0%, rgba(0,0,0,.4) 44%, transparent 72%);
+  opacity: .5;
+  transition: opacity 300ms var(--e);
+}
+.cur--field.is-locked .cur-field__grid { opacity: .85; }
+
+/* Never draw any of this for people who asked for less motion, or on touch. */
+@media (prefers-reduced-motion: reduce) { .cur { display: none !important; } }
+@media (hover: none), (pointer: coarse) { .cur { display: none !important; } }
