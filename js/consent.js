@@ -129,8 +129,15 @@
   const banner = buildBanner();
   const prefs = buildPrefs();
 
-  function openBanner() { requestAnimationFrame(() => banner.classList.add("is-open")); }
-  function closeBanner() { banner.classList.remove("is-open"); }
+  function openBanner() {
+    document.body.classList.add("cc-open");
+    requestAnimationFrame(() => banner.classList.add("is-open"));
+  }
+  function closeBanner() {
+    banner.classList.remove("is-open");
+    // The scroll-to-top button shares this corner; give it the space back.
+    document.body.classList.remove("cc-open");
+  }
   function openPrefs() {
     const saved = read() || {};
     prefs.querySelectorAll("input[data-cat]").forEach((i) => {

@@ -40,6 +40,13 @@
 
   --radius: 14px;
   --hairline: 1px solid var(--surface);
+
+  /* Type — Jura carries the technical voice, Manrope keeps long copy
+     readable, JetBrains Mono marks anything categorical or numeric.
+     All three carry Greek, which the language toggle depends on. */
+  --font-display: 'Jura', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -50,7 +57,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--gray);
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 400;
   line-height: 1.58;
@@ -1812,3 +1819,142 @@ p:last-child { margin-bottom: 0; }
 /* Never draw any of this for people who asked for less motion, or on touch. */
 @media (prefers-reduced-motion: reduce) { .cur { display: none !important; } }
 @media (hover: none), (pointer: coarse) { .cur { display: none !important; } }
+
+/* ========================== 11. TYPE ASSIGNMENT ===========================
+   Which family carries which job. Kept in one block so the voice of the
+   site can be re-tuned from a single place.
+   ========================================================================== */
+
+/* Display — Jura. Wider and more angular than Inter was, so the tight
+   negative tracking that suited a grotesk is eased off here. */
+h1, h2, h3, h4,
+.section-head,
+.hero__title,
+.work__name,
+.nf__code,
+.doc__body h1,
+.doc__body h2,
+.doc__body h3,
+.success h3,
+.tile__stat,
+.about__facts dt {
+  font-family: var(--font-display);
+  letter-spacing: -0.005em;
+}
+.hero__title { letter-spacing: -0.01em; }
+.hero__title .brand { letter-spacing: 0.01em; }
+
+/* The wordmark reads as a piece of hardware, not a sentence. */
+.logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Mono — anything categorical, sequential or numeric: eyebrows, the section
+   index, years, dates, times, form labels, the step numbers. */
+.eyebrow,
+.section-index,
+.work__year,
+.work__tag,
+.review__pending,
+.footer h4,
+.footer__vat,
+.field label,
+.field > .field__label,
+.check .muted-sm,
+.bstep__head,
+.cal__month,
+.cal__dows span,
+.cal__day,
+.slot,
+.slots__tz,
+.menu__list .num,
+.scroll-cue,
+.step__label,
+.step__num,
+.about__facts dd,
+.tile__stat + small,
+.about__render__tag,
+.work__toggle,
+.doc__meta,
+.doc__table th,
+.cur-ret__read,
+.lang__btn {
+  font-family: var(--font-mono);
+}
+
+/* JetBrains Mono runs wide, so the tracked-out uppercase labels need a
+   little less letter-spacing than they did in Inter to hold their line. */
+.eyebrow { letter-spacing: .16em; }
+.section-index { letter-spacing: .22em; }
+.footer h4 { letter-spacing: .16em; }
+.field label,
+.field > .field__label { letter-spacing: .12em; }
+.bstep__head { letter-spacing: .14em; }
+.step__label { letter-spacing: .18em; }
+.scroll-cue { letter-spacing: .2em; }
+.menu__list .num { letter-spacing: .12em; }
+
+/* Jura's lighter weights read thin at body sizes, so headings hold 600–700
+   and the "light" lead words sit at 400 rather than 300. */
+.hero__title .greet { font-weight: 400; }
+.section-head .lite { font-weight: 400; }
+.menu__list a { font-family: var(--font-display); font-weight: 500; }
+
+/* ====================== 12. SCROLL-TO-TOP BUTTON =========================
+   Fixed bottom-right on every page. Hidden while the visitor is still on the
+   first screen, where it would have nothing to do.
+   ========================================================================== */
+.to-top {
+  position: fixed;
+  right: clamp(16px, 3vw, 34px);
+  bottom: clamp(16px, 3vw, 34px);
+  z-index: 70;
+  width: 48px; height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--surface);
+  border-radius: 50%;
+  background: rgba(31,29,35,.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--gray);
+  cursor: pointer;
+  box-shadow: 0 14px 30px -18px #000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity var(--d-2) var(--e), transform var(--d-2) var(--e),
+              visibility 0s linear var(--d-2), color var(--d-1) var(--e),
+              border-color var(--d-1) var(--e), background var(--d-1) var(--e);
+  -webkit-tap-highlight-color: transparent;
+}
+.to-top.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity var(--d-2) var(--e), transform var(--d-2) var(--e),
+              visibility 0s, color var(--d-1) var(--e),
+              border-color var(--d-1) var(--e), background var(--d-1) var(--e);
+}
+.to-top:hover {
+  color: var(--white);
+  border-color: var(--copper);
+  background: rgba(200,149,108,.16);
+}
+/* Anticipation compress on press, matching every other button on the site. */
+.to-top:active { transform: scale(.94); transition-duration: 50ms; }
+.to-top svg { transition: transform var(--d-1) var(--e); }
+.to-top:hover svg { transform: translateY(-2px); }
+
+/* The consent banner owns the bottom of the screen until it is answered. */
+body.cc-open .to-top {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .to-top { width: 44px; height: 44px; }
+}

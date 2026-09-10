@@ -1,6 +1,6 @@
-# Sitrixweb — studio website
+# SitrixWeb — studio website
 
-A dark, motion-driven single-page site for **Sitrixweb**, a one-person web development
+A dark, motion-driven single-page site for **SitrixWeb**, a one-person web development
 studio in Greece (est. 1 June 2026): portfolio, reviews with an on-site submission form,
 a consultation booking flow, and the legal pages an EU/Greek business needs.
 

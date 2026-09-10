@@ -56,6 +56,18 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  /* ---------------- scroll to top ---------------- */
+  const toTop = $("#toTop");
+  if (toTop) {
+    const threshold = () => window.innerHeight * 0.6;
+    const sync = () => toTop.classList.toggle("is-on", window.scrollY > threshold());
+    window.addEventListener("scroll", sync, { passive: true });
+    sync();
+    toTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: reduced.matches ? "auto" : "smooth" });
+    });
+  }
+
   /* ---------------- fullscreen menu ---------------- */
   const menu = $("#menu");
   const burger = $("#burger");
