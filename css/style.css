@@ -669,14 +669,14 @@ p:last-child { margin-bottom: 0; }
   position: relative;
   justify-self: center;
   width: 100%;
-  min-height: 340px;
+  min-height: 440px;
   display: grid;
   place-items: center;
   margin-right: clamp(-90px, -4vw, 0px);
 }
 .globe-wrap {
   position: relative;
-  width: 260px; height: 260px;
+  width: 380px; height: 380px;
   will-change: transform;
 }
 #globe { width: 100%; height: 100%; }
@@ -689,8 +689,8 @@ p:last-child { margin-bottom: 0; }
   filter: blur(12px);
   pointer-events: none;
 }
-.hero__stage .orbit--a { width: 420px; height: 420px; }
-.hero__stage .orbit--b { width: 560px; height: 560px; opacity: .55; }
+.hero__stage .orbit--a { width: 540px; height: 540px; }
+.hero__stage .orbit--b { width: 700px; height: 700px; opacity: .55; }
 
 /* Cropped orbit ring, top-right of the viewport. */
 .hero__orbit-crop {
@@ -1455,10 +1455,10 @@ p:last-child { margin-bottom: 0; }
 /* Wide tablets — pull the grid in before it starts to strain. */
 @media (max-width: 1100px) {
   .hero__grid { grid-template-columns: 1.15fr .85fr; gap: 26px; }
-  .hero__stage { margin-right: 0; min-height: 300px; }
-  .globe-wrap { width: 220px; height: 220px; }
-  .hero__stage .orbit--a { width: 340px; height: 340px; }
-  .hero__stage .orbit--b { width: 450px; height: 450px; }
+  .hero__stage { margin-right: 0; min-height: 380px; }
+  .globe-wrap { width: 300px; height: 300px; }
+  .hero__stage .orbit--a { width: 430px; height: 430px; }
+  .hero__stage .orbit--b { width: 560px; height: 560px; }
   .section-index { display: none; }
   .booking__panel { grid-template-columns: 260px 1fr 1fr; }
   .footer__grid { grid-template-columns: 1.4fr 1fr 1fr; }
@@ -1501,9 +1501,9 @@ p:last-child { margin-bottom: 0; }
   .hero__actions { margin-top: 30px; gap: 10px; }
   .hero__actions .btn { flex: 1 1 100%; }
   .hero__meta { margin-top: 32px; gap: 8px 20px; font-size: 11.5px; }
-  .hero__stage { order: 2; min-height: 250px; }
-  .globe-wrap { width: 180px; height: 180px; touch-action: none; }
-  .hero__stage .orbit--a { width: 268px; height: 268px; }
+  .hero__stage { order: 2; min-height: 310px; }
+  .globe-wrap { width: 240px; height: 240px; touch-action: none; }
+  .hero__stage .orbit--a { width: 330px; height: 330px; }
   .hero__stage .orbit--b { display: none; }
   .hero__orbit-crop { width: 380px; height: 380px; right: -170px; top: -120px; }
   .scroll-cue { display: none; }
