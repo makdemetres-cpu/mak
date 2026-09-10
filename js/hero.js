@@ -118,9 +118,9 @@
 
   let spin = 0.6, tilt = 0.1;
   let spinV = 0, tiltV = 0;          // drag velocity, decays after release
-  let idle = 0;                      // ms since the visitor last touched it
+  let lastTouch = 0;                 // timestamp of the last interaction
 
-  const AUTO_MORPH = 11000;          // re-form on its own if left alone
+  const AUTO_MORPH = 6000;           // re-form on its own if left alone
   const damp = (a, b, base, dt) => a + (b - a) * (1 - Math.pow(1 - base, dt / 16.67));
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
@@ -140,7 +140,7 @@
     shapeIndex = (i + SHAPES.length) % SHAPES.length;
     from = cur.map((p) => ({ ...p }));
     morph = 0;
-    idle = 0;
+    lastTouch = performance.now();
   }
 
   /* --------------------------------------------------------------- draw */
@@ -221,10 +221,14 @@
     const dt = last ? Math.min(now - last, 64) : 16.67;
     last = now;
 
-    if (morph < 1) morph = Math.min(1, morph + dt / 900);
+    if (morph < 1) morph = Math.min(1, morph + dt / 600);
 
-    // Idle behaviour: a slow turn, and a re-form every so often.
-    idle += dt;
+    /* Idle behaviour: a slow turn, and a re-form every so often. The idle
+       clock reads real time rather than accumulating the per-frame delta —
+       that delta is capped at 64ms so a backgrounded tab cannot lurch, and
+       the cap makes an accumulated clock run behind real time on any display
+       slower than about 16fps, delaying the re-form or losing it entirely. */
+    if (!lastTouch) lastTouch = now;
     if (!dragging) {
       spinV *= Math.pow(0.94, dt / 16.67);
       tiltV *= Math.pow(0.94, dt / 16.67);
@@ -235,15 +239,15 @@
         // nearest whole revolution rather than unwinding all the way back —
         // and the idle rotation is suspended so it stays readable.
         const face = Math.round(spin / (Math.PI * 2)) * Math.PI * 2;
-        spin = damp(spin + spinV, face, 0.05, dt);
-        tilt = damp(tilt + tiltV, 0, 0.05, dt);
+        spin = damp(spin + spinV, face, 0.1, dt);
+        tilt = damp(tilt + tiltV, 0, 0.1, dt);
       } else {
-        spin += (dt / 26000) * Math.PI * 2 + spinV;
+        spin += (dt / 16000) * Math.PI * 2 + spinV;
         tilt += tiltV;
         tilt = damp(tilt, Math.max(-0.5, Math.min(0.5, tilt)), 0.05, dt);
       }
 
-      if (idle > AUTO_MORPH && morph >= 1) setShape(shapeIndex + 1);
+      if (now - lastTouch > AUTO_MORPH && morph >= 1) setShape(shapeIndex + 1);
     }
 
     draw();
@@ -258,49 +262,70 @@
   function stop() { running = false; last = 0; cancelAnimationFrame(raf); }
 
   /* -------------------------------------------------------------- input */
-  let dragging = false, moved = 0, lastX = 0, lastY = 0;
+  let dragging = false, lastX = 0, lastY = 0, startX = 0, startY = 0;
 
   function down(e) {
-    const p = e.touches ? e.touches[0] : e;
-    dragging = true; moved = 0; idle = 0;
-    lastX = p.clientX; lastY = p.clientY;
+    dragging = true; lastTouch = performance.now();
+    startX = lastX = e.clientX;
+    startY = lastY = e.clientY;
     spinV = tiltV = 0;
     wrap.classList.add("is-held");
+    if (wrap.setPointerCapture && e.pointerId !== undefined) {
+      try { wrap.setPointerCapture(e.pointerId); } catch (err) {}
+    }
   }
+
   function move(e) {
     if (!dragging) return;
-    const p = e.touches ? e.touches[0] : e;
-    const dx = p.clientX - lastX, dy = p.clientY - lastY;
-    lastX = p.clientX; lastY = p.clientY;
-    moved += Math.abs(dx) + Math.abs(dy);
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
     spin += dx * 0.008;
     tilt = Math.max(-0.6, Math.min(0.6, tilt + dy * 0.005));
     spinV = dx * 0.008;
     tiltV = dy * 0.005;
-    if (e.cancelable && e.touches) e.preventDefault();
   }
+
   function up() {
     if (!dragging) return;
     dragging = false;
     wrap.classList.remove("is-held");
-    // A press that did not travel is a click: re-form into the next shape.
-    if (moved < 6) setShape(shapeIndex + 1);
-    idle = 0;
+    /* Click or drag? Measured as distance from where the press started, not
+       as the length of the path travelled: summing every wobble made an
+       ordinary click — which always carries a few pixels of hand movement —
+       read as a drag, and the shape silently refused to change. Fifteen
+       pixels is generous for a click — a trackpad click drifts further than a
+       mouse one — and still nowhere near an intentional drag, which is
+       tens of pixels at minimum. */
+    const dist = Math.hypot(lastX - startX, lastY - startY);
+    if (dist < 15) setShape(shapeIndex + 1);
+    lastTouch = performance.now();
   }
 
+  function cancel() {
+    // A gesture the browser took over (a scroll, a system swipe) ends the
+    // drag without counting as a click, and must not leave it stuck held.
+    if (!dragging) return;
+    dragging = false;
+    wrap.classList.remove("is-held");
+    lastTouch = performance.now();
+  }
+
+  /* Pointer events cover mouse, touch and pen alike. Listening for touch
+     events as well would fire both on a phone, advancing two shapes per tap;
+     `touch-action: none` on the element is what stops the browser scrolling
+     the page instead of handing us the drag. */
   wrap.addEventListener("pointerdown", down);
-  window.addEventListener("pointermove", move, { passive: true });
+  wrap.addEventListener("pointermove", move);
+  wrap.addEventListener("pointerup", up);
+  wrap.addEventListener("pointercancel", cancel);
   window.addEventListener("pointerup", up);
-  wrap.addEventListener("touchstart", down, { passive: true });
-  wrap.addEventListener("touchmove", move, { passive: false });
-  wrap.addEventListener("touchend", up, { passive: true });
 
   // Keyboard: the wrapper is focusable, so the shapes can be cycled without
   // a pointer at all.
   wrap.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setShape(shapeIndex + 1); }
-    if (e.key === "ArrowLeft") { spin -= 0.25; idle = 0; }
-    if (e.key === "ArrowRight") { spin += 0.25; idle = 0; }
+    if (e.key === "ArrowLeft") { spin -= 0.25; lastTouch = performance.now(); }
+    if (e.key === "ArrowRight") { spin += 0.25; lastTouch = performance.now(); }
   });
 
   /* -------------------------------------------------------------- wiring */
@@ -337,4 +362,13 @@
   }
   if (reduced.addEventListener) reduced.addEventListener("change", applyMotionPref);
   applyMotionPref();
+
+  // A small handle on the object, so its state can be inspected and driven
+  // from outside — used by the test harness, and handy for debugging.
+  window.SitrixHero = {
+    shape: () => shapeIndex,
+    count: SHAPES.length,
+    next: () => setShape(shapeIndex + 1),
+    to: (i) => setShape(i),
+  };
 })();

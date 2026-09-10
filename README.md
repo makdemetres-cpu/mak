@@ -114,7 +114,12 @@ assets/fonts/       Inter woff2 subsets
 `js/hero.js` draws a cloud of ~1,700 points you can throw around. Drag to spin
 it (mouse or touch) with inertia on release; a click that isn't a drag re-forms
 it into the next shape — sphere, cube, torus, and then the SitrixWeb mark
-itself. Left alone it turns slowly and re-forms on its own every 11 seconds.
+itself. Left alone it turns slowly and re-forms on its own every 6 seconds,
+so a visitor who never touches it still reaches the logo in under 20.
+
+A press counts as a click if it lands within 15px of where it started —
+measured from the press origin, not as the length of the path travelled,
+because an ordinary click always carries a few pixels of hand movement.
 
 The mark's points were sampled from `assets/img/logo-mark-light.png` on a
 jittered grid — random sampling left holes and the monogram was unreadable —
