@@ -1,0 +1,15 @@
+# systemd user service. Install:
+#   cp deploy/flipdesk.service ~/.config/systemd/user/ && systemctl --user enable --now flipdesk
+#   loginctl enable-linger $USER     # keep running when logged out
+[Unit]
+Description=FlipDesk iPhone flipping desk
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/mak/flipbot
+ExecStart=/usr/bin/python3 -m flipbot start
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

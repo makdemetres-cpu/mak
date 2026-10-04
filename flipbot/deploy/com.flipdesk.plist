@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- launchd agent. Edit the two paths, then:
+     cp deploy/com.flipdesk.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.flipdesk.plist -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.flipdesk</string>
+  <key>ProgramArguments</key>
+  <array><string>/usr/bin/python3</string><string>-m</string><string>flipbot</string><string>start</string></array>
+  <key>WorkingDirectory</key><string>/Users/YOU/mak/flipbot</string>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardErrorPath</key><string>/Users/YOU/mak/flipbot/logs/launchd.err</string>
+</dict>
+</plist>

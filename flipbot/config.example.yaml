@@ -1,0 +1,71 @@
+# FlipDesk configuration. Copy to config.yaml and fill in every `null`.
+# `null` = not set yet. PAPER mode runs on labelled placeholders; LIVE mode
+# refuses to start until every required value below is yours (see Settings page).
+
+mode: PAPER                      # PAPER | LIVE
+
+owner:
+  display_name: "Owner"          # shown in the dashboard greeting
+
+location:
+  base_location: "Artemida, Attica, Greece"
+  geocode_on_startup: true
+  excellent_minutes: 15
+  very_good_minutes: 30
+  preferred_max_minutes: 40      # preferred MAXIMUM, not a minimum
+  hard_max_minutes: 60
+  exceptional_deal_override:
+    enabled: true
+    min_expected_profit_eur: null
+
+deal_rules:
+  minimum_profit_eur: null
+  minimum_roi_percent: null
+  hot_min_score: null
+  good_min_score: null
+  price_drop_realert_eur: null
+
+profit_rules:
+  repair_reserve_eur: null
+  travel_cost_per_km: null
+  time_value_eur_per_hour: null  # optional
+  negotiation_band_eur: null     # how far above my max I'm still willing to try
+  negotiation_buffer_percent: null
+
+risk:
+  minimum_battery_health: null
+  allow_unknown_battery_health: null
+  allow_repaired_devices: null
+  allow_esim_only_us_models: null
+  allow_face_id_broken: false
+  parts_mode: false
+
+deal_score_weights:              # must sum to 100
+  price_opportunity: 30
+  expected_profit: 25
+  condition: 15
+  listing_quality: 10
+  location: 10
+  liquidity: 10
+
+fees:                            # per selling platform, all editable
+  vendora:  { sell_fee_pct: null, withdrawal_fee: null, shipping_eur: null }
+  skoop:    { sell_fee_pct: null, shipping_eur: null }
+  vinted:   { sell_fee_pct: null, shipping_eur: null }
+  facebook: { sell_fee_pct: 0 }
+
+scanning:
+  scan_interval_minutes: null    # per connector
+  max_requests_per_hour: null    # per connector, keep conservative
+
+ai:
+  monthly_budget_usd: null
+  parsing_model: claude-haiku-4-5-20251001
+  writing_model: claude-sonnet-5-5
+
+notifications:
+  quiet_hours: "23:00-08:00"
+  hot_bypasses_quiet_hours: true
+  heartbeat_time: "09:00"
+
+database_path: data/flipbot.db
