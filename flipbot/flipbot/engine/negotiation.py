@@ -23,6 +23,14 @@ def plan(cfg: Config, listing: Listing) -> dict:
             "target": target, "absolute_max": absolute}
 
 
+def _payment(listing: Listing) -> str:
+    if listing.marketplace == "vendora":  # Vendora allows payment only through the app
+        return "με πληρωμή μέσω «Αγορά μέσω Vendora» και παραλαβή από κοντά."
+    if listing.delivery == "shipped":
+        return "με αγορά μέσω της πλατφόρμας."
+    return "με πληρωμή τοις μετρητοίς ή IRIS τη στιγμή της παράδοσης."
+
+
 def drafts(cfg: Config, listing: Listing) -> dict[str, str]:
     p = plan(cfg, listing)
     model = listing.model or "iPhone"
@@ -34,9 +42,9 @@ def drafts(cfg: Config, listing: Listing) -> dict[str, str]:
                  f"ελέγξω από κοντά, μπορώ να έρθω άμεσα και να το πάρω στα €{p['opening']}.")
     return {
         "opening": first,
-        "counter": (f"Σας ευχαριστώ για την απάντηση! Μπορώ να φτάσω μέχρι €{p['target']}, "
-                    f"με πληρωμή τοις μετρητοίς ή IRIS τη στιγμή της παράδοσης."),
-        "checks": ("Πριν την πληρωμή θα ήθελα να δω ότι το Εύρεση (Find My) είναι απενεργοποιημένο, "
+        "counter": f"Σας ευχαριστώ για την απάντηση! Μπορώ να φτάσω μέχρι €{p['target']}, {_payment(listing)}",
+        "checks": (("Πριν εγκρίνω την αγορά στην εφαρμογή" if listing.marketplace == "vendora"
+                    else "Πριν την πληρωμή") + " θα ήθελα να δω ότι το Εύρεση (Find My) είναι απενεργοποιημένο, "
                    "να γίνει διαγραφή όλου του περιεχομένου μπροστά μου, και να δω το Ιστορικό "
                    "ανταλλακτικών και σέρβις στις Ρυθμίσεις. Είναι εντάξει;"),
         "battery": "Θα μπορούσατε να μου στείλετε screenshot από την Υγεία μπαταρίας;",

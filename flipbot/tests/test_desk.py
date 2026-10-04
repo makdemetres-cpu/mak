@@ -145,3 +145,17 @@ def test_api_smoke(db, cfg):
     assert c.get("/api/profit?days=365").json()
     assert c.get("/api/analytics").json()["models"]
     assert len(c.get("/api/connectors").json()) == 5
+
+
+def test_vendora_payment_goes_through_the_app(desk):
+    from flipbot.engine import negotiation
+    vendora = next(d for d in desk.deals() if d.marketplace == "vendora" and d.delivery == "pickup")
+    facebook = next(d for d in desk.deals() if d.marketplace == "facebook")
+    assert "Vendora" in negotiation.drafts(desk.cfg, vendora)["counter"]
+    assert "IRIS" in negotiation.drafts(desk.cfg, facebook)["counter"]
+    with desk.db.session() as s:
+        v = inspection.start(s, "in_person", listing_id=vendora.id)
+        f = inspection.start(s, "in_person", listing_id=facebook.id)
+        assert any("Buy via Vendora" in i.label for i in v.items)
+        assert not any("cash or IRIS at handover" in i.label for i in v.items)
+        assert any("IRIS" in i.label for i in f.items)

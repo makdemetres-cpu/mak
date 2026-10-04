@@ -7,6 +7,7 @@ messages a seller. Every human decision is written to the audit trail.
 from __future__ import annotations
 
 import logging
+import os
 from datetime import datetime, timedelta
 
 from sqlalchemy import func, select
@@ -59,6 +60,7 @@ class FlipDesk:
         self.connectors = {c.name: c for c in all_connectors()}
         self.notify = None  # set by the Telegram bot: async callable(text, listing_id, kind)
         self.started_at = utcnow()
+        self.telegram_state = "not configured (add the keys to .env)"
 
     # ------------------------------------------------------------------ audit
     def event(self, session, kind: str, message: str, **data) -> None:
@@ -165,6 +167,7 @@ class FlipDesk:
         budget = setting(self.cfg, "ai.monthly_budget_usd")
         return {
             "mode": self.cfg.mode, "owner": self.cfg.owner.display_name, "paused": paused,
+            "pid": os.getpid(), "telegram": self.telegram_state,
             "uptime_seconds": int((utcnow() - self.started_at).total_seconds()),
             "candidates_today": count(Listing.first_seen_at >= today),
             "hot_deals": count((Listing.tier == "HOT") & Listing.duplicate_of_id.is_(None)

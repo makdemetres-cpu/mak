@@ -1,4 +1,5 @@
-# FlipDesk configuration. Copy to config.yaml and fill in every `null`.
+# FlipDesk configuration. start.bat copies this to config.yaml on first run;
+# edit config.yaml (not this file) and restart. Fill in every `null`.
 # `null` = not set yet. PAPER mode runs on labelled placeholders; LIVE mode
 # refuses to start until every required value below is yours (see Settings page).
 
@@ -59,9 +60,13 @@ scanning:
   max_requests_per_hour: null    # per connector, keep conservative
 
 ai:
-  monthly_budget_usd: null
+  monthly_budget_usd: 10        # hard monthly cap on Claude API spend (USD)
   parsing_model: claude-haiku-4-5-20251001
   writing_model: claude-sonnet-5-5
+
+routing:
+  provider: openrouteservice     # key goes in .env as OPENROUTESERVICE_API_KEY
+  cache_days: 90
 
 notifications:
   quiet_hours: "23:00-08:00"

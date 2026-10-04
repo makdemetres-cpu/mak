@@ -6,7 +6,9 @@ import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+import secrets as secrets_mod
+
+from fastapi import FastAPI, File, Header, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -268,6 +270,20 @@ def create_app(cfg: Config | None = None, db: Database | None = None,
             for row in s.scalars(select(Listing).where(Listing.status == "ACTIVE")):
                 pipeline.evaluate(s, cfg, row)
             return {"version_id": version.id, "report": report.as_dict()}
+
+    @app.post("/api/admin/shutdown")
+    def shutdown(x_flipdesk_token: str | None = Header(default=None)):
+        """Used by `python -m flipbot stop` (stop.bat). The token lives in data/runtime.json
+        on this PC; a custom header also means no web page can trigger this cross-site."""
+        token = getattr(app.state, "control_token", None)
+        if not token or not x_flipdesk_token or not secrets_mod.compare_digest(token, x_flipdesk_token):
+            raise HTTPException(403, "forbidden")
+        server = getattr(app.state, "server", None)
+        if server is None:
+            raise HTTPException(503, "not running under the FlipDesk launcher")
+        log.info("Shutdown requested via stop command")
+        server.should_exit = True
+        return {"ok": True}
 
     @app.get("/api/events")
     def events():

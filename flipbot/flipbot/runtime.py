@@ -41,13 +41,12 @@ class Runtime:
 
     async def start(self) -> None:
         from .telegram_bot import TelegramBot
-        bot = TelegramBot(self.desk)
-        if bot.enabled():
-            try:
-                await bot.start()
-                self.telegram = bot
-            except Exception:  # noqa: BLE001 - Telegram down must not stop the desk
-                log.exception("Telegram failed to start; dashboard keeps running")
+        self.pending: list[str] = []  # messages waiting for Telegram to come up
+        self.bot = TelegramBot(self.desk)
+        if self.bot.enabled():
+            await self._connect_telegram()
+            if not self.telegram:  # e.g. no internet yet right after boot — keep trying
+                self.scheduler.add_job(self._connect_telegram, "interval", minutes=2, id="telegram_retry")
         else:
             log.info("Telegram disabled: set TELEGRAM_BOT_TOKEN and TELEGRAM_ALLOWED_USER_IDS in .env")
 
@@ -62,17 +61,37 @@ class Runtime:
         self.scheduler.add_job(backup, "cron", hour=3, minute=17, args=[self.desk], id="backup")
         self.scheduler.start()
 
+    async def _connect_telegram(self) -> None:
+        if self.telegram:
+            return
+        try:
+            await self.bot.start()
+        except Exception as exc:  # noqa: BLE001 - Telegram down must not stop the desk
+            self.desk.telegram_state = f"error, retrying every 2 min ({type(exc).__name__})"
+            log.warning("Telegram failed to start (%s); dashboard keeps running", type(exc).__name__)
+            return
+        self.telegram = self.bot
+        self.desk.telegram_state = "connected"
+        if self.scheduler.get_job("telegram_retry"):
+            self.scheduler.remove_job("telegram_retry")
+        queued, self.pending = self.pending, []
+        for text in queued:
+            await self._say(text)
+
     async def stop(self) -> None:
         self.scheduler.shutdown(wait=False)
         if self.telegram:
             await self.telegram.stop()
 
     async def _say(self, text: str) -> None:
-        if self.telegram:
-            try:
-                await self.telegram.send(text, urgent=True)
-            except Exception:  # noqa: BLE001
-                log.exception("Telegram send failed")
+        if not self.telegram:
+            if self.bot.enabled():
+                self.pending.append(text)
+            return
+        try:
+            await self.telegram.send(text, urgent=True)
+        except Exception:  # noqa: BLE001
+            log.exception("Telegram send failed")
 
     async def _morning(self) -> None:
         o = self.desk.overview()

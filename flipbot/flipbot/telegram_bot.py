@@ -222,7 +222,7 @@ class TelegramBot:
             from .engine.inspection import template
             path = "on_arrival" if listing.delivery == "shipped" else "in_person"
             lines = []
-            for section, labels in template(path):
+            for section, labels in template(path, listing.marketplace):
                 lines.append(f"\n{section}")
                 lines += [f"☐ {label}" for label in labels]
             await query.message.reply_text("Inspection checklist" + "\n".join(lines))

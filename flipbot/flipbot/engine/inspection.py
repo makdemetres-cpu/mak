@@ -8,6 +8,13 @@ from sqlalchemy.orm import Session
 from ..models import Inspection, InspectionItem
 
 IN_PERSON_ONLY = "Meeting"
+PAYMENT_LINE = "Payment: cash or IRIS at handover — never a deposit before seeing the phone"
+# Vendora's terms allow payment ONLY through "Buy via Vendora" (cash/transfer = account ban).
+# For meetups the buyer prepays in the app and has 30 minutes to inspect and approve.
+PAYMENT_BY_PLATFORM = {
+    "vendora": "Payment: ONLY via 'Buy via Vendora' (prepaid in the app) — inspect, then approve "
+               "in the app within 30 minutes. Never cash or bank transfer (breaks Vendora's terms)",
+}
 
 CHECKLIST: list[tuple[str, list[str]]] = [
     ("Identity & lock status", [
@@ -41,19 +48,23 @@ CHECKLIST: list[tuple[str, list[str]]] = [
         "Meeting in a public place",
         "Ownership: receipt / proof if available; no odd story",
         "Price agreed and accessories present",
-        "Payment: cash or IRIS at handover — never a deposit before seeing the phone",
+        PAYMENT_LINE,
     ]),
 ]
 
 
-def template(path: str) -> list[tuple[str, list[str]]]:
-    return [(s, items) for s, items in CHECKLIST if path == "in_person" or s != IN_PERSON_ONLY]
+def template(path: str, marketplace: str | None = None) -> list[tuple[str, list[str]]]:
+    payment = PAYMENT_BY_PLATFORM.get(marketplace or "", PAYMENT_LINE)
+    return [(s, [payment if label == PAYMENT_LINE else label for label in items])
+            for s, items in CHECKLIST if path == "in_person" or s != IN_PERSON_ONLY]
 
 
 def start(session: Session, path: str, inventory_id: int | None = None,
           listing_id: int | None = None) -> Inspection:
+    from ..models import Listing
+    listing = session.get(Listing, listing_id) if listing_id else None
     insp = Inspection(path=path, inventory_id=inventory_id, listing_id=listing_id)
-    for section, labels in template(path):
+    for section, labels in template(path, listing.marketplace if listing else None):
         for label in labels:
             insp.items.append(InspectionItem(section=section, label=label))
     session.add(insp)

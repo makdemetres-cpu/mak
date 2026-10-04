@@ -95,9 +95,14 @@ class ScoringWeights(BaseModel):
 
 
 class AICfg(BaseModel):
-    monthly_budget_usd: Optional[float] = None
+    monthly_budget_usd: Optional[float] = 10.0
     parsing_model: str = "claude-haiku-4-5-20251001"
     writing_model: str = "claude-sonnet-5-5"
+
+
+class RoutingCfg(BaseModel):
+    provider: Literal["openrouteservice", "none"] = "openrouteservice"
+    cache_days: int = 90  # locality drive times are refreshed this rarely
 
 
 class NotificationCfg(BaseModel):
@@ -142,6 +147,7 @@ class Config(BaseModel):
     scanning: ScanningCfg = ScanningCfg()
     ai: AICfg = AICfg()
     notifications: NotificationCfg = NotificationCfg()
+    routing: RoutingCfg = RoutingCfg()
     target_models: list[str] = Field(default_factory=lambda: [
         "iPhone 11", "iPhone 11 Pro", "iPhone 11 Pro Max",
         "iPhone 12", "iPhone 12 mini", "iPhone 12 Pro", "iPhone 12 Pro Max",
@@ -251,7 +257,7 @@ class Secrets:
             telegram_allowed_user_ids=frozenset(
                 int(x) for x in ids.replace(" ", "").split(",") if x.strip().isdigit()),
             anthropic_api_key=os.environ.get("ANTHROPIC_API_KEY") or None,
-            routing_api_key=os.environ.get("ROUTING_API_KEY") or None,
+            routing_api_key=os.environ.get("OPENROUTESERVICE_API_KEY") or None,
         )
 
 
@@ -263,7 +269,12 @@ def _load_dotenv(path: Path) -> None:
         if not line or line.startswith("#") or "=" not in line:
             continue
         key, _, value = line.partition("=")
-        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+        value = value.strip()
+        if value[:1] in ('"', "'"):
+            value = value[1:].split(value[0], 1)[0]
+        else:
+            value = value.split(" #", 1)[0].strip()  # allow "KEY=value   # comment"
+        os.environ.setdefault(key.strip(), value)
 
 
 def load_config(path: Path | None = None) -> Config:

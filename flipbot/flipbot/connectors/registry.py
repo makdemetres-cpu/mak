@@ -12,7 +12,7 @@ import re
 from .base import ASSISTED, PENDING, Capabilities, MarketplaceConnector, RawListing
 from ..engine.parsing import fold
 
-_PENDING_REASON = "Feasibility review pending — ToS / API not yet verified"
+_PENDING_REASON = "Feasibility review done, awaiting your approval (docs/FEASIBILITY.md)"
 
 
 class _PendingConnector(MarketplaceConnector):
@@ -31,24 +31,27 @@ class _PendingConnector(MarketplaceConnector):
 
 class VendoraConnector(_PendingConnector):
     name, display_name = "vendora", "Vendora"
-    expected_note = "Listings also appear on Facebook Marketplace (GR/CY/BG) via Vendora's Meta partnership."
+    expected_note = ("Terms not yet readable from here (NOT VERIFIED); no public API. Pay ONLY via "
+                     "'Buy via Vendora', also at meetups. Listings also appear on Facebook Marketplace (GR/CY/BG).")
 
 
 class FacebookMarketplaceConnector(_PendingConnector):
     name, display_name = "facebook", "Facebook Marketplace"
-    expected_note = "Expected to stay ASSISTED: automated access is likely prohibited."
+    expected_note = "Meta's terms forbid automated data collection, logged in or not."
 
 
 class VintedConnector(_PendingConnector):
     name, display_name = "vinted", "Vinted"
     sells_shipped_only = True
-    expected_note = "Expected to stay ASSISTED: strict ToS. Shipped purchases only."
+    expected_note = ("Terms forbid bots, scraping and crawling. Official API only for allow-listed "
+                     "Vinted Pro businesses. Shipped purchases only.")
 
 
 class SkoopConnector(_PendingConnector):
     name, display_name = "skoop", "Skoop by Skroutz"
     sells_shipped_only = True
-    expected_note = "Shipping-only; 2-day return window after delivery; KYC is never automated."
+    expected_note = ("Skroutz forbids automatic monitoring without permission; its API is for merchants. "
+                     "Shipping-only, 2-day return window, KYC never automated.")
 
 
 _DOMAINS = {"vendora": "vendora", "facebook.com": "facebook", "fb.com": "facebook",
@@ -94,8 +97,8 @@ def detect_locality(text: str) -> str | None:
 class ManualIntakeConnector(MarketplaceConnector):
     """Share-to-bot: a URL, pasted text or (later) a screenshot. Works on every platform.
 
-    A shared URL is NOT fetched while the feasibility review is pending — the
-    listing is built from the text the owner pasted.
+    A shared URL is never fetched: a bot opening the page is automated access, which
+    the platforms' terms forbid. The listing is built from the text the owner pasted.
     """
     name, display_name = "manual", "Manual intake"
 
